@@ -8,6 +8,18 @@
       "repo_path": "C:/Users/Mythical/Documents/GitHub/MythForce",
       "repo_branch": "main"
   },
+  "iostore_info": {
+      "file_extensions": {
+        "ucas": [
+            "uasset",
+            "umap",
+            "ubulk",
+            "uexp",
+            "uptnl",
+            "ushaderbytecode"
+        ]
+      }
+  },
   "engine_info": {
       "unreal_engine_dir": "D:/unreal_engine_installs/UE_5.1",
       "unreal_project_file": "C:/Users/Mythical/Documents/GitHub/MythForce/MythForce.uproject",
@@ -107,7 +119,8 @@
           "packing_type": "unreal_pak",
           "compression_type": "Zlib",
           "is_enabled": true,
-          "manually_specified_assets": {
+          "sig_method": "copy_sig",
+          "file_includes": {
               "asset_paths": [
               ],
               "tree_paths": [

@@ -98,7 +98,7 @@
       "packing_type": "engine",
       "compression_type": "Zlib",
       "is_enabled": true,
-      "manually_specified_assets": { "asset_paths": [], "tree_paths": [] }
+      "file_includes": { "asset_paths": [], "tree_paths": [] }
     },
     {
       "mod_name": "MapKit",
@@ -110,7 +110,7 @@
       "packing_type": "repak",
       "compression_type": "Zlib",
       "is_enabled": true,
-      "manually_specified_assets": { "asset_paths": [], "tree_paths": [] }
+      "file_includes": { "asset_paths": [], "tree_paths": [] }
     },
     {
       "mod_name": "ExampleLevel",
@@ -122,7 +122,7 @@
       "packing_type": "repak",
       "compression_type": "Zlib",
       "is_enabled": true,
-      "manually_specified_assets": { "asset_paths": [], "tree_paths": [] }
+      "file_includes": { "asset_paths": [], "tree_paths": [] }
     }
   ]
 }

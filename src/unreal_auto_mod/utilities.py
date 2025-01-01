@@ -140,7 +140,7 @@ def get_latest_stove_version():
     from requests.exceptions import HTTPError, RequestException
     try:
         api_url = "https://api.github.com/repos/bananaturtlesandwich/stove/releases/latest"
-        
+
         # Attempt to fetch the latest release information
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
@@ -255,7 +255,7 @@ def get_mods_info_from_json() -> list:
 
 def get_game_exe_path() -> str:
     game_exe_path = main_logic.settings['game_info']['game_exe_path']
-    general_utils.check_file_exists(game_exe_path)
+    general_utils.check_path_exists(game_exe_path)
     return game_exe_path
 
 
@@ -327,7 +327,7 @@ def custom_get_game_paks_dir() -> str:
 
 def get_unreal_engine_dir() -> str:
     ue_dir = main_logic.settings['engine_info']['unreal_engine_dir']
-    general_utils.check_file_exists(ue_dir)
+    general_utils.check_path_exists(ue_dir)
     return ue_dir
 
 
@@ -497,25 +497,28 @@ def get_game_window_title() -> str:
         unreal_dev_utils.get_game_process_name(get_game_exe_path())
 
 
+def ensure_path_quoted(path: str) -> str:
+    return f'"{path}"' if not path.startswith('"') and not path.endswith('"') else path
+
+
 def run_app(
-        exe_path: str, 
-        exec_mode: ExecutionMode = ExecutionMode.SYNC, 
+        exe_path: str,
+        exec_mode: ExecutionMode = ExecutionMode.SYNC,
         args: list = [],
         working_dir: str = None
     ):
-    
+
+    exe_path = ensure_path_quoted(exe_path)
+
     if exec_mode == ExecutionMode.SYNC:
         command = exe_path
-        # check this can really be commented out
-        # if working_dir and not working_dir == None:
-        #     command = f'"{working_dir}/{command}"'
         for arg in args:
             command = f'{command} {arg}'
-        log.log_message(f'----------------------------------------------------')
+        log.log_message('----------------------------------------------------')
         log.log_message(f'Command: main executable: {exe_path}')
         for arg in args:
             log.log_message(f'Command: arg: {arg}')
-        log.log_message(f'----------------------------------------------------')
+        log.log_message('----------------------------------------------------')
         log.log_message(f'Command: {command} running with the {exec_mode} enum')
         if working_dir:
             if os.path.isdir(working_dir):

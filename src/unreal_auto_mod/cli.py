@@ -5,7 +5,7 @@ from pathlib import Path
 
 from rich_argparse import RichHelpFormatter
 
-from unreal_auto_mod import log, main_logic
+from unreal_auto_mod import enums, log, main_logic
 
 if getattr(sys, 'frozen', False):
     SCRIPT_DIR = Path(sys.executable).parent
@@ -17,9 +17,16 @@ default_releases_dir = os.path.normpath(os.path.join(main_logic.settings_json_di
 default_output_releases_dir = os.path.normpath(os.path.join(SCRIPT_DIR, 'dist'))
 
 
+MIN_ENGINE_VERSION_MINOR_VERSION = 4
+MIN_ENGINE_VERSION_MAJOR_VERSION = 0
+
+MAX_ENGINE_VERSION_MINOR_VERSION = 5
+MAX_ENGINE_VERSION_MAJOR_VERSION = 5
+
+
 def cli_logic():
     enable_vt100()
-    parser_description = 'Mod Build Tools/Automation scripts for Unreal Engine modding supports 4.0-5.5'
+    parser_description = f'Mod Build Tools/Automation scripts for Unreal Engine modding supports {MIN_ENGINE_VERSION_MAJOR_VERSION}.{MIN_ENGINE_VERSION_MINOR_VERSION}-{MAX_ENGINE_VERSION_MAJOR_VERSION}.{MAX_ENGINE_VERSION_MINOR_VERSION}'
     parser_program_name = 'unreal_auto_mod'
 
     parser = argparse.ArgumentParser(
@@ -30,6 +37,9 @@ def cli_logic():
 
     sub_parser = parser.add_subparsers(dest='command')
 
+    host_types = enums.get_enum_strings_from_enum(enums.UnrealHostTypes)
+
+    loading_phases = enums.get_enum_strings_from_enum(enums.LoadingPhases)
 
     build_parser = sub_parser.add_parser('build', help='Builds the uproject specified within the settings JSON', formatter_class=RichHelpFormatter)
     build_parser.add_argument('settings_json', help='Path to the settings JSON file')
@@ -113,14 +123,6 @@ def cli_logic():
     generate_file_list_parser.add_argument('directory', help='Path to the directory tree you want to generate the file list from')
     generate_file_list_parser.add_argument('file_list', help='Path to the output file, the file is json format')
 
-    # cleanup_game_parser = sub_parser.add_parser('cleanup_game', help='Cleans up the specified directory, deleting all files not specified within the provided, file list JSON', formatter_class=RichHelpFormatter)
-    # cleanup_game_parser.add_argument('file_list_json', help='Path to the file list JSON file, usually created from the generate_file_list_json command')
-    # cleanup_game_parser.add_argument('game_directory', help='Path to the game directory tree you want to cleanup')
-
-    # generate_file_list_json_parser = sub_parser.add_parser('generate_file_list_json', help='Generates a JSON file containing all of the files in the specified directory tree, for use with other commands', formatter_class=RichHelpFormatter)
-    # generate_file_list_json_parser.add_argument('directory', help='Path to the game directory tree you want to cleanup')
-    # generate_file_list_json_parser.add_argument('output_json', help='Path to the output JSON file')
-
     upload_changes_to_repo_parser = sub_parser.add_parser('upload_changes_to_repo', help='Uploads latest changes of the git project to the github repo and branch specified within the settings JSON', formatter_class=RichHelpFormatter)
     upload_changes_to_repo_parser.add_argument('settings_json', help='Path to the settings JSON file')
 
@@ -180,38 +182,6 @@ def cli_logic():
     generate_uproject_parser.add_argument('--plugins', help='', default={})
     generate_uproject_parser.add_argument('--ignore_safety_checks', help='wether or not to override the input checks for this command', default=False)
 
-    host_types = [
-        'Runtime',
-        'RuntimeNoCommandlet',
-        'RuntimeAndProgram',
-        'CookedOnly',
-        'UncookedOnly',
-        'Developer',
-        'DeveloperTool',
-	    'Editor',
-	    'EditorNoCommandlet',
-	    'EditorAndProgram',
-	    'Program',
-	    'ServerOnly',
-	    'ClientOnly',
-	    'ClientOnlyNoCommandlet',
-	    'Max'
-    ]
-
-    loading_phases = [
-	    'EarliestPossible',
-	    'PostConfigInit',
-	    'PostSplashScreen',
-	    'PreEarlyLoadingScreen',
-	    'PreLoadingScreen',
-	    'PreDefault',
-	    'Default',
-	    'PostDefault',
-	    'PostEngineInit',
-	    'None',
-	    'Max'
-    ]
-
     add_module_to_descriptor_parser = sub_parser.add_parser('add_module_to_descriptor', help='adds the specified module entry to the descriptor file, overwriting if it already exists', formatter_class=RichHelpFormatter)
     add_module_to_descriptor_parser.add_argument('descriptor_file', help='Path to the descriptor file to add the module to')
     add_module_to_descriptor_parser.add_argument('module_name', help='Name of the module to add')
@@ -252,7 +222,7 @@ def cli_logic():
     generate_uplugin_parser.add_argument('--version_name', default='', type=str)
 
     remove_uplugins_parser = sub_parser.add_parser('remove_uplugins', help='Deletes all files in for the specified uplugin paths', formatter_class=RichHelpFormatter)
-    remove_uplugins_parser.add_argument('uplugin_paths', help='Path to the one or more uplugins to delete', default=[], nargs='+')   
+    remove_uplugins_parser.add_argument('uplugin_paths', help='Path to the one or more uplugins to delete', default=[], nargs='+')
 
     resave_packages_and_fix_up_redirectors_parser = sub_parser.add_parser('resave_packages_and_fix_up_redirectors', help='Resaves packages and fixes up redirectors for the project', formatter_class=RichHelpFormatter)
     resave_packages_and_fix_up_redirectors_parser.add_argument('settings_json', help='Path to the settings JSON file')
@@ -379,19 +349,19 @@ def cli_logic():
 
         if args.command == 'full_run':
             command_function_map[args.command](
-                args.settings_json, 
-                args.mod_names, 
-                args.toggle_engine, 
-                args.base_files_directory, 
+                args.settings_json,
+                args.mod_names,
+                args.toggle_engine,
+                args.base_files_directory,
                 args.output_directory,
                 args.use_symlinks
             )
-            
+
         if args.command == 'full_run_all':
             command_function_map[args.command](
-                args.settings_json, 
-                args.toggle_engine, 
-                args.base_files_directory, 
+                args.settings_json,
+                args.toggle_engine,
+                args.base_files_directory,
                 args.output_directory,
                 args.use_symlinks
             )
@@ -411,13 +381,7 @@ def cli_logic():
         elif args.command == 'test_mods':
             command_function_map[args.command](args.settings_json, args.mod_names, args.toggle_engine, args.use_symlinks)
 
-        elif args.command == 'test_mods_all':
-            command_function_map[args.command](args.settings_json, args.toggle_engine, args.use_symlinks)
-
-        elif args.command == 'generate_mods':
-            command_function_map[args.command](args.settings_json, args.toggle_engine, args.use_symlinks)
-
-        elif args.command == 'package':
+        elif args.command == 'test_mods_all' or args.command == 'generate_mods' or args.command == 'package':
             command_function_map[args.command](args.settings_json, args.toggle_engine, args.use_symlinks)
 
         elif args.command == 'add_mod':

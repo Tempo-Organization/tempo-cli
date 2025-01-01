@@ -3,8 +3,6 @@ import textwrap
 from datetime import datetime
 from shutil import get_terminal_size
 
-
-
 from unreal_auto_mod.console import console
 from unreal_auto_mod.log_info import LOG_INFO
 
@@ -49,7 +47,7 @@ def rename_latest_log(log_dir):
         except PermissionError as e:
             log_message(f"Error renaming log file: {e}")
             return
-        
+
 
 def log_message(message: str):
     color_options = LOG_INFO.get('theme_colors', {})
@@ -80,7 +78,7 @@ def log_message(message: str):
         try:
             with open(log_path, 'w') as log_file:
                 log_file.write("")
-        except IOError as e:
+        except OSError as e:
             error_color = LOG_INFO.get('error_color', (255, 0, 0))
             error_color = f"rgb({error_color[0]},{error_color[1]},{error_color[2]})"
             console.print(f"Failed to create log file: {e}", style=f'{error_color} on {default_background_color}')
@@ -89,7 +87,7 @@ def log_message(message: str):
     try:
         with open(log_path, 'a') as log_file:
             log_file.write(f"{message}\n")
-    except IOError as e:
+    except OSError as e:
         error_color = LOG_INFO.get('error_color', (255, 0, 0))
         error_color = f"rgb({error_color[0]},{error_color[1]},{error_color[2]})"
         console.print(f"Failed to write to log file: {e}", style=f'{error_color} on {default_background_color}')

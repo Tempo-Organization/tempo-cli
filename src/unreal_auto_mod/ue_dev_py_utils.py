@@ -11,7 +11,7 @@ def get_game_process_name(input_game_exe_path: str) -> str:
 
 def get_unreal_engine_version(engine_path: str) -> str:
     version_file_path = f'{engine_path}/Engine/Build/Build.version'
-    gen_py_utils.check_file_exists(version_file_path)
+    gen_py_utils.check_path_exists(version_file_path)
     with open(version_file_path) as f:
         version_info = json.load(f)
         unreal_engine_major_version = version_info.get('MajorVersion', 0)
@@ -56,25 +56,26 @@ def get_game_pak_folder_archives(uproject_file_path: str, game_dir: str) -> list
 
 
 def get_win_dir_type(unreal_engine_dir: str) -> PackagingDirType:
-    if get_unreal_engine_version(unreal_engine_dir).startswith('5'):
+    if is_game_ue5(unreal_engine_dir):
         return PackagingDirType.WINDOWS
     else:
         return PackagingDirType.WINDOWS_NO_EDITOR
+
 
 def get_editor_cmd_path(unreal_engine_dir: str) -> str:
     if get_win_dir_type(unreal_engine_dir) == PackagingDirType.WINDOWS_NO_EDITOR:
         engine_path_suffix = 'UE4Editor-Cmd.exe'
     else:
         engine_path_suffix = 'UnrealEditor-Cmd.exe'
-    return f'{unreal_engine_dir}/Engine/Binaries/Win64/{engine_path_suffix}'
+    return f'"{unreal_engine_dir}/Engine/Binaries/Win64/{engine_path_suffix}"'
 
 
 def is_game_ue5(unreal_engine_dir: str) -> bool:
-    return get_win_dir_type(unreal_engine_dir) == PackagingDirType.WINDOWS
+    return get_unreal_engine_version(unreal_engine_dir).startswith('5')
 
 
 def is_game_ue4(unreal_engine_dir: str) -> bool:
-    return get_win_dir_type(unreal_engine_dir) == PackagingDirType.WINDOWS_NO_EDITOR
+    return get_unreal_engine_version(unreal_engine_dir).startswith('4')
 
 
 def get_unreal_editor_exe_path(unreal_engine_dir: str) -> str:

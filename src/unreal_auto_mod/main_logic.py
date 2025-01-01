@@ -1,8 +1,8 @@
+import json
 import os
 import sys
 
 import psutil
-import json
 
 import unreal_auto_mod.gen_py_utils as gen_utils
 from unreal_auto_mod import hook_states, log, mods
@@ -314,7 +314,7 @@ def install_fmodel(output_directory: str, run_after_install: bool):
 def get_solo_build_project_command() -> str:
     from unreal_auto_mod import utilities
     command = (
-        f'Engine\\Build\\BatchFiles\\RunUAT.bat {utilities.get_unreal_engine_building_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_building_main_command()} '
         f'-project="{utilities.get_uproject_file()}" '
     )
     for arg in utilities.get_engine_building_args():
@@ -466,7 +466,7 @@ def add_mod(
             "packing_type": packing_type,
             "compression_type": compression_type,
             "is_enabled": is_enabled,
-            "manually_specified_assets": {
+            "file_includes": {
                 "asset_paths": asset_paths,
                 "tree_paths": tree_paths
             }
@@ -529,7 +529,7 @@ def remove_mods(settings_json: str, mod_names: list):
 def get_solo_cook_project_command() -> str:
     from unreal_auto_mod import ue_dev_py_utils, utilities
     command = (
-        f'Engine\\Build\\BatchFiles\\RunUAT.bat {utilities.get_unreal_engine_cooking_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_cooking_main_command()} '
         f'-project="{utilities.get_uproject_file()}" '
     )
     if not ue_dev_py_utils.has_build_target_been_built(utilities.get_uproject_file()):
@@ -555,7 +555,7 @@ def cook(settings_json: str, toggle_engine: bool):
 def get_solo_package_command() -> str:
     from unreal_auto_mod import ue_dev_py_utils, utilities
     command = (
-        f'Engine\\Build\\BatchFiles\\RunUAT.bat {utilities.get_unreal_engine_packaging_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_packaging_main_command()} '
         f'-project="{utilities.get_uproject_file()}"'
     )
     # technically it shouldn't auto build itself, since this is not a auto run sequence but used in an explicit command
@@ -574,10 +574,10 @@ def get_solo_package_command() -> str:
 
 def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
     load_settings(settings_json)
+    from unreal_auto_mod import engine
     from unreal_auto_mod.main_logic import mod_names
     from unreal_auto_mod.packing import generate_mods
     from unreal_auto_mod.utilities import get_mods_info_from_json
-    from unreal_auto_mod import engine
 
     if toggle_engine:
         engine.toggle_engine_off()
@@ -603,6 +603,7 @@ def resave_packages_and_fix_up_redirectors(settings_json: str):
 
 def cleanup_full(settings_json: str):
     import shutil
+
     from unreal_auto_mod import utilities
     from unreal_auto_mod.enums import ExecutionMode
     from unreal_auto_mod.utilities import get_cleanup_repo_path, run_app
@@ -623,7 +624,7 @@ def cleanup_full(settings_json: str):
     if os.path.isdir(dist_dir):
         shutil.rmtree(dist_dir)
     log_message(f'Cleaned up dist dir at: "{dist_dir}"')
-    
+
     working_dir = utilities.get_working_dir()
     if os.path.isdir(working_dir):
         shutil.rmtree(working_dir)
@@ -811,7 +812,7 @@ def get_mod_files_asset_paths_for_loose_mods(mod_name: str, base_files_directory
     file_dict = {}
     cooked_uproject_dir = ue_dev_py_utils.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
     mod_info = packing.get_mod_pak_entry(mod_name)
-    for asset in mod_info['manually_specified_assets']['asset_paths']:
+    for asset in mod_info['file_includes']['asset_paths']:
         base_path = f'{cooked_uproject_dir}/{asset}'
         for extension in gen_py_utils.general_utils.get_file_extensions(base_path):
             before_path = f'{base_path}{extension}'
@@ -825,7 +826,7 @@ def get_mod_files_tree_paths_for_loose_mods(mod_name: str, base_files_directory:
     file_dict = {}
     cooked_uproject_dir = ue_dev_py_utils.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
     mod_info = packing.get_mod_pak_entry(mod_name)
-    for tree in mod_info['manually_specified_assets']['tree_paths']:
+    for tree in mod_info['file_includes']['tree_paths']:
         tree_path = f'{cooked_uproject_dir}/{tree}'
         for entry in gen_py_utils.get_files_in_tree(tree_path):
             if os.path.isfile(entry):
@@ -1009,7 +1010,7 @@ def add_module_to_descriptor(descriptor_file: str, module_name: str, host_type: 
         raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
 
     try:
-        with open(descriptor_file, 'r') as file:
+        with open(descriptor_file) as file:
             uproject_data = json.load(file)
     except json.JSONDecodeError as e:
         raise ValueError(f"Failed to parse JSON from '{descriptor_file}': {e}")
@@ -1031,8 +1032,8 @@ def add_module_to_descriptor(descriptor_file: str, module_name: str, host_type: 
     try:
         with open(descriptor_file, 'w') as file:
             file.write(updated_data)
-    except IOError as e:
-        raise IOError(f"Failed to write to '{descriptor_file}': {e}")
+    except OSError as e:
+        raise OSError(f"Failed to write to '{descriptor_file}': {e}")
 
 
 def add_plugin_to_descriptor(descriptor_file: str, plugin_name: str, is_enabled: bool):
@@ -1040,7 +1041,7 @@ def add_plugin_to_descriptor(descriptor_file: str, plugin_name: str, is_enabled:
         raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
 
     try:
-        with open(descriptor_file, 'r') as file:
+        with open(descriptor_file) as file:
             uproject_data = json.load(file)
     except json.JSONDecodeError as e:
         raise ValueError(f"Failed to parse JSON from '{descriptor_file}': {e}")
@@ -1061,15 +1062,15 @@ def add_plugin_to_descriptor(descriptor_file: str, plugin_name: str, is_enabled:
     try:
         with open(descriptor_file, 'w') as file:
             file.write(updated_data)
-    except IOError as e:
-        raise IOError(f"Failed to write to '{descriptor_file}': {e}")
+    except OSError as e:
+        raise OSError(f"Failed to write to '{descriptor_file}': {e}")
 
 
 def remove_modules_from_descriptor(descriptor_file: str, module_names: list):
     if not os.path.isfile(descriptor_file):
         raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
 
-    with open(descriptor_file, 'r') as file:
+    with open(descriptor_file) as file:
         uproject_data = json.load(file)
 
     if "Modules" in uproject_data:
@@ -1088,7 +1089,7 @@ def remove_plugins_from_descriptor(descriptor_file: str, plugin_names: list):
     if not os.path.isfile(descriptor_file):
         raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
 
-    with open(descriptor_file, 'r') as file:
+    with open(descriptor_file) as file:
         uproject_data = json.load(file)
 
     if "Plugins" in uproject_data:
@@ -1155,6 +1156,8 @@ def generate_uplugin(
     plugin_data_string = json.dumps(plugin_data, indent=4)
 
     plugin_file_path = os.path.join(plugins_directory, plugin_name, f"{plugin_name}.uplugin")
+
+    os.makedirs(os.path.dirname(plugin_file_path), exist_ok=True)
 
     with open(plugin_file_path, 'w') as plugin_file:
         plugin_file.write(plugin_data_string)
@@ -1239,5 +1242,5 @@ def close_programs(exe_names: list):
                 pass
         if not found:
             results[exe_name] = "Not Found"
-    
+
     return results

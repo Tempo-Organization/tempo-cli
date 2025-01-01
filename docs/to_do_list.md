@@ -2,12 +2,24 @@
 
 
 ## Current To Do:
-- [ ] non engine iostore
+
+full run
+full run all
+test mods
+test mods all
+generate mods
+generate mods all
+
+- [ ] quoted path check for run app or something
 - [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
+- [ ] non engine iostore, file_extemsions for iostore
 - [ ] clean up hook states and add any missing states
- 
+- [ ] checkover symlink logic
+- [ ] tests
+
 
 ## To Do:
+- [ ] collections parsed for file includes
 - [ ] compile all blueprints commandlet usage
 - [ ] workspace, env vars, similar
 - [ ] commands that can be used for string formatting
@@ -57,6 +69,13 @@
 - [ ] remove from text file
 - [ ] git stuff
 - [ ] gen engine stuff
+- [ ] open game dir
+- [ ] open game paks dir
+- [ ] open mod releases dir
+- [ ] open dist dir
+- [ ] openm persistent mods dir
+- [ ] open unreal auto mod dir
+- [ ] open uproject dir
 
 
 ## Maybes:

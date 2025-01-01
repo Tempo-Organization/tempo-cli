@@ -1,11 +1,12 @@
-import os
 import glob
-import zipfile
 import hashlib
+import os
+import zipfile
 
 import psutil
 import requests
 from requests.exceptions import HTTPError, RequestException
+
 from unreal_auto_mod.log import log_message
 
 
@@ -33,7 +34,7 @@ def download_file(url: str, download_path: str):
         log_message(f"HTTP error occurred while downloading {url}: {http_err}")
     except RequestException as req_err:
         log_message(f"Request error occurred while downloading {url}: {req_err}")
-    except IOError as io_err:
+    except OSError as io_err:
         log_message(f"File I/O error occurred while saving to {download_path}: {io_err}")
     except Exception as err:
         log_message(f"An unexpected error occurred: {err}")
@@ -65,18 +66,18 @@ def check_directory_exists(dir_path: str) -> bool:
         raise NotADirectoryError(f'Check: "{dir_path}" directory not found.')
 
 
+def check_path_exists(path: str) -> bool:
+    if os.path.exists(path):
+        return True
+    else:
+        raise FileNotFoundError(f'Check: "{path}" path is not a directory or file.')
+
+
 def check_file_exists(file_path: str) -> bool:
-    if os.path.exists(file_path):
+    if os.path.isfile(file_path):
         return True
     else:
         raise FileNotFoundError(f'Check: "{file_path}" file not found.')
-
-
-# def check_file_exists(file_path: str) -> bool:
-#     if os.path.isfile(file_path):
-#         return True
-#     else:
-#         raise FileNotFoundError(f'Check: "{file_path}" file not found.')
 
 
 def get_process_name(exe_path: str) -> str:

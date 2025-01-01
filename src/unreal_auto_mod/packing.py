@@ -3,9 +3,8 @@ import shutil
 
 from rich.progress import Progress
 
+from unreal_auto_mod import enums, hook_states, log, main_logic, repak_utilities, ue_dev_py_utils, unreal_pak, utilities
 from unreal_auto_mod import gen_py_utils as general_utils
-from unreal_auto_mod import hook_states, main_logic, repak_utilities, ue_dev_py_utils, unreal_pak, utilities
-from unreal_auto_mod import log as log
 from unreal_auto_mod.enums import CompressionType, HookStateType, PackingType, get_enum_from_val
 
 install_queue_types = []
@@ -56,9 +55,8 @@ def get_is_mod_installed(mod_name: str) -> bool:
 
 
 def get_engine_pak_command() -> str:
-    from unreal_auto_mod.utilities import get_unreal_engine_packaging_main_command
     command = (
-        f'Engine\\Build\\BatchFiles\\RunUAT.bat {get_unreal_engine_packaging_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_packaging_main_command()} '
         f'-project="{utilities.get_uproject_file()}"'
     )
     if not ue_dev_py_utils.has_build_target_been_built(utilities.get_uproject_file()):
@@ -75,9 +73,8 @@ def get_engine_pak_command() -> str:
 
 
 def get_cook_project_command() -> str:
-    from unreal_auto_mod.utilities import get_unreal_engine_cooking_main_command
     command = (
-        f'Engine\\Build\\BatchFiles\\RunUAT.bat {get_unreal_engine_cooking_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_cooking_main_command()} '
         f'-project="{utilities.get_uproject_file()}" '
         f'-skipstage '
         f'-nodebuginfo'
@@ -151,6 +148,8 @@ def uninstall_loose_mod(mod_name: str):
         file_to_remove = mod_files[key]
         if os.path.isfile(file_to_remove):
             os.remove(file_to_remove)
+        if os.path.islink(file_to_remove):
+            os.unlink(file_to_remove)
 
     for folder in set(os.path.dirname(file) for file in mod_files.values()):
         if os.path.exists(folder) and not os.listdir(folder):
@@ -162,9 +161,18 @@ def uninstall_pak_mod(mod_name: str):
     if ue_dev_py_utils.is_game_ue5(utilities.get_unreal_engine_dir()):
         extensions.extend(['ucas', 'utoc'])
     for extension in extensions:
-        file_path = os.path.join(utilities.custom_get_game_paks_dir(), utilities.get_pak_dir_structure(mod_name), f'{mod_name}.{extension}')
+        base_path = os.path.join(utilities.custom_get_game_paks_dir(), utilities.get_pak_dir_structure(mod_name))
+        file_path = os.path.join(base_path, f'{mod_name}.{extension}')
+        sig_path = os.path.join(base_path, f'{mod_name}.sig')
         if os.path.isfile(file_path):
             os.remove(file_path)
+        if os.path.islink(file_path):
+            os.unlink(file_path)
+        if os.path.isfile(sig_path):
+            os.remove(sig_path)
+        if os.path.islink(sig_path):
+            os.unlink(sig_path)
+
 
 
 def uninstall_mod(packing_type: PackingType, mod_name: str):
@@ -172,6 +180,18 @@ def uninstall_mod(packing_type: PackingType, mod_name: str):
         uninstall_loose_mod(mod_name)
     elif packing_type in list(PackingType):
         uninstall_pak_mod(mod_name)
+
+
+def install_mod_sig(mod_name: str):
+    sig_method_type = enums.get_enum_from_val(enums.SigMethodType, utilities.get_mods_info_dict(mod_name).get('sig_method', 'none'))
+    if sig_method_type == enums.SigMethodType.COPY or sig_method_type == enums.SigMethodType.EMPTY or (sig_method_type == enums.SigMethodType.GENERATE or sig_method_type == enums.SigMethodType.NONE):
+        print('test')
+    else:
+        log.log_message(f'Error: You have provided an invalid sig method type in your mod entry for the {mod_name} mod.')
+        log.log_message('Error: Valid options are:')
+        for enum in enums.get_enum_strings_from_enum(enums.SigMethodType):
+            log.log_message(f'Error: {enums.get_enum_from_val(enums.SigMethodType), enum}')
+        raise RuntimeError
 
 
 def install_loose_mod(mod_name: str, use_symlinks: bool):
@@ -194,10 +214,8 @@ def install_loose_mod(mod_name: str, use_symlinks: bool):
 
 
 def install_engine_mod(mod_name: str, use_symlinks: bool):
-    print(use_symlinks)
     mod_files = []
-    info = utilities.get_mods_info_dict(mod_name)
-    pak_chunk_num = info['pak_chunk_num']
+    pak_chunk_num = utilities.get_mods_info_dict(mod_name)['pak_chunk_num']
     uproject_file = utilities.get_uproject_file()
     uproject_dir = ue_dev_py_utils.get_uproject_dir(uproject_file)
     win_dir_str = ue_dev_py_utils.get_win_dir_str(utilities.get_unreal_engine_dir())
@@ -207,11 +225,10 @@ def install_engine_mod(mod_name: str, use_symlinks: bool):
     for file in mod_files:
         for suffix in ue_dev_py_utils.get_game_pak_folder_archives(uproject_file, utilities.custom_get_game_dir()):
             dir_engine_mod = f'{utilities.custom_get_game_dir()}/Content/Paks/{utilities.get_pak_dir_structure(mod_name)}'
-            if not os.path.isdir(dir_engine_mod):
-                os.makedirs(dir_engine_mod)
+            os.makedirs(dir_engine_mod, exist_ok=True)
             before_file = f'{file}{suffix}'
             if not os.path.isfile(before_file):
-                error_message = f'Error: The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.'
+                error_message = 'Error: The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.'
                 log.log_message(error_message)
                 raise FileNotFoundError('The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.')
             after_file = f'{dir_engine_mod}/{mod_name}.{suffix}'
@@ -235,7 +252,6 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
     before_symlinked_dir = f'{utilities.get_working_dir()}/{mod_name}'
 
     if not os.path.isdir(before_symlinked_dir) or not os.listdir(before_symlinked_dir):
-        from unreal_auto_mod import log as log
         log.log_message(f'Error: {before_symlinked_dir}')
         log.log_message('Error: does not exist or is empty, indicating a packaging and/or config issue')
         raise FileNotFoundError
@@ -279,37 +295,56 @@ def install_repak_mod(mod_name: str, use_symlinks: bool):
     make_pak_repak(mod_name, use_symlinks)
 
 
-def install_mod(packing_type: PackingType, mod_name: str, compression_type: CompressionType, use_symlinks: bool):
+def install_mod(
+        packing_type: PackingType,
+        mod_name: str,
+        compression_type: CompressionType,
+        use_symlinks: bool
+    ):
     if packing_type == PackingType.LOOSE:
         install_loose_mod(mod_name, use_symlinks)
-    if packing_type == PackingType.ENGINE:
+    elif packing_type == PackingType.ENGINE:
         install_engine_mod(mod_name, use_symlinks)
-    if packing_type == PackingType.REPAK:
+    elif packing_type == PackingType.REPAK:
         install_repak_mod(mod_name, use_symlinks)
-    if packing_type == PackingType.UNREAL_PAK:
+    elif packing_type == PackingType.UNREAL_PAK:
         unreal_pak.install_unreal_pak_mod(mod_name, compression_type, use_symlinks)
+    else:
+        log.log_message(f'Error: You have provided an invalid packing_type for your "{mod_name}" mod entry in your settings json')
+        log.log_message(f'Error: You provided "{utilities.get_mods_info_dict(mod_name).get('packing_type', 'none')}".')
+        log.log_message('Error: Valid packing type options are:')
+        for entry in PackingType:
+            log.log_message(f'Error: "{entry.value}"')
+        raise RuntimeError('Invalid packing type, or no packing type, provided for mod entry')
 
 
 def package_project_iostore():
-    main_exec = f'{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.bat'
+    if ue_dev_py_utils.is_game_ue4(utilities.get_unreal_engine_dir()):
+        package_project_iostore_ue4()
+    else:
+        package_project_iostore_ue5()
+
+
+def package_project_iostore_ue4():
+    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.bat"'
     uproject_path = utilities.get_uproject_file()
     editor_cmd_exe_path = ue_dev_py_utils.get_editor_cmd_path(utilities.get_unreal_engine_dir())
     archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
     target_platform = 'Win64'
     client_config = 'Development'
     args = [
-        f'-ScriptsForProject={uproject_path}',
+        f'-ScriptsForProject="{uproject_path}"',
         'BuildCookRun',
         '-nocompileeditor',
         '-installed',
         '-nop4',
-        f'-project={uproject_path}',
+        f'-project="{uproject_path}"',
         '-cook',
         '-stage',
         '-archive',
-        f'-archivedirectory={archive_directory}',
+        f'-archivedirectory="{archive_directory}"',
         '-package',
-        f'-ue4exe={editor_cmd_exe_path}',
+        f'-ue4exe="{editor_cmd_exe_path}"',
         '-ddc=InstalledDerivedDataBackendGraph',
         '-iostore',
         '-pak',
@@ -318,7 +353,41 @@ def package_project_iostore():
         '-nodebuginfo',
         '-manifests',
         f'-targetplatform={target_platform}',
-        f'-clientconfig={client_config}',
+        f'-clientconfig="{client_config}"',
+        '-utf8output'
+    ]
+    utilities.run_app(exe_path=main_exec, args=args, working_dir=utilities.get_unreal_engine_dir())
+
+
+def package_project_iostore_ue5():
+    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.bat"'
+    uproject_path = utilities.get_uproject_file()
+    editor_cmd_exe_path = ue_dev_py_utils.get_editor_cmd_path(utilities.get_unreal_engine_dir())
+    archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
+    target_platform = 'Win64'
+    client_config = 'Development'
+    args = [
+        f'-ScriptsForProject="{uproject_path}"',
+        'BuildCookRun',
+        '-nocompileeditor',
+        '-installed',
+        '-nop4',
+        f'-project="{uproject_path}"',
+        '-cook',
+        '-stage',
+        '-archive',
+        f'-archivedirectory="{archive_directory}"',
+        '-package',
+        f'-unrealexe="{editor_cmd_exe_path}"',
+        '-ddc=InstalledDerivedDataBackendGraph',
+        '-iostore',
+        '-pak',
+        '-iostore',
+        '-prereqs',
+        '-nodebuginfo',
+        '-manifests',
+        f'-targetplatform={target_platform}',
+        f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
     utilities.run_app(exe_path=main_exec, args=args, working_dir=utilities.get_unreal_engine_dir())
@@ -343,7 +412,7 @@ def cooking():
         package_uproject_non_iostore()
     else:
         cook_uproject()
-        
+
     hook_states.set_hook_state(HookStateType.POST_COOKING)
 
 
@@ -351,7 +420,7 @@ def get_mod_files_asset_paths_for_loose_mods(mod_name: str) -> dict:
     file_dict = {}
     cooked_uproject_dir = ue_dev_py_utils.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
-    for asset in mod_info['manually_specified_assets']['asset_paths']:
+    for asset in mod_info['file_includes']['asset_paths']:
         base_path = f'{cooked_uproject_dir}/{asset}'
         for extension in general_utils.get_file_extensions(base_path):
             before_path = f'{base_path}{extension}'
@@ -364,7 +433,7 @@ def get_mod_files_tree_paths_for_loose_mods(mod_name: str) -> dict:
     file_dict = {}
     cooked_uproject_dir = ue_dev_py_utils.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
-    for tree in mod_info['manually_specified_assets']['tree_paths']:
+    for tree in mod_info['file_includes']['tree_paths']:
         tree_path = f'{cooked_uproject_dir}/{tree}'
         for entry in general_utils.get_files_in_tree(tree_path):
             if os.path.isfile(entry):
@@ -425,8 +494,8 @@ def get_mod_file_paths_for_manually_made_pak_mods_asset_paths(mod_name: str) -> 
     file_dict = {}
     cooked_uproject_dir = ue_dev_py_utils.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
-    if mod_info['manually_specified_assets']['asset_paths'] is not None:
-        for asset in mod_info['manually_specified_assets']['asset_paths']:
+    if mod_info['file_includes']['asset_paths'] is not None:
+        for asset in mod_info['file_includes']['asset_paths']:
             base_path = f'{cooked_uproject_dir}/{asset}'
             for extension in general_utils.get_file_extensions(base_path):
                 before_path = f'{base_path}{extension}'
@@ -439,8 +508,8 @@ def get_mod_file_paths_for_manually_made_pak_mods_tree_paths(mod_name: str) -> d
     file_dict = {}
     cooked_uproject_dir = ue_dev_py_utils.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
-    if mod_info['manually_specified_assets']['tree_paths'] is not None:
-        for tree in mod_info['manually_specified_assets']['tree_paths']:
+    if mod_info['file_includes']['tree_paths'] is not None:
+        for tree in mod_info['file_includes']['tree_paths']:
             tree_path = f'{cooked_uproject_dir}/{tree}'
             for entry in general_utils.get_files_in_tree(tree_path):
                 if os.path.isfile(entry):

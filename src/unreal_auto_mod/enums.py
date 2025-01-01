@@ -127,10 +127,78 @@ class PackagingDirType(Enum):
     WINDOWS_NO_EDITOR = 'windows_no_editor'
 
 
+class UnrealHostTypes(Enum):
+    """
+    enum for the unreal host types, for descriptor files
+    """
+    RUNTIME = 'runtime'
+    RUNTIME_NO_COMMANDLET = 'runtime_no_commandlet'
+    RUNTIME_AND_PROGRAM = 'runtime_and_program'
+    COOKED_ONLY = 'cooked_only'
+    UNCOOKED_ONLY = 'uncooked_only'
+    DEVELOPER = 'developer'
+    DEVELOPER_TOOL = 'developer_tool'
+    EDITOR = 'editor'
+    EDITOR_NO_COMMANDLET = 'editor_no_commandlet'
+    EDITOR_AND_PROGRAM = 'editor_and_program'
+    PROGRAM = 'program'
+    SERVER_ONLY = 'server_only'
+    CLIENT_ONLY = 'client_only'
+    CLIENT_ONLY_NO_COMMANDLET = 'client_only_no_commandlet'
+    MAX = 'max'
+
+
+class LoadingPhases(Enum):
+    """
+    Enum for the loading phases, for descriptor files
+    """
+    EARLIEST_POSSIBLE = 'earliest_possible'
+    POST_CONFIG_INIT = 'post_config_init'
+    POST_SPLASH_SCREEN = 'post_splash_screen'
+    PRE_EARLY_LOADING_SCREEN = 'pre_early_loading_screen'
+    PRE_LOADING_SCREEN = 'pre_loading_screen'
+    PRE_DEFAULT = 'pre_default'
+    DEFAULT = 'default'
+    POST_DEFAULT = 'post_default'
+    POST_ENGINE_INIT = 'post_engine_init'
+    NONE = 'none'
+    MAX = 'max'
+
+
+class UnrealIostoreFileExtensions(Enum):
+    """
+    Enum for the file extensions for files that should end up in iostore utoc and ucas files
+    If creating an iostore mod all files with extensions not within this list's corresponding string values 
+    will be assumed to be pak assets
+    """
+    UMAP = 'umap'
+    UEXP = 'uexp'
+    UPTNL = 'uptnl'
+    UBULK = 'ubulk'
+    UASSET = 'uasset'
+    USHADERBYTECODE = 'ushaderbytecode'
+
+
+class SigMethodType(Enum):
+    """
+    Enum for the way to prpvide a sig when creating a mod release
+    """
+    NONE = 'none' # doesn't generate one
+    COPY = 'copy' # copies and renames an existing one from the game install
+    EMPTY = 'empty' # creates an empty file named and placed where the actual sig should be
+    GENERATE = 'generate' # uses the engine to create an actual sig file with provided information,
+                          # providing information part wip, think crypto json
+
+
 def get_enum_from_val(enum: Enum, value: str) -> Enum:
-    """
-    """
     for member in enum:
         if member.value == value:
             return member
     return None
+
+
+def get_enum_strings_from_enum(enum: Enum) -> list[str]:
+    strings = []
+    for entry in enum:
+        strings.append(get_enum_from_val(enum=Enum, value=entry))
+    return strings

@@ -79,7 +79,7 @@ After configuring these settings, you can proceed to configure the mod list.
     "packing_type": "repak",
     "compression_type": "Zlib",
     "is_enabled": true,
-    "manually_specified_assets": {
+    "file_includes": {
       "asset_paths": [],
       "tree_paths": []
     }
@@ -94,7 +94,7 @@ After configuring these settings, you can proceed to configure the mod list.
     "packing_type": "repak",
     "compression_type": "Zlib",
     "is_enabled": true,
-    "manually_specified_assets": {
+    "file_includes": {
       "asset_paths": [],
       "tree_paths": []
     }
@@ -129,7 +129,7 @@ After configuring these settings, you can proceed to configure the mod list.
 
 - **`is_enabled`**: Set to `false` to disable packaging of the mod and uninstall it if it exists in the specified mod directory.
 
-- **`manually_specified_assets`**: Lists additional assets to include:
+- **`file_includes`**: Lists additional assets to include:
   - **`asset_paths`**: Direct paths to specific files (e.g., `test.uasset`, `test.uexp`).
   - **`tree_paths`**: Include all files in subfolders within specified directories.
 
