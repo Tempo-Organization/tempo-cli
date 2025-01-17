@@ -3,6 +3,8 @@
 
 ## Current To Do:
 
+make using symlinks false the default behaviour, ue4ss cannot load logic mods, some games can't load symlinked loose files
+
 full run
 full run all
 test mods
