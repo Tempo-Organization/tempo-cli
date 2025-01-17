@@ -535,7 +535,6 @@ def run_app(
 
     elif exec_mode == ExecutionMode.ASYNC:
         command = exe_path
-        command = f'"{command}"'
         for arg in args:
             command = f'{command} {arg}'
         log.log_message(f'Command: {command} started with the {exec_mode} enum')
