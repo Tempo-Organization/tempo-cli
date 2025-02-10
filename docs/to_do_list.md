@@ -2,6 +2,11 @@
 
 
 ## Current To Do:
+expanded tokens using f strings
+toml not json
+trogon tui
+localization
+use click for cli
 
 make using symlinks false the default behaviour, ue4ss cannot load logic mods, some games can't load symlinked loose files
 
