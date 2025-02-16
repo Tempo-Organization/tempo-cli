@@ -1,13 +1,21 @@
-import glob
-import hashlib
 import os
+import sys
+import glob
 import zipfile
+import hashlib
+from pathlib import Path
 
 import psutil
 import requests
 from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod.log import log_message
+
+
+if getattr(sys, 'frozen', False):
+    SCRIPT_DIR = Path(sys.executable).parent
+else:
+    SCRIPT_DIR = Path(__file__).resolve().parent
 
 
 def unzip_zip(zip_path: str, output_location: str):
@@ -80,21 +88,6 @@ def check_file_exists(file_path: str) -> bool:
         raise FileNotFoundError(f'Check: "{file_path}" file not found.')
 
 
-def get_process_name(exe_path: str) -> str:
-    filename = os.path.basename(exe_path)
-    return filename
-
-
-def is_process_running(process_name: str) -> bool:
-    for proc in psutil.process_iter():
-        try:
-            if process_name.lower() in proc.name().lower():
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-    return False
-
-
 def kill_process(process_name: str):
     os.system(f'taskkill /f /im "{process_name}"')
 
@@ -155,15 +148,3 @@ def get_file_extensions_two(directory_with_base_name: str) -> list:
                 if ext:
                     extensions.add(ext)
     return list(extensions)
-
-
-def get_matching_suffix(path_one: str, path_two: str) -> str:
-    common_suffix = []
-
-    for char_one, char_two in zip(path_one[::-1], path_two[::-1]):
-        if char_one == char_two:
-            common_suffix.append(char_one)
-        else:
-            break
-
-    return ''.join(common_suffix)[::-1]

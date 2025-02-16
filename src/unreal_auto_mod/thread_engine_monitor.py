@@ -1,11 +1,8 @@
-import threading
 import time
+import threading
 
-from unreal_auto_mod import gen_py_utils as general_utils
-from unreal_auto_mod import hook_states, utilities, win_man
-from unreal_auto_mod import log as log
-from unreal_auto_mod import ue_dev_py_utils as unreal_dev_utils
-from unreal_auto_mod.enums import HookStateType
+from unreal_auto_mod import hook_states, unreal_engine, utilities, window_management, log, processes
+from unreal_auto_mod.data_structures import HookStateType
 
 init_done = False
 
@@ -24,6 +21,13 @@ def engine_monitor_thread_runner(tick_rate: float = 0.01):
         engine_monitor_thread_logic()
 
 
+@hook_states.hook_state_decorator(HookStateType.POST_ENGINE_OPEN)
+def found_engine_window():
+    global found_window
+    log.log_message('Window: Engine Window Found')
+    found_window = True
+
+
 def engine_monitor_thread_logic():
     global found_process
     global found_window
@@ -36,22 +40,19 @@ def engine_monitor_thread_logic():
         window_closed = False
         init_done = True
 
-    engine_window_name = unreal_dev_utils.get_engine_window_title(utilities.get_uproject_file())
+    engine_window_name = unreal_engine.get_engine_window_title(utilities.get_uproject_file())
     if not found_process:
-        engine_process_name = unreal_dev_utils.get_engine_process_name(utilities.get_unreal_engine_dir())
-        if general_utils.is_process_running(engine_process_name):
+        engine_process_name = unreal_engine.get_engine_process_name(utilities.get_unreal_engine_dir())
+        if processes.is_process_running(engine_process_name):
             log.log_message('Process: Found Engine Process')
             found_process = True
     elif not found_window:
-        if win_man.does_window_exist(engine_window_name):
-            log.log_message('Window: Engine Window Found')
-            found_window = True
-            hook_states.set_hook_state(HookStateType.POST_ENGINE_OPEN)
+        if window_management.does_window_exist(engine_window_name):
+            found_engine_window()
     elif not window_closed:
-        if not win_man.does_window_exist(engine_window_name):
+        if not window_management.does_window_exist(engine_window_name):
             log.log_message('Window: Engine Window Closed')
             window_closed = True
-            hook_states.set_hook_state(HookStateType.POST_ENGINE_CLOSE)
             stop_engine_monitor_thread()
 
 
@@ -63,6 +64,7 @@ def start_engine_monitor_thread():
     engine_monitor_thread.start()
 
 
+@hook_states.hook_state_decorator(HookStateType.POST_ENGINE_CLOSE)
 def stop_engine_monitor_thread():
     global run_monitoring_thread
     run_monitoring_thread = False

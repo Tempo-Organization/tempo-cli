@@ -1,63 +1,55 @@
 # UnrealAutoMod To-Do List
 
 
-## Current To Do:
-expanded tokens using f strings
-toml not json
-trogon tui
-localization
-use click for cli
-
-make using symlinks false the default behaviour, ue4ss cannot load logic mods, some games can't load symlinked loose files
-
-full run
-full run all
-test mods
-test mods all
-generate mods
-generate mods all
-
-- [ ] quoted path check for run app or something
-- [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
-- [ ] non engine iostore, file_extemsions for iostore
-- [ ] clean up hook states and add any missing states
-- [ ] checkover symlink logic
-- [ ] tests
-
-
 ## To Do:
-- [ ] collections parsed for file includes
-- [ ] compile all blueprints commandlet usage
-- [ ] workspace, env vars, similar
-- [ ] commands that can be used for string formatting
-- [ ] make presets commands
-- [ ] look into shebang magic like vscode launch json
-- [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup
-- [ ] make a list of things to test for, so no nee d to worry about 1 change breaking any features
-- [ ] unit/project tests
-- [ ] more error handling and print outs
+- [ ] recheck over symlink logic, make sure everywhere uses it where it should
+- [ ] clean up hook states, and add any missing states
+- [ ] a command to run certain events
+- [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
+- [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
+
+
+## Expanded Tokens:
+- [ ] expanded tokens for configuration, maybe regex, 
+        references:
+                https://code.visualstudio.com/docs/editor/variables-reference, 
+                https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes
+
+
+## File Includes:
+- [ ] make file include system more robust, 
+- [ ] file include collections, toggleable auto include by name convention, with manual specification by name or path list
+- [ ] file include has, file, dir, tree, maybe also regex possibilities from expanded tokens
+
+
+## Commands:
+- [ ] wrapper generation command, generates wrapper based on current sys.argv - the wrapper generation command
+
+
+## Iostore:
+- [ ] non engine iostore, file_extemsions for iostore
+- [ ] iostore repackaging more testing, ubulk stuff, try newer unreal engine versions
+- [ ] finish iostore manual repackaging logic, check the following commands:
+        full run
+        full run all
+        test mods
+        test mods all
+        generate mods
+        generate mods all
+
+
+## Hot Keys To Make:
+- [ ] General Hotkey functionality
 - [ ] Close game hotkey
 - [ ] Run script again hotkey
 - [ ] Bring Unreal Engine to front hotkey
 - [ ] Bring game to front hotkey
 - [ ] Close all hotkey (game, engine, and instances of UAM)
-- [ ] generate uproject from win 64 exe
-- [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently
-- [ ] Switch to `pathlib` from strings
-- [ ] performance profiler
-- [ ] multithreaded/processing command queues
-- [ ] cli help replies and such are not colorized like the rest of the program
 
 
 ## Documentation:
-- [ ] update documentation
-- [ ] add bug reports section
-- [ ] add contributions section
-- [ ] add suggestions/feature requests section
-- [ ] add socials section like discords
 - [ ] documentation github pages styling
 - [ ] update feature list in docs
-- [ ] make a list of tested games that work
 
 
 ## Events to look into
@@ -72,6 +64,8 @@ generate mods all
 - [ ] remove from json
 - [ ] add to ini
 - [ ] remove from ini
+- [ ] add to toml
+- [ ] remove from toml
 - [ ] add to text file
 - [ ] remove from text file
 - [ ] git stuff
@@ -85,14 +79,25 @@ generate mods all
 - [ ] open uproject dir
 
 
-## Maybes:
-- [ ] UE4SS Installer
-- [ ] Loose File Loader Installer
+## Sooner Later:
+- [ ] localization support
+- [ ] cli help replies and such are not colorized like the rest of the program, fix this
+
+
+## Later Later:
 - [ ] generate project files for uproject
+- [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic
+- [ ] generate uproject from win 64 exe, will need the unreal engine version
 - [ ] Mod Conflict Checker
 - [ ] unpack/repack game/mods
-- [ ] get game engine version command
 - [ ] list game/mod contents
-- [ ] custom automation tool script
-- [ ] generic json editor command
-- [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic
+- [ ] linux support
+- [ ] retoc commands/functionality
+- [ ] compatible game list, more for less techy people, since the tool works on virtually all games
+- [ ] compile all blueprints commandlet usage, maybe somehow setup for any commandlets
+- [ ] cli command for dumping usmapping
+- [ ] cli command for getting unreal engine version
+- [ ] cli command for getting aes key
+- [ ] toml config support on top of keeping json
+- [ ] Switch to `pathlib` from strings
+- [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup

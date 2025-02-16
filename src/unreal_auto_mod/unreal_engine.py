@@ -1,17 +1,17 @@
 import json
 import os
 
-from unreal_auto_mod import gen_py_utils
-from unreal_auto_mod.enums import PackagingDirType
+from unreal_auto_mod import file_io, processes
+from unreal_auto_mod.data_structures import PackagingDirType
 
 
 def get_game_process_name(input_game_exe_path: str) -> str:
-    return gen_py_utils.get_process_name(input_game_exe_path)
+    return processes.get_process_name(input_game_exe_path)
 
 
 def get_unreal_engine_version(engine_path: str) -> str:
     version_file_path = f'{engine_path}/Engine/Build/Build.version'
-    gen_py_utils.check_path_exists(version_file_path)
+    file_io.check_path_exists(version_file_path)
     with open(version_file_path) as f:
         version_info = json.load(f)
         unreal_engine_major_version = version_info.get('MajorVersion', 0)
@@ -27,9 +27,9 @@ def get_is_game_iostore(uproject_file_path: str, game_dir: str) -> bool:
     _game_dir = game_dir
     _uproject_file_path = uproject_file_path
     is_game_iostore = False
-    all_files = gen_py_utils.get_files_in_tree(get_game_paks_dir(_uproject_file_path, _game_dir))
+    all_files = file_io.get_files_in_tree(get_game_paks_dir(_uproject_file_path, _game_dir))
     for file in all_files:
-        file_extensions = gen_py_utils.get_file_extensions(file)
+        file_extensions = file_io.get_file_extensions(file)
         for file_extension in file_extensions:
             if file_extension == '.ucas' or file_extension == '.utoc':
                 is_game_iostore = True
@@ -114,11 +114,11 @@ def get_saved_cooked_dir(uproject_file_path: str) -> str:
 
 
 def get_engine_window_title(uproject_file_path: str) -> str:
-    return f"{gen_py_utils.get_process_name(uproject_file_path)[:-9]} - Unreal Editor"
+    return f"{processes.get_process_name(uproject_file_path)[:-9]} - Unreal Editor"
 
 
 def get_engine_process_name(unreal_dir: str) -> str:
-    return gen_py_utils.get_process_name(get_unreal_editor_exe_path(unreal_dir))
+    return processes.get_process_name(get_unreal_editor_exe_path(unreal_dir))
 
 
 def get_build_target_file_path(uproject_file_path: str) -> str:

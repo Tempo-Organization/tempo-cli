@@ -1,9 +1,18 @@
-from unreal_auto_mod import log as log
-from unreal_auto_mod import main_logic, utilities, win_man
-from unreal_auto_mod import win_man as windows
-from unreal_auto_mod.enums import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
+from typing import Callable, Any, Optional
+from dataclasses import dataclass
 
-hook_state = None
+from unreal_auto_mod import log as log, window_management
+from unreal_auto_mod import main_logic, utilities
+from unreal_auto_mod import window_management as windows
+from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
+
+
+@dataclass
+class HookStateInfo:
+    hook_state: HookStateType
+
+
+hook_state_info = HookStateInfo(HookStateType.PRE_INIT)
 
 
 def exec_events_checks(hook_state_type: HookStateType):
@@ -52,7 +61,7 @@ def window_checks(current_state: WindowAction):
         settings_state = get_enum_from_val(HookStateType, window_settings['hook_state'])
         if settings_state == current_state:
             title = window_settings['window_name']
-            windows_to_change = win_man.get_windows_by_title(title)
+            windows_to_change = window_management.get_windows_by_title(title, use_substring_check=window_settings['use_substring_check'])
             for window_to_change in windows_to_change:
                 way_to_change_window = get_enum_from_val(WindowAction, window_settings['window_behaviour'])
                 if way_to_change_window == WindowAction.MAX:
@@ -67,24 +76,39 @@ def window_checks(current_state: WindowAction):
                     log.log_message('Monitor: invalid window behavior specified in settings')
 
 
-def routine_checks(state: HookStateType):
-    if state != HookStateType.CONSTANT:
-        log.log_message(f'Routine Check: {state} is running')
-    if is_hook_state_used(state):
-        utilities.kill_processes(state)
-        window_checks(state)
-        exec_events_checks(state)
-    if state != HookStateType.CONSTANT:
-        log.log_message(f'Routine Check: {state} finished')
+def hook_state_checks(hook_state: HookStateType):
+    if hook_state != HookStateType.CONSTANT:
+        log.log_message(f'Hook State Check: {hook_state} is running')
+    if is_hook_state_used(hook_state):
+        utilities.kill_processes(hook_state)
+        window_checks(hook_state)
+        exec_events_checks(hook_state)
+    if hook_state != HookStateType.CONSTANT:
+        log.log_message(f'Hook State Check: {hook_state} finished')
 
 
 def set_hook_state(new_state: HookStateType):
-    global hook_state
-    hook_state = new_state
+    hook_state_info.hook_state = new_state
     log.log_message(f'Hook State: changed to {new_state}')
     # calling this on preinit causes problems so will avoid for now
     if new_state != HookStateType.PRE_INIT:
-        routine_checks(new_state)
-        routine_checks(HookStateType.PRE_ALL)
-        routine_checks(HookStateType.POST_ALL)
+        hook_state_checks(HookStateType.PRE_ALL)
+        hook_state_checks(new_state)
+        hook_state_checks(HookStateType.POST_ALL)
         log.log_message(f'Timer: Time since script execution: {utilities.get_running_time()}')
+
+
+
+def hook_state_decorator(
+    start_hook_state_type: HookStateType, 
+    end_hook_state_type: Optional[HookStateType] = None
+):
+    def decorator(function: Callable[..., Any]):
+        def wrapper(*args, **kwargs):
+            set_hook_state(start_hook_state_type)
+            result = function(*args, **kwargs)
+            if end_hook_state_type is not None:
+                set_hook_state(end_hook_state_type)
+            return result
+        return wrapper
+    return decorator

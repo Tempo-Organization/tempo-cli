@@ -1,13 +1,10 @@
 import os
+import time
 import shutil
 import subprocess
-import time
 
-from unreal_auto_mod import gen_py_utils as general_utils
-from unreal_auto_mod import log as log
-from unreal_auto_mod import main_logic
-from unreal_auto_mod import ue_dev_py_utils as unreal_dev_utils
-from unreal_auto_mod.enums import CompressionType, ExecutionMode, HookStateType, get_enum_from_val
+from unreal_auto_mod import file_io, log, main_logic, unreal_engine
+from unreal_auto_mod.data_structures import CompressionType, ExecutionMode, HookStateType, get_enum_from_val
 
 
 def get_fmodel_path(output_directory: str) -> str:
@@ -17,14 +14,14 @@ def get_fmodel_path(output_directory: str) -> str:
 def install_fmodel(output_directory: str):
     download_fmodel()
     zip_path = os.path.join(get_working_dir(), 'Fmodel.zip')
-    general_utils.unzip_zip(zip_path, output_directory)
+    file_io.unzip_zip(zip_path, output_directory)
 
 
 def install_umodel(output_directory: str):
     download_umodel()
     os.makedirs(output_directory, exist_ok=True)
     zip_path = os.path.join(get_working_dir(), 'umodel_win32.zip')
-    general_utils.unzip_zip(zip_path, output_directory)
+    file_io.unzip_zip(zip_path, output_directory)
 
 
 def install_kismet_analyzer(output_directory: str):
@@ -32,7 +29,7 @@ def install_kismet_analyzer(output_directory: str):
     os.makedirs(get_working_dir(), exist_ok=True)
     download_kismet_analyzer(get_working_dir())
     zip_path = f'{get_working_dir()}/kismet-analyzer-3d06645-win-x64.zip'
-    general_utils.unzip_zip(zip_path, output_directory)
+    file_io.unzip_zip(zip_path, output_directory)
     shutil.move(f'{output_directory}/kismet-analyzer-3d06645-win-x64/kismet-analyzer.exe', f'{output_directory}/kismet-analyzer.exe')
 
 
@@ -60,7 +57,7 @@ def install_spaghetti(output_directory: str):
 def download_fmodel():
     url = 'https://github.com/4sval/FModel/releases/latest/download/FModel.zip'
     download_path = os.path.join(get_working_dir(), 'Fmodel.zip')
-    general_utils.download_file(url, download_path)
+    file_io.download_file(url, download_path)
 
 
 def get_umodel_path(output_directory: str) -> str:
@@ -72,7 +69,7 @@ def download_umodel():
     url = 'https://github.com/Mythical-Github/UEViewer/releases/download/vStatic/umodel_win32.zip'
     download_path = f'{get_working_dir()}/umodel_win32.zip'
 
-    general_utils.download_file(url, download_path)
+    file_io.download_file(url, download_path)
 
 
 def get_kismet_analyzer_path(output_directory: str) -> str:
@@ -82,7 +79,7 @@ def get_kismet_analyzer_path(output_directory: str) -> str:
 def download_kismet_analyzer(output_directory: str):
     url = "https://github.com/trumank/kismet-analyzer/releases/download/latest/kismet-analyzer-3d06645-win-x64.zip"
     download_path = f'{output_directory}/kismet-analyzer-3d06645-win-x64.zip'
-    general_utils.download_file(url, download_path)
+    file_io.download_file(url, download_path)
 
 
 def get_ide_path():
@@ -100,7 +97,7 @@ def get_uasset_gui_path(output_directory: str) -> str:
 def download_uasset_gui(output_directory: str):
     url = "https://github.com/atenfyr/UAssetGUI/releases/latest/download/UAssetGUI.exe"
     download_path = f'{output_directory}/UAssetGUI.exe'
-    general_utils.download_file(url, download_path)
+    file_io.download_file(url, download_path)
 
 
 def does_umodel_exist(output_directory: str) -> bool:
@@ -122,7 +119,7 @@ def does_uasset_gui_exist() -> bool:
 def download_spaghetti(output_directory: str):
     url = 'https://github.com/bananaturtlesandwich/spaghetti/releases/latest/download/spaghetti.exe'
     download_path = f"{output_directory}/spaghetti.exe"
-    general_utils.download_file(url, download_path)
+    file_io.download_file(url, download_path)
 
 
 def get_latest_stove_version():
@@ -255,7 +252,7 @@ def get_mods_info_from_json() -> list:
 
 def get_game_exe_path() -> str:
     game_exe_path = main_logic.settings['game_info']['game_exe_path']
-    general_utils.check_path_exists(game_exe_path)
+    file_io.check_path_exists(game_exe_path)
     return game_exe_path
 
 
@@ -268,7 +265,7 @@ def get_alt_packing_dir_name() -> str:
 
 
 def get_game_process_name():
-    return unreal_dev_utils.get_game_process_name(get_game_exe_path())
+    return unreal_engine.get_game_process_name(get_game_exe_path())
 
 
 def get_process_kill_events() -> list:
@@ -282,12 +279,12 @@ def kill_processes(state: HookStateType):
         if target_state == current_state:
             if process_info['use_substring_check']:
                 proc_name_substring = process_info['process_name']
-                for proc_info in general_utils.get_processes_by_substring(proc_name_substring):
+                for proc_info in file_io.get_processes_by_substring(proc_name_substring):
                     proc_name = proc_info['name']
-                    general_utils.kill_process(proc_name)
+                    file_io.kill_process(proc_name)
             else:
                 proc_name = process_info['process_name']
-                general_utils.kill_process(proc_name)
+                file_io.kill_process(proc_name)
 
 
 def get_override_automatic_version_finding() -> bool:
@@ -300,11 +297,11 @@ def custom_get_unreal_engine_version(engine_path: str) -> str:
         unreal_engine_minor_version = main_logic.settings['engine_info']['unreal_engine_minor_version']
         return f'{unreal_engine_major_version}.{unreal_engine_minor_version}'
     else:
-        return unreal_dev_utils.get_unreal_engine_version(engine_path)
+        return unreal_engine.get_unreal_engine_version(engine_path)
 
 
 def custom_get_game_dir():
-    return unreal_dev_utils.get_game_dir(get_game_exe_path())
+    return unreal_engine.get_game_dir(get_game_exe_path())
 
 
 # def custom_get_game_paks_dir() -> str:
@@ -322,12 +319,12 @@ def custom_get_game_paks_dir() -> str:
     if get_is_using_alt_dir_name():
         return os.path.join(alt_game_dir, get_alt_packing_dir_name, 'Content', 'Paks')
     else:
-        return unreal_dev_utils.get_game_paks_dir(get_uproject_file(), custom_get_game_dir())
+        return unreal_engine.get_game_paks_dir(get_uproject_file(), custom_get_game_dir())
 
 
 def get_unreal_engine_dir() -> str:
     ue_dir = main_logic.settings['engine_info']['unreal_engine_dir']
-    general_utils.check_path_exists(ue_dir)
+    file_io.check_path_exists(ue_dir)
     return ue_dir
 
 
@@ -405,12 +402,12 @@ def is_mod_name_in_list(mod_name: str) -> bool:
 
 def get_mod_name_dir(mod_name: str) -> dir:
     if is_mod_name_in_list(mod_name):
-        return f'{unreal_dev_utils.get_uproject_dir(get_uproject_file())}/Saved/Cooked/{get_unreal_mod_tree_type_str(mod_name)}/{mod_name}'
+        return f'{unreal_engine.get_uproject_dir(get_uproject_file())}/Saved/Cooked/{get_unreal_mod_tree_type_str(mod_name)}/{mod_name}'
     return None
 
 
 def get_mod_name_dir_files(mod_name: str) -> list:
-    return general_utils.get_files_in_tree(get_mod_name_dir(mod_name))
+    return file_io.get_files_in_tree(get_mod_name_dir(mod_name))
 
 
 def get_persistant_mod_dir(mod_name: str) -> str:
@@ -418,7 +415,7 @@ def get_persistant_mod_dir(mod_name: str) -> str:
 
 
 def get_persistant_mod_files(mod_name: str) -> list:
-    return general_utils.get_files_in_tree(get_persistant_mod_dir(mod_name))
+    return file_io.get_files_in_tree(get_persistant_mod_dir(mod_name))
 
 
 def get_is_overriding_default_working_dir() -> bool:
@@ -494,7 +491,7 @@ def get_game_window_title() -> str:
     if get_override_automatic_window_title_finding():
         return get_window_title_override()
     else:
-        unreal_dev_utils.get_game_process_name(get_game_exe_path())
+        unreal_engine.get_game_process_name(get_game_exe_path())
 
 
 def ensure_path_quoted(path: str) -> str:
@@ -542,8 +539,8 @@ def run_app(
 
 
 def get_running_time():
-    from unreal_auto_mod import main
-    return time.time() - main.start_time
+    from unreal_auto_mod import initialization
+    return time.time() - initialization.start_time
 
 
 def get_cleanup_repo_path() -> str:

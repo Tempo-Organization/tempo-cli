@@ -1,24 +1,9 @@
-import time
-
-start_time = time.time()
-
-import sys
-from pathlib import Path
-
-from unreal_auto_mod import cli
-from unreal_auto_mod import log as log
-from unreal_auto_mod.log_info import LOG_INFO
-
-if getattr(sys, 'frozen', False):
-    SCRIPT_DIR = Path(sys.executable).parent
-else:
-    SCRIPT_DIR = Path(__file__).resolve().parent
+from unreal_auto_mod import cli, initialization, log
 
 
-def main_logic():
+def main():
     try:
-        log.set_log_base_dir(SCRIPT_DIR)
-        log.configure_logging(LOG_INFO)
-        cli.cli_logic()
+        initialization.initialization()
+        cli.cli()
     except Exception as error_message:
         log.log_message(str(error_message))

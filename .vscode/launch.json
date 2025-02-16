@@ -10,7 +10,17 @@
             "request": "launch",
             "module": "unreal_auto_mod",
             "args": [
-                "-h"
+                "add_mod",
+                "--help"
+            ]
+        },
+        {
+            "name": "version",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "--version"
             ]
         },
         {
@@ -262,9 +272,7 @@
             "module": "unreal_auto_mod",
             "args": [
                 "test_mods_all",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
-                "--use_symlinks",
-                "false"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -517,6 +525,36 @@
             "args": [
                 "install_kismet_analyzer",
                 "${workspaceFolder}/dist/kismet_analyzer"
+            ]
+        },
+        {
+            "name": "tui",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "subProcess": true,
+            "console": "externalTerminal",
+            "args": [
+                "tui"
+            ]
+        },
+        {
+            "name": "multichained_command_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "install_uasset_gui",
+                "${workspaceFolder}/dist/uasset_gui",
+                "install_kismet_analyzer",
+                "${workspaceFolder}/dist/kismet_analyzer",
+                "test_mods",
+                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "ModLoader_P",
+                "MapKit",
+                "ExampleLevel",
+                "--use_symlinks",
+                "false"
             ]
         }
     ]

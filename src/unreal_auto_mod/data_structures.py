@@ -28,14 +28,14 @@ class GameLaunchType(Enum):
 class HookStateType(Enum):
     """
     enum for the various hook states, used to fire off other functions
-    at specific times
+    at specific times, constant and init are not for use with the hook_state_decorator
     """
-    NONE = 'none'
+    CONSTANT = 'constant'
+    INIT = 'init'
+
     PRE_ALL = 'pre_all'
     POST_ALL = 'post_all'
-    CONSTANT = 'constant'
     PRE_INIT = 'pre_init'
-    INIT = 'init'
     POST_INIT = 'post_init'
     PRE_COOKING = 'pre_cooking'
     POST_COOKING = 'post_cooking'
@@ -67,7 +67,6 @@ class HookStateType(Enum):
     POST_GENERATE_MOD = 'post_generate_mod'
     PRE_GENERATE_MODS = 'pre_generate_mods'
     POST_GENERATE_MODS = 'post_generate_mods'
-
 
 
 class ExecutionMode(Enum):
@@ -190,6 +189,7 @@ class SigMethodType(Enum):
                           # providing information part wip, think crypto json
 
 
+
 def get_enum_from_val(enum: Enum, value: str) -> Enum:
     for member in enum:
         if member.value == value:
@@ -200,5 +200,5 @@ def get_enum_from_val(enum: Enum, value: str) -> Enum:
 def get_enum_strings_from_enum(enum: Enum) -> list[str]:
     strings = []
     for entry in enum:
-        strings.append(get_enum_from_val(enum=Enum, value=entry))
+        strings.append(entry.value)
     return strings

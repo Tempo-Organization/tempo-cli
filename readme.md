@@ -138,6 +138,7 @@ After configuring these settings, you can proceed to configure the mod list.
 - For JSON paths, use forward slashes (`/`) instead of backslashes (`\`). Make sure your paths match this format when editing the JSON file.
 - [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
 - [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
+- [Guifier (Online Config Editor)](https://guifier.com/)
 
 ###
 
@@ -168,17 +169,39 @@ unreal_auto_mod.exe test_mods_all --settings_json_path <settings_json_path>
 unreal_auto_mod.exe settings.json test_mods --settings_json_path <settings_json_path> --mod_names [<mod_name> ...]
 ```
 
-<h2>💻 References</h2>
+### 📢 Join the Discord
+If you have any problems, suggestions, or just want to chat, feel free to join the [Discord](https://discord.gg/EvUuAD4QvS)
 
-- [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
-- [Enums Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/enums.md)
-- [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
-- [Youtube Example Setup Reference](https://www.youtube.com/watch?v=6MUkUFhumo8)
 
-<h2>💻 Built with</h2>
+### 💡 Suggestions
+If you have ideas or suggestions for the tool, feel free to open a [suggestions issue](https://github.com/Mythical-Github/unreal_auto_mod/issues) or mention it in the Discord.
 
-- Python
 
-<h2>🛡️ License:</h2>
+### 🐞 Bug Reports
+If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Mythical-Github/unreal_auto_mod/issues).  
+When creating an issue, please provide as much information as possible, including:
+- Steps to reproduce the issue
+- What you expect to happen, versus what is happening
+- Any error messages or logs
+- Your system operating system
 
-[![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)
+
+### 🛠️ Contributing
+Contributions are always appreciated, but please keep in mind the following:
+- Before coding new features, try to make an issue to see if the idea/implementation needs any tweaking or is out of scope.
+- Try to make sure your new code passes lint checks from ruff; this isn't super strict, but preferred.
+
+### 💻 References
+
+  - [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
+  - [Enums Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/enums.md)
+  - [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
+  - [Youtube Example Setup Reference](https://www.youtube.com/watch?v=6MUkUFhumo8)
+
+### 💻 Built with
+
+  - Python
+
+### 🛡️ License:
+
+  [![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)

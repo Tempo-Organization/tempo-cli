@@ -5,7 +5,7 @@ LOG_INFO = {
         "Arg:": (255, 105, 180),  # Hot Pink
         "Args:": (181, 92, 9),  # Brownish Orange
         "Function:": (0, 255, 0),  # Green
-        "Routine Check:": (138, 43, 226),  # Blue Violet
+        "Hook State Check:": (138, 43, 226),  # Blue Violet
         "Hook State:": (0, 206, 209),  # Dark Turquoise
         "Thread:": (255, 140, 0),  # Dark Orange
         "Process:": (255, 20, 147),  # Deep Pink
