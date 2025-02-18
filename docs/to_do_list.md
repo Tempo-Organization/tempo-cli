@@ -4,7 +4,6 @@
 ## To Do:
 - [ ] recheck over symlink logic, make sure everywhere uses it where it should
 - [ ] clean up hook states, and add any missing states
-- [ ] a command to run certain events
 - [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
 - [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
 
@@ -81,7 +80,6 @@
 
 ## Sooner Later:
 - [ ] localization support
-- [ ] cli help replies and such are not colorized like the rest of the program, fix this
 
 
 ## Later Later:
@@ -101,3 +99,4 @@
 - [ ] toml config support on top of keeping json
 - [ ] Switch to `pathlib` from strings
 - [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup
+- [ ] cli help replies and such are not colorized like the rest of the program, fix this

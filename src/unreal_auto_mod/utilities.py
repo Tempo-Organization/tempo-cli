@@ -478,6 +478,10 @@ def get_window_title_override() -> str:
     return main_logic.settings['game_info']['window_title_override']
 
 
+def get_window_title() -> str:
+    return main_logic.settings['general_info']['window_title']
+
+
 def filter_file_paths(paths_dict: dict) -> dict:
     filtered_dict = {}
     path_dict_keys = paths_dict.keys()
