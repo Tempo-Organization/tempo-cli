@@ -1,4 +1,5 @@
 import os
+import sys
 import click
 from trogon import tui
 
@@ -16,10 +17,18 @@ default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 
 
 window_management.change_window_name('unreal_auto_mod')
 
+
+def check_generate_wrapper():
+    if "--generate_wrapper" in sys.argv:
+        main_logic.generate_wrapper()
+
+
 @tui()
 @click.version_option(version=_version.version)
 @click.group(chain=True)
-def cli(max_content_width=200):
+@click.option('--generate_wrapper', is_flag=True, default=False, type=bool, help='Generate a wrapper that contains the current commandline.')
+def cli(generate_wrapper, max_content_width=200):
+    check_generate_wrapper()
     pass
 
 

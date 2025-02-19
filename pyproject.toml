@@ -69,7 +69,7 @@ dependencies = [
 
 [tool.hatch.envs.build.scripts]
 exe = [
-  "pyinstaller --noconf irm --onefile --hidden-import=textual.widgets._tab --console --name unreal_auto_mod --icon=assets/images/project_main_icon.ico --collect-data trogon src/unreal_auto_mod/__main__.py",
+  "pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name unreal_auto_mod --icon=assets/images/project_main_icon.ico --collect-data trogon src/unreal_auto_mod/__main__.py",
   "pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name unreal_auto_mod_background --icon=assets/images/project_main_icon.ico --collect-data trogon src/unreal_auto_mod/__main__.pyw"
 ]
 

@@ -5,7 +5,6 @@
 - [ ] recheck over symlink logic, make sure everywhere uses it where it should
 - [ ] clean up hook states, and add any missing states
 - [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
-- [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
 
 
 ## Expanded Tokens:
@@ -23,6 +22,7 @@
 
 ## Commands:
 - [ ] wrapper generation command, generates wrapper based on current sys.argv - the wrapper generation command
+- [ ] have wrapper gen just gen wrapper then close program like version and help
 
 
 ## Iostore:
@@ -51,33 +51,6 @@
 - [ ] update feature list in docs
 
 
-## Events to look into
-- [ ] move
-- [ ] copy
-- [ ] rename
-- [ ] symlink
-- [ ] delete
-- [ ] zip
-- [ ] unzip
-- [ ] add to json
-- [ ] remove from json
-- [ ] add to ini
-- [ ] remove from ini
-- [ ] add to toml
-- [ ] remove from toml
-- [ ] add to text file
-- [ ] remove from text file
-- [ ] git stuff
-- [ ] gen engine stuff
-- [ ] open game dir
-- [ ] open game paks dir
-- [ ] open mod releases dir
-- [ ] open dist dir
-- [ ] openm persistent mods dir
-- [ ] open unreal auto mod dir
-- [ ] open uproject dir
-
-
 ## Sooner Later:
 - [ ] localization support
 
@@ -100,3 +73,31 @@
 - [ ] Switch to `pathlib` from strings
 - [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup
 - [ ] cli help replies and such are not colorized like the rest of the program, fix this
+- [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
+
+
+        ## Events to look into
+        - [ ] move
+        - [ ] copy
+        - [ ] rename
+        - [ ] symlink
+        - [ ] delete
+        - [ ] zip
+        - [ ] unzip
+        - [ ] add to json
+        - [ ] remove from json
+        - [ ] add to ini
+        - [ ] remove from ini
+        - [ ] add to toml
+        - [ ] remove from toml
+        - [ ] add to text file
+        - [ ] remove from text file
+        - [ ] git stuff
+        - [ ] gen engine stuff
+        - [ ] open game dir
+        - [ ] open game paks dir
+        - [ ] open mod releases dir
+        - [ ] open dist dir
+        - [ ] openm persistent mods dir
+        - [ ] open unreal auto mod dir
+        - [ ] open uproject dir

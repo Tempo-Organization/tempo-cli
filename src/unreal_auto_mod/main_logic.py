@@ -1258,3 +1258,25 @@ def close_programs(exe_names: list[str]):
             results[exe_name] = "Not Found"
 
     return results
+
+
+def get_wrapper_location() -> str:
+    return os.path.normpath(f'{file_io.SCRIPT_DIR}/dist/command.bat')
+
+
+def generate_wrapper():
+    args = sys.argv[:]
+
+    if "--wrapper_name" in args:
+        index = args.index("--wrapper_name")
+        args.pop(index)
+        args.pop(index)
+
+    content = ' '.join(args)
+
+    wrapper_path = get_wrapper_location()
+
+    os.makedirs(os.path.dirname(wrapper_path), exist_ok=True)
+
+    with open(wrapper_path, 'w') as f:
+        f.write(content)
