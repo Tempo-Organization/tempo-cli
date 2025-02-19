@@ -20,11 +20,6 @@
 - [ ] file include has, file, dir, tree, maybe also regex possibilities from expanded tokens
 
 
-## Commands:
-- [ ] wrapper generation command, generates wrapper based on current sys.argv - the wrapper generation command
-- [ ] have wrapper gen just gen wrapper then close program like version and help
-
-
 ## Iostore:
 - [ ] non engine iostore, file_extemsions for iostore
 - [ ] iostore repackaging more testing, ubulk stuff, try newer unreal engine versions

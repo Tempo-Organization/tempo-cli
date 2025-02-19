@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import ctypes
 
 import psutil
 
@@ -29,10 +30,10 @@ def init_settings(settings_json_path: str):
     global settings_json
     global settings_json_dir
 
-    with open(settings_json_path) as file:
+    test_path = f'"{settings_json_path.strip("'")}"'
+    with open(test_path) as file:
         settings = json.load(file)
     window_name = settings['general_info']['window_title']
-    import ctypes
     ctypes.windll.kernel32.SetConsoleTitleW(window_name)
     auto_close_game = settings['process_kill_events']['auto_close_game']
     if auto_close_game:
@@ -50,7 +51,7 @@ def init_settings(settings_json_path: str):
         if is_process_running(process_name):
             os.system(f'taskkill /f /im "{process_name}"')
     init_settings_done = True
-    settings_json = settings_json_path
+    settings_json = test_path
     settings_json_dir = os.path.dirname(settings_json)
 
 
@@ -130,6 +131,7 @@ def init_checks():
 
 
 def load_settings(settings_json: str):
+    log_message(f'settings json: {settings_json}')
     if not init_settings_done:
         init_settings(settings_json)
     init_checks()
