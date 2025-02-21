@@ -58,15 +58,17 @@ def log_message(message: str):
     default_text_color = f"rgb({default_text_color[0]},{default_text_color[1]},{default_text_color[2]})"
 
     terminal_width = get_terminal_size().columns
-    wrapped_message = textwrap.fill(message, width=terminal_width)
+    wrapped_lines = textwrap.wrap(message, width=terminal_width)
 
-    for keyword, color in color_options.items():
-        if keyword in message:
-            rgb_color = f"rgb({color[0]},{color[1]},{color[2]})"
-            console.print(wrapped_message, style=f'{rgb_color} on {default_background_color}')
-            break
-    else:
-        console.print(wrapped_message, style=f'{default_text_color} on {default_background_color}')
+    for i, line in enumerate(wrapped_lines):
+        padded_line = line.ljust(terminal_width)  # Ensure full-width background coverage
+        for keyword, color in color_options.items():
+            if keyword in message:
+                rgb_color = f"rgb({color[0]},{color[1]},{color[2]})"
+                console.print(padded_line, style=f'{rgb_color} on {default_background_color}')
+                break
+        else:
+            console.print(padded_line, style=f'{default_text_color} on {default_background_color}')
 
     log_dir = os.path.join(log_base_dir, 'logs')
     log_path = os.path.join(log_dir, f'{log_prefix}latest.log')

@@ -10,7 +10,6 @@
             "request": "launch",
             "module": "unreal_auto_mod",
             "args": [
-                "build",
                 "--help"
             ]
         },
@@ -40,9 +39,8 @@
             "module": "unreal_auto_mod",
             "args": [
                 "cook",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
                 "--toggle_engine",
-                "true"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -52,9 +50,8 @@
             "module": "unreal_auto_mod",
             "args": [
                 "package",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
                 "--use_symlinks",
-                "false"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -257,12 +254,11 @@
             "module": "unreal_auto_mod",
             "args": [
                 "test_mods",
+                "--use_symlinks",
                 "${workspaceFolder}/assets/base/presets/default/settings.json",
                 "ModLoader_P",
                 "MapKit",
-                "ExampleLevel",
-                "--use_symlinks",
-                "false"
+                "ExampleLevel"
             ]
         },
         {
@@ -282,16 +278,18 @@
             "module": "unreal_auto_mod",
             "args": [
                 "full_run",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
-                "ModLoader_P",
-                "MapKit",
-                "ExampleLevel",
+                "--use_symlinks",
                 "--base_files_directory",
                 "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
                 "--output_directory",
                 "${workspaceFolder}/dist/releases",
-                "--use_symlinks",
-                "false"
+                "--mod_names",
+                "ModLoader_P",
+                "--mod_names",
+                "MapKit",
+                "--mod_names",
+                "ExampleLevel",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -301,13 +299,12 @@
             "module": "unreal_auto_mod",
             "args": [
                 "full_run_all",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--use_symlinks",
                 "--base_files_directory",
                 "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
                 "--output_directory",
                 "${workspaceFolder}/dist/releases",
-                "--use_symlinks",
-                "false"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -317,12 +314,14 @@
             "module": "unreal_auto_mod",
             "args": [
                 "generate_mods",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--mod_names",
                 "ModLoader_P",
+                "--mod_names",
                 "MapKit",
+                "--mod_names",
                 "ExampleLevel",
                 "--use_symlinks",
-                "false"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -332,9 +331,8 @@
             "module": "unreal_auto_mod",
             "args": [
                 "generate_mods_all",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
                 "--use_symlinks",
-                "false"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -354,12 +352,12 @@
             "module": "unreal_auto_mod",
             "args": [
                 "add_module_to_descriptor",
-                "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject",
-                "test_module_name",
                 "--host_type",
-                "Editor",
+                "editor",
                 "--loading_phase",
-                "Default"
+                "default",
+                "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject",
+                "test_module_name"
             ]
         },
         {
@@ -380,8 +378,9 @@
             "module": "unreal_auto_mod",
             "args": [
                 "remove_modules_from_descriptor",
-                "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject",
-                "test_module_name"
+                "--module_names",
+                "test_module_name",
+                "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject"
             ]
         },
         {
@@ -391,8 +390,9 @@
             "module": "unreal_auto_mod",
             "args": [
                 "remove_plugins_from_descriptor",
-                "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject",
-                "test_plugin_name"
+                "--plugin_names",
+                "test_plugin_name",
+                "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject"
             ]
         },
         {
@@ -413,7 +413,8 @@
             "module": "unreal_auto_mod",
             "args": [
                 "remove_uplugins",
-                "${workspaceFolder}/dist/TestingGeneratedUproject/Plugins/test_plugin_name.uplugin"
+                "--uplugin_paths",
+                "${workspaceFolder}/dist/TestingGeneratedUproject/Plugins/test_plugin_name/test_plugin_name.uplugin"
             ]
         },
         {
@@ -423,14 +424,17 @@
             "module": "unreal_auto_mod",
             "args": [
                 "generate_mod_releases",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--mod_names",
                 "ModLoader_P",
+                "--mod_names",
                 "MapKit",
+                "--mod_names",
                 "ExampleLevel",
                 "--base_files_directory",
                 "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
                 "--output_directory",
-                "${workspaceFolder}/dist/releases"
+                "${workspaceFolder}/dist/releases",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -440,11 +444,11 @@
             "module": "unreal_auto_mod",
             "args": [
                 "generate_mod_releases_all",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
                 "--base_files_directory",
                 "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
                 "--output_directory",
-                "${workspaceFolder}/dist/releases"
+                "${workspaceFolder}/dist/releases",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {
@@ -464,6 +468,7 @@
             "module": "unreal_auto_mod",
             "args": [
                 "close_programs",
+                "----exe_names",
                 "Zedfest.exe"
             ]
         },
@@ -549,12 +554,14 @@
                 "install_kismet_analyzer",
                 "${workspaceFolder}/dist/kismet_analyzer",
                 "test_mods",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--mod_names",
                 "ModLoader_P",
+                "--mod_names",
                 "MapKit",
+                "--mod_names",
                 "ExampleLevel",
                 "--use_symlinks",
-                "false"
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
         {

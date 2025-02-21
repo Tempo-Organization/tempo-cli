@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import ctypes
+import pathlib
 
 import psutil
 
@@ -24,14 +25,13 @@ else:
 os.chdir(SCRIPT_DIR)
 
 
-def init_settings(settings_json_path: str):
+def init_settings(settings_json_path: pathlib.Path):
     global settings
     global init_settings_done
     global settings_json
     global settings_json_dir
 
-    test_path = f'"{settings_json_path.strip("'")}"'
-    with open(test_path) as file:
+    with open(settings_json_path) as file:
         settings = json.load(file)
     window_name = settings['general_info']['window_title']
     ctypes.windll.kernel32.SetConsoleTitleW(window_name)
@@ -51,7 +51,7 @@ def init_settings(settings_json_path: str):
         if is_process_running(process_name):
             os.system(f'taskkill /f /im "{process_name}"')
     init_settings_done = True
-    settings_json = test_path
+    settings_json = settings_json_path
     settings_json_dir = os.path.dirname(settings_json)
 
 
@@ -63,9 +63,7 @@ def check_file_exists(file_path: str) -> bool:
 
 
 def unreal_engine_check():
-    from unreal_auto_mod import log
-    from unreal_auto_mod import unreal_engine as ue_dev_utils
-    from unreal_auto_mod import utilities
+    from unreal_auto_mod import log, unreal_engine, utilities
 
     should_do_check = True
 
@@ -74,7 +72,7 @@ def unreal_engine_check():
 
     if should_do_check:
         engine_str = 'UE4Editor'
-        if ue_dev_utils.is_game_ue5(utilities.get_unreal_engine_dir()):
+        if unreal_engine.is_game_ue5(utilities.get_unreal_engine_dir()):
             engine_str = 'UnrealEditor'
         check_file_exists(f'{utilities.get_unreal_engine_dir()}/Engine/Binaries/Win64/{engine_str}.exe')
         log.log_message('Check: Unreal Engine exists')
@@ -142,10 +140,6 @@ def load_settings(settings_json: str):
 def save_settings(settings_json: str):
     with open(settings_json, 'w') as file:
         json.dump(settings, file, indent=2)
-
-
-def pass_settings(settings_json: str):
-    load_settings(settings_json)
 
 
 @hook_states.hook_state_decorator(start_hook_state_type=data_structures.HookStateType.INIT)
