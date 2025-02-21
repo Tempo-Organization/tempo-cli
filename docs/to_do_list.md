@@ -4,7 +4,6 @@
 ## To Do:
 - [ ] tui bugging
 - [ ] Switch to `pathlib` from strings
-- [ ] fix logging not fully etending to end for color background
 - [ ] think more about what to do with concurrent instances running/logs with them
 - [ ] cleanup settings, remove global vars, only load from one place when accessing a setting from the json, add toml support
 - [ ] recheck over symlink logic, make sure everywhere uses it where it should
