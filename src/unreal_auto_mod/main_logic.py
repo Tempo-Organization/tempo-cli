@@ -1,8 +1,10 @@
+import ctypes
 import json
 import os
-import sys
-import ctypes
 import pathlib
+import sys
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
 import psutil
 
@@ -10,12 +12,24 @@ import unreal_auto_mod.file_io as gen_utils
 from unreal_auto_mod import data_structures, file_io, hook_states, log, mods, unreal_engine
 from unreal_auto_mod.log import log_message
 
-settings = ''
-init_settings_done = False
-settings_json_dir = ''
-program_dir = ''
-mod_names = []
-settings_json = ''
+
+@dataclass
+class SettingsInformation:
+    settings: Dict[str, Any]
+    init_settings_done: bool
+    settings_json_dir: str
+    program_dir: str
+    mod_names: List[str]
+    settings_json: str
+
+settings_information = SettingsInformation(
+    settings={},
+    init_settings_done=False,
+    settings_json_dir='',
+    program_dir='',
+    mod_names=[],
+    settings_json=''
+)
 
 
 if getattr(sys, 'frozen', False):
@@ -26,16 +40,11 @@ os.chdir(SCRIPT_DIR)
 
 
 def init_settings(settings_json_path: pathlib.Path):
-    global settings
-    global init_settings_done
-    global settings_json
-    global settings_json_dir
-
     with open(settings_json_path) as file:
-        settings = json.load(file)
-    window_name = settings['general_info']['window_title']
+        settings_information.settings = json.load(file)
+    window_name = settings_information.settings['general_info']['window_title']
     ctypes.windll.kernel32.SetConsoleTitleW(window_name)
-    auto_close_game = settings['process_kill_events']['auto_close_game']
+    auto_close_game = settings_information.settings['process_kill_events']['auto_close_game']
     if auto_close_game:
         def is_process_running(process_name):
             for proc in psutil.process_iter():
@@ -46,13 +55,13 @@ def init_settings(settings_json_path: pathlib.Path):
                     pass
             return False
 
-        process_name = settings['game_info']['game_exe_path']
+        process_name = settings_information.settings['game_info']['game_exe_path']
         process_name = os.path.basename(process_name)
         if is_process_running(process_name):
             os.system(f'taskkill /f /im "{process_name}"')
-    init_settings_done = True
-    settings_json = settings_json_path
-    settings_json_dir = os.path.dirname(settings_json)
+    settings_information.init_settings_done = True
+    settings_information.settings_json = settings_json_path
+    settings_information.settings_json_dir = os.path.dirname(settings_information.settings_json)
 
 
 def check_file_exists(file_path: str) -> bool:
@@ -130,16 +139,14 @@ def init_checks():
 
 def load_settings(settings_json: str):
     log_message(f'settings json: {settings_json}')
-    if not init_settings_done:
+    if not settings_information.init_settings_done:
         init_settings(settings_json)
     init_checks()
-    with open(settings_json) as file:
-        return json.load(file)
 
 
 def save_settings(settings_json: str):
     with open(settings_json, 'w') as file:
-        json.dump(settings, file, indent=2)
+        json.dump(settings_information.settings, file, indent=2)
 
 
 @hook_states.hook_state_decorator(start_hook_state_type=data_structures.HookStateType.INIT)
@@ -157,46 +164,40 @@ def close_thread_system():
 
 
 def test_mods(settings_json: str, input_mod_names: list[str], toggle_engine: bool, use_symlinks: bool):
-    load_settings(settings_json)
     from unreal_auto_mod import engine
     if toggle_engine:
         engine.toggle_engine_off()
-    global mod_names
     for mod_name in input_mod_names:
-        mod_names.append(mod_name)
+        settings_information.mod_names.append(mod_name)
     mods.generate_mods(use_symlinks)
     if toggle_engine:
         engine.toggle_engine_on()
 
 
 def test_mods_all(settings_json: str, toggle_engine: bool, use_symlinks: bool):
-    load_settings(settings_json)
     from unreal_auto_mod import engine
     if toggle_engine:
         engine.toggle_engine_off()
-    global mod_names
-    for entry in settings['mods_info']:
-        mod_names.append(entry['mod_name'])
+    for entry in settings_information.settings['mods_info']:
+        settings_information.mod_names.append(entry['mod_name'])
     mods.generate_mods(use_symlinks)
     if toggle_engine:
         engine.toggle_engine_on()
 
 
 def full_run(
-        settings_json: str, 
-        input_mod_names: list[str], 
-        toggle_engine: bool, 
-        base_files_directory: str, 
-        output_directory: str, 
+        settings_json: str,
+        input_mod_names: list[str],
+        toggle_engine: bool,
+        base_files_directory: str,
+        output_directory: str,
         use_symlinks: bool
     ):
-    load_settings(settings_json)
     from unreal_auto_mod import engine, packing
     if toggle_engine:
         engine.toggle_engine_off()
-    global mod_names
     for mod_name in input_mod_names:
-        mod_names.append(mod_name)
+        settings_information.mod_names.append(mod_name)
     packing.cooking()
     generate_mods(settings_json, input_mod_names, use_symlinks)
     generate_mod_releases(settings_json, input_mod_names, base_files_directory, output_directory)
@@ -205,19 +206,17 @@ def full_run(
 
 
 def full_run_all(
-        settings_json: str, 
-        toggle_engine: bool, 
-        base_files_directory: str, 
-        output_directory: str, 
+        settings_json: str,
+        toggle_engine: bool,
+        base_files_directory: str,
+        output_directory: str,
         use_symlinks: bool
     ):
-    load_settings(settings_json)
     from unreal_auto_mod import engine, packing
     if toggle_engine:
         engine.toggle_engine_off()
-    global mod_names
-    for entry in settings['mods_info']:
-        mod_names.append(entry['mod_name'])
+    for entry in settings_information.settings['mods_info']:
+        settings_information.mod_names.append(entry['mod_name'])
     packing.cooking()
     generate_mods_all(settings_json, use_symlinks)
     generate_mod_releases_all(settings_json, base_files_directory, output_directory)
@@ -265,7 +264,6 @@ def install_uasset_gui(output_directory: str, run_after_install: bool):
 
 
 def open_latest_log(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod import log_info
     log_prefix = log_info.LOG_INFO['log_name_prefix']
     file_to_open = f'{SCRIPT_DIR}/logs/{log_prefix}latest.log'
@@ -273,7 +271,6 @@ def open_latest_log(settings_json: str):
 
 
 def run_game(settings_json: str, toggle_engine: bool):
-    load_settings(settings_json)
     from unreal_auto_mod import engine
     if toggle_engine:
         engine.toggle_engine_off()
@@ -285,20 +282,17 @@ def run_game(settings_json: str, toggle_engine: bool):
 
 
 def close_game(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod.file_io import kill_process
     from unreal_auto_mod.utilities import get_game_exe_path
     kill_process(os.path.basename(get_game_exe_path()))
 
 
 def run_engine(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod.engine import open_game_engine
     open_game_engine()
 
 
 def close_engine(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod.engine import close_game_engine
     close_game_engine()
 
@@ -341,7 +335,6 @@ def run_proj_build_command(command: str):
 
 
 def build(settings_json: str, toggle_engine: bool):
-    load_settings(settings_json)
     from unreal_auto_mod import engine
     if toggle_engine:
         engine.toggle_engine_off()
@@ -354,9 +347,8 @@ def build(settings_json: str, toggle_engine: bool):
 
 def upload_changes_to_repo(settings_json: str):
     import subprocess
-    load_settings(settings_json)
-    repo_path = settings['git_info']['repo_path']
-    branch = settings['git_info']['repo_branch']
+    repo_path = settings_information.settings['git_info']['repo_path']
+    branch = settings_information.settings['git_info']['repo_branch']
     desc = input("Enter commit description: ")
 
     status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, cwd=repo_path, check=False)
@@ -551,7 +543,6 @@ def get_solo_cook_project_command() -> str:
 
 
 def cook(settings_json: str, toggle_engine: bool):
-    load_settings(settings_json)
     from unreal_auto_mod import engine
     if toggle_engine:
         engine.toggle_engine_off()
@@ -583,16 +574,15 @@ def get_solo_package_command() -> str:
 
 
 def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
-    load_settings(settings_json)
     from unreal_auto_mod import engine
-    from unreal_auto_mod.main_logic import mod_names
+    from unreal_auto_mod.main_logic import settings_information
     from unreal_auto_mod.packing import generate_mods
     from unreal_auto_mod.utilities import get_mods_info_from_json
 
     if toggle_engine:
         engine.toggle_engine_off()
     for entry in get_mods_info_from_json():
-        mod_names.append(entry['mod_name'])
+        settings_information.mod_names.append(entry['mod_name'])
     log_message('Packaging Starting')
     run_proj_build_command(get_solo_package_command())
     generate_mods(use_symlinks)
@@ -602,7 +592,6 @@ def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
 
 
 def resave_packages_and_fix_up_redirectors(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod import utilities
     from unreal_auto_mod.engine import close_game_engine
     close_game_engine()
@@ -617,7 +606,6 @@ def cleanup_full(settings_json: str):
     from unreal_auto_mod import utilities
     from unreal_auto_mod.data_structures import ExecutionMode
     from unreal_auto_mod.utilities import get_cleanup_repo_path, run_app
-    load_settings(settings_json)
     repo_path = get_cleanup_repo_path()
     log_message(f'Cleaning up repo at: "{repo_path}"')
     exe = 'git'
@@ -646,7 +634,6 @@ def cleanup_cooked(settings_json: str):
     import shutil
 
     from unreal_auto_mod.utilities import get_cleanup_repo_path
-    load_settings(settings_json)
     repo_path = get_cleanup_repo_path()
 
     log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
@@ -671,7 +658,6 @@ def cleanup_build(settings_json: str):
     import shutil
 
     from unreal_auto_mod.utilities import get_cleanup_repo_path
-    load_settings(settings_json)
     repo_path = get_cleanup_repo_path()
 
     log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
@@ -695,18 +681,16 @@ def cleanup_build(settings_json: str):
 
 
 def cleanup_game(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod import utilities
     game_directory = os.path.dirname(utilities.custom_get_game_dir())
-    file_list_json = os.path.join(settings_json_dir, 'game_file_list.json')
+    file_list_json = os.path.join(settings_information.settings_json_dir, 'game_file_list.json')
     delete_unlisted_files(game_directory, file_list_json)
 
 
 def generate_game_file_list_json(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod import utilities
     game_directory = os.path.dirname(utilities.custom_get_game_dir())
-    file_list_json = os.path.join(settings_json_dir, 'game_file_list.json')
+    file_list_json = os.path.join(settings_information.settings_json_dir, 'game_file_list.json')
     generate_file_paths_json(game_directory, file_list_json)
 
 
@@ -719,26 +703,24 @@ def generate_file_list(directory: str, file_list: str):
 
 
 def generate_mods(settings_json: str, input_mod_names: list[str], use_symlinks:bool):
-    load_settings(settings_json)
-    from unreal_auto_mod.main_logic import mod_names
+    from unreal_auto_mod.main_logic import settings_information
     from unreal_auto_mod.packing import generate_mods
     from unreal_auto_mod.utilities import get_mods_info_from_json
 
     for mod_name in input_mod_names:
-        mod_names.append(mod_name)
+        settings_information.mod_names.append(mod_name)
     for entry in get_mods_info_from_json():
-        mod_names.append(entry['mod_name'])
+        settings_information.mod_names.append(entry['mod_name'])
     generate_mods(use_symlinks)
 
 
 def generate_mods_all(settings_json: str, use_symlinks: bool):
-    load_settings(settings_json)
-    from unreal_auto_mod.main_logic import mod_names
+    from unreal_auto_mod.main_logic import settings_information
     from unreal_auto_mod.packing import generate_mods
     from unreal_auto_mod.utilities import get_mods_info_from_json
 
     for entry in get_mods_info_from_json():
-        mod_names.append(entry['mod_name'])
+        settings_information.mod_names.append(entry['mod_name'])
         log_message(entry['mod_name'])
     generate_mods(use_symlinks)
 
@@ -906,7 +888,6 @@ def make_loose_mod_release(singular_mod_info: dict, base_files_directory: str, o
 
 
 def generate_mod_release(settings_json: str, mod_name: str, base_files_directory: str, output_directory: str):
-    load_settings(settings_json)
     from unreal_auto_mod.utilities import get_mods_info_from_json
     singular_mod_info = next((mod_info for mod_info in get_mods_info_from_json() if mod_info['mod_name'] == mod_name), '')
     if singular_mod_info['packing_type'] == 'unreal_pak':
@@ -920,20 +901,17 @@ def generate_mod_release(settings_json: str, mod_name: str, base_files_directory
 
 
 def generate_mod_releases(settings_json: str, mod_names: str, base_files_directory: str, output_directory: str):
-    load_settings(settings_json)
     for mod_name in mod_names:
         generate_mod_release(settings_json, mod_name, base_files_directory, output_directory)
 
 
 def generate_mod_releases_all(settings_json: str, base_files_directory: str, output_directory: str):
-    load_settings(settings_json)
     from unreal_auto_mod.utilities import get_mods_info_from_json
     for entry in get_mods_info_from_json():
         generate_mod_release(settings_json, entry['mod_name'], base_files_directory, output_directory)
 
 
 def resync_dir_with_repo(settings_json: str):
-    load_settings(settings_json)
     from unreal_auto_mod.utilities import get_cleanup_repo_path, run_app
     repo_path = get_cleanup_repo_path()
     """
@@ -1268,6 +1246,9 @@ def generate_wrapper():
         args.pop(index)
         args.pop(index)
 
+    if not os.path.isabs(args[0]):
+        args[0] = f'"{os.path.join(file_io.SCRIPT_DIR, args[0])}"'
+        
     content = ' '.join(args)
 
     wrapper_path = get_wrapper_location()

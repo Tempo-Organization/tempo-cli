@@ -2,12 +2,7 @@
 
 
 ## To Do:
-- [ ] tui bugging
-- [ ] Switch to `pathlib` from strings
-- [ ] think more about what to do with concurrent instances running/logs with them
-- [ ] cleanup settings, remove global vars, only load from one place when accessing a setting from the json, add toml support
 - [ ] recheck over symlink logic, make sure everywhere uses it where it should
-- [ ] clean up hook states, and add any missing states
 - [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
 
 
@@ -68,10 +63,11 @@
 - [ ] cli command for dumping usmapping
 - [ ] cli command for getting unreal engine version
 - [ ] cli command for getting aes key
-- [ ] toml config support on top of keeping json
 - [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup
 - [ ] cli help replies and such are not colorized like the rest of the program, fix this
 - [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
+- [ ] Switch to `pathlib` from strings
+- [ ] add toml support
 
 
         ## Events to look into

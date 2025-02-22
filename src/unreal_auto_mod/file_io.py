@@ -1,8 +1,8 @@
+import glob
+import hashlib
 import os
 import sys
-import glob
 import zipfile
-import hashlib
 from pathlib import Path
 
 import psutil
@@ -10,7 +10,6 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod.log import log_message
-
 
 if getattr(sys, 'frozen', False):
     SCRIPT_DIR = Path(sys.executable).parent

@@ -1,8 +1,8 @@
-from typing import Callable, Any, Optional
 from dataclasses import dataclass
+from typing import Any, Callable, Optional
 
-from unreal_auto_mod import log as log, window_management
-from unreal_auto_mod import main_logic, utilities
+from unreal_auto_mod import log as log
+from unreal_auto_mod import main_logic, utilities, window_management
 from unreal_auto_mod import window_management as windows
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
 
@@ -28,9 +28,9 @@ def exec_events_checks(hook_state_type: HookStateType):
 
 
 def is_hook_state_used(state: HookStateType) -> bool:
-    if isinstance(main_logic.settings, dict):
-        if "process_kill_events" in main_logic.settings:
-            process_kill_events = main_logic.settings.get("process_kill_events", {})
+    if isinstance(main_logic.settings_information.settings, dict):
+        if "process_kill_events" in main_logic.settings_information.settings:
+            process_kill_events = main_logic.settings_information.settings.get("process_kill_events", {})
             if "processes" in process_kill_events:
                 for process in process_kill_events["processes"]:
                     if isinstance(state, HookStateType):
@@ -38,14 +38,14 @@ def is_hook_state_used(state: HookStateType) -> bool:
                     if process.get('hook_state') == state:
                         return True
 
-        if "window_management_events" in main_logic.settings:
+        if "window_management_events" in main_logic.settings_information.settings:
             for window in utilities.get_window_management_events():
                 if isinstance(state, HookStateType):
                     state = state.value
                 if window.get("hook_state") == state:
                     return True
 
-        if "exec_events" in main_logic.settings:
+        if "exec_events" in main_logic.settings_information.settings:
             for method in utilities.get_exec_events():
                 if isinstance(state, HookStateType):
                     state = state.value
@@ -100,7 +100,7 @@ def set_hook_state(new_state: HookStateType):
 
 
 def hook_state_decorator(
-    start_hook_state_type: HookStateType, 
+    start_hook_state_type: HookStateType,
     end_hook_state_type: Optional[HookStateType] = None
 ):
     def decorator(function: Callable[..., Any]):

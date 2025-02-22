@@ -1,19 +1,13 @@
 import os
-import sys
-import click
 import pathlib
+import sys
+
+import click
 from trogon import tui
 
-from unreal_auto_mod import (
-    data_structures,
-    main_logic,
-    file_io,
-    window_management,
-    _version
-)
+from unreal_auto_mod import _version, data_structures, file_io, main_logic, window_management
 
-
-default_releases_dir = os.path.normpath(os.path.join(main_logic.settings_json_dir, 'mod_packaging', 'releases'))
+default_releases_dir = os.path.normpath(os.path.join(main_logic.settings_information.settings_json_dir, 'mod_packaging', 'releases'))
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 'dist'))
 os.makedirs(default_releases_dir, exist_ok=True)
 os.makedirs(default_output_releases_dir, exist_ok=True)
@@ -21,41 +15,54 @@ os.makedirs(default_output_releases_dir, exist_ok=True)
 window_management.change_window_name('unreal_auto_mod')
 
 
+def check_settings():
+    try:
+        if "--settings_json" in sys.argv:
+            index = sys.argv.index("--settings_json") + 1
+            if index < len(sys.argv):
+                settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
+                print(f"Processed settings file path: {settings_file}")
+                return main_logic.load_settings(settings_file)
+            else:
+                print("Error: No file path provided after --settings_json.")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error processing settings: {e}")
+        sys.exit(1)
+
+
 def check_generate_wrapper():
     if "--generate_wrapper" in sys.argv:
         main_logic.generate_wrapper()
+
+
+default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 
 
 @tui()
 @click.version_option(version=_version.version)
 @click.group(chain=True)
 @click.option('--generate_wrapper', is_flag=True, default=False, type=bool, help='Generate a wrapper that contains the current commandline.')
-def cli(generate_wrapper, max_content_width=200):
+# @click.option('--log_name_prefix', default='unreal_auto_mod_', type=str, help='The log name prefix for your logs.')
+@click.option('--logs_directory', default=default_logs_dir, type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path), help='The directory you want your logs outputted to.')
+def cli(generate_wrapper, logs_directory, max_content_width=200):
     check_generate_wrapper()
-    pass
+    check_settings()
 
 
 command_help = 'Builds the uproject specified within the settings JSON'
 @cli.command(name='build', help=command_help, short_help=command_help)
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def build(settings_json, toggle_engine):
-    """
-    Arguments:
-        settings_json (string): Path to the settings JSON file
-    """
     main_logic.build(settings_json, toggle_engine)
 
 
 command_help = 'Cooks content for the uproject specified within the settings JSON'
 @cli.command(name='cook', help=command_help, short_help=command_help)
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cook(settings_json, toggle_engine):
-    """
-    Arguments:
-        settings_json (string): Path to the settings JSON file
-    """
     main_logic.cook(settings_json, toggle_engine)
 
 
@@ -63,12 +70,8 @@ command_help = 'Package content for the uproject specified within the settings J
 @cli.command(name='package', help=command_help, short_help=command_help)
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Whether or not to close engine instances at the start and open at the end of the command process')
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def package(settings_json, toggle_engine, use_symlinks):
-    """
-    Arguments:
-        settings_json (string): Path to the settings JSON file
-    """
     main_logic.package(settings_json, toggle_engine, use_symlinks)
 
 
@@ -77,12 +80,8 @@ command_help = 'Run tests for specific mods'
 @click.option("--mod_names", multiple=True, type=str, required=True, help='A mod name, can be specified multiple times')
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Whether or not to close engine instances at the start and open at the end of the command process')
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def test_mods(settings_json, mod_names, toggle_engine, use_symlinks):
-    """
-    Arguments:
-        settings_json (string): Path to the settings JSON file
-    """
     main_logic.test_mods(settings_json, mod_names, toggle_engine, use_symlinks)
 
 
@@ -90,12 +89,8 @@ command_help = 'Run tests for all mods within the specified settings JSON'
 @cli.command(name='test_mods_all', help=command_help, short_help=command_help)
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Whether or not to close engine instances at the start and open at the end of the command process')
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def test_mods_all(settings_json, toggle_engine, use_symlinks):
-    """
-    Arguments:
-        settings_json (string): Path to the settings JSON file
-    """
     main_logic.test_mods_all(settings_json, toggle_engine, use_symlinks)
 
 
@@ -104,32 +99,28 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option("--mod_names", multiple=True, type=str, required=True, help='A mod name, can be specified multiple times')
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
 @click.option(
-    "--base_files_directory", 
-    default=default_releases_dir, 
-    help='Path to dir tree whose content to pack alongside the mod for release', 
+    "--base_files_directory",
+    default=default_releases_dir,
+    help='Path to dir tree whose content to pack alongside the mod for release',
     type=click.Path(
         exists=False,
-        resolve_path=True, 
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option(
-    "--output_directory", 
-    default=default_output_releases_dir, 
-    help='Path to the output directory', 
+    "--output_directory",
+    default=default_output_releases_dir,
+    help='Path to the output directory',
     type=click.Path(
         exists=False,
-        resolve_path=True, 
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def full_run_all(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file
-    """
     main_logic.full_run(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks)
 
 
@@ -137,32 +128,28 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @cli.command(name='full_run_all', help=command_help, short_help=command_help)
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
 @click.option(
-    "--base_files_directory", 
-    default=default_releases_dir, 
-    help='Path to dir tree whose content to pack alongside the mod for release', 
+    "--base_files_directory",
+    default=default_releases_dir,
+    help='Path to dir tree whose content to pack alongside the mod for release',
     type=click.Path(
         exists=False,
-        resolve_path=True, 
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option(
-    "--output_directory", 
-    default=default_output_releases_dir, 
-    help='Path to the output directory', 
+    "--output_directory",
+    default=default_output_releases_dir,
+    help='Path to the output directory',
     type=click.Path(
         exists=False,
-        resolve_path=True, 
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def full_run_all(settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file
-    """
     main_logic.full_run_all(settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks)
 
 
@@ -170,24 +157,16 @@ command_help = 'Generates mods for the specified mod names.'
 @cli.command(name='generate_mods', help=command_help, short_help=command_help)
 @click.option("--mod_names", multiple=True, type=str, required=True, help='A mod name, can be specified multiple times')
 @click.option('--use_symlinks', is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mods(settings_json, mod_names, use_symlinks):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file
-    """
     main_logic.generate_mods(settings_json, mod_names, use_symlinks)
 
 
 command_help = 'Generates mods for all enabled mods within the specified settings JSON.'
 @cli.command(name='generate_mods_all', help=command_help, short_help=command_help)
 @click.option('--use_symlinks', is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mods_all(settings_json, use_symlinks):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file
-    """
     main_logic.generate_mods_all(settings_json, use_symlinks)
 
 
@@ -195,100 +174,80 @@ command_help = 'Generate one or more mod releases.'
 @cli.command(name='generate_mod_releases', help=command_help, short_help=command_help)
 @click.option("--mod_names", multiple=True, type=str, required=True, help='A mod name, can be specified multiple times')
 @click.option(
-    "--base_files_directory", 
-    default=default_releases_dir, 
-    help='Path to dir tree whose content to pack alongside the mod for release', 
+    "--base_files_directory",
+    default=default_releases_dir,
+    help='Path to dir tree whose content to pack alongside the mod for release',
     type=click.Path(
-        exists=True, 
-        file_okay=False, 
-        dir_okay=True, 
-        readable=True, 
-        resolve_path=True, 
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option(
-    "--output_directory", 
-    default=default_output_releases_dir, 
-    help='Path to the output directory', 
+    "--output_directory",
+    default=default_output_releases_dir,
+    help='Path to the output directory',
     type=click.Path(exists=True, file_okay=False, dir_okay=True, readable=True, resolve_path=True, path_type=pathlib.Path)
 )
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mod_releases(settings_json, mod_names, base_files_directory, output_directory):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.generate_mod_releases(settings_json, mod_names, base_files_directory, output_directory)
 
 
 command_help = 'Generate mod releases for all mods within the specified settings JSON.'
 @cli.command(name='generate_mod_releases_all', help=command_help, short_help=command_help)
 @click.option(
-    "--base_files_directory", 
-    default=default_releases_dir, 
-    help='Path to dir tree whose content to pack alongside the mod for release', 
+    "--base_files_directory",
+    default=default_releases_dir,
+    help='Path to dir tree whose content to pack alongside the mod for release',
     type=click.Path(
-        exists=True, 
-        file_okay=False, 
-        dir_okay=True, 
-        readable=True, 
-        resolve_path=True, 
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option(
-    "--output_directory", 
-    default=default_output_releases_dir, 
-    help='Path to the output directory', 
+    "--output_directory",
+    default=default_output_releases_dir,
+    help='Path to the output directory',
     type=click.Path(
-        exists=True, 
-        file_okay=False, 
-        dir_okay=True, 
-        readable=True, 
-        resolve_path=True, 
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mod_releases_all(settings_json, base_files_directory, output_directory):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.generate_mod_releases_all(settings_json, base_files_directory, output_directory)
 
 
 command_help = 'Cleans up the GitHub repository specified within the settings JSON.'
 @cli.command(name='cleanup_full', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_full(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.cleanup_full(settings_json)
 
 
 command_help = 'Cleans up the directories made from cooking of the GitHub repository specified within the settings JSON.'
 @cli.command(name='cleanup_cooked', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_cooked(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.cleanup_cooked(settings_json)
 
 
 command_help = 'Cleans up the directories made from building of the GitHub repository specified within the settings JSON.'
 @cli.command(name='cleanup_build', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_build(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.cleanup_build(settings_json)
 
 
@@ -297,23 +256,15 @@ Cleans up the specified directory, deleting all files not specified within the f
 To generate a file list JSON, use the generate_file_list_json command.
 '''
 @cli.command(name='cleanup_game', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_game(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.cleanup_game(settings_json)
 
 
 command_help = 'Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON.'
 @cli.command(name='generate_game_file_list_json', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_game_file_list_json(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.generate_game_file_list_json(settings_json)
 
 
@@ -348,58 +299,38 @@ def generate_file_list(directory, file_list):
 
 command_help = 'Uploads the latest changes of the git project to the GitHub repository and branch specified within the settings JSON.'
 @cli.command(name='upload_changes_to_repo', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def upload_changes_to_repo(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.upload_changes_to_repo(settings_json)
 
 
 command_help = 'Cleans up and resyncs a git project to the GitHub repository and branch specified within the settings JSON.'
 @cli.command(name='resync_dir_with_repo', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def resync_dir_with_repo(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.resync_dir_with_repo(settings_json)
 
 
 command_help = 'Opens the latest log file.'
 @cli.command(name='open_latest_log', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def open_latest_log(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.open_latest_log(settings_json)
 
 
 command_help = 'Enable the given mod names in the provided settings JSON.'
 @cli.command(name='enable_mods', help=command_help, short_help=command_help)
 @click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to enable, can be specified multiple times')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def enable_mods(settings_json, mod_names):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.enable_mods(settings_json, mod_names)
 
 
 command_help = 'Disable the given mod names in the provided settings JSON.'
 @cli.command(name='disable_mods', help=command_help, short_help=command_help)
 @click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to disable, can be specified multiple times')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def disable_mods(settings_json, mod_names):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.disable_mods(settings_json, mod_names)
 
 
@@ -413,123 +344,102 @@ command_help = 'Adds the given mod name in the provided settings JSON.'
 @click.option('--compression_type', default='', type=str, help='Compression type for the mod (optional).')
 @click.option('--is_enabled', type=bool, default=True, help='Whether the mod is enabled (default: True).')
 @click.option(
-    '--asset_paths', 
-    multiple=True, 
-    help='Asset path for the mod, can be specified multiple times.', 
+    '--asset_paths',
+    multiple=True,
+    help='Asset path for the mod, can be specified multiple times.',
     type=click.Path(
-        exists=True, 
-        file_okay=True, 
-        dir_okay=False, 
-        readable=True, 
-        resolve_path=True, 
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
 @click.option(
-    '--tree_paths', 
-    multiple=True, 
-    help='Tree path for the mod, can be specified multiple times.', 
+    '--tree_paths',
+    multiple=True,
+    help='Tree path for the mod, can be specified multiple times.',
     type=click.Path(
-        exists=True, 
-        file_okay=False, 
-        dir_okay=True, 
-        readable=True, 
-        resolve_path=True, 
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
         path_type=pathlib.Path
     )
 )
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 @click.argument('mod_name', type=str)
 @click.argument('pak_dir_structure', type=str)
 def add_mod(
-    settings_json, 
-    mod_name, 
-    packing_type, 
+    settings_json,
+    mod_name,
+    packing_type,
     pak_dir_structure,
-    mod_name_dir_type, 
-    use_mod_name_dir_name_override, 
-    mod_name_dir_name_override, 
-    pak_chunk_num, 
-    compression_type, 
-    is_enabled, 
-    asset_paths, 
+    mod_name_dir_type,
+    use_mod_name_dir_name_override,
+    mod_name_dir_name_override,
+    pak_chunk_num,
+    compression_type,
+    is_enabled,
+    asset_paths,
     tree_paths
 ):
     """
     Arguments:
-        settings_json (str): Path to the settings JSON file.
         mod_name (str): The name of the mod to add.
         pak_dir_structure (str): Path to the directory structure for packing.
     """
     main_logic.add_mod(
-        settings_json, 
-        mod_name, packing_type, 
-        pak_dir_structure, 
-        mod_name_dir_type, 
-        use_mod_name_dir_name_override, 
-        mod_name_dir_name_override, 
-        pak_chunk_num, 
-        compression_type, 
-        is_enabled, 
-        asset_paths, 
+        settings_json,
+        mod_name, packing_type,
+        pak_dir_structure,
+        mod_name_dir_type,
+        use_mod_name_dir_name_override,
+        mod_name_dir_name_override,
+        pak_chunk_num,
+        compression_type,
+        is_enabled,
+        asset_paths,
         tree_paths
     )
 
 
 command_help = 'Removes the given mod names in the provided settings JSON.'
 @cli.command(name='remove_mods', help=command_help, short_help=command_help)
-@click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to be removed, can be specified multiple times')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to be removed, can be specified multiple times.')
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def remove_mods(settings_json, mod_names):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.remove_mods(settings_json, mod_names)
 
 
 command_help = 'Run the game.'
 @cli.command(name='run_game', help=command_help, short_help=command_help)
 @click.option('--toggle_engine', default=False, type=bool, help='Whether to close engine instances at the start and open at the end of the command process (default: False).')
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def run_game(settings_json, toggle_engine):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.run_game(settings_json, toggle_engine)
 
 
 command_help = 'Close the game.'
 @cli.command(name='close_game', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def close_game(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.close_game(settings_json)
 
 
 command_help = 'Run the engine.'
 @cli.command(name='run_engine', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def run_engine(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.run_engine(settings_json)
 
 
 command_help = 'Close the engine.'
 @cli.command(name='close_engine', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def close_engine(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.close_engine(settings_json)
 
 
@@ -627,23 +537,23 @@ command_help = 'Generates a uplugin in a directory, within the specified directo
 @click.argument('plugins_directory', type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path))
 @click.argument('plugin_name', type=str)
 def generate_uplugin(
-    plugins_directory, 
-    plugin_name, 
-    can_contain_content, 
-    is_installed, 
-    is_hidden, 
-    no_code, 
-    category, 
-    created_by, 
-    created_by_url, 
-    description, 
-    docs_url, 
-    editor_custom_virtual_path, 
-    enabled_by_default, 
-    engine_major_version, 
-    engine_minor_version, 
-    support_url, 
-    version, 
+    plugins_directory,
+    plugin_name,
+    can_contain_content,
+    is_installed,
+    is_hidden,
+    no_code,
+    category,
+    created_by,
+    created_by_url,
+    description,
+    docs_url,
+    editor_custom_virtual_path,
+    enabled_by_default,
+    engine_major_version,
+    engine_minor_version,
+    support_url,
+    version,
     version_name
     ):
     """
@@ -652,23 +562,23 @@ def generate_uplugin(
         plugin_name (str): Name of the plugin to be generated.
     """
     main_logic.generate_uplugin(
-        plugins_directory, 
-        plugin_name, 
-        can_contain_content, 
-        is_installed, 
-        is_hidden, 
-        no_code, 
-        category, 
-        created_by, 
-        created_by_url, 
-        description, 
-        docs_url, 
-        editor_custom_virtual_path, 
-        enabled_by_default, 
-        engine_major_version, 
-        engine_minor_version, 
-        support_url, 
-        version, 
+        plugins_directory,
+        plugin_name,
+        can_contain_content,
+        is_installed,
+        is_hidden,
+        no_code,
+        category,
+        created_by,
+        created_by_url,
+        description,
+        docs_url,
+        editor_custom_virtual_path,
+        enabled_by_default,
+        engine_major_version,
+        engine_minor_version,
+        support_url,
+        version,
         version_name
     )
 
@@ -676,17 +586,17 @@ def generate_uplugin(
 command_help = 'Deletes all files for the specified uplugin paths.'
 @cli.command(name='remove_uplugins', help=command_help, short_help=command_help)
 @click.option(
-    "--uplugin_paths", 
-    multiple=True, 
+    "--uplugin_paths",
+    multiple=True,
     type=click.Path(
-        exists=True, 
-        file_okay=True, 
-        dir_okay=False, 
-        readable=True, 
-        resolve_path=True, 
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
         path_type=pathlib.Path
-    ), 
-    required=True, 
+    ),
+    required=True,
     help='uplugin_paths: A path to a uplugin to delete, can be specified multiple times.'
 )
 def remove_uplugins(uplugin_paths):
@@ -695,12 +605,8 @@ def remove_uplugins(uplugin_paths):
 
 command_help = 'Resaves packages and fixes up redirectors for the project.'
 @cli.command(name='resave_packages_and_fix_up_redirectors', help=command_help, short_help=command_help)
-@click.argument("settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
+@click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def resave_packages_and_fix_up_redirectors(settings_json):
-    """
-    Arguments:
-        settings_json (str): Path to the settings JSON file.
-    """
     main_logic.resave_packages_and_fix_up_redirectors(settings_json)
 
 

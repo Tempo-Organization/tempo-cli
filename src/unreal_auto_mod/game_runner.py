@@ -1,7 +1,7 @@
 import os
 import winreg
 
-from unreal_auto_mod import hook_states, utilities, log
+from unreal_auto_mod import hook_states, log, utilities
 from unreal_auto_mod.data_structures import ExecutionMode, GameLaunchType, HookStateType
 
 

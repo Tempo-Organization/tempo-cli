@@ -1,7 +1,6 @@
 import os
-import sys
 import subprocess
-
+import sys
 
 # def enable_vt100():
 #     """Enable VT100 escape codes in the Windows Command Prompt."""
@@ -23,6 +22,6 @@ def enable_vt100():
         cmd = [sys.executable] + sys.argv
         proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
-        proc.daemon = True  
+        proc.daemon = True
 
         sys.exit()

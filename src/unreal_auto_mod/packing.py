@@ -1,29 +1,48 @@
 import os
 import shutil
+from dataclasses import dataclass
 
 from rich.progress import Progress
 
-from unreal_auto_mod import data_structures, hook_states, log, main_logic, repak_utilities, unreal_engine, unreal_pak, utilities
+from unreal_auto_mod import (
+    data_structures,
+    hook_states,
+    log,
+    main_logic,
+    repak_utilities,
+    unreal_engine,
+    unreal_pak,
+    utilities,
+)
 from unreal_auto_mod import file_io as file_io
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 
-install_queue_types = []
-uninstall_queue_types = []
+
+@dataclass
+class QueueInformation:
+    install_queue_types: list[PackingType]
+    uninstall_queue_types: list[PackingType]
+
+
+queue_information = QueueInformation(
+    install_queue_types = [],
+    uninstall_queue_types = []
+)
+
+
 command_queue = []
 has_populated_queue = False
 
 def populate_queue():
-    global install_queue_types
-    global uninstall_queue_types
     for mod_info in utilities.get_mods_info_from_json():
-        if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.mod_names:
+        if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             install_queue_type = get_enum_from_val(PackingType, mod_info['packing_type'])
-            if install_queue_type not in install_queue_types:
-                install_queue_types.append(install_queue_type)
-        if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.mod_names:
+            if install_queue_type not in queue_information.install_queue_types:
+                queue_information.install_queue_types.append(install_queue_type)
+        if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             uninstall_queue_type = get_enum_from_val(PackingType, mod_info['packing_type'])
-            if uninstall_queue_type not in uninstall_queue_types:
-                uninstall_queue_types.append(uninstall_queue_type)
+            if uninstall_queue_type not in queue_information.uninstall_queue_types:
+                queue_information.uninstall_queue_types.append(uninstall_queue_type)
 
 
 def get_mod_packing_type(mod_name: str) -> PackingType:
@@ -105,18 +124,18 @@ def run_proj_command(command: str):
 
 def handle_uninstall_logic(packing_type: PackingType):
     for mod_info in utilities.get_mods_info_from_json():
-        if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.mod_names:
+        if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 uninstall_mod(packing_type, mod_info['mod_name'])
 
 
 @hook_states.hook_state_decorator(
-        start_hook_state_type=HookStateType.PRE_PAK_DIR_SETUP, 
+        start_hook_state_type=HookStateType.PRE_PAK_DIR_SETUP,
         end_hook_state_type=HookStateType.POST_PAK_DIR_SETUP
     )
 def handle_install_logic(packing_type: PackingType, use_symlinks: bool):
     for mod_info in utilities.get_mods_info_from_json():
-        if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.mod_names:
+        if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 install_mod(
                     packing_type,
@@ -127,22 +146,20 @@ def handle_install_logic(packing_type: PackingType, use_symlinks: bool):
 
 
 @hook_states.hook_state_decorator(
-        start_hook_state_type=HookStateType.PRE_MODS_UNINSTALL, 
+        start_hook_state_type=HookStateType.PRE_MODS_UNINSTALL,
         end_hook_state_type=HookStateType.POST_MODS_UNINSTALL
     )
 def mods_uninstall():
-    global uninstall_queue_types
-    for uninstall_queue_type in uninstall_queue_types:
+    for uninstall_queue_type in queue_information.uninstall_queue_types:
         handle_uninstall_logic(uninstall_queue_type)
 
 
 @hook_states.hook_state_decorator(
-        start_hook_state_type=HookStateType.PRE_MODS_INSTALL, 
+        start_hook_state_type=HookStateType.PRE_MODS_INSTALL,
         end_hook_state_type=HookStateType.POST_MODS_INSTALL
     )
 def mods_install(use_symlinks: bool):
-    global install_queue_types
-    for install_queue_type in install_queue_types:
+    for install_queue_type in queue_information.install_queue_types:
         handle_install_logic(install_queue_type, use_symlinks)
 
 
@@ -415,7 +432,7 @@ def does_iostore_game_need_utoc_ucas() -> bool:
 
 
 @hook_states.hook_state_decorator(
-        start_hook_state_type=HookStateType.PRE_COOKING, 
+        start_hook_state_type=HookStateType.PRE_COOKING,
         end_hook_state_type=HookStateType.POST_COOKING
     )
 
@@ -426,7 +443,7 @@ def cooking():
             package_project_iostore()
         else:
             cook_uproject()
-    elif PackingType.ENGINE in install_queue_types:
+    elif PackingType.ENGINE in queue_information.install_queue_types:
         package_uproject_non_iostore()
     else:
         cook_uproject()

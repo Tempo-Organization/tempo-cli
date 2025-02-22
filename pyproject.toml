@@ -29,7 +29,7 @@ dependencies = [
   "screeninfo",
   "rich",
   "click",
-  "trogon",
+  "trogon @ git+https://github.com/Mythical-Github/trogon",
   "tomlkit",
   "pywinctl"
 ]

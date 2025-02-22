@@ -10,7 +10,7 @@
 # - rich
 # - screeninfo
 # - tomlkit
-# - trogon
+# - trogon@ git+https://github.com/Mythical-Github/trogon
 #
 
 certifi==2025.1.31
@@ -67,11 +67,11 @@ rich==13.9.4
     #   textual
 screeninfo==0.8.1
     # via hatch.envs.default
-textual==1.0.0
+textual==2.1.0
     # via trogon
 tomlkit==0.13.2
     # via hatch.envs.default
-trogon==0.6.0
+trogon @ git+https://github.com/Mythical-Github/trogon@166ba09d9c4f5b1dbb1da69aa2844be236822697
     # via hatch.envs.default
 typing-extensions==4.12.2
     # via

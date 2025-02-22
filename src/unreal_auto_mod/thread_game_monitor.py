@@ -1,18 +1,32 @@
-import time
+from dataclasses import dataclass
 import threading
+import time
 
+from unreal_auto_mod import hook_states, log, processes, utilities, window_management
 from unreal_auto_mod.data_structures import HookStateType
-from unreal_auto_mod import hook_states, utilities, window_management, log, processes
 
-found_process = False
-found_window = False
-window_closed = False
-run_monitoring_thread = False
-game_monitor_thread = ''
+
+@dataclass
+class GameMonitorThreadInformation:
+    init_done: bool
+    found_window: bool
+    found_process: bool
+    window_closed: bool
+    run_game_monitor_thread: bool
+    game_monitor_thread: threading.Thread
+
+game_monitor_thread_information = GameMonitorThreadInformation(
+    init_done = False,
+    found_window= False,
+    found_process= False,
+    window_closed= False,
+    run_game_monitor_thread = False,
+    game_monitor_thread = None
+)
 
 
 def game_monitor_thread_runner(tick_rate: float = 0.01):
-    while run_monitoring_thread:
+    while game_monitor_thread_information.run_game_monitor_thread:
         time.sleep(tick_rate)
         game_monitor_thread_logic()
 
@@ -23,48 +37,40 @@ def get_game_window():
 
 @hook_states.hook_state_decorator(HookStateType.POST_GAME_LAUNCH)
 def found_game_window():
-    global found_window
     log.log_message('Window: Game Window Found')
-    found_window = True
+    game_monitor_thread_information.found_window = True
 
 
 def game_monitor_thread_logic():
-    global found_process
-    global found_window
-    global window_closed
-
-    if not found_process:
+    if not game_monitor_thread_information.found_process:
         if processes.is_process_running(utilities.get_game_process_name()):
             log.log_message('Process: Found Game Process')
-            found_process = True
-    elif not found_window:
+            game_monitor_thread_information.found_process = True
+    elif not game_monitor_thread_information.found_window:
         time.sleep(4)
         if get_game_window():
             found_game_window()
-    elif not window_closed:
+    elif not game_monitor_thread_information.window_closed:
         if not get_game_window():
             log.log_message('Window: Game Window Closed')
             stop_game_monitor_thread()
-            window_closed = True
+            game_monitor_thread_information.window_closed = True
 
 
 def start_game_monitor_thread():
-    global game_monitor_thread
-    global run_monitoring_thread
-    run_monitoring_thread = True
-    game_monitor_thread = threading.Thread(target=game_monitor_thread_runner, daemon=True)
-    game_monitor_thread.start()
+    game_monitor_thread_information.run_game_monitor_thread = True
+    game_monitor_thread_information.game_monitor_thread = threading.Thread(target=game_monitor_thread_runner, daemon=True)
+    game_monitor_thread_information.game_monitor_thread.start()
 
 
 @hook_states.hook_state_decorator(HookStateType.POST_GAME_CLOSE)
 def stop_game_monitor_thread():
-    global run_monitoring_thread
-    run_monitoring_thread = False
+    game_monitor_thread_information.run_game_monitor_thread = False
 
 
 def game_monitor_thread():
     start_game_monitor_thread()
     log.log_message('Thread: Game Monitoring Thread Started')
-    game_monitor_thread.join()
+    game_monitor_thread_information.game_monitor_thread.join()
     log.log_message('Thread: Game Monitoring Thread Ended')
     log.log_message(f'Timer: Time since script execution: {utilities.get_running_time()}')

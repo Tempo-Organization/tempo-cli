@@ -4,7 +4,6 @@ import shutil
 from rich.progress import Progress
 
 from unreal_auto_mod import file_io, packing, utilities
-from unreal_auto_mod import file_io as file_io
 from unreal_auto_mod import unreal_engine as unreal_engine
 from unreal_auto_mod.data_structures import CompressionType
 

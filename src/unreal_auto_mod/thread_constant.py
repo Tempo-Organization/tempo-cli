@@ -1,12 +1,24 @@
-import time
 import threading
+import time
+from dataclasses import dataclass
 
 from unreal_auto_mod import hook_states, log
 from unreal_auto_mod.data_structures import HookStateType
 
 
+@dataclass
+class ConstantThreadInformation:
+    run_constant_thread: bool
+    constant_thread: threading.Thread
+
+constant_thread_information = ConstantThreadInformation(
+    run_constant_thread = False,
+    constant_thread = None
+)
+
+
 def constant_thread_runner(tick_rate: float = 0.01):
-    while run_constant_thread:
+    while constant_thread_information.run_constant_thread:
         time.sleep(tick_rate)
         constant_thread_logic()
 
@@ -16,11 +28,9 @@ def constant_thread_logic():
 
 
 def start_constant_thread():
-    global constant_thread
-    global run_constant_thread
-    run_constant_thread = True
-    constant_thread = threading.Thread(target=constant_thread_runner, daemon=True)
-    constant_thread.start()
+    constant_thread_information.run_constant_thread = True
+    constant_thread_information.constant_thread = threading.Thread(target=constant_thread_runner, daemon=True)
+    constant_thread_information.constant_thread.start()
 
 
 @hook_states.hook_state_decorator(HookStateType.POST_INIT)
@@ -34,6 +44,5 @@ def constant_thread():
 
 
 def stop_constant_thread():
-    global run_constant_thread
-    run_constant_thread = False
+    constant_thread_information.run_constant_thread = False
     log.log_message('Thread: Constant Thread Ended')
