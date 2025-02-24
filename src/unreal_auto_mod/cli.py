@@ -7,10 +7,10 @@ from trogon import tui
 
 from unreal_auto_mod import _version, data_structures, file_io, main_logic, window_management
 
-default_releases_dir = os.path.normpath(os.path.join(main_logic.settings_information.settings_json_dir, 'mod_packaging', 'releases'))
+
+default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 'dist'))
-os.makedirs(default_releases_dir, exist_ok=True)
-os.makedirs(default_output_releases_dir, exist_ok=True)
+default_releases_dir = os.path.normpath(os.path.join(main_logic.settings_information.settings_json_dir, 'mod_packaging', 'releases'))
 
 window_management.change_window_name('unreal_auto_mod')
 
@@ -21,7 +21,6 @@ def check_settings():
             index = sys.argv.index("--settings_json") + 1
             if index < len(sys.argv):
                 settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
-                print(f"Processed settings file path: {settings_file}")
                 return main_logic.load_settings(settings_file)
             else:
                 print("Error: No file path provided after --settings_json.")
@@ -34,9 +33,6 @@ def check_settings():
 def check_generate_wrapper():
     if "--generate_wrapper" in sys.argv:
         main_logic.generate_wrapper()
-
-
-default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 
 
 @tui()

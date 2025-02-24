@@ -147,3 +147,11 @@ def get_file_extensions_two(directory_with_base_name: str) -> list:
                 if ext:
                     extensions.add(ext)
     return list(extensions)
+
+
+def get_files_in_dir(directory):
+    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+
+
+def filter_by_extension(files, extension):
+    return [f for f in files if f.lower().endswith(extension)]

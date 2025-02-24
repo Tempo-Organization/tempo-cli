@@ -204,7 +204,6 @@ def uninstall_pak_mod(mod_name: str):
             os.unlink(sig_path)
 
 
-
 def uninstall_mod(packing_type: PackingType, mod_name: str):
     if packing_type == PackingType.LOOSE:
         uninstall_loose_mod(mod_name)
@@ -212,10 +211,34 @@ def uninstall_mod(packing_type: PackingType, mod_name: str):
         uninstall_pak_mod(mod_name)
 
 
-def install_mod_sig(mod_name: str):
-    sig_method_type = data_structures.get_enum_from_val(data_structures.SigMethodType, utilities.get_mods_info_dict(mod_name).get('sig_method', 'none'))
-    if sig_method_type == data_structures.SigMethodType.COPY or sig_method_type == data_structures.SigMethodType.EMPTY or (sig_method_type == data_structures.SigMethodType.GENERATE or sig_method_type == data_structures.SigMethodType.NONE):
-        print('test')
+def install_mod_sig(mod_name: str, use_symlinks: bool):
+    game_paks_dir = utilities.custom_get_game_paks_dir()
+    pak_dir_str = utilities.get_pak_dir_structure(mod_name)
+    sig_method_type = data_structures.get_enum_from_val(data_structures.SigMethodType, utilities.get_mods_info_dict(mod_name).get('sig_method_type', 'none'))
+    sig_location = os.path.normpath(f'{game_paks_dir}/{pak_dir_str}/{mod_name}.sig')
+    os.makedirs(os.path.dirname(sig_location), exist_ok=True)
+    if sig_method_type in data_structures.SigMethodType:
+        if sig_method_type == data_structures.SigMethodType.COPY:
+            sig_files = file_io.filter_by_extension(file_io.get_files_in_dir(game_paks_dir), '.sig')
+            if len(sig_files) < 1:
+                no_sigs_found = f''
+                raise RuntimeError(no_sigs_found)
+            else:
+                before_sig_file = os.path.normpath(f'{game_paks_dir}/{sig_files[0]}')
+                if use_symlinks:
+                    os.symlink(before_sig_file, sig_location)
+                else:
+                    shutil.copy(before_sig_file, sig_location)
+        if sig_method_type == data_structures.SigMethodType.EMPTY:
+            if use_symlinks:
+                other_sig_location = os.path.normpath(f'{utilities.get_working_dir()}/sig_files/{mod_name}.sig')
+                os.makedirs(os.path.dirname(other_sig_location), exist_ok=True)
+                with open(other_sig_location, 'w'):
+                    pass
+                os.symlink(other_sig_location, sig_location)
+            else:
+                with open(sig_location, 'w'):
+                    pass
     else:
         log.log_message(f'Error: You have provided an invalid sig method type in your mod entry for the {mod_name} mod.')
         log.log_message('Error: Valid options are:')
@@ -266,6 +289,7 @@ def install_engine_mod(mod_name: str, use_symlinks: bool):
                 os.unlink(after_file)
             if os.path.isfile(after_file):
                 os.remove(after_file)
+            install_mod_sig(mod_name, use_symlinks)
             if use_symlinks == True:
                 os.symlink(before_file, after_file)
             else:
@@ -274,8 +298,7 @@ def install_engine_mod(mod_name: str, use_symlinks: bool):
 
 def make_pak_repak(mod_name: str, use_symlinks: bool):
     pak_dir = f'{utilities.custom_get_game_paks_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
-    if not os.path.isdir(pak_dir):
-        os.makedirs(pak_dir)
+    os.makedirs(pak_dir, exist_ok=True)
     os.chdir(pak_dir)
 
     compression_type_str = utilities.get_mods_info_dict(mod_name)['compression_type']
@@ -300,6 +323,7 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
     if os.path.isfile(final_pak_location):
         os.remove(final_pak_location)
     utilities.run_app(command)
+    install_mod_sig(mod_name, use_symlinks)
     if use_symlinks == True:
         os.symlink(intermediate_pak_file, final_pak_location)
     else:

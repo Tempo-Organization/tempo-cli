@@ -180,14 +180,11 @@ class UnrealIostoreFileExtensions(Enum):
 
 class SigMethodType(Enum):
     """
-    Enum for the way to prpvide a sig when creating a mod release
+    Enum for the way to provide a sig when creating a mod release
     """
     NONE = 'none' # doesn't generate one
     COPY = 'copy' # copies and renames an existing one from the game install
     EMPTY = 'empty' # creates an empty file named and placed where the actual sig should be
-    GENERATE = 'generate' # uses the engine to create an actual sig file with provided information,
-                          # providing information part wip, think crypto json
-
 
 
 def get_enum_from_val(enum: Enum, value: str) -> Enum:

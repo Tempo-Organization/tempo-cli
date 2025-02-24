@@ -31,7 +31,8 @@ dependencies = [
   "click",
   "trogon @ git+https://github.com/Mythical-Github/trogon",
   "tomlkit",
-  "pywinctl"
+  "pywinctl",
+  "dynaconf"
 ]
 
 [project.urls]

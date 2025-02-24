@@ -3,8 +3,7 @@ import shutil
 
 from rich.progress import Progress
 
-from unreal_auto_mod import file_io, packing, utilities
-from unreal_auto_mod import unreal_engine as unreal_engine
+from unreal_auto_mod import file_io, packing, utilities, unreal_engine
 from unreal_auto_mod.data_structures import CompressionType
 
 
@@ -189,6 +188,7 @@ def make_non_iostore_unreal_pak_mod(
         os.unlink(final_pak_file)
     if os.path.isfile(final_pak_file):
         os.remove(final_pak_file)
+    packing.install_mod_sig(mod_name, use_symlinks)
     if use_symlinks == True:
         os.symlink(intermediate_pak_file, final_pak_file)
     else:

@@ -1,16 +1,16 @@
-import ctypes
-import json
 import os
-import pathlib
 import sys
+import json
+import ctypes
+import pathlib
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
 import psutil
+from dynaconf import Dynaconf
 
-import unreal_auto_mod.file_io as gen_utils
-from unreal_auto_mod import data_structures, file_io, hook_states, log, mods, unreal_engine
 from unreal_auto_mod.log import log_message
+from unreal_auto_mod import data_structures, file_io, hook_states, log, mods, unreal_engine, configs
 
 
 @dataclass
@@ -40,8 +40,8 @@ os.chdir(SCRIPT_DIR)
 
 
 def init_settings(settings_json_path: pathlib.Path):
-    with open(settings_json_path) as file:
-        settings_information.settings = json.load(file)
+    raw_settings = Dynaconf(settings_files=[settings_json_path])
+    settings_information.settings = configs.DynamicSettings(raw_settings)
     window_name = settings_information.settings['general_info']['window_title']
     ctypes.windll.kernel32.SetConsoleTitleW(window_name)
     auto_close_game = settings_information.settings['process_kill_events']['auto_close_game']
@@ -135,6 +135,7 @@ def init_checks():
     log.log_message('Check: Game exists')
 
     log.log_message('Check: Passed all init checks')
+
 
 
 def load_settings(settings_json: str):
@@ -267,7 +268,7 @@ def open_latest_log(settings_json: str):
     from unreal_auto_mod import log_info
     log_prefix = log_info.LOG_INFO['log_name_prefix']
     file_to_open = f'{SCRIPT_DIR}/logs/{log_prefix}latest.log'
-    gen_utils.open_file_in_default(file_to_open)
+    file_io.open_file_in_default(file_to_open)
 
 
 def run_game(settings_json: str, toggle_engine: bool):

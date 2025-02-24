@@ -2,24 +2,22 @@
 
 
 ## To Do:
-- [ ] recheck over symlink logic, make sure everywhere uses it where it should
-- [ ] sig logic, should copy existing and create if not exist on file placement option, or show warning
+- [ ]
+
+
+## File Includes:
+- [ ] file include collections, toggleable auto include by name convention, with manual specification by name or path list
 
 
 ## Expanded Tokens:
-- [ ] expanded tokens for configuration, maybe regex, 
+- [ ] expanded tokens for configuration, works with env vars, up a directory, path seperator
         references:
                 https://code.visualstudio.com/docs/editor/variables-reference, 
                 https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes
 
 
-## File Includes:
-- [ ] make file include system more robust, 
-- [ ] file include collections, toggleable auto include by name convention, with manual specification by name or path list
-- [ ] file include has, file, dir, tree, maybe also regex possibilities from expanded tokens
-
-
 ## Iostore:
+- [ ] recheck over symlink logic for create iostore mods, same with sig logic
 - [ ] non engine iostore, file_extemsions for iostore
 - [ ] iostore repackaging more testing, ubulk stuff, try newer unreal engine versions
 - [ ] finish iostore manual repackaging logic, check the following commands:
@@ -29,15 +27,6 @@
         test mods all
         generate mods
         generate mods all
-
-
-## Hot Keys To Make:
-- [ ] General Hotkey functionality
-- [ ] Close game hotkey
-- [ ] Run script again hotkey
-- [ ] Bring Unreal Engine to front hotkey
-- [ ] Bring game to front hotkey
-- [ ] Close all hotkey (game, engine, and instances of UAM)
 
 
 ## Documentation:
@@ -95,3 +84,12 @@
         - [ ] openm persistent mods dir
         - [ ] open unreal auto mod dir
         - [ ] open uproject dir
+
+
+        ## Hot Keys To Make:
+        - [ ] General Hotkey functionality
+        - [ ] Close game hotkey
+        - [ ] Run script again hotkey
+        - [ ] Bring Unreal Engine to front hotkey
+        - [ ] Bring game to front hotkey
+        - [ ] Close all hotkey (game, engine, and instances of UAM)
