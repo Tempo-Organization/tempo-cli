@@ -40,6 +40,17 @@ def install_uasset_gui(output_directory: str):
     shutil.move(exe_path, f'{output_directory}/UAssetGUI.exe')
 
 
+def download_stove(output_directory: str):
+    latest_version = get_latest_stove_version()
+    if latest_version:
+        url = f"https://github.com/bananaturtlesandwich/stove/releases/download/{latest_version}/stove.exe"
+    else:
+        url = "https://github.com/bananaturtlesandwich/stove/releases/download/0.13.1-alpha/stove.exe"
+
+    download_path = f'{output_directory}/stove.exe'
+    file_io.download_file(url, download_path)
+
+
 def install_stove(output_directory: str):
     os.makedirs(output_directory, exist_ok=True)
     download_stove(output_directory)
