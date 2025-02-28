@@ -3,6 +3,7 @@ import hashlib
 import os
 import sys
 import zipfile
+import webbrowser
 from pathlib import Path
 
 import psutil
@@ -10,6 +11,7 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod.log import log_message
+
 
 if getattr(sys, 'frozen', False):
     SCRIPT_DIR = Path(sys.executable).parent
@@ -48,7 +50,6 @@ def download_file(url: str, download_path: str):
 
 
 def open_dir_in_file_browser(input_directory: str):
-    from unreal_auto_mod.log import log_message
     formatted_directory = os.path.abspath(input_directory)
     if not os.path.isdir(formatted_directory):
         log_message(f"Error: The directory '{formatted_directory}' does not exist.")
@@ -61,8 +62,6 @@ def open_file_in_default(file_path: str):
 
 
 def open_website(input_url: str):
-    import webbrowser
-
     webbrowser.open(input_url)
 
 
@@ -107,9 +106,7 @@ def get_file_hash(file_path: str) -> str:
 
 def get_do_files_have_same_hash(file_path_one: str, file_path_two: str) -> bool:
     if os.path.exists(file_path_one) and os.path.exists(file_path_two):
-        hash_one = get_file_hash(file_path_one)
-        hash_two = get_file_hash(file_path_two)
-        return hash_one == hash_two
+        return get_file_hash(file_path_one) == get_file_hash(file_path_two)
     else:
         return False
 
@@ -155,3 +152,53 @@ def get_files_in_dir(directory):
 
 def filter_by_extension(files, extension):
     return [f for f in files if f.lower().endswith(extension)]
+
+
+def get_all_lines_in_config(config_path: str) -> list[str]:
+    with open(config_path, encoding='utf-8') as file:
+        return file.readlines()
+
+
+def set_all_lines_in_config(config_path: str, lines: list[str]):
+    with open(config_path, 'w', encoding='utf-8') as file:
+        file.writelines(lines)
+
+
+def add_line_to_config(config_path: str, line: str):
+    if not does_config_have_line(config_path, line):
+        with open(config_path, 'a', encoding='utf-8') as file:
+            file.write(line + '\n')
+
+
+def remove_line_from_config(config_path: str, line: str):
+    lines = get_all_lines_in_config(config_path)
+    with open(config_path, 'w', encoding='utf-8') as file:
+        file.writelines(l for l in lines if l.rstrip('\n') != line)
+
+
+def does_config_have_line(config_path: str, line: str) -> bool:
+    return line + '\n' in get_all_lines_in_config(config_path)
+
+
+def remove_lines_from_config_that_start_with_substring(config_path: str, substring: str):
+    new_lines = []
+    for line in get_all_lines_in_config(config_path):
+        if not line.startswith(substring):
+            new_lines.append(line)
+    set_all_lines_in_config(config_path, new_lines)
+
+
+def remove_lines_from_config_that_end_with_substring(config_path: str, substring: str):
+    new_lines = []
+    for line in get_all_lines_in_config(config_path):
+        if not line.endswith(substring):
+            new_lines.append(line)
+    set_all_lines_in_config(config_path, new_lines)
+
+
+def remove_lines_from_config_that_contain_substring(config_path: str, substring: str):
+    new_lines = []
+    for line in get_all_lines_in_config(config_path):
+        if not line in (substring):
+            new_lines.append(line)
+    set_all_lines_in_config(config_path, new_lines)

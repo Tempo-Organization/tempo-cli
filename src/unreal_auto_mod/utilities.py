@@ -1,7 +1,7 @@
 import os
+import time
 import shutil
 import subprocess
-import time
 
 from unreal_auto_mod import file_io, log, main_logic, unreal_engine
 from unreal_auto_mod.data_structures import CompressionType, ExecutionMode, HookStateType, get_enum_from_val
@@ -315,16 +315,6 @@ def custom_get_game_dir():
     return unreal_engine.get_game_dir(get_game_exe_path())
 
 
-# def custom_get_game_paks_dir() -> str:
-#     alt_game_dir = os.path.dirname(custom_get_game_dir())
-#     if get_is_using_alt_dir_name():
-#         return os.path.join(alt_game_dir, get_alt_packing_dir_name, 'Content', 'Paks')
-#     elif not get_should_skip_uproject_steps():
-#         return unreal_dev_utils.get_game_paks_dir(get_uproject_file(), custom_get_game_dir())
-#     else:
-#         return f'{os.path.dirname(os.path.dirname(os.path.dirname(get_game_exe_path())))}/Content/Paks'
-
-
 def custom_get_game_paks_dir() -> str:
     alt_game_dir = os.path.dirname(custom_get_game_dir())
     if get_is_using_alt_dir_name():
@@ -340,8 +330,7 @@ def get_unreal_engine_dir() -> str:
 
 
 def get_uproject_file() -> str:
-    uproject_file = main_logic.settings_information.settings['engine_info']['unreal_project_file']
-    return uproject_file
+    return main_logic.settings_information.settings['engine_info']['unreal_project_file']
 
 
 def get_uproject_dir():
@@ -437,17 +426,8 @@ def get_override_working_dir() -> str:
     return main_logic.settings_information.settings['general_info']['working_dir']
 
 
-# def get_working_dir() -> str:
-#     if get_is_overriding_default_working_dir():
-#         working_dir = get_override_working_dir()
-#     else:
-#         working_dir = os.path.join(settings.SCRIPT_DIR, 'working_dir')
-#     os.makedirs(working_dir, exist_ok=True)
-#     return working_dir
-
-
 def get_working_dir() -> str:
-    working_dir = os.path.join(main_logic.SCRIPT_DIR, 'working_dir')
+    working_dir = os.path.join(file_io.SCRIPT_DIR, 'working_dir')
     os.makedirs(working_dir, exist_ok=True)
     return working_dir
 

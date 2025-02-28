@@ -1,12 +1,12 @@
-import json
 import os
+import json
 
-from unreal_auto_mod import file_io, processes
+from unreal_auto_mod import file_io, process_management
 from unreal_auto_mod.data_structures import PackagingDirType
 
 
 def get_game_process_name(input_game_exe_path: str) -> str:
-    return processes.get_process_name(input_game_exe_path)
+    return process_management.get_process_name(input_game_exe_path)
 
 
 def get_unreal_engine_version(engine_path: str) -> str:
@@ -114,11 +114,11 @@ def get_saved_cooked_dir(uproject_file_path: str) -> str:
 
 
 def get_engine_window_title(uproject_file_path: str) -> str:
-    return f"{processes.get_process_name(uproject_file_path)[:-9]} - Unreal Editor"
+    return f"{process_management.get_process_name(uproject_file_path)[:-9]} - Unreal Editor"
 
 
 def get_engine_process_name(unreal_dir: str) -> str:
-    return processes.get_process_name(get_unreal_editor_exe_path(unreal_dir))
+    return process_management.get_process_name(get_unreal_editor_exe_path(unreal_dir))
 
 
 def get_build_target_file_path(uproject_file_path: str) -> str:

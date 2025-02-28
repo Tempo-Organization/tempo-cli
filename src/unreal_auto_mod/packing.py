@@ -13,8 +13,8 @@ from unreal_auto_mod import (
     unreal_engine,
     unreal_pak,
     utilities,
+    file_io
 )
-from unreal_auto_mod import file_io as file_io
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 
 

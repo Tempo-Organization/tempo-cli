@@ -2,7 +2,6 @@
 
 
 ## To Do:
-- [ ]
 
 
 ## File Includes:
@@ -39,6 +38,8 @@
 
 
 ## Later Later:
+- [ ] overrideable colors, ability to disable coloring/progress bars/logging
+- [ ] appease linter
 - [ ] generate project files for uproject
 - [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic
 - [ ] generate uproject from win 64 exe, will need the unreal engine version
@@ -57,6 +58,7 @@
 - [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
 - [ ] Switch to `pathlib` from strings
 - [ ] add toml support
+- [ ] layout support command
 
 
         ## Events to look into
@@ -93,3 +95,5 @@
         - [ ] Bring Unreal Engine to front hotkey
         - [ ] Bring game to front hotkey
         - [ ] Close all hotkey (game, engine, and instances of UAM)
+
+automate asset import for meshes/skeletons/textures/physics assets, pal/da, etc.... and various properties

@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
-from unreal_auto_mod import log as log
-from unreal_auto_mod import main_logic, utilities, window_management
-from unreal_auto_mod import window_management as windows
+from unreal_auto_mod import log, main_logic, window_management
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
 
 
@@ -16,6 +14,7 @@ hook_state_info = HookStateInfo(HookStateType.PRE_INIT)
 
 
 def exec_events_checks(hook_state_type: HookStateType):
+    from unreal_auto_mod import utilities
     exec_events = utilities.get_exec_events()
     for exec_event in exec_events:
         value = exec_event['hook_state']
@@ -28,6 +27,7 @@ def exec_events_checks(hook_state_type: HookStateType):
 
 
 def is_hook_state_used(state: HookStateType) -> bool:
+    from unreal_auto_mod import utilities
     if isinstance(main_logic.settings_information.settings, dict):
         if "process_kill_events" in main_logic.settings_information.settings:
             process_kill_events = main_logic.settings_information.settings.get("process_kill_events", {})
@@ -56,6 +56,7 @@ def is_hook_state_used(state: HookStateType) -> bool:
 
 
 def window_checks(current_state: WindowAction):
+    from unreal_auto_mod import utilities
     window_settings_list = utilities.get_window_management_events()
     for window_settings in window_settings_list:
         settings_state = get_enum_from_val(HookStateType, window_settings['hook_state'])
@@ -65,18 +66,19 @@ def window_checks(current_state: WindowAction):
             for window_to_change in windows_to_change:
                 way_to_change_window = get_enum_from_val(WindowAction, window_settings['window_behaviour'])
                 if way_to_change_window == WindowAction.MAX:
-                    windows.maximize_window(window_to_change)
+                    window_management.maximize_window(window_to_change)
                 elif way_to_change_window == WindowAction.MIN:
-                    windows.minimize_window(window_to_change)
+                    window_management.minimize_window(window_to_change)
                 elif way_to_change_window == WindowAction.CLOSE:
-                    windows.close_window(window_to_change)
+                    window_management.close_window(window_to_change)
                 elif way_to_change_window == WindowAction.MOVE:
-                    windows.move_window(window_to_change, window_settings)
+                    window_management.move_window(window_to_change, window_settings)
                 else:
                     log.log_message('Monitor: invalid window behavior specified in settings')
 
 
 def hook_state_checks(hook_state: HookStateType):
+    from unreal_auto_mod import utilities
     if hook_state != HookStateType.CONSTANT:
         log.log_message(f'Hook State Check: {hook_state} is running')
     if is_hook_state_used(hook_state):
@@ -88,6 +90,7 @@ def hook_state_checks(hook_state: HookStateType):
 
 
 def set_hook_state(new_state: HookStateType):
+    from unreal_auto_mod import utilities
     hook_state_info.hook_state = new_state
     log.log_message(f'Hook State: changed to {new_state}')
     # calling this on preinit causes problems so will avoid for now

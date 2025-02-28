@@ -1,11 +1,18 @@
 import os
-import pathlib
 import sys
+import pathlib
 
 import click
 from trogon import tui
 
-from unreal_auto_mod import _version, data_structures, file_io, main_logic, window_management
+from unreal_auto_mod import (
+    _version, 
+    data_structures, 
+    file_io, 
+    main_logic, 
+    window_management, 
+    wrapper
+)
 
 
 default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
@@ -32,7 +39,7 @@ def check_settings():
 
 def check_generate_wrapper():
     if "--generate_wrapper" in sys.argv:
-        main_logic.generate_wrapper()
+        wrapper.generate_wrapper()
 
 
 @tui()
