@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 import shutil
 from enum import Enum
@@ -74,95 +75,66 @@ class UnrealGuid:
             UnrealGuid: A new UnrealGuid object created from the provided UID string.
         """
         return cls(uid.upper())
-
+    
 
 class UnrealCollectionColor:
     """
     A class representing a color with red, green, blue, and alpha components.
     
-    Attributes:
-        r (float): The red component of the color (between 0.0 and 1.0).
-        g (float): The green component of the color (between 0.0 and 1.0).
-        b (float): The blue component of the color (between 0.0 and 1.0).
-        a (float): The alpha (opacity) component of the color (between 0.0 and 1.0).
-    
-    Methods:
-        get_formatted_string() -> str: Returns the color components as a formatted string.
-        get_red() -> float: Returns the red component of the color.
-        get_green() -> float: Returns the green component of the color.
-        get_blue() -> float: Returns the blue component of the color.
-        get_alpha() -> float: Returns the alpha component of the color.
-        __repr__() -> str: Returns the color as a formatted string for easy inspection.
+    Can be initialized with either RGBA float values or a formatted string.
     """
-    
-    def __init__(self, r: float, g: float, b: float, a: float):
+
+    def __init__(self, r, g=None, b=None, a=None):
         """
-        Initializes the color with the given RGBA values.
-        
+        Initializes the color with either RGBA float values or a formatted string.
+
         Args:
-            r (float): The red component of the color (between 0.0 and 1.0).
-            g (float): The green component of the color (between 0.0 and 1.0).
-            b (float): The blue component of the color (between 0.0 and 1.0).
-            a (float): The alpha (opacity) component of the color (between 0.0 and 1.0).
+            r (float or str): The red component (0.0 to 1.0) or a formatted string.
+            g (float, optional): The green component (0.0 to 1.0).
+            b (float, optional): The blue component (0.0 to 1.0).
+            a (float, optional): The alpha (opacity) component (0.0 to 1.0).
+
+        Raises:
+            ValueError: If the formatted string is invalid.
         """
-        self.r = max(0.0, min(1.0, r))
-        self.g = max(0.0, min(1.0, g))
-        self.b = max(0.0, min(1.0, b))
-        self.a = max(0.0, min(1.0, a))
+        if isinstance(r, str):
+            self.r, self.g, self.b, self.a = self._parse_string(r)
+        else:
+            self.r = self._clamp(r)
+            self.g = self._clamp(g)
+            self.b = self._clamp(b)
+            self.a = self._clamp(a)
+
+    @staticmethod
+    def _parse_string(color_string):
+        """
+        Parses a formatted color string into its RGBA components as floats.
+
+        Args:
+            color_string (str): The color string in the format "(R=0.250000,G=0.018259,B=0.000337,A=1.000000)".
+
+        Returns:
+            tuple: (r, g, b, a) as floats.
+
+        Raises:
+            ValueError: If the format is invalid.
+        """
+        match = re.match(r"\(R=([\d.]+),G=([\d.]+),B=([\d.]+),A=([\d.]+)\)", color_string)
+        if not match:
+            raise ValueError(f"Invalid color string format: {color_string}")
+        return tuple(map(float, match.groups()))
+
+    @staticmethod
+    def _clamp(value):
+        """Ensures the color component stays within [0.0, 1.0]."""
+        return max(0.0, min(1.0, value))
 
     def get_formatted_string(self) -> str:
-        """
-        Returns the color components as a formatted string in the form of:
-        (R=0.250000,G=0.018259,B=0.000337,A=1.000000).
-        
-        Returns:
-            str: A string representing the color in a formatted way.
-        """
+        """Returns the color components as a formatted string."""
         return f"(R={self.r:.6f},G={self.g:.6f},B={self.b:.6f},A={self.a:.6f})"
 
-    def get_red(self) -> float:
-        """
-        Returns the red component of the color.
-        
-        Returns:
-            float: The red component of the color.
-        """
-        return self.r
-
-    def get_green(self) -> float:
-        """
-        Returns the green component of the color.
-        
-        Returns:
-            float: The green component of the color.
-        """
-        return self.g
-
-    def get_blue(self) -> float:
-        """
-        Returns the blue component of the color.
-        
-        Returns:
-            float: The blue component of the color.
-        """
-        return self.b
-
-    def get_alpha(self) -> float:
-        """
-        Returns the alpha (opacity) component of the color.
-        
-        Returns:
-            float: The alpha component of the color.
-        """
-        return self.a
-
     def __repr__(self) -> str:
-        """
-        Returns the color as a formatted string for easy inspection.
-        
-        Returns:
-            str: A string representing the color in a formatted way.
-        """
+        """Returns the color as a formatted string for easy inspection."""
         return self.get_formatted_string()
 
 
@@ -248,6 +220,7 @@ class UnrealCollection:
     parent_guid: UnrealGuid
     guid: UnrealGuid
     color: UnrealCollectionColor
+    content_paths: list[UnrealAssetPath]
 
 
 def are_any_collections_in_use(collections_directory: Path) -> bool:
@@ -255,88 +228,124 @@ def are_any_collections_in_use(collections_directory: Path) -> bool:
 
 
 def get_number_of_collections(collections_directory: Path) -> int:
-    return len(get_collections(collections_directory))
+    return len(get_enabled_collections(collections_directory))
 
 
-def get_collections_directory(uproject_directory: Path) -> Path:
+def get_collections_directory(uproject_directory: Path, create_directory_if_missing: bool = True) -> Path:
     collections_directory = os.path.normpath(f'{uproject_directory}/Saved/Collections')
-    os.makedirs(collections_directory, exist_ok=True)
+    if create_directory_if_missing and not os.path.isdir(collections_directory):
+        os.makedirs(collections_directory)
     return collections_directory
 
 
-def get_collections(collections_directory: Path) -> list[UnrealCollection]:
+def get_unreal_collection_from_unreal_collection_path(collection_path: Path) -> UnrealCollection:
+    if not os.path.isfile(collection_path):
+        unreal_collection_path_does_not_exist_error = f'The following collection path file does not exist "{collection_path}"'
+        raise FileNotFoundError(unreal_collection_path_does_not_exist_error)
+    return UnrealCollection(
+        file_system_path=collection_path, 
+        file_version=get_file_version_from_collection_path(collection_path),
+        file_type=get_type_from_unreal_collection_path(collection_path),
+        parent_guid=get_parent_guid_from_unreal_collection_path(collection_path),
+        guid=get_guid_from_unreal_collection_path(collection_path),
+        color=get_collection_color_from_unreal_collection_path(collection_path),
+        content_paths=get_collection_content_paths_unreal_collection_path(collection_path)
+    )
+
+
+def get_enabled_collection_paths(collections_directory: Path) -> list[Path]:
     return file_io.filter_by_extension(file_io.get_files_in_dir(collections_directory), '.collection')
+
+
+def get_disabled_collection_paths(collections_directory: Path) -> list[Path]:
+    return file_io.filter_by_extension(file_io.get_files_in_dir(collections_directory), '.collection.disabled')
+
+
+def get_enabled_collections(collections_directory: Path) -> list[UnrealCollection]:
+    # this doesn't account for if a collections parent or parent's parent, etc.... has been disabled or not, if they are, then they just be pruned
+    unreal_collections = []
+    for unreal_collection_path in get_enabled_collection_paths(collections_directory):
+        unreal_collections.append[get_unreal_collection_from_unreal_collection_path(unreal_collection_path)]
+    return unreal_collections
+
+
+def get_disabled_collections(collections_directory: Path) -> list[UnrealCollection]:
+    # this doesn't account for if a collections parent or parent's parent, etc.... has been disabled or not, if they are, then they just be added
+    unreal_collections = []
+    for unreal_collection_path in get_disabled_collection_paths(collections_directory):
+        unreal_collections.append[get_unreal_collection_from_unreal_collection_path(unreal_collection_path)]
+    return unreal_collections
 
 
 def get_parent_collection(collection: UnrealCollection) -> UnrealCollection:
     parent_collection_file = None
-    parent_guid = get_parent_guid(collection)
+    parent_guid = get_parent_guid_from_unreal_collection_path(collection)
     if parent_guid and not parent_guid == get_blank_unreal_guid():
-        all_collection_files = get_collections(get_collections_directory(utilities.get_uproject_dir()))
+        all_collection_files = get_enabled_collections(get_collections_directory(utilities.get_uproject_dir()))
         for collection_file in all_collection_files:
-            if get_guid(collection_file) == parent_guid:
+            if get_guid_from_unreal_collection_path(collection_file) == parent_guid:
                 parent_collection_file = collection_file
                 break
     return parent_collection_file
 
 
-def get_file_version(collection: UnrealCollection) -> int:
-    config_lines = file_io.get_all_lines_in_config(collection)
+def get_file_version_from_collection_path(collection_path: Path) -> int:
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'FileVersion:'
 
     for line in config_lines:
         if line.startswith(config_line_prefix):
             return int(line.replace(config_line_prefix, ''))
     
-    config_error = f'There was no "{config_line_prefix}" line in the following config "{collection}"'
+    config_error = f'There was no "{config_line_prefix}" line in the following config "{collection_path}"'
     raise RuntimeError(config_error)
 
 
-def get_type(collection: UnrealCollection) -> UnrealCollectionType:
-    config_lines = file_io.get_all_lines_in_config(collection)
+def get_type_from_unreal_collection_path(collection_path: Path) -> UnrealCollectionType:
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'Type:'
 
     for line in config_lines:
         if line.startswith(config_line_prefix):
             return line.replace(config_line_prefix, '')
     
-    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection}"'
+    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection_path}"'
     raise RuntimeError(config_error)
 
 
-def get_guid(collection: UnrealCollection) -> UnrealGuid:
-    config_lines = file_io.get_all_lines_in_config(collection)
+def get_guid_from_unreal_collection_path(collection_path: Path) -> UnrealGuid:
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'Guid:'
 
     for line in config_lines:
         if line.startswith(config_line_prefix):
             return line.replace(config_line_prefix, '')
     
-    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection}"'
+    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection_path}"'
     raise RuntimeError(config_error)
 
 
-def get_parent_guid(collection: UnrealCollection) -> UnrealGuid:
-    config_lines = file_io.get_all_lines_in_config(collection)
+def get_parent_guid_from_unreal_collection_path(collection_path: Path) -> UnrealGuid:
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'ParentGuid:'
 
     for line in config_lines:
         if line.startswith(config_line_prefix):
             return line.replace(config_line_prefix, '')
     
-    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection}"'
+    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection_path}"'
     raise RuntimeError(config_error)
 
 
-def get_collection_color(collection: UnrealCollection) -> UnrealCollectionColor:
-    config_lines = file_io.get_all_lines_in_config(collection)
+def get_collection_color_from_unreal_collection_path(collection_path: Path) -> UnrealCollectionColor:
+    config_lines = file_io.get_all_lines_in_config(collection_path.file_system_path)
     config_line_prefix = 'Color:'
 
     for line in config_lines:
         if line.startswith(config_line_prefix):
-            return line.replace(config_line_prefix, '')
+            return UnrealCollectionColor(line.replace(config_line_prefix, ''))
     
-    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection}"'
+    config_error = f'There is no "{config_line_prefix}" line in the following config "{collection_path}"'
     raise RuntimeError(config_error)
 
 
@@ -371,8 +380,9 @@ def delete_collection(collection: UnrealCollection):
         raise FileNotFoundError(not_found_error)
         
 
-def get_all_non_key_lines(collection: UnrealCollection) -> list[str]:
-    config_lines = file_io.get_all_lines_in_config(collection)
+def get_all_non_key_lines_from_collection_path(collection_path: Path) -> list[str]:
+    # doesn't account for when the file does not exist
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     removal_start_sub_strings = [
         'FileVersion:',
         'Type:',
@@ -387,54 +397,109 @@ def get_blank_unreal_guid() -> UnrealGuid:
     return UnrealGuid(uid='00000000-0000-0000-0000-000000000000')
 
 
-def set_collection_parent_collection(parent_collection: UnrealCollection, child_collection: UnrealCollection):
-    return
+def set_collection_parent_collection(
+        parent_collection: UnrealCollection, 
+        child_collection: UnrealCollection
+    ):
+    set_collection_parent_guid(child_collection, parent_collection.guid)
 
 
-def add_child_collection_to_parent_collection(child_collection: UnrealCollection, parent_collection: UnrealCollection):
-    return
+def add_child_collection_to_parent_collection(
+        child_collection: UnrealCollection, 
+        parent_collection: UnrealCollection
+    ):
+    set_collection_parent_guid(child_collection, parent_collection.guid)
 
 
-def add_child_collections_to_parent_collection(child_collections: list[UnrealCollection], parent_collection: UnrealCollection):
-    return
+def add_child_collections_to_parent_collection(
+        child_collections: list[UnrealCollection], 
+        parent_collection: UnrealCollection
+    ):
+    for collection in child_collections:
+        set_collection_parent_guid(collection, parent_collection.guid)
 
 
-def remove_child_collection_from_parent_collection(child_collection: UnrealCollection, parent_collection: UnrealCollection):
-    return
+def remove_child_collection_from_parent_collection(
+        child_collection: UnrealCollection
+    ):
+    set_collection_parent_guid(child_collection, get_blank_unreal_guid())
 
 
-def remove_child_collections_from_parent_collection(child_collections: list[UnrealCollection], parent_collection: UnrealCollection):
-    return
+def remove_child_collections_from_parent_collection(
+        child_collections: list[UnrealCollection]
+    ):
+    for collection in child_collections:
+        set_collection_parent_guid(collection, get_blank_unreal_guid())
 
 
+# needs completion
 def create_collection(
-    guid: UnrealGuid, 
-    parent_guid: UnrealGuid, 
-    color: UnrealCollectionColor, 
-    content_paths: list[UnrealAssetPath], 
+    collection_name: str,
     file_version: int, 
-    type: UnrealCollectionType
+    type: UnrealCollectionType,
+    guid: UnrealGuid,
+    parent_guid: UnrealGuid,
+    color: UnrealCollectionColor,
+    content_paths: list[UnrealAssetPath],
+    exist_ok: bool
 ):
-    return
+    collection_path = os.path.normpath(f'{get_collections_directory()}/{collection_name}.collection')
+    if os.path.isfile(collection_path) and not exist_ok:
+        collection_exists_error = f'The following collection file already exists: "{collection_path}"'
+        raise FileExistsError(collection_exists_error)
 
 
-def enable_collection(collection: UnrealCollection):
-    return
+def enable_collection(collection: UnrealCollection, disabled_collection_exists_ok: bool):
+    enabled_collection_path = os.path.normpath(collection.file_system_path)
+    disabled_collection_path = os.path.normpath(f'{collection.file_system_path}.disabled')
+    if not os.path.isfile(enabled_collection_path):
+        enabled_collection_path_does_not_exist_error = f'The following collection file does not exist "{enabled_collection_path}", so it cannot be disabled.'
+        raise FileNotFoundError(enabled_collection_path_does_not_exist_error)
+    if os.path.isfile(disabled_collection_path):
+        if disabled_collection_exists_ok:
+            os.remove(disabled_collection_path)
+        else:
+            disabled_file_already_exists_error = f'The following file exists already "{disabled_collection_path}", so a file cannot be backed up in the same place.'
+            raise FileExistsError(disabled_file_already_exists_error)
+    shutil.move(enabled_collection_path, disabled_collection_path)
+    collection.file_system_path = disabled_collection_path
 
 
-def disable_collection(collection: UnrealCollection):
-    return
+def disable_collection(collection: UnrealCollection, enabled_collection_exists_ok: bool):
+    enabled_collection_path = os.path.normpath(collection.file_system_path)
+    disabled_collection_path = os.path.normpath(f'{collection.file_system_path}.disabled')
+    if not os.path.isfile(disabled_collection_path):
+        disabled_collection_path_does_not_exist_error = f'The following collection file does not exist "{disabled_collection_path}", so it cannot be enabled.'
+        raise FileNotFoundError(disabled_collection_path_does_not_exist_error)
+    if os.path.isfile(enabled_collection_path):
+        if enabled_collection_exists_ok:
+            os.remove(enabled_collection_path)
+        else:
+            enabled_file_already_exists_error = f'The following file exists already "{enabled_collection_path}", so a file cannot be moved to the same place.'
+            raise FileExistsError(enabled_file_already_exists_error)
+    shutil.move(disabled_collection_path, enabled_collection_path)
+    collection.file_system_path = enabled_collection_path
 
 
-def set_collection_guid(collection: UnrealCollection, guid: UnrealGuid):
-    return
+def set_collection_guid(collection: UnrealCollection, guid: UnrealGuid, fix_child_collections_parent_guids: bool = True):
+    #check if any other collections use this as a parent collection, and if so edit those alongside, or make it an option
+    # also right it to the actual config file
+    collection.guid = guid
 
 
 def set_collection_parent_guid(collection: UnrealCollection, guid: UnrealGuid):
-    return
+    # check a collection with this id isn't already present to prevent issues
+    # check if the collection with the parent id exists and if not, raise an error, unless a bool is passed, make abool for that
+    # also right it to the actual config file
+    collection.parent_guid = guid
 
 
-def set_collection_color(r_color: float, g_color: float, b_color: float, a_color: float):
+def set_collection_color(
+        r_color: float, 
+        g_color: float, 
+        b_color: float, 
+        a_color: float
+    ):
     return
 
 
@@ -442,7 +507,7 @@ def add_path_to_collection(collection: UnrealCollection, path: UnrealAssetPath):
     return
 
 
-def get_collection_content_paths(collection: UnrealCollection) -> list[UnrealAssetPath]:
+def get_collection_content_paths_unreal_collection_path(collection: UnrealCollection) -> list[UnrealAssetPath]:
     return
 
 
@@ -462,27 +527,47 @@ def set_collection_file_version(file_version: int):
     return
 
 
-def add_collection_to_mod_entry(collection: UnrealCollection, mod_name: str, settings_json: Path):
+def add_collection_to_mod_entry(
+        collection: UnrealCollection, 
+        mod_name: str, 
+        settings_json: Path
+    ):
     return
 
 
-def remove_collection_from_mod_entry(collection: UnrealCollection, mod_name: str, settings_json: Path):
+def remove_collection_from_mod_entry(
+        collection: UnrealCollection, 
+        mod_name: str, 
+        settings_json: Path
+    ):
     return
 
 
-def add_collections_to_mod_entry(collections: list[UnrealCollection], mod_name: str, settings_json: Path):
+def add_collections_to_mod_entry(
+        collections: list[UnrealCollection], 
+        mod_name: str, 
+        settings_json: Path
+    ):
     return
 
 
-def remove_collections_from_mod_entry(collections: list[UnrealCollection], mod_name: str, settings_json: Path):
+def remove_collections_from_mod_entry(
+        collections: list[UnrealCollection], 
+        mod_name: str, 
+        settings_json: Path
+    ):
     return
 
 
-def get_collections_from_mod_entry(collections: list[UnrealCollection], mod_name: str, settings_json: Path):
+def get_collections_from_mod_entry(
+        collections: list[UnrealCollection], 
+        mod_name: str, 
+        settings_json: Path
+    ):
     return
 
 
-def process_guid(guid):
-    # If a string is passed, convert it to an UnrealGuid instance, for cli usage
-    if isinstance(guid, str):
-        guid = UnrealGuid(guid)
+# def process_guid(guid):
+#     # If a string is passed, convert it to an UnrealGuid instance, for cli usage
+#     if isinstance(guid, str):
+#         guid = UnrealGuid(guid)
