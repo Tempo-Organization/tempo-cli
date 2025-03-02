@@ -53,6 +53,7 @@
 - [ ] cli command for dumping usmapping
 - [ ] cli command for getting unreal engine version
 - [ ] cli command for getting aes key
+- [ ] cli command for getting uproject name
 - [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup
 - [ ] cli help replies and such are not colorized like the rest of the program, fix this
 - [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
