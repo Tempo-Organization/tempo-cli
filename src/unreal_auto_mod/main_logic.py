@@ -307,7 +307,7 @@ def install_fmodel(output_directory: str, run_after_install: bool):
 def get_solo_build_project_command() -> str:
     from unreal_auto_mod import utilities
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_building_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_building_main_command()} '
         f'-project="{utilities.get_uproject_file()}" '
     )
     for arg in utilities.get_engine_building_args():
@@ -518,7 +518,7 @@ def remove_mods(settings_json: str, mod_names: list):
 def get_solo_cook_project_command() -> str:
     from unreal_auto_mod import utilities
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_cooking_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_cooking_main_command()} '
         f'-project="{utilities.get_uproject_file()}" '
     )
     if not unreal_engine.has_build_target_been_built(utilities.get_uproject_file()):
@@ -542,7 +542,7 @@ def cook(settings_json: str, toggle_engine: bool):
 def get_solo_package_command() -> str:
     from unreal_auto_mod import utilities
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_packaging_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_packaging_main_command()} '
         f'-project="{utilities.get_uproject_file()}"'
     )
     # technically it shouldn't auto build itself, since this is not a auto run sequence but used in an explicit command

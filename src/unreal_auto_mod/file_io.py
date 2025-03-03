@@ -202,3 +202,7 @@ def remove_lines_from_config_that_contain_substring(config_path: str, substring:
         if not line in (substring):
             new_lines.append(line)
     set_all_lines_in_config(config_path, new_lines)
+
+
+def get_platform_wrapper_extension() -> str:
+    return "bat" if os.name == "nt" else "sh"

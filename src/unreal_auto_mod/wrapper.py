@@ -5,7 +5,7 @@ from unreal_auto_mod import file_io
 
 
 def get_wrapper_location() -> str:
-    return os.path.normpath(f'{file_io.SCRIPT_DIR}/dist/command.bat')
+    return os.path.normpath(f'{file_io.SCRIPT_DIR}/dist/command.{file_io.get_platform_wrapper_extension()}')
 
 
 def generate_wrapper():

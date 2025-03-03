@@ -75,7 +75,7 @@ def get_is_mod_installed(mod_name: str) -> bool:
 
 def get_engine_pak_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_packaging_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_packaging_main_command()} '
         f'-project="{utilities.get_uproject_file()}"'
     )
     if not unreal_engine.has_build_target_been_built(utilities.get_uproject_file()):
@@ -93,7 +93,7 @@ def get_engine_pak_command() -> str:
 
 def get_cook_project_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.bat" {utilities.get_unreal_engine_cooking_main_command()} '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_cooking_main_command()} '
         f'-project="{utilities.get_uproject_file()}" '
         f'-skipstage '
         f'-nodebuginfo'
@@ -380,7 +380,7 @@ def package_project_iostore():
 
 
 def package_project_iostore_ue4():
-    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.bat"'
+    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}t"'
     uproject_path = utilities.get_uproject_file()
     editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(utilities.get_unreal_engine_dir())
     archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
@@ -414,7 +414,7 @@ def package_project_iostore_ue4():
 
 
 def package_project_iostore_ue5():
-    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.bat"'
+    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}"'
     uproject_path = utilities.get_uproject_file()
     editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(utilities.get_unreal_engine_dir())
     archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
