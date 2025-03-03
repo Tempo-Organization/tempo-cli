@@ -511,6 +511,7 @@ def create_collection(
 
 
 def enable_collection(collection: UnrealCollection, disabled_collection_exists_ok: bool):
+    # does not account for descendants
     enabled_collection_path = os.path.normpath(collection.file_system_path)
     disabled_collection_path = os.path.normpath(f'{collection.file_system_path}.disabled')
     if not os.path.isfile(enabled_collection_path):
@@ -527,6 +528,7 @@ def enable_collection(collection: UnrealCollection, disabled_collection_exists_o
 
 
 def disable_collection(collection: UnrealCollection, enabled_collection_exists_ok: bool):
+    # does not account for descendants
     enabled_collection_path = os.path.normpath(collection.file_system_path)
     disabled_collection_path = os.path.normpath(f'{collection.file_system_path}.disabled')
     if not os.path.isfile(disabled_collection_path):
@@ -763,3 +765,7 @@ def save_unreal_collection_to_file(unreal_collection: UnrealCollection, exist_ok
     set_parent_guid_from_collection_path(unreal_collection.file_system_path, unreal_collection.parent_guid)
     set_color_from_collection_path(unreal_collection.file_system_path, unreal_collection.color)
     set_unreal_asset_paths_from_collection_path(unreal_collection.file_system_path, unreal_collection.content_paths)   
+
+
+# logic for mod making to scan collection contents
+# various cli commands for editing/creating/deleting collections
