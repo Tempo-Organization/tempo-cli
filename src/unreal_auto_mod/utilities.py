@@ -187,7 +187,7 @@ def does_stove_exist(output_directory: str) -> bool:
 
 def is_repak_packing_enum_in_use():
     is_in_use = False
-    for entry in get_mods_info_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "repak":
             is_in_use = True
     return is_in_use
@@ -195,7 +195,7 @@ def is_repak_packing_enum_in_use():
 
 def is_loose_packing_enum_in_use():
     is_in_use = False
-    for entry in get_mods_info_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "loose":
             is_in_use = True
     return is_in_use
@@ -203,7 +203,7 @@ def is_loose_packing_enum_in_use():
 
 def is_engine_packing_enum_in_use():
     is_in_use = False
-    for entry in get_mods_info_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "engine":
             is_in_use = True
     return is_in_use
@@ -211,7 +211,7 @@ def is_engine_packing_enum_in_use():
 
 def is_unreal_pak_packing_enum_in_use():
     is_in_use = False
-    for entry in get_mods_info_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "unreal_pak":
             is_in_use = True
     return is_in_use
@@ -257,7 +257,7 @@ def get_exec_events() -> list:
     return main_logic.settings_information.settings['exec_events']
 
 
-def get_mods_info_from_json() -> list:
+def get_mods_info_list_from_json() -> list:
     return main_logic.settings_information.settings['mods_info']
 
 
@@ -350,11 +350,11 @@ def get_persistent_mods_dir() -> str:
 
 
 def get_use_mod_name_dir_name_override(mod_name: str) -> bool:
-    return get_mods_info_dict(mod_name)['use_mod_name_dir_name_override']
+    return get_mods_info_dict_from_mod_name(mod_name)['use_mod_name_dir_name_override']
 
 
 def get_mod_name_dir_name_override(mod_name: str) -> bool:
-    return get_mods_info_dict(mod_name)['mod_name_dir_name_override']
+    return get_mods_info_dict_from_mod_name(mod_name)['mod_name_dir_name_override']
 
 
 def get_mod_name_dir_name(mod_name: str) -> str:
@@ -365,14 +365,14 @@ def get_mod_name_dir_name(mod_name: str) -> str:
 
 
 def get_pak_dir_structure(mod_name: str) -> str:
-    for info in get_mods_info_from_json():
+    for info in get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return info['pak_dir_structure']
     return None
 
 
 def get_mod_compression_type(mod_name: str) -> CompressionType:
-    for info in get_mods_info_from_json():
+    for info in get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             compression_str = info['compression_type']
             return get_enum_from_val(CompressionType, compression_str)
@@ -380,21 +380,21 @@ def get_mod_compression_type(mod_name: str) -> CompressionType:
 
 
 def get_unreal_mod_tree_type_str(mod_name: str) -> str:
-    for info in get_mods_info_from_json():
+    for info in get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return info['mod_name_dir_type']
     return None
 
 
-def get_mods_info_dict(mod_name: str) -> dict:
-    for info in get_mods_info_from_json():
+def get_mods_info_dict_from_mod_name(mod_name: str) -> dict:
+    for info in get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return dict(info)
     return None
 
 
 def is_mod_name_in_list(mod_name: str) -> bool:
-    for info in get_mods_info_from_json():
+    for info in get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return True
     return False

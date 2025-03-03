@@ -34,7 +34,7 @@ command_queue = []
 has_populated_queue = False
 
 def populate_queue():
-    for mod_info in utilities.get_mods_info_from_json():
+    for mod_info in utilities.get_mods_info_list_from_json():
         if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             install_queue_type = get_enum_from_val(PackingType, mod_info['packing_type'])
             if install_queue_type not in queue_information.install_queue_types:
@@ -46,28 +46,28 @@ def populate_queue():
 
 
 def get_mod_packing_type(mod_name: str) -> PackingType:
-    for mods_info in utilities.get_mods_info_from_json():
+    for mods_info in utilities.get_mods_info_list_from_json():
         if mod_name == mods_info['mod_name']:
             return get_enum_from_val(PackingType, mods_info['packing_type'])
     return None
 
 
 def get_is_mod_name_in_use(mod_name: str) -> bool:
-    for mod_info in utilities.get_mods_info_from_json():
+    for mod_info in utilities.get_mods_info_list_from_json():
         if mod_name == mod_info['mod_name']:
             return True
     return False
 
 
 def get_mod_pak_entry(mod_name: str) -> dict:
-    for info in utilities.get_mods_info_from_json():
+    for info in utilities.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return dict(info)
     return None
 
 
 def get_is_mod_installed(mod_name: str) -> bool:
-    for info in utilities.get_mods_info_from_json():
+    for info in utilities.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return True
     return False
@@ -123,7 +123,7 @@ def run_proj_command(command: str):
 
 
 def handle_uninstall_logic(packing_type: PackingType):
-    for mod_info in utilities.get_mods_info_from_json():
+    for mod_info in utilities.get_mods_info_list_from_json():
         if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 uninstall_mod(packing_type, mod_info['mod_name'])
@@ -134,7 +134,7 @@ def handle_uninstall_logic(packing_type: PackingType):
         end_hook_state_type=HookStateType.POST_PAK_DIR_SETUP
     )
 def handle_install_logic(packing_type: PackingType, use_symlinks: bool):
-    for mod_info in utilities.get_mods_info_from_json():
+    for mod_info in utilities.get_mods_info_list_from_json():
         if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 install_mod(
@@ -214,7 +214,7 @@ def uninstall_mod(packing_type: PackingType, mod_name: str):
 def install_mod_sig(mod_name: str, use_symlinks: bool):
     game_paks_dir = utilities.custom_get_game_paks_dir()
     pak_dir_str = utilities.get_pak_dir_structure(mod_name)
-    sig_method_type = data_structures.get_enum_from_val(data_structures.SigMethodType, utilities.get_mods_info_dict(mod_name).get('sig_method_type', 'none'))
+    sig_method_type = data_structures.get_enum_from_val(data_structures.SigMethodType, utilities.get_mods_info_dict_from_mod_name(mod_name).get('sig_method_type', 'none'))
     sig_location = os.path.normpath(f'{game_paks_dir}/{pak_dir_str}/{mod_name}.sig')
     os.makedirs(os.path.dirname(sig_location), exist_ok=True)
     if sig_method_type in data_structures.SigMethodType:
@@ -268,7 +268,7 @@ def install_loose_mod(mod_name: str, use_symlinks: bool):
 
 def install_engine_mod(mod_name: str, use_symlinks: bool):
     mod_files = []
-    pak_chunk_num = utilities.get_mods_info_dict(mod_name)['pak_chunk_num']
+    pak_chunk_num = utilities.get_mods_info_dict_from_mod_name(mod_name)['pak_chunk_num']
     uproject_file = utilities.get_uproject_file()
     uproject_dir = unreal_engine.get_uproject_dir(uproject_file)
     win_dir_str = unreal_engine.get_win_dir_str(utilities.get_unreal_engine_dir())
@@ -301,7 +301,7 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
     os.makedirs(pak_dir, exist_ok=True)
     os.chdir(pak_dir)
 
-    compression_type_str = utilities.get_mods_info_dict(mod_name)['compression_type']
+    compression_type_str = utilities.get_mods_info_dict_from_mod_name(mod_name)['compression_type']
     before_symlinked_dir = f'{utilities.get_working_dir()}/{mod_name}'
 
     if not os.path.isdir(before_symlinked_dir) or not os.listdir(before_symlinked_dir):
@@ -365,7 +365,7 @@ def install_mod(
         unreal_pak.install_unreal_pak_mod(mod_name, compression_type, use_symlinks)
     else:
         log.log_message(f'Error: You have provided an invalid packing_type for your "{mod_name}" mod entry in your settings json')
-        log.log_message(f'Error: You provided "{utilities.get_mods_info_dict(mod_name).get('packing_type', 'none')}".')
+        log.log_message(f'Error: You provided "{utilities.get_mods_info_dict_from_mod_name(mod_name).get('packing_type', 'none')}".')
         log.log_message('Error: Valid packing type options are:')
         for entry in PackingType:
             log.log_message(f'Error: "{entry.value}"')

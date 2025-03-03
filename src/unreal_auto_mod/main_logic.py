@@ -564,7 +564,7 @@ def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
 
     if toggle_engine:
         engine.toggle_engine_off()
-    for entry in utilities.get_mods_info_from_json():
+    for entry in utilities.get_mods_info_list_from_json():
         main_logic.settings_information.mod_names.append(entry['mod_name'])
     log_message('Packaging Starting')
     run_proj_build_command(get_solo_package_command())
@@ -679,7 +679,7 @@ def generate_mods(settings_json: str, input_mod_names: list[str], use_symlinks:b
 
     for mod_name in input_mod_names:
         main_logic.settings_information.mod_names.append(mod_name)
-    for entry in utilities.get_mods_info_from_json():
+    for entry in utilities.get_mods_info_list_from_json():
         main_logic.settings_information.mod_names.append(entry['mod_name'])
     packing.generate_mods(use_symlinks)
 
@@ -687,7 +687,7 @@ def generate_mods(settings_json: str, input_mod_names: list[str], use_symlinks:b
 def generate_mods_all(settings_json: str, use_symlinks: bool):
     from unreal_auto_mod import main_logic, packing, utilities
 
-    for entry in utilities.get_mods_info_from_json():
+    for entry in utilities.get_mods_info_list_from_json():
         main_logic.settings_information.mod_names.append(entry['mod_name'])
         log_message(entry['mod_name'])
     packing.generate_mods(use_symlinks)
@@ -848,7 +848,7 @@ def make_loose_mod_release(singular_mod_info: dict, base_files_directory: str, o
 
 def generate_mod_release(settings_json: str, mod_name: str, base_files_directory: str, output_directory: str):
     from unreal_auto_mod import utilities
-    singular_mod_info = next((mod_info for mod_info in utilities.get_mods_info_from_json() if mod_info['mod_name'] == mod_name), '')
+    singular_mod_info = next((mod_info for mod_info in utilities.get_mods_info_list_from_json() if mod_info['mod_name'] == mod_name), '')
     if singular_mod_info['packing_type'] == 'unreal_pak':
         make_unreal_pak_mod_release(singular_mod_info, base_files_directory, output_directory)
     elif singular_mod_info['packing_type'] == 'repak':
@@ -866,7 +866,7 @@ def generate_mod_releases(settings_json: str, mod_names: str, base_files_directo
 
 def generate_mod_releases_all(settings_json: str, base_files_directory: str, output_directory: str):
     from unreal_auto_mod import utilities
-    for entry in utilities.get_mods_info_from_json():
+    for entry in utilities.get_mods_info_list_from_json():
         generate_mod_release(settings_json, entry['mod_name'], base_files_directory, output_directory)
 
 

@@ -99,7 +99,7 @@
       "compression_type": "Zlib",
       "sig_method_type": "none",
       "is_enabled": true,
-      "file_includes": { "asset_paths": [], "tree_paths": [] }
+      "file_includes": { "asset_paths": [], "tree_paths": [], "unreal_collections": [] }
     },
     {
       "mod_name": "MapKit",
@@ -112,7 +112,7 @@
       "compression_type": "Zlib",
       "sig_method_type": "none",
       "is_enabled": true,
-      "file_includes": { "asset_paths": [], "tree_paths": [] }
+      "file_includes": { "asset_paths": [], "tree_paths": [], "unreal_collections": [] }
     },
     {
       "mod_name": "ExampleLevel",
@@ -125,7 +125,7 @@
       "compression_type": "Zlib",
       "sig_method_type": "none",
       "is_enabled": true,
-      "file_includes": { "asset_paths": [], "tree_paths": [] }
+      "file_includes": { "asset_paths": [], "tree_paths": [], "unreal_collections": [] }
     }
   ]
 }
