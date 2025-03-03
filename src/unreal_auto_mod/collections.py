@@ -755,7 +755,7 @@ def set_unreal_asset_paths_from_collection_path(collection_path: str, unreal_ass
 
 def save_unreal_collection_to_file(unreal_collection: UnrealCollection, exist_ok: bool = True):
     if not exist_ok and os.path.isfile(unreal_collection.file_system_path):
-        collection_already_exists_error = f''
+        collection_already_exists_error = f'The following collection file already exists "{unreal_collection.file_system_path}".'
         raise FileExistsError(collection_already_exists_error)
     set_file_version_from_collection_path(unreal_collection.file_system_path, unreal_collection.file_version)
     set_collection_type_from_collection_path(unreal_collection.file_system_path, unreal_collection.file_type)
