@@ -2,6 +2,7 @@ import threading
 import time
 from dataclasses import dataclass
 
+import unreal_auto_mod.timer
 from unreal_auto_mod import hook_states, log, process_management, utilities, window_management
 from unreal_auto_mod.data_structures import HookStateType
 
@@ -43,7 +44,7 @@ def found_game_window():
 
 def game_monitor_thread_logic():
     if not game_monitor_thread_information.found_process:
-        if process_management.is_process_running(utilities.get_game_process_name()):
+        if process_management.is_process_running(process_management.get_game_process_name()):
             log.log_message('Process: Found Game Process')
             game_monitor_thread_information.found_process = True
     elif not game_monitor_thread_information.found_window:
@@ -73,4 +74,4 @@ def game_monitor_thread():
     log.log_message('Thread: Game Monitoring Thread Started')
     game_monitor_thread_information.game_monitor_thread.join()
     log.log_message('Thread: Game Monitoring Thread Ended')
-    log.log_message(f'Timer: Time since script execution: {utilities.get_running_time()}')
+    log.log_message(f'Timer: Time since script execution: {unreal_auto_mod.timer.get_running_time()}')

@@ -3,8 +3,10 @@ import shutil
 
 from rich.progress import Progress
 
-from unreal_auto_mod import file_io, packing, unreal_engine, utilities
+import unreal_auto_mod.settings
+from unreal_auto_mod import file_io, packing, utilities
 from unreal_auto_mod.data_structures import CompressionType
+from unreal_auto_mod.programs import unreal_engine
 
 
 def get_pak_dir_to_pack(mod_name: str):
@@ -71,11 +73,11 @@ def make_iostore_unreal_pak_mod_checks(
 
 
 def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool):
-    unreal_engine_dir = utilities.get_unreal_engine_dir()
+    unreal_engine_dir = unreal_auto_mod.settings.get_unreal_engine_dir()
     unreal_pak = unreal_engine.get_unreal_pak_exe_path(unreal_engine_dir)
     exe = unreal_engine.get_editor_cmd_path(unreal_engine_dir)
     ue_win_dir_str = unreal_engine.get_win_dir_str(unreal_engine_dir)
-    uproject_name = os.path.splitext(os.path.basename(utilities.get_uproject_file()))[0]
+    uproject_name = os.path.splitext(os.path.basename(unreal_auto_mod.settings.get_uproject_file()))[0]
     global_utoc_path = f'{utilities.get_uproject_dir()}/Saved/StagedBuilds/{ue_win_dir_str}/{uproject_name}/Content/Paks/global.utoc'
     cooked_content_dir = f'{utilities.get_working_dir()}/{mod_name}'
 
@@ -89,12 +91,12 @@ def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool)
 
     make_iostore_unreal_pak_mod_checks(cooked_content_dir, global_utoc_path, crypto_keys_json, commands_txt_path)
 
-    platform_string = unreal_engine.get_win_dir_str(utilities.get_unreal_engine_dir())
+    platform_string = unreal_engine.get_win_dir_str(unreal_auto_mod.settings.get_unreal_engine_dir())
     iostore_txt_location = f'{utilities.get_working_dir()}/iostore_packaging/{mod_name}_iostore.txt'
     default_engine_patch_padding_alignment = 2048
     args = [
         # unreal_pak,
-        f'"{utilities.get_uproject_file()}"',
+        f'"{unreal_auto_mod.settings.get_uproject_file()}"',
         '-run=IoStore',
         f'-CreateGlobalContainer="{os.path.normpath(global_utoc_path)}"',
         f'-CookedDirectory="{os.path.normpath(cooked_content_dir)}"',
@@ -115,11 +117,11 @@ def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool)
 
 
 def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool):
-    unreal_engine_dir = utilities.get_unreal_engine_dir()
+    unreal_engine_dir = unreal_auto_mod.settings.get_unreal_engine_dir()
     unreal_pak = unreal_engine.get_unreal_pak_exe_path(unreal_engine_dir)
     exe = unreal_engine.get_editor_cmd_path(unreal_engine_dir)
     ue_win_dir_str = unreal_engine.get_win_dir_str(unreal_engine_dir)
-    uproject_name = os.path.splitext(os.path.basename(utilities.get_uproject_file()))[0]
+    uproject_name = os.path.splitext(os.path.basename(unreal_auto_mod.settings.get_uproject_file()))[0]
     global_utoc_path = f'{utilities.get_uproject_dir()}/Saved/StagedBuilds/{ue_win_dir_str}/{uproject_name}/Content/Paks/global.utoc'
     cooked_content_dir = f'{utilities.get_working_dir()}/{mod_name}'
 
@@ -136,12 +138,12 @@ def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool
 
     make_iostore_unreal_pak_mod_checks(cooked_content_dir, global_utoc_path, crypto_keys_json, commands_txt_path)
 
-    platform_string = unreal_engine.get_win_dir_str(utilities.get_unreal_engine_dir())
+    platform_string = unreal_engine.get_win_dir_str(unreal_auto_mod.settings.get_unreal_engine_dir())
     iostore_txt_location = f'{utilities.get_working_dir()}/iostore_packaging/{mod_name}_iostore.txt'
     default_engine_patch_padding_alignment = 2048
     args = [
         # f'"{unreal_pak}',
-        f'"{utilities.get_uproject_file()}"',
+        f'"{unreal_auto_mod.settings.get_uproject_file()}"',
         '-run=IoStore',
         f'-CreateGlobalContainer="{os.path.normpath(global_utoc_path)}"',
         f'-CookedDirectory="{os.path.normpath(cooked_content_dir)}"',
@@ -164,7 +166,7 @@ def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool
 
 
 def make_iostore_unreal_pak_mod(mod_name: str, final_pak_file: str, use_symlinks: bool):
-        if unreal_engine.is_game_ue4(utilities.get_unreal_engine_dir()):
+        if unreal_engine.is_game_ue4(unreal_auto_mod.settings.get_unreal_engine_dir()):
             make_ue4_iostore_mod(mod_name, final_pak_file, use_symlinks)
         else:
             make_ue5_iostore_mods(mod_name, final_pak_file, use_symlinks)
@@ -203,8 +205,8 @@ def install_unreal_pak_mod(mod_name: str, compression_type: CompressionType, use
     final_pak_file = f'{utilities.custom_get_game_paks_dir()}/{utilities.get_pak_dir_structure(mod_name)}/{mod_name}.pak'
     os.makedirs(output_pak_dir, exist_ok=True)
     os.makedirs(f'{utilities.custom_get_game_paks_dir()}/{utilities.get_pak_dir_structure(mod_name)}', exist_ok=True)
-    exe_path = unreal_engine.get_unreal_pak_exe_path(utilities.get_unreal_engine_dir())
-    is_game_iostore = unreal_engine.get_is_game_iostore(utilities.get_uproject_file(), utilities.custom_get_game_dir())
+    exe_path = unreal_engine.get_unreal_pak_exe_path(unreal_auto_mod.settings.get_unreal_engine_dir())
+    is_game_iostore = unreal_engine.get_is_game_iostore(unreal_auto_mod.settings.get_uproject_file(), utilities.custom_get_game_dir())
 
     if is_game_iostore:
         make_iostore_unreal_pak_mod(mod_name, final_pak_file, use_symlinks)

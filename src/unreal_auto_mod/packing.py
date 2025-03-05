@@ -4,18 +4,9 @@ from dataclasses import dataclass
 
 from rich.progress import Progress
 
-from unreal_auto_mod import (
-    data_structures,
-    file_io,
-    hook_states,
-    log,
-    repak_utilities,
-    settings,
-    unreal_engine,
-    unreal_pak,
-    utilities,
-)
+from unreal_auto_mod import data_structures, file_io, hook_states, log, settings, utilities
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
+from unreal_auto_mod.programs import repak, unreal_engine, unreal_pak
 
 
 @dataclass
@@ -34,7 +25,7 @@ command_queue = []
 has_populated_queue = False
 
 def populate_queue():
-    for mod_info in utilities.get_mods_info_list_from_json():
+    for mod_info in settings.get_mods_info_list_from_json():
         if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             install_queue_type = get_enum_from_val(PackingType, mod_info['packing_type'])
             if install_queue_type not in queue_information.install_queue_types:
@@ -46,28 +37,28 @@ def populate_queue():
 
 
 def get_mod_packing_type(mod_name: str) -> PackingType:
-    for mods_info in utilities.get_mods_info_list_from_json():
+    for mods_info in settings.get_mods_info_list_from_json():
         if mod_name == mods_info['mod_name']:
             return get_enum_from_val(PackingType, mods_info['packing_type'])
     return None
 
 
 def get_is_mod_name_in_use(mod_name: str) -> bool:
-    for mod_info in utilities.get_mods_info_list_from_json():
+    for mod_info in settings.get_mods_info_list_from_json():
         if mod_name == mod_info['mod_name']:
             return True
     return False
 
 
 def get_mod_pak_entry(mod_name: str) -> dict:
-    for info in utilities.get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return dict(info)
     return None
 
 
 def get_is_mod_installed(mod_name: str) -> bool:
-    for info in utilities.get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return True
     return False
@@ -75,14 +66,14 @@ def get_is_mod_installed(mod_name: str) -> bool:
 
 def get_engine_pak_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_packaging_main_command()} '
-        f'-project="{utilities.get_uproject_file()}"'
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {settings.get_unreal_engine_packaging_main_command()} '
+        f'-project="{settings.get_uproject_file()}"'
     )
-    if not unreal_engine.has_build_target_been_built(utilities.get_uproject_file()):
+    if not unreal_engine.has_build_target_been_built(settings.get_uproject_file()):
         command = f'{command} -build'
-    for arg in utilities.get_engine_packaging_args():
+    for arg in settings.get_engine_packaging_args():
         command = f'{command} {arg}'
-    is_game_iostore = unreal_engine.get_is_game_iostore(utilities.get_uproject_file(), utilities.custom_get_game_dir())
+    is_game_iostore = unreal_engine.get_is_game_iostore(settings.get_uproject_file(), utilities.custom_get_game_dir())
     if is_game_iostore:
         command = f'{command} -iostore'
         log.log_message('Check: Game is iostore')
@@ -93,15 +84,15 @@ def get_engine_pak_command() -> str:
 
 def get_cook_project_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_cooking_main_command()} '
-        f'-project="{utilities.get_uproject_file()}" '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {settings.get_unreal_engine_cooking_main_command()} '
+        f'-project="{settings.get_uproject_file()}" '
         f'-skipstage '
         f'-nodebuginfo'
     )
-    if not unreal_engine.has_build_target_been_built(utilities.get_uproject_file()):
+    if not unreal_engine.has_build_target_been_built(settings.get_uproject_file()):
         build_arg = '-build'
         command = f'{command} {build_arg}'
-    for arg in utilities.get_engine_cooking_args():
+    for arg in settings.get_engine_cooking_args():
         command = f'{command} {arg}'
     return command
 
@@ -118,12 +109,12 @@ def run_proj_command(command: str):
     command_parts = command.split(' ')
     executable = command_parts[0]
     args = command_parts[1:]
-    utilities.run_app(exe_path=executable, args=args, working_dir=utilities.get_unreal_engine_dir())
+    utilities.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 
 def handle_uninstall_logic(packing_type: PackingType):
-    for mod_info in utilities.get_mods_info_list_from_json():
+    for mod_info in settings.get_mods_info_list_from_json():
         if not mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 uninstall_mod(packing_type, mod_info['mod_name'])
@@ -134,7 +125,7 @@ def handle_uninstall_logic(packing_type: PackingType):
         end_hook_state_type=HookStateType.POST_PAK_DIR_SETUP
     )
 def handle_install_logic(packing_type: PackingType, use_symlinks: bool):
-    for mod_info in utilities.get_mods_info_list_from_json():
+    for mod_info in settings.get_mods_info_list_from_json():
         if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 install_mod(
@@ -187,8 +178,8 @@ def uninstall_loose_mod(mod_name: str):
 
 
 def uninstall_pak_mod(mod_name: str):
-    extensions = unreal_engine.get_game_pak_folder_archives(utilities.get_uproject_file(), utilities.custom_get_game_dir())
-    if unreal_engine.is_game_ue5(utilities.get_unreal_engine_dir()):
+    extensions = unreal_engine.get_game_pak_folder_archives(settings.get_uproject_file(), utilities.custom_get_game_dir())
+    if unreal_engine.is_game_ue5(settings.get_unreal_engine_dir()):
         extensions.extend(['ucas', 'utoc'])
     for extension in extensions:
         base_path = os.path.join(utilities.custom_get_game_paks_dir(), utilities.get_pak_dir_structure(mod_name))
@@ -269,9 +260,9 @@ def install_loose_mod(mod_name: str, use_symlinks: bool):
 def install_engine_mod(mod_name: str, use_symlinks: bool):
     mod_files = []
     pak_chunk_num = utilities.get_mods_info_dict_from_mod_name(mod_name)['pak_chunk_num']
-    uproject_file = utilities.get_uproject_file()
+    uproject_file = settings.get_uproject_file()
     uproject_dir = unreal_engine.get_uproject_dir(uproject_file)
-    win_dir_str = unreal_engine.get_win_dir_str(utilities.get_unreal_engine_dir())
+    win_dir_str = unreal_engine.get_win_dir_str(settings.get_unreal_engine_dir())
     uproject_name = unreal_engine.get_uproject_name(uproject_file)
     prefix = f'{uproject_dir}/Saved/StagedBuilds/{win_dir_str}/{uproject_name}/Content/Paks/pakchunk{pak_chunk_num}-{win_dir_str}.'
     mod_files.append(prefix)
@@ -315,9 +306,9 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
 
     final_pak_location = f'{pak_dir}/{mod_name}.pak'
 
-    command = f'"{repak_utilities.get_package_path()}" pack "{before_symlinked_dir}" "{intermediate_pak_file}"'
+    command = f'"{repak.get_package_path()}" pack "{before_symlinked_dir}" "{intermediate_pak_file}"'
     if compression_type_str != 'None':
-        command = f'{command} --compression {compression_type_str} --version {repak_utilities.get_repak_pak_version_str()}'
+        command = f'{command} --compression {compression_type_str} --version {repak.get_repak_pak_version_str()}'
     if os.path.islink(final_pak_location):
         os.unlink(final_pak_location)
     if os.path.isfile(final_pak_location):
@@ -373,16 +364,16 @@ def install_mod(
 
 
 def package_project_iostore():
-    if unreal_engine.is_game_ue4(utilities.get_unreal_engine_dir()):
+    if unreal_engine.is_game_ue4(settings.get_unreal_engine_dir()):
         package_project_iostore_ue4()
     else:
         package_project_iostore_ue5()
 
 
 def package_project_iostore_ue4():
-    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}t"'
-    uproject_path = utilities.get_uproject_file()
-    editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(utilities.get_unreal_engine_dir())
+    main_exec = f'"{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}t"'
+    uproject_path = settings.get_uproject_file()
+    editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(settings.get_unreal_engine_dir())
     archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
     target_platform = 'Win64'
     client_config = 'Development'
@@ -410,13 +401,13 @@ def package_project_iostore_ue4():
         f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
-    utilities.run_app(exe_path=main_exec, args=args, working_dir=utilities.get_unreal_engine_dir())
+    utilities.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 def package_project_iostore_ue5():
-    main_exec = f'"{utilities.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}"'
-    uproject_path = utilities.get_uproject_file()
-    editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(utilities.get_unreal_engine_dir())
+    main_exec = f'"{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}"'
+    uproject_path = settings.get_uproject_file()
+    editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(settings.get_unreal_engine_dir())
     archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
     target_platform = 'Win64'
     client_config = 'Development'
@@ -444,7 +435,7 @@ def package_project_iostore_ue5():
         f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
-    utilities.run_app(exe_path=main_exec, args=args, working_dir=utilities.get_unreal_engine_dir())
+    utilities.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 # for if you are just repacking an ini for an iostore game and don't need a ucas or utoc for example
@@ -462,7 +453,7 @@ def does_iostore_game_need_utoc_ucas() -> bool:
 
 def cooking():
     populate_queue()
-    if unreal_engine.get_is_game_iostore(utilities.get_uproject_file(), utilities.custom_get_game_dir()):
+    if unreal_engine.get_is_game_iostore(settings.get_uproject_file(), utilities.custom_get_game_dir()):
         if does_iostore_game_need_utoc_ucas():
             package_project_iostore()
         else:
@@ -475,7 +466,7 @@ def cooking():
 
 def get_mod_files_asset_paths_for_loose_mods(mod_name: str) -> dict:
     file_dict = {}
-    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
+    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
     for asset in mod_info['file_includes']['asset_paths']:
         base_path = f'{cooked_uproject_dir}/{asset}'
@@ -488,7 +479,7 @@ def get_mod_files_asset_paths_for_loose_mods(mod_name: str) -> dict:
 
 def get_mod_files_tree_paths_for_loose_mods(mod_name: str) -> dict:
     file_dict = {}
-    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
+    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
     for tree in mod_info['file_includes']['tree_paths']:
         tree_path = f'{cooked_uproject_dir}/{tree}'
@@ -505,7 +496,7 @@ def get_mod_files_tree_paths_for_loose_mods(mod_name: str) -> dict:
 
 def get_mod_files_persistent_paths_for_loose_mods(mod_name: str) -> dict:
     file_dict = {}
-    persistent_mod_dir = utilities.get_persistant_mod_dir(mod_name)
+    persistent_mod_dir = settings.get_persistant_mod_dir(mod_name)
 
     for root, _, files in os.walk(persistent_mod_dir):
         for file in files:
@@ -519,7 +510,7 @@ def get_mod_files_persistent_paths_for_loose_mods(mod_name: str) -> dict:
 
 def get_mod_files_mod_name_dir_paths_for_loose_mods(mod_name: str) -> dict:
     file_dict = {}
-    cooked_game_name_mod_dir = f'{unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}'
+    cooked_game_name_mod_dir = f'{unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}'
     for file in file_io.get_files_in_tree(cooked_game_name_mod_dir):
         relative_file_path = os.path.relpath(file, cooked_game_name_mod_dir)
         before_path = f'{cooked_game_name_mod_dir}/{relative_file_path}'
@@ -549,21 +540,21 @@ def get_game_mod_file_paths(mod_name: str) -> list:
 
 def get_mod_file_paths_for_manually_made_pak_mods_asset_paths(mod_name: str) -> dict:
     file_dict = {}
-    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
+    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
     if mod_info['file_includes']['asset_paths'] is not None:
         for asset in mod_info['file_includes']['asset_paths']:
             base_path = f'{cooked_uproject_dir}/{asset}'
             for extension in file_io.get_file_extensions(base_path):
                 before_path = f'{base_path}{extension}'
-                after_path = f'{utilities.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(utilities.get_uproject_file())}/{asset}{extension}'
+                after_path = f'{utilities.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(settings.get_uproject_file())}/{asset}{extension}'
                 file_dict[before_path] = after_path
     return file_dict
 
 
 def get_mod_file_paths_for_manually_made_pak_mods_tree_paths(mod_name: str) -> dict:
     file_dict = {}
-    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
+    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())
     mod_info = get_mod_pak_entry(mod_name)
     if mod_info['file_includes']['tree_paths'] is not None:
         for tree in mod_info['file_includes']['tree_paths']:
@@ -574,14 +565,14 @@ def get_mod_file_paths_for_manually_made_pak_mods_tree_paths(mod_name: str) -> d
                     for extension in file_io.get_file_extensions(base_entry):
                         before_path = f'{base_entry}{extension}'
                         relative_path = os.path.relpath(base_entry, cooked_uproject_dir)
-                        after_path = f'{utilities.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(utilities.get_uproject_file())}/{relative_path}{extension}'
+                        after_path = f'{utilities.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(settings.get_uproject_file())}/{relative_path}{extension}'
                         file_dict[before_path] = after_path
     return file_dict
 
 
 def get_mod_file_paths_for_manually_made_pak_mods_persistent_paths(mod_name: str) -> dict:
     file_dict = {}
-    persistent_mod_dir = utilities.get_persistant_mod_dir(mod_name)
+    persistent_mod_dir = settings.get_persistant_mod_dir(mod_name)
 
     for root, _, files in os.walk(persistent_mod_dir):
         for file in files:
@@ -596,14 +587,14 @@ def get_mod_file_paths_for_manually_made_pak_mods_persistent_paths(mod_name: str
 
 def get_mod_file_paths_for_manually_made_pak_mods_mod_name_dir_paths(mod_name: str) -> dict:
     file_dict = {}
-    cooked_game_name_mod_dir = f'{unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}'
+    cooked_game_name_mod_dir = f'{unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}'
     for file in file_io.get_files_in_tree(cooked_game_name_mod_dir):
         relative_file_path = os.path.relpath(file, cooked_game_name_mod_dir)
         before_path = f'{cooked_game_name_mod_dir}/{relative_file_path}'
-        if utilities.get_is_using_alt_dir_name():
-            dir_name = utilities.get_alt_packing_dir_name()
+        if settings.get_is_using_alt_dir_name():
+            dir_name = settings.get_alt_packing_dir_name()
         else:
-            dir_name = unreal_engine.get_uproject_name(utilities.get_uproject_file())
+            dir_name = unreal_engine.get_uproject_name(settings.get_uproject_file())
         after_path = f'{utilities.get_working_dir()}/{mod_name}/{dir_name}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}/{relative_file_path}'
         file_dict[before_path] = after_path
     return file_dict
@@ -617,3 +608,27 @@ def get_mod_file_paths_for_manually_made_pak_mods(mod_name: str) -> dict:
     file_dict.update(get_mod_file_paths_for_manually_made_pak_mods_mod_name_dir_paths(mod_name))
 
     return file_dict
+
+
+def is_loose_packing_enum_in_use():
+    is_in_use = False
+    for entry in settings.get_mods_info_list_from_json():
+        if entry['packing_type'] == "loose":
+            is_in_use = True
+    return is_in_use
+
+
+def is_engine_packing_enum_in_use():
+    is_in_use = False
+    for entry in settings.get_mods_info_list_from_json():
+        if entry['packing_type'] == "engine":
+            is_in_use = True
+    return is_in_use
+
+
+def is_unreal_pak_packing_enum_in_use():
+    is_in_use = False
+    for entry in settings.get_mods_info_list_from_json():
+        if entry['packing_type'] == "unreal_pak":
+            is_in_use = True
+    return is_in_use

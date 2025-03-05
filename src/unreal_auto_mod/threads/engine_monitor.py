@@ -2,8 +2,10 @@ import threading
 import time
 from dataclasses import dataclass
 
-from unreal_auto_mod import hook_states, log, process_management, unreal_engine, utilities, window_management
+import unreal_auto_mod.settings
+from unreal_auto_mod import hook_states, log, process_management, window_management
 from unreal_auto_mod.data_structures import HookStateType
+from unreal_auto_mod.programs import unreal_engine
 
 
 @dataclass
@@ -51,9 +53,9 @@ def engine_monitor_thread_logic():
         engine_monitor_thread_information.window_closed = False
         engine_monitor_thread_information.init_done = True
 
-    engine_window_name = unreal_engine.get_engine_window_title(utilities.get_uproject_file())
+    engine_window_name = unreal_engine.get_engine_window_title(unreal_auto_mod.settings.get_uproject_file())
     if not engine_monitor_thread_information.found_process:
-        engine_process_name = unreal_engine.get_engine_process_name(utilities.get_unreal_engine_dir())
+        engine_process_name = unreal_engine.get_engine_process_name(unreal_auto_mod.settings.get_unreal_engine_dir())
         if process_management.is_process_running(engine_process_name):
             log.log_message('Process: Found Engine Process')
             engine_monitor_thread_information.found_process = True

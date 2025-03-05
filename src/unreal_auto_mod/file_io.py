@@ -205,3 +205,7 @@ def remove_lines_from_config_that_contain_substring(config_path: str, substring:
 
 def get_platform_wrapper_extension() -> str:
     return "bat" if os.name == "nt" else "sh"
+
+
+def ensure_path_quoted(path: str) -> str:
+    return f'"{path}"' if not path.startswith('"') and not path.endswith('"') else path

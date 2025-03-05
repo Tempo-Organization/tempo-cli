@@ -12,9 +12,12 @@ from unreal_auto_mod import (
     file_io,
     main_logic,
     settings,
+    utilities,
     window_management,
-    wrapper,
+    wrapper
 )
+from unreal_auto_mod.programs import stove, repak
+
 
 default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 'dist'))
@@ -52,6 +55,7 @@ def check_generate_wrapper():
 def cli(generate_wrapper, logs_directory, max_content_width=200):
     check_generate_wrapper()
     check_settings()
+    repak.ensure_repak_installed()
 
 
 command_help = 'Builds the uproject specified within the settings JSON'
@@ -654,7 +658,10 @@ def install_stove(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_stove(output_directory, run_after_install)
+    if not stove.does_stove_exist(output_directory):
+        stove.install_stove(output_directory)
+    if run_after_install:
+        utilities.run_app(stove.get_stove_path(output_directory))
 
 
 command_help = 'Install Spaghetti.'

@@ -7,6 +7,10 @@ import zipfile
 
 import psutil
 
+import unreal_auto_mod.programs.kismet_analyzer
+import unreal_auto_mod.programs.spaghetti
+import unreal_auto_mod.programs.uasset_gui
+import unreal_auto_mod.programs.umodel
 from unreal_auto_mod import (
     data_structures,
     engine,
@@ -18,21 +22,20 @@ from unreal_auto_mod import (
     mods,
     packing,
     settings,
-    thread_constant,
-    thread_game_monitor,
-    unreal_engine,
     utilities,
 )
 from unreal_auto_mod.log import log_message
+from unreal_auto_mod.programs import fmodel, unreal_engine
+from unreal_auto_mod.threads import game_monitor, constant
 
 
 @hook_states.hook_state_decorator(start_hook_state_type=data_structures.HookStateType.INIT)
 def init_thread_system():
-    thread_constant.constant_thread()
+    constant.constant_thread()
 
 
 def close_thread_system():
-    thread_constant.stop_constant_thread()
+    constant.stop_constant_thread()
 
 
 # all things below this should be functions that correspond to cli logic
@@ -95,38 +98,31 @@ def full_run_all(
         engine.toggle_engine_on()
 
 
-def install_stove(output_directory: str, run_after_install: bool):
-    if not utilities.does_stove_exist(output_directory):
-        utilities.install_stove(output_directory)
-    if run_after_install:
-        utilities.run_app(utilities.get_stove_path(output_directory))
-
-
 def install_spaghetti(output_directory: str, run_after_install: bool):
-    if not os.path.isfile(utilities.get_spaghetti_path(output_directory)):
-        utilities.install_spaghetti(output_directory)
+    if not os.path.isfile(unreal_auto_mod.programs.spaghetti.get_spaghetti_path(output_directory)):
+        unreal_auto_mod.programs.spaghetti.install_spaghetti(output_directory)
     if run_after_install:
-        utilities.run_app(utilities.get_spaghetti_path(output_directory))
+        utilities.run_app(unreal_auto_mod.programs.spaghetti.get_spaghetti_path(output_directory))
 
 
 def install_kismet_analyzer(output_directory: str, run_after_install: bool):
     # add shell stuff to run app later or something
-    if not os.path.isfile(utilities.get_kismet_analyzer_path(output_directory)):
-        utilities.install_kismet_analyzer(output_directory)
+    if not os.path.isfile(unreal_auto_mod.programs.kismet_analyzer.get_kismet_analyzer_path(output_directory)):
+        unreal_auto_mod.programs.kismet_analyzer.install_kismet_analyzer(output_directory)
     if run_after_install:
-        kismet_analyzer_path = utilities.get_kismet_analyzer_path(output_directory)
+        kismet_analyzer_path = unreal_auto_mod.programs.kismet_analyzer.get_kismet_analyzer_path(output_directory)
         kismet_directory = os.path.dirname(kismet_analyzer_path)
         command = f'cd /d "{kismet_directory}" && "{kismet_analyzer_path}" -h && set ka=kismet-analyzer.exe && cmd /k'
         subprocess.run(command, shell=True, check=False)
 
 
 def install_uasset_gui(output_directory: str, run_after_install: bool):
-    if not os.path.isfile(utilities.get_uasset_gui_path(output_directory)):
-        utilities.install_uasset_gui(output_directory)
+    if not os.path.isfile(unreal_auto_mod.programs.uasset_gui.get_uasset_gui_path(output_directory)):
+        unreal_auto_mod.programs.uasset_gui.install_uasset_gui(output_directory)
     else:
         log.log_message(f'uasset_gui is already installed at: "{output_directory}"')
     if run_after_install:
-        utilities.run_app(utilities.get_uasset_gui_path(output_directory))
+        utilities.run_app(unreal_auto_mod.programs.uasset_gui.get_uasset_gui_path(output_directory))
 
 
 def open_latest_log(settings_json: str):
@@ -139,13 +135,13 @@ def run_game(settings_json: str, toggle_engine: bool):
     if toggle_engine:
         engine.toggle_engine_off()
     game_runner.run_game()
-    thread_game_monitor.game_monitor_thread()
+    game_monitor.game_monitor_thread()
     if toggle_engine:
         engine.toggle_engine_on()
 
 
 def close_game(settings_json: str):
-    file_io.kill_process(os.path.basename(utilities.get_game_exe_path()))
+    file_io.kill_process(os.path.basename(settings.get_game_exe_path()))
 
 
 def run_engine(settings_json: str):
@@ -157,27 +153,27 @@ def close_engine(settings_json: str):
 
 
 def install_umodel(output_directory: str, run_after_install: bool):
-    if not utilities.does_umodel_exist(output_directory):
-        utilities.install_umodel(output_directory)
+    if not unreal_auto_mod.programs.umodel.does_umodel_exist(output_directory):
+        unreal_auto_mod.programs.umodel.install_umodel(output_directory)
     # Sets dir, so it's the dir opened by default in umodel
     # os.chdir(os.path.dirname(utilities.custom_get_game_dir()))
     if run_after_install:
-       utilities.run_app(utilities.get_umodel_path(output_directory))
+       utilities.run_app(unreal_auto_mod.programs.umodel.get_umodel_path(output_directory))
 
 
 def install_fmodel(output_directory: str, run_after_install: bool):
-    if not os.path.isfile(utilities.get_fmodel_path(output_directory)):
-        utilities.install_fmodel(output_directory)
+    if not os.path.isfile(fmodel.get_fmodel_path(output_directory)):
+        fmodel.install_fmodel(output_directory)
     if run_after_install:
-        utilities.run_app(utilities.get_fmodel_path(output_directory))
+        utilities.run_app(fmodel.get_fmodel_path(output_directory))
 
 
 def get_solo_build_project_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_building_main_command()} '
-        f'-project="{utilities.get_uproject_file()}" '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {settings.get_unreal_engine_building_main_command()} '
+        f'-project="{settings.get_uproject_file()}" '
     )
-    for arg in utilities.get_engine_building_args():
+    for arg in settings.get_engine_building_args():
             command = f'{command} {arg}'
     return command
 
@@ -186,7 +182,7 @@ def run_proj_build_command(command: str):
     command_parts = command.split(' ')
     executable = command_parts[0]
     args = command_parts[1:]
-    utilities.run_app(exe_path=executable, args=args, working_dir=utilities.get_unreal_engine_dir())
+    utilities.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 def build(settings_json: str, toggle_engine: bool):
@@ -383,13 +379,13 @@ def remove_mods(settings_json: str, mod_names: list):
 
 def get_solo_cook_project_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_cooking_main_command()} '
-        f'-project="{utilities.get_uproject_file()}" '
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {settings.get_unreal_engine_cooking_main_command()} '
+        f'-project="{settings.get_uproject_file()}" '
     )
-    if not unreal_engine.has_build_target_been_built(utilities.get_uproject_file()):
+    if not unreal_engine.has_build_target_been_built(settings.get_uproject_file()):
         build_arg = '-build'
         command = f'{command} {build_arg}'
-    for arg in utilities.get_engine_cooking_args():
+    for arg in settings.get_engine_cooking_args():
         command = f'{command} {arg}'
     return command
 
@@ -406,15 +402,15 @@ def cook(settings_json: str, toggle_engine: bool):
 
 def get_solo_package_command() -> str:
     command = (
-        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {utilities.get_unreal_engine_packaging_main_command()} '
-        f'-project="{utilities.get_uproject_file()}"'
+        f'"Engine\\Build\\BatchFiles\\RunUAT.{file_io.get_platform_wrapper_extension()}" {settings.get_unreal_engine_packaging_main_command()} '
+        f'-project="{settings.get_uproject_file()}"'
     )
     # technically it shouldn't auto build itself, since this is not a auto run sequence but used in an explicit command
     # if not ue_dev_py_utils.has_build_target_been_built(utilities.get_uproject_file()):
     #     command = f'{command} -build'
-    for arg in utilities.get_engine_packaging_args():
+    for arg in settings.get_engine_packaging_args():
         command = f'{command} {arg}'
-    is_game_iostore = unreal_engine.get_is_game_iostore(utilities.get_uproject_file(), utilities.custom_get_game_dir())
+    is_game_iostore = unreal_engine.get_is_game_iostore(settings.get_uproject_file(), utilities.custom_get_game_dir())
     if is_game_iostore:
         command = f'{command} -iostore'
         log.log_message('Check: Game is iostore')
@@ -427,7 +423,7 @@ def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
 
     if toggle_engine:
         engine.toggle_engine_off()
-    for entry in utilities.get_mods_info_list_from_json():
+    for entry in settings.get_mods_info_list_from_json():
         settings.settings_information.mod_names.append(entry['mod_name'])
     log_message('Packaging Starting')
     run_proj_build_command(get_solo_package_command())
@@ -440,12 +436,12 @@ def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
 def resave_packages_and_fix_up_redirectors(settings_json: str):
     engine.close_game_engine()
     arg = '-run=ResavePackages -fixupredirects'
-    command = f'"{unreal_engine.get_unreal_editor_exe_path(utilities.get_unreal_engine_dir())}" "{utilities.get_uproject_file()}" {arg}'
+    command = f'"{unreal_engine.get_unreal_editor_exe_path(settings.get_unreal_engine_dir())}" "{settings.get_uproject_file()}" {arg}'
     utilities.run_app(command)
 
 
 def cleanup_full(settings_json: str):
-    repo_path = utilities.get_cleanup_repo_path()
+    repo_path = settings.get_cleanup_repo_path()
     log_message(f'Cleaning up repo at: "{repo_path}"')
     exe = 'git'
     args = [
@@ -469,7 +465,7 @@ def cleanup_full(settings_json: str):
 
 
 def cleanup_cooked(settings_json: str):
-    repo_path = utilities.get_cleanup_repo_path()
+    repo_path = settings.get_cleanup_repo_path()
 
     log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
 
@@ -489,7 +485,7 @@ def cleanup_cooked(settings_json: str):
 
 
 def cleanup_build(settings_json: str):
-    repo_path = utilities.get_cleanup_repo_path()
+    repo_path = settings.get_cleanup_repo_path()
 
     log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
 
@@ -534,13 +530,13 @@ def generate_file_list(directory: str, file_list: str):
 def generate_mods(settings_json: str, input_mod_names: list[str], use_symlinks:bool):
     for mod_name in input_mod_names:
         settings.settings_information.mod_names.append(mod_name)
-    for entry in utilities.get_mods_info_list_from_json():
+    for entry in settings.get_mods_info_list_from_json():
         settings.settings_information.mod_names.append(entry['mod_name'])
     packing.generate_mods(use_symlinks)
 
 
 def generate_mods_all(settings_json: str, use_symlinks: bool):
-    for entry in utilities.get_mods_info_list_from_json():
+    for entry in settings.get_mods_info_list_from_json():
         settings.settings_information.mod_names.append(entry['mod_name'])
         log_message(entry['mod_name'])
     packing.generate_mods(use_symlinks)
@@ -587,12 +583,12 @@ def make_repak_mod_release(singular_mod_info: dict, base_files_directory: str, o
 
 def make_engine_mod_release(singular_mod_info: dict, base_files_directory: str, output_directory: str):
     mod_name = singular_mod_info['mod_name']
-    uproject_file = utilities.get_uproject_file()
+    uproject_file = settings.get_uproject_file()
     mod_files = []
     pak_chunk_num = singular_mod_info['pak_chunk_num']
-    uproject_file = utilities.get_uproject_file()
+    uproject_file = settings.get_uproject_file()
     uproject_dir = unreal_engine.get_uproject_dir(uproject_file)
-    win_dir_str = unreal_engine.get_win_dir_str(utilities.get_unreal_engine_dir())
+    win_dir_str = unreal_engine.get_win_dir_str(settings.get_unreal_engine_dir())
     uproject_name = unreal_engine.get_uproject_name(uproject_file)
     prefix = f'{uproject_dir}/Saved/StagedBuilds/{win_dir_str}/{uproject_name}/Content/Paks/pakchunk{pak_chunk_num}-{win_dir_str}.'
     mod_files.append(prefix)
@@ -611,7 +607,7 @@ def make_engine_mod_release(singular_mod_info: dict, base_files_directory: str, 
 
 def get_mod_files_asset_paths_for_loose_mods(mod_name: str, base_files_directory: str) -> dict:
     file_dict = {}
-    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
+    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())
     mod_info = packing.get_mod_pak_entry(mod_name)
     for asset in mod_info['file_includes']['asset_paths']:
         base_path = f'{cooked_uproject_dir}/{asset}'
@@ -624,7 +620,7 @@ def get_mod_files_asset_paths_for_loose_mods(mod_name: str, base_files_directory
 
 def get_mod_files_tree_paths_for_loose_mods(mod_name: str, base_files_directory: str) -> dict:
     file_dict = {}
-    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())
+    cooked_uproject_dir = unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())
     mod_info = packing.get_mod_pak_entry(mod_name)
     for tree in mod_info['file_includes']['tree_paths']:
         tree_path = f'{cooked_uproject_dir}/{tree}'
@@ -641,7 +637,7 @@ def get_mod_files_tree_paths_for_loose_mods(mod_name: str, base_files_directory:
 
 def get_mod_files_persistent_paths_for_loose_mods(mod_name: str, base_files_directory: str) -> dict:
     file_dict = {}
-    persistent_mod_dir = utilities.get_persistant_mod_dir(mod_name)
+    persistent_mod_dir = settings.get_persistant_mod_dir(mod_name)
 
     for root, _, files in os.walk(persistent_mod_dir):
         for file in files:
@@ -654,7 +650,7 @@ def get_mod_files_persistent_paths_for_loose_mods(mod_name: str, base_files_dire
 
 def get_mod_files_mod_name_dir_paths_for_loose_mods(mod_name: str, base_files_directory: str) -> dict:
     file_dict = {}
-    cooked_game_name_mod_dir = f'{unreal_engine.get_cooked_uproject_dir(utilities.get_uproject_file(), utilities.get_unreal_engine_dir())}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}'
+    cooked_game_name_mod_dir = f'{unreal_engine.get_cooked_uproject_dir(settings.get_uproject_file(), settings.get_unreal_engine_dir())}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}'
 
     for file in file_io.get_files_in_tree(cooked_game_name_mod_dir):
         relative_file_path = os.path.relpath(file, cooked_game_name_mod_dir)
@@ -693,7 +689,7 @@ def make_loose_mod_release(singular_mod_info: dict, base_files_directory: str, o
 
 
 def generate_mod_release(settings_json: str, mod_name: str, base_files_directory: str, output_directory: str):
-    singular_mod_info = next((mod_info for mod_info in utilities.get_mods_info_list_from_json() if mod_info['mod_name'] == mod_name), '')
+    singular_mod_info = next((mod_info for mod_info in settings.get_mods_info_list_from_json() if mod_info['mod_name'] == mod_name), '')
     if singular_mod_info['packing_type'] == 'unreal_pak':
         make_unreal_pak_mod_release(singular_mod_info, base_files_directory, output_directory)
     elif singular_mod_info['packing_type'] == 'repak':
@@ -710,12 +706,12 @@ def generate_mod_releases(settings_json: str, mod_names: str, base_files_directo
 
 
 def generate_mod_releases_all(settings_json: str, base_files_directory: str, output_directory: str):
-    for entry in utilities.get_mods_info_list_from_json():
+    for entry in settings.get_mods_info_list_from_json():
         generate_mod_release(settings_json, entry['mod_name'], base_files_directory, output_directory)
 
 
 def resync_dir_with_repo(settings_json: str):
-    repo_path = utilities.get_cleanup_repo_path()
+    repo_path = settings.get_cleanup_repo_path()
     """
     Resyncs a directory tree with its repository by discarding local changes and cleaning untracked files.
     

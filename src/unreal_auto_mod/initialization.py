@@ -1,10 +1,8 @@
 import os
 import sys
-import time
-
-start_time = time.time()
 
 from unreal_auto_mod import customization, file_io, log, log_info, main_logic
+from unreal_auto_mod.programs import repak
 
 
 def initialization():

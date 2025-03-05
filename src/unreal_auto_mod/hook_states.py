@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
-from unreal_auto_mod import log, settings, utilities, window_management
+from unreal_auto_mod import log, process_management, settings, utilities, window_management, timer
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
 
 
@@ -14,7 +14,7 @@ hook_state_info = HookStateInfo(HookStateType.PRE_INIT)
 
 
 def exec_events_checks(hook_state_type: HookStateType):
-    exec_events = utilities.get_exec_events()
+    exec_events = settings.get_exec_events()
     for exec_event in exec_events:
         value = exec_event['hook_state']
         exe_state = get_enum_from_val(HookStateType, value)
@@ -37,14 +37,14 @@ def is_hook_state_used(state: HookStateType) -> bool:
                         return True
 
         if "window_management_events" in settings.settings_information.settings:
-            for window in utilities.get_window_management_events():
+            for window in settings.get_window_management_events():
                 if isinstance(state, HookStateType):
                     state = state.value
                 if window.get("hook_state") == state:
                     return True
 
         if "exec_events" in settings.settings_information.settings:
-            for method in utilities.get_exec_events():
+            for method in settings.get_exec_events():
                 if isinstance(state, HookStateType):
                     state = state.value
                 if method.get("hook_state") == state:
@@ -54,7 +54,7 @@ def is_hook_state_used(state: HookStateType) -> bool:
 
 
 def window_checks(current_state: WindowAction):
-    window_settings_list = utilities.get_window_management_events()
+    window_settings_list = settings.get_window_management_events()
     for window_settings in window_settings_list:
         settings_state = get_enum_from_val(HookStateType, window_settings['hook_state'])
         if settings_state == current_state:
@@ -78,7 +78,7 @@ def hook_state_checks(hook_state: HookStateType):
     if hook_state != HookStateType.CONSTANT:
         log.log_message(f'Hook State Check: {hook_state} is running')
     if is_hook_state_used(hook_state):
-        utilities.kill_processes(hook_state)
+        process_management.kill_processes(hook_state)
         window_checks(hook_state)
         exec_events_checks(hook_state)
     if hook_state != HookStateType.CONSTANT:
@@ -93,7 +93,7 @@ def set_hook_state(new_state: HookStateType):
         hook_state_checks(HookStateType.PRE_ALL)
         hook_state_checks(new_state)
         hook_state_checks(HookStateType.POST_ALL)
-        log.log_message(f'Timer: Time since script execution: {utilities.get_running_time()}')
+        log.log_message(f'Timer: Time since script execution: {timer.get_running_time()}')
 
 
 
