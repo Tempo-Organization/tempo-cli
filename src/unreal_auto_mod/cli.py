@@ -1,23 +1,24 @@
 import os
-import sys
 import pathlib
+import sys
 
 import click
 from trogon import tui
 
 from unreal_auto_mod import (
-    _version, 
-    data_structures, 
-    file_io, 
-    main_logic, 
-    window_management, 
-    wrapper
+    _version,
+    collections,
+    data_structures,
+    file_io,
+    main_logic,
+    settings,
+    window_management,
+    wrapper,
 )
-
 
 default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 'dist'))
-default_releases_dir = os.path.normpath(os.path.join(main_logic.settings_information.settings_json_dir, 'mod_packaging', 'releases'))
+default_releases_dir = os.path.normpath(os.path.join(settings.settings_information.settings_json_dir, 'mod_packaging', 'releases'))
 
 window_management.change_window_name('unreal_auto_mod')
 
@@ -28,7 +29,7 @@ def check_settings():
             index = sys.argv.index("--settings_json") + 1
             if index < len(sys.argv):
                 settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
-                return main_logic.load_settings(settings_file)
+                return settings.load_settings(settings_file)
             else:
                 print("Error: No file path provided after --settings_json.")
                 sys.exit(1)
@@ -690,3 +691,35 @@ def install_kismet_analyzer(output_directory, run_after_install):
         output_directory (str): Path to the output directory
     """
     main_logic.install_kismet_analyzer(output_directory, run_after_install)
+
+
+# command_help = 'Create Collection'
+# @cli.command(name='set_color_from_collection_path', help=command_help, short_help=command_help)
+# @click.option('--collection_path', type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to edit.', required=True)
+# @click.option('--file_version', type=int, default=2, help='The collection file version.')
+# @click.option('--red', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+# @click.option('--green', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+# @click.option('--blue', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+# @click.option('--alpha', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+# def set_color_from_collection_path(collection_path: pathlib.Path, file_version: int, red: float, green: float, blue: float, alpha: float):
+#     collections.create_collection(
+#         collection_name=os.path.basename(collection_path),
+#         collections_directory=os.path.dirname(collection_path),
+#         file_version=str(file_version),
+#         type='',
+#         guid='',
+#         parent_guid='',
+#         color=collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha),
+#         content_paths=''
+#     )
+
+
+command_help = 'Set Collection Color'
+@cli.command(name='set_color_from_collection_path', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to edit.', required=True)
+@click.option('--red', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--green', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--blue', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--alpha', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+def set_color_from_collection_path(collection_path: pathlib.Path, red: float, green: float, blue: float, alpha: float):
+    collections.set_color_from_collection_path(collection_path, collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha))

@@ -6,14 +6,14 @@ from rich.progress import Progress
 
 from unreal_auto_mod import (
     data_structures,
+    file_io,
     hook_states,
     log,
-    main_logic,
     repak_utilities,
+    settings,
     unreal_engine,
     unreal_pak,
     utilities,
-    file_io
 )
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 
@@ -35,11 +35,11 @@ has_populated_queue = False
 
 def populate_queue():
     for mod_info in utilities.get_mods_info_list_from_json():
-        if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
+        if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             install_queue_type = get_enum_from_val(PackingType, mod_info['packing_type'])
             if install_queue_type not in queue_information.install_queue_types:
                 queue_information.install_queue_types.append(install_queue_type)
-        if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
+        if not mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             uninstall_queue_type = get_enum_from_val(PackingType, mod_info['packing_type'])
             if uninstall_queue_type not in queue_information.uninstall_queue_types:
                 queue_information.uninstall_queue_types.append(uninstall_queue_type)
@@ -124,7 +124,7 @@ def run_proj_command(command: str):
 
 def handle_uninstall_logic(packing_type: PackingType):
     for mod_info in utilities.get_mods_info_list_from_json():
-        if not mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
+        if not mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 uninstall_mod(packing_type, mod_info['mod_name'])
 
@@ -135,7 +135,7 @@ def handle_uninstall_logic(packing_type: PackingType):
     )
 def handle_install_logic(packing_type: PackingType, use_symlinks: bool):
     for mod_info in utilities.get_mods_info_list_from_json():
-        if mod_info['is_enabled'] and mod_info['mod_name'] in main_logic.settings_information.mod_names:
+        if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 install_mod(
                     packing_type,
@@ -221,7 +221,7 @@ def install_mod_sig(mod_name: str, use_symlinks: bool):
         if sig_method_type == data_structures.SigMethodType.COPY:
             sig_files = file_io.filter_by_extension(file_io.get_files_in_dir(game_paks_dir), '.sig')
             if len(sig_files) < 1:
-                no_sigs_found = f''
+                no_sigs_found = ''
                 raise RuntimeError(no_sigs_found)
             else:
                 before_sig_file = os.path.normpath(f'{game_paks_dir}/{sig_files[0]}')

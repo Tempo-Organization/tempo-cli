@@ -2,10 +2,32 @@
 
 
 ## To Do:
+- [ ] cleanup modules, no imports within functions, etc...
 
 
 ## File Includes:
-- [ ] file include collections, toggleable auto include by name convention, with manual specification by name or path list
+- [ ] add each of the new collection commands to the launch json
+- [ ] logic for mod making to scan collection contents
+
+cli commands:
+        - [ ] create collection
+        - [ ] set color
+        - [ ] rename collection
+        - [ ] delete collection
+        - [ ] disable collection
+        - [ ] enable collection
+        - [ ] set guid
+        - [ ] set parent guid
+        - [ ] set file version
+        - [ ] set collection type
+        - [ ] add content path
+        - [ ] remove content path
+        - [ ] add content paths
+        - [ ] remove content paths
+        - [ ] add collection to mod entry
+        - [ ] remove collection from mod entry
+        - [ ] add collections to mod entry
+        - [ ] remove collections from mod entry
 
 
 ## Expanded Tokens:
@@ -38,6 +60,7 @@
 
 
 ## Later Later:
+- [ ] interactive wrappers
 - [ ] overrideable colors, ability to disable coloring/progress bars/logging
 - [ ] appease linter
 - [ ] generate project files for uproject

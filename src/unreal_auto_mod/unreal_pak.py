@@ -3,7 +3,7 @@ import shutil
 
 from rich.progress import Progress
 
-from unreal_auto_mod import file_io, packing, utilities, unreal_engine
+from unreal_auto_mod import file_io, packing, unreal_engine, utilities
 from unreal_auto_mod.data_structures import CompressionType
 
 
@@ -198,14 +198,12 @@ def make_non_iostore_unreal_pak_mod(
 def install_unreal_pak_mod(mod_name: str, compression_type: CompressionType, use_symlinks: bool):
     move_files_for_packing(mod_name)
     compression_str = CompressionType(compression_type).value
-    from unreal_auto_mod import utilities
     output_pak_dir = f'{utilities.get_working_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
     intermediate_pak_file = f'{utilities.get_working_dir()}/{utilities.get_pak_dir_structure(mod_name)}/{mod_name}.pak'
     final_pak_file = f'{utilities.custom_get_game_paks_dir()}/{utilities.get_pak_dir_structure(mod_name)}/{mod_name}.pak'
     os.makedirs(output_pak_dir, exist_ok=True)
     os.makedirs(f'{utilities.custom_get_game_paks_dir()}/{utilities.get_pak_dir_structure(mod_name)}', exist_ok=True)
     exe_path = unreal_engine.get_unreal_pak_exe_path(utilities.get_unreal_engine_dir())
-    from unreal_auto_mod import unreal_engine
     is_game_iostore = unreal_engine.get_is_game_iostore(utilities.get_uproject_file(), utilities.custom_get_game_dir())
 
     if is_game_iostore:

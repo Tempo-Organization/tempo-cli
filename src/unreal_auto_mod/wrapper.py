@@ -18,7 +18,7 @@ def generate_wrapper():
 
     if not os.path.isabs(args[0]):
         args[0] = f'"{os.path.join(file_io.SCRIPT_DIR, args[0])}"'
-        
+
     content = ' '.join(args)
 
     wrapper_path = get_wrapper_location()

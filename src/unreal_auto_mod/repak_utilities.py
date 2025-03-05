@@ -3,8 +3,7 @@ import subprocess
 
 import requests
 
-from unreal_auto_mod import log as log
-from unreal_auto_mod import main_logic, utilities
+from unreal_auto_mod import log, settings, utilities
 
 
 def get_package_path():
@@ -117,10 +116,12 @@ def get_repak_pak_version_str() -> str:
     # the below code is because we either derive the version from the engine version
     # if not using engine, it can't be derived from the engine, so we need to manually specify
     if utilities.get_is_overriding_automatic_version_finding():
-        repak_version_str = main_logic.settings_information.settings['repak_info']['repak_version']
+        repak_version_str = settings.settings_information.settings['repak_info']['repak_version']
     else:
         repak_version_str = get_repak_version_str_from_engine_version()
     return repak_version_str
 
 
-ensure_repak_installed()
+# fix
+# have this only run when accessing repak later
+# ensure_repak_installed()

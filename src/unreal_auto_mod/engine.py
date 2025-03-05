@@ -1,16 +1,9 @@
-from unreal_auto_mod import (
-    hook_states, 
-    log, 
-    thread_engine_monitor, 
-    unreal_engine, 
-    file_io
-)
+from unreal_auto_mod import file_io, hook_states, log, thread_engine_monitor, unreal_engine, utilities
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, PackagingDirType
 
 
 @hook_states.hook_state_decorator(HookStateType.PRE_ENGINE_OPEN)
 def open_game_engine():
-    from unreal_auto_mod import utilities
     command = unreal_engine.get_unreal_editor_exe_path(utilities.get_unreal_engine_dir())
     utilities.run_app(command, ExecutionMode.ASYNC, utilities.get_engine_launch_args())
     thread_engine_monitor.engine_monitor_thread()
@@ -23,7 +16,6 @@ def post_engine_closed_message():
 
 @hook_states.hook_state_decorator(HookStateType.PRE_ENGINE_CLOSE)
 def close_game_engine():
-    from unreal_auto_mod import utilities
     if unreal_engine.get_win_dir_type(utilities.get_unreal_engine_dir()) == PackagingDirType.WINDOWS_NO_EDITOR:
         game_engine_processes = file_io.get_processes_by_substring('UE4Editor')
     else:

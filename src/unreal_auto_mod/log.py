@@ -1,7 +1,7 @@
 import os
 import textwrap
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
 from shutil import get_terminal_size
 
 from unreal_auto_mod.console import console

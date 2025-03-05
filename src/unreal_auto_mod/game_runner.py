@@ -1,7 +1,7 @@
 import os
 import winreg
 
-from unreal_auto_mod import hook_states, log
+from unreal_auto_mod import hook_states, log, utilities
 from unreal_auto_mod.data_structures import ExecutionMode, GameLaunchType, HookStateType
 
 
@@ -40,12 +40,10 @@ def get_epic_launcher_exe_location():
 
 
 def run_game_exe():
-    from unreal_auto_mod import utilities
     utilities.run_app(exe_path=utilities.get_game_exe_path(), exec_mode=ExecutionMode.ASYNC, args=utilities.get_game_launch_params())
 
 
 def run_game_steam():
-    from unreal_auto_mod import utilities
     if utilities.get_override_automatic_launcher_exe_finding():
         steam_exe = utilities.get_game_launcher_exe_path()
     else:
@@ -61,7 +59,6 @@ def run_game_steam():
 
 @hook_states.hook_state_decorator(HookStateType.PRE_GAME_LAUNCH)
 def run_game():
-    from unreal_auto_mod import utilities
     log.log_message(f'Timer: Time since script execution: {utilities.get_running_time()}')
     launch_type = GameLaunchType(utilities.get_game_info_launch_type_enum_str_value())
     if launch_type == GameLaunchType.EXE:

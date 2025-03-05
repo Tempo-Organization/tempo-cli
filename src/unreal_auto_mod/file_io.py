@@ -2,8 +2,8 @@ import glob
 import hashlib
 import os
 import sys
-import zipfile
 import webbrowser
+import zipfile
 from pathlib import Path
 
 import psutil
@@ -11,7 +11,6 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod.log import log_message
-
 
 if getattr(sys, 'frozen', False):
     SCRIPT_DIR = Path(sys.executable).parent
@@ -199,7 +198,7 @@ def remove_lines_from_config_that_end_with_substring(config_path: str, substring
 def remove_lines_from_config_that_contain_substring(config_path: str, substring: str):
     new_lines = []
     for line in get_all_lines_in_config(config_path):
-        if not line in (substring):
+        if line not in (substring):
             new_lines.append(line)
     set_all_lines_in_config(config_path, new_lines)
 

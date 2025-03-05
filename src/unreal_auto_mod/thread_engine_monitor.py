@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 import threading
 import time
+from dataclasses import dataclass
 
 from unreal_auto_mod import hook_states, log, process_management, unreal_engine, utilities, window_management
 from unreal_auto_mod.data_structures import HookStateType
