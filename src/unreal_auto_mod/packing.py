@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from rich.progress import Progress
 
 from unreal_auto_mod import data_structures, file_io, hook_states, log, settings, utilities
+import unreal_auto_mod.app_runner
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 from unreal_auto_mod.programs import repak, unreal_engine, unreal_pak
 
@@ -109,7 +110,7 @@ def run_proj_command(command: str):
     command_parts = command.split(' ')
     executable = command_parts[0]
     args = command_parts[1:]
-    utilities.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 
@@ -159,7 +160,7 @@ def generate_mods(use_symlinks: bool):
     mods_uninstall()
     mods_install(use_symlinks)
     for command in command_queue:
-        utilities.run_app(command)
+        unreal_auto_mod.app_runner.run_app(command)
 
 
 def uninstall_loose_mod(mod_name: str):
@@ -222,7 +223,7 @@ def install_mod_sig(mod_name: str, use_symlinks: bool):
                     shutil.copy(before_sig_file, sig_location)
         if sig_method_type == data_structures.SigMethodType.EMPTY:
             if use_symlinks:
-                other_sig_location = os.path.normpath(f'{utilities.get_working_dir()}/sig_files/{mod_name}.sig')
+                other_sig_location = os.path.normpath(f'{settings.get_working_dir()}/sig_files/{mod_name}.sig')
                 os.makedirs(os.path.dirname(other_sig_location), exist_ok=True)
                 with open(other_sig_location, 'w'):
                     pass
@@ -293,14 +294,14 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
     os.chdir(pak_dir)
 
     compression_type_str = utilities.get_mods_info_dict_from_mod_name(mod_name)['compression_type']
-    before_symlinked_dir = f'{utilities.get_working_dir()}/{mod_name}'
+    before_symlinked_dir = f'{settings.get_working_dir()}/{mod_name}'
 
     if not os.path.isdir(before_symlinked_dir) or not os.listdir(before_symlinked_dir):
         log.log_message(f'Error: {before_symlinked_dir}')
         log.log_message('Error: does not exist or is empty, indicating a packaging and/or config issue')
         raise FileNotFoundError
 
-    intermediate_pak_dir = f'{utilities.get_working_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
+    intermediate_pak_dir = f'{settings.get_working_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
     os.makedirs(intermediate_pak_dir, exist_ok=True)
     intermediate_pak_file = f'{intermediate_pak_dir}/{mod_name}.pak'
 
@@ -313,7 +314,7 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
         os.unlink(final_pak_location)
     if os.path.isfile(final_pak_location):
         os.remove(final_pak_location)
-    utilities.run_app(command)
+    unreal_auto_mod.app_runner.run_app(command)
     install_mod_sig(mod_name, use_symlinks)
     if use_symlinks == True:
         os.symlink(intermediate_pak_file, final_pak_location)
@@ -374,7 +375,7 @@ def package_project_iostore_ue4():
     main_exec = f'"{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}t"'
     uproject_path = settings.get_uproject_file()
     editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(settings.get_unreal_engine_dir())
-    archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
+    archive_directory = f'{settings.get_working_dir()}/iostore_packaging/output'
     target_platform = 'Win64'
     client_config = 'Development'
     args = [
@@ -401,14 +402,14 @@ def package_project_iostore_ue4():
         f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
-    utilities.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 def package_project_iostore_ue5():
     main_exec = f'"{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}"'
     uproject_path = settings.get_uproject_file()
     editor_cmd_exe_path = unreal_engine.get_editor_cmd_path(settings.get_unreal_engine_dir())
-    archive_directory = f'{utilities.get_working_dir()}/iostore_packaging/output'
+    archive_directory = f'{settings.get_working_dir()}/iostore_packaging/output'
     target_platform = 'Win64'
     client_config = 'Development'
     args = [
@@ -435,7 +436,7 @@ def package_project_iostore_ue5():
         f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
-    utilities.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 # for if you are just repacking an ini for an iostore game and don't need a ucas or utoc for example
@@ -547,7 +548,7 @@ def get_mod_file_paths_for_manually_made_pak_mods_asset_paths(mod_name: str) -> 
             base_path = f'{cooked_uproject_dir}/{asset}'
             for extension in file_io.get_file_extensions(base_path):
                 before_path = f'{base_path}{extension}'
-                after_path = f'{utilities.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(settings.get_uproject_file())}/{asset}{extension}'
+                after_path = f'{settings.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(settings.get_uproject_file())}/{asset}{extension}'
                 file_dict[before_path] = after_path
     return file_dict
 
@@ -565,7 +566,7 @@ def get_mod_file_paths_for_manually_made_pak_mods_tree_paths(mod_name: str) -> d
                     for extension in file_io.get_file_extensions(base_entry):
                         before_path = f'{base_entry}{extension}'
                         relative_path = os.path.relpath(base_entry, cooked_uproject_dir)
-                        after_path = f'{utilities.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(settings.get_uproject_file())}/{relative_path}{extension}'
+                        after_path = f'{settings.get_working_dir()}/{mod_name}/{unreal_engine.get_uproject_name(settings.get_uproject_file())}/{relative_path}{extension}'
                         file_dict[before_path] = after_path
     return file_dict
 
@@ -578,9 +579,9 @@ def get_mod_file_paths_for_manually_made_pak_mods_persistent_paths(mod_name: str
         for file in files:
             file_path = os.path.join(root, file)
             relative_path = os.path.relpath(file_path, persistent_mod_dir)
-            game_dir = utilities.get_working_dir()
+            game_dir = settings.get_working_dir()
             game_dir = os.path.dirname(game_dir)
-            game_dir_path = f'{utilities.get_working_dir()}/{mod_name}/{relative_path}'
+            game_dir_path = f'{settings.get_working_dir()}/{mod_name}/{relative_path}'
             file_dict[file_path] = game_dir_path
     return file_dict
 
@@ -595,7 +596,7 @@ def get_mod_file_paths_for_manually_made_pak_mods_mod_name_dir_paths(mod_name: s
             dir_name = settings.get_alt_packing_dir_name()
         else:
             dir_name = unreal_engine.get_uproject_name(settings.get_uproject_file())
-        after_path = f'{utilities.get_working_dir()}/{mod_name}/{dir_name}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}/{relative_file_path}'
+        after_path = f'{settings.get_working_dir()}/{mod_name}/{dir_name}/Content/{utilities.get_unreal_mod_tree_type_str(mod_name)}/{utilities.get_mod_name_dir_name(mod_name)}/{relative_file_path}'
         file_dict[before_path] = after_path
     return file_dict
 

@@ -7,7 +7,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Union
 
-from unreal_auto_mod import utilities
+from unreal_auto_mod import utilities, file_io
 
 
 class UnrealGuid:
@@ -255,11 +255,11 @@ def get_unreal_collection_from_unreal_collection_path(collection_path: Path) -> 
 
 
 def get_enabled_collection_paths(collections_directory: Path) -> list[Path]:
-    return filter_by_extension(get_files_in_dir(collections_directory), '.collection')
+    return file_io.filter_by_extension(file_io.get_files_in_dir(collections_directory), '.collection')
 
 
 def get_disabled_collection_paths(collections_directory: Path) -> list[Path]:
-    return filter_by_extension(get_files_in_dir(collections_directory), '.collection.disabled')
+    return file_io.filter_by_extension(file_io.get_files_in_dir(collections_directory), '.collection.disabled')
 
 
 def get_all_collection_paths(collections_directory: Path) -> list[Path]:
@@ -321,7 +321,7 @@ def get_file_version_from_collection_path(collection_path: Path) -> int:
     config_not_found_error = f'No file exists at the following provided collection path "{collection_path}".'
     if not os.path.isfile(collection_path):
         raise(config_not_found_error)
-    config_lines = get_all_lines_in_config(collection_path)
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'FileVersion:'
 
     for line in config_lines:
@@ -336,7 +336,7 @@ def get_type_from_unreal_collection_path(collection_path: Path) -> UnrealCollect
     config_not_found_error = f'No file exists at the following provided collection path "{collection_path}".'
     if not os.path.isfile(collection_path):
         raise(config_not_found_error)
-    config_lines = get_all_lines_in_config(collection_path)
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'Type:'
 
     for line in config_lines:
@@ -351,7 +351,7 @@ def get_guid_from_unreal_collection_path(collection_path: Path) -> UnrealGuid:
     config_not_found_error = f'No file exists at the following provided collection path "{collection_path}".'
     if not os.path.isfile(collection_path):
         raise(config_not_found_error)
-    config_lines = get_all_lines_in_config(collection_path)
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'Guid:'
 
     for line in config_lines:
@@ -366,7 +366,7 @@ def get_parent_guid_from_unreal_collection_path(collection_path: Path) -> Unreal
     config_not_found_error = f'No file exists at the following provided collection path "{collection_path}".'
     if not os.path.isfile(collection_path):
         raise(config_not_found_error)
-    config_lines = get_all_lines_in_config(collection_path)
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'ParentGuid:'
 
     for line in config_lines:
@@ -381,7 +381,7 @@ def get_collection_color_from_unreal_collection_path(collection_path: Path) -> U
     config_not_found_error = f'No file exists at the following provided collection path "{collection_path}".'
     if not os.path.isfile(collection_path):
         raise(config_not_found_error)
-    config_lines = get_all_lines_in_config(collection_path)
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     config_line_prefix = 'Color:'
 
     for line in config_lines:
@@ -427,7 +427,7 @@ def get_all_non_key_lines_from_collection_path(collection_path: Path) -> list[st
     config_not_found_error = f'No file exists at the following provided collection path "{collection_path}".'
     if not os.path.isfile(collection_path):
         raise(config_not_found_error)
-    config_lines = get_all_lines_in_config(collection_path)
+    config_lines = file_io.get_all_lines_in_config(collection_path)
     removal_start_sub_strings = [
         'FileVersion:',
         'Type:',
@@ -659,7 +659,7 @@ def process_guid(guid: Union[str, UnrealGuid]) -> UnrealGuid:
 
 
 def set_config_key_and_value_from_collection_path(collection_path: Path, key: str, value: str):
-    config_lines = get_all_lines_in_config(str(collection_path))
+    config_lines = file_io.get_all_lines_in_config(str(collection_path))
 
     updated_lines = []
     value_set = False
@@ -674,7 +674,7 @@ def set_config_key_and_value_from_collection_path(collection_path: Path, key: st
     if not value_set:
         updated_lines.insert(0, f"{key}{value}\n")
 
-    set_all_lines_in_config(str(collection_path), updated_lines)
+    file_io.set_all_lines_in_config(str(collection_path), updated_lines)
 
 
 def set_file_version_from_collection_path(collection_path: str, file_Version: int):
@@ -722,7 +722,7 @@ def set_unreal_asset_paths_from_collection_path(collection_path: str, unreal_ass
     all_non_asset_paths_in_collection.append('')
     for unreal_asset_path in unreal_asset_paths:
         all_non_asset_paths_in_collection.append(str(unreal_asset_path))
-    set_all_lines_in_config(collection_path, all_non_asset_paths_in_collection)
+    file_io.set_all_lines_in_config(collection_path, all_non_asset_paths_in_collection)
 
 
 def save_unreal_collection_to_file(unreal_collection: UnrealCollection, exist_ok: bool = True):
@@ -735,24 +735,6 @@ def save_unreal_collection_to_file(unreal_collection: UnrealCollection, exist_ok
     set_parent_guid_from_collection_path(unreal_collection.file_system_path, unreal_collection.parent_guid)
     set_color_from_collection_path(unreal_collection.file_system_path, unreal_collection.color)
     set_unreal_asset_paths_from_collection_path(unreal_collection.file_system_path, unreal_collection.content_paths)
-
-
-def get_all_lines_in_config(config_path: str) -> list[str]:
-    with open(config_path, encoding='utf-8') as file:
-        return file.readlines()
-
-
-def set_all_lines_in_config(config_path: str, lines: list[str]):
-    with open(config_path, 'w', encoding='utf-8') as file:
-        file.writelines(lines)
-
-
-def filter_by_extension(files, extension):
-    return [f for f in files if f.lower().endswith(extension)]
-
-
-def get_files_in_dir(directory):
-    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
 
 def get_unreal_collection_paths_from_mod_name(

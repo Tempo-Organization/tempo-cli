@@ -1,10 +1,8 @@
 import os
 import shutil
-import subprocess
 
 from unreal_auto_mod import file_io, log
-from unreal_auto_mod.data_structures import CompressionType, ExecutionMode, get_enum_from_val
-from unreal_auto_mod.file_io import ensure_path_quoted
+from unreal_auto_mod.data_structures import CompressionType, get_enum_from_val
 from unreal_auto_mod.programs import unreal_engine
 from unreal_auto_mod.settings import (
     get_alt_packing_dir_name,
@@ -15,6 +13,7 @@ from unreal_auto_mod.settings import (
     get_persistant_mod_dir,
     get_uproject_file,
     get_window_title_override,
+    get_working_dir,
 )
 
 
@@ -107,12 +106,6 @@ def get_persistant_mod_files(mod_name: str) -> list:
     return file_io.get_files_in_tree(get_persistant_mod_dir(mod_name))
 
 
-def get_working_dir() -> str:
-    working_dir = os.path.join(file_io.SCRIPT_DIR, 'working_dir')
-    os.makedirs(working_dir, exist_ok=True)
-    return working_dir
-
-
 def clean_working_dir():
     working_dir = get_working_dir()
     if os.path.isdir(working_dir):
@@ -136,43 +129,3 @@ def get_game_window_title() -> str:
         return get_window_title_override()
     else:
         unreal_engine.get_game_process_name(get_game_exe_path())
-
-
-def run_app(
-        exe_path: str,
-        exec_mode: ExecutionMode = ExecutionMode.SYNC,
-        args: list = [],
-        working_dir: str = None
-    ):
-
-    exe_path = ensure_path_quoted(exe_path)
-
-    if exec_mode == ExecutionMode.SYNC:
-        command = exe_path
-        for arg in args:
-            command = f'{command} {arg}'
-        log.log_message('----------------------------------------------------')
-        log.log_message(f'Command: main executable: {exe_path}')
-        for arg in args:
-            log.log_message(f'Command: arg: {arg}')
-        log.log_message('----------------------------------------------------')
-        log.log_message(f'Command: {command} running with the {exec_mode} enum')
-        if working_dir:
-            if os.path.isdir(working_dir):
-                os.chdir(working_dir)
-
-        process = subprocess.Popen(command, cwd=working_dir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, shell=True)
-
-        for line in iter(process.stdout.readline, ''):
-            log.log_message(line.strip())
-
-        process.stdout.close()
-        process.wait()
-        log.log_message(f'Command: {command} finished')
-
-    elif exec_mode == ExecutionMode.ASYNC:
-        command = exe_path
-        for arg in args:
-            command = f'{command} {arg}'
-        log.log_message(f'Command: {command} started with the {exec_mode} enum')
-        subprocess.Popen(command, cwd=working_dir, start_new_session=True, shell=True)

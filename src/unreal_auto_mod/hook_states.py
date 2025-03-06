@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
-from unreal_auto_mod import log, process_management, settings, utilities, window_management, timer
+from unreal_auto_mod import log, process_management, settings, timer, app_runner, window_management
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
 
 
@@ -22,7 +22,7 @@ def exec_events_checks(hook_state_type: HookStateType):
             exe_path = exec_event['alt_exe_path']
             exe_args = exec_event['variable_args']
             exe_exec_mode = get_enum_from_val(ExecutionMode, exec_event['execution_mode'])
-            utilities.run_app(exe_path, exe_exec_mode, exe_args)
+            app_runner.run_app(exe_path, exe_exec_mode, exe_args)
 
 
 def is_hook_state_used(state: HookStateType) -> bool:

@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from unreal_auto_mod import file_io, utilities
+from unreal_auto_mod import file_io, settings
 
 
 def download_kismet_analyzer(output_directory: str):
@@ -12,9 +12,9 @@ def download_kismet_analyzer(output_directory: str):
 
 def install_kismet_analyzer(output_directory: str):
     os.makedirs(output_directory, exist_ok=True)
-    os.makedirs(utilities.get_working_dir(), exist_ok=True)
-    download_kismet_analyzer(utilities.get_working_dir())
-    zip_path = f'{utilities.get_working_dir()}/kismet-analyzer-3d06645-win-x64.zip'
+    os.makedirs(settings.get_working_dir(), exist_ok=True)
+    download_kismet_analyzer(settings.get_working_dir())
+    zip_path = f'{settings.get_working_dir()}/kismet-analyzer-3d06645-win-x64.zip'
     file_io.unzip_zip(zip_path, output_directory)
     shutil.move(f'{output_directory}/kismet-analyzer-3d06645-win-x64/kismet-analyzer.exe', f'{output_directory}/kismet-analyzer.exe')
 

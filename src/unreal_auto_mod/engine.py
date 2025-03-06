@@ -1,4 +1,4 @@
-from unreal_auto_mod import file_io, hook_states, log, settings, utilities
+from unreal_auto_mod import file_io, hook_states, log, settings, app_runner
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, PackagingDirType
 from unreal_auto_mod.programs import unreal_engine
 from unreal_auto_mod.threads import thread_engine_monitor
@@ -7,7 +7,7 @@ from unreal_auto_mod.threads import thread_engine_monitor
 @hook_states.hook_state_decorator(HookStateType.PRE_ENGINE_OPEN)
 def open_game_engine():
     command = unreal_engine.get_unreal_editor_exe_path(settings.get_unreal_engine_dir())
-    utilities.run_app(command, ExecutionMode.ASYNC, settings.get_engine_launch_args())
+    app_runner.run_app(command, ExecutionMode.ASYNC, settings.get_engine_launch_args())
     thread_engine_monitor.engine_monitor_thread()
 
 

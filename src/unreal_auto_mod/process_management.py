@@ -5,7 +5,6 @@ import psutil
 from unreal_auto_mod import file_io, settings
 from unreal_auto_mod.data_structures import HookStateType
 from unreal_auto_mod.programs import unreal_engine
-from unreal_auto_mod.settings import get_game_exe_path
 
 
 def get_process_name(exe_path: str) -> str:
@@ -53,4 +52,4 @@ def kill_processes(state: HookStateType):
 
 
 def get_game_process_name():
-    return unreal_engine.get_game_process_name(get_game_exe_path())
+    return unreal_engine.get_game_process_name(settings.get_game_exe_path())

@@ -1,13 +1,13 @@
 
 import unreal_auto_mod.settings
 import unreal_auto_mod.timer
-from unreal_auto_mod import hook_states, log, utilities
+from unreal_auto_mod import hook_states, log, app_runner
 from unreal_auto_mod.data_structures import ExecutionMode, GameLaunchType, HookStateType
 from unreal_auto_mod.programs.steam import get_steam_exe_location
 
 
 def run_game_exe():
-    utilities.run_app(exe_path=unreal_auto_mod.settings.get_game_exe_path(), exec_mode=ExecutionMode.ASYNC, args=unreal_auto_mod.settings.get_game_launch_params())
+    app_runner.run_app(exe_path=unreal_auto_mod.settings.get_game_exe_path(), exec_mode=ExecutionMode.ASYNC, args=unreal_auto_mod.settings.get_game_launch_params())
 
 
 def run_game_steam():
@@ -21,7 +21,7 @@ def run_game_steam():
     new_params = unreal_auto_mod.settings.get_game_launch_params()
     for param in new_params:
         launch_params.append(param)
-    utilities.run_app(exe_path=steam_exe, exec_mode=ExecutionMode.ASYNC, args=launch_params)
+    app_runner.run_app(exe_path=steam_exe, exec_mode=ExecutionMode.ASYNC, args=launch_params)
 
 
 @hook_states.hook_state_decorator(HookStateType.PRE_GAME_LAUNCH)

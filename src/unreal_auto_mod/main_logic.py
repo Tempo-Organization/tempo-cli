@@ -7,10 +7,15 @@ import zipfile
 
 import psutil
 
-import unreal_auto_mod.programs.kismet_analyzer
-import unreal_auto_mod.programs.spaghetti
-import unreal_auto_mod.programs.uasset_gui
-import unreal_auto_mod.programs.umodel
+import unreal_auto_mod.app_runner
+from unreal_auto_mod.programs import (
+    kismet_analyzer, 
+    spaghetti, 
+    uasset_gui, 
+    umodel,
+    fmodel,
+    unreal_engine
+)
 from unreal_auto_mod import (
     data_structures,
     engine,
@@ -25,8 +30,7 @@ from unreal_auto_mod import (
     utilities,
 )
 from unreal_auto_mod.log import log_message
-from unreal_auto_mod.programs import fmodel, unreal_engine
-from unreal_auto_mod.threads import game_monitor, constant
+from unreal_auto_mod.threads import constant, game_monitor
 
 
 @hook_states.hook_state_decorator(start_hook_state_type=data_structures.HookStateType.INIT)
@@ -99,30 +103,30 @@ def full_run_all(
 
 
 def install_spaghetti(output_directory: str, run_after_install: bool):
-    if not os.path.isfile(unreal_auto_mod.programs.spaghetti.get_spaghetti_path(output_directory)):
-        unreal_auto_mod.programs.spaghetti.install_spaghetti(output_directory)
+    if not os.path.isfile(spaghetti.get_spaghetti_path(output_directory)):
+        spaghetti.install_spaghetti(output_directory)
     if run_after_install:
-        utilities.run_app(unreal_auto_mod.programs.spaghetti.get_spaghetti_path(output_directory))
+        unreal_auto_mod.app_runner.run_app(spaghetti.get_spaghetti_path(output_directory))
 
 
 def install_kismet_analyzer(output_directory: str, run_after_install: bool):
     # add shell stuff to run app later or something
-    if not os.path.isfile(unreal_auto_mod.programs.kismet_analyzer.get_kismet_analyzer_path(output_directory)):
-        unreal_auto_mod.programs.kismet_analyzer.install_kismet_analyzer(output_directory)
+    if not os.path.isfile(kismet_analyzer.get_kismet_analyzer_path(output_directory)):
+        kismet_analyzer.install_kismet_analyzer(output_directory)
     if run_after_install:
-        kismet_analyzer_path = unreal_auto_mod.programs.kismet_analyzer.get_kismet_analyzer_path(output_directory)
+        kismet_analyzer_path = kismet_analyzer.get_kismet_analyzer_path(output_directory)
         kismet_directory = os.path.dirname(kismet_analyzer_path)
         command = f'cd /d "{kismet_directory}" && "{kismet_analyzer_path}" -h && set ka=kismet-analyzer.exe && cmd /k'
         subprocess.run(command, shell=True, check=False)
 
 
 def install_uasset_gui(output_directory: str, run_after_install: bool):
-    if not os.path.isfile(unreal_auto_mod.programs.uasset_gui.get_uasset_gui_path(output_directory)):
-        unreal_auto_mod.programs.uasset_gui.install_uasset_gui(output_directory)
+    if not os.path.isfile(uasset_gui.get_uasset_gui_path(output_directory)):
+        uasset_gui.install_uasset_gui(output_directory)
     else:
         log.log_message(f'uasset_gui is already installed at: "{output_directory}"')
     if run_after_install:
-        utilities.run_app(unreal_auto_mod.programs.uasset_gui.get_uasset_gui_path(output_directory))
+        unreal_auto_mod.app_runner.run_app(uasset_gui.get_uasset_gui_path(output_directory))
 
 
 def open_latest_log(settings_json: str):
@@ -153,19 +157,19 @@ def close_engine(settings_json: str):
 
 
 def install_umodel(output_directory: str, run_after_install: bool):
-    if not unreal_auto_mod.programs.umodel.does_umodel_exist(output_directory):
-        unreal_auto_mod.programs.umodel.install_umodel(output_directory)
+    if not umodel.does_umodel_exist(output_directory):
+        umodel.install_umodel(output_directory)
     # Sets dir, so it's the dir opened by default in umodel
     # os.chdir(os.path.dirname(utilities.custom_get_game_dir()))
     if run_after_install:
-       utilities.run_app(unreal_auto_mod.programs.umodel.get_umodel_path(output_directory))
+       unreal_auto_mod.app_runner.run_app(umodel.get_umodel_path(output_directory))
 
 
 def install_fmodel(output_directory: str, run_after_install: bool):
     if not os.path.isfile(fmodel.get_fmodel_path(output_directory)):
         fmodel.install_fmodel(output_directory)
     if run_after_install:
-        utilities.run_app(fmodel.get_fmodel_path(output_directory))
+        unreal_auto_mod.app_runner.run_app(fmodel.get_fmodel_path(output_directory))
 
 
 def get_solo_build_project_command() -> str:
@@ -182,7 +186,7 @@ def run_proj_build_command(command: str):
     command_parts = command.split(' ')
     executable = command_parts[0]
     args = command_parts[1:]
-    utilities.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 def build(settings_json: str, toggle_engine: bool):
@@ -437,7 +441,7 @@ def resave_packages_and_fix_up_redirectors(settings_json: str):
     engine.close_game_engine()
     arg = '-run=ResavePackages -fixupredirects'
     command = f'"{unreal_engine.get_unreal_editor_exe_path(settings.get_unreal_engine_dir())}" "{settings.get_uproject_file()}" {arg}'
-    utilities.run_app(command)
+    unreal_auto_mod.app_runner.run_app(command)
 
 
 def cleanup_full(settings_json: str):
@@ -450,7 +454,7 @@ def cleanup_full(settings_json: str):
         '-X',
         '--force'
     ]
-    utilities.run_app(exe_path=exe, exec_mode=data_structures.ExecutionMode.ASYNC, args=args, working_dir=repo_path)
+    unreal_auto_mod.app_runner.run_app(exe_path=exe, exec_mode=data_structures.ExecutionMode.ASYNC, args=args, working_dir=repo_path)
     log_message(f'Cleaned up repo at: "{repo_path}"')
 
     dist_dir = f'{file_io.SCRIPT_DIR}/dist'
@@ -458,7 +462,7 @@ def cleanup_full(settings_json: str):
         shutil.rmtree(dist_dir)
     log_message(f'Cleaned up dist dir at: "{dist_dir}"')
 
-    working_dir = utilities.get_working_dir()
+    working_dir = settings.get_working_dir()
     if os.path.isdir(working_dir):
         shutil.rmtree(working_dir)
     log_message(f'Cleaned up working dir at: "{working_dir}"')
@@ -733,13 +737,13 @@ def resync_dir_with_repo(settings_json: str):
         '-d',
         '-x'
     ]
-    utilities.run_app(exe_path=exe, args=args, working_dir=repo_path)
+    unreal_auto_mod.app_runner.run_app(exe_path=exe, args=args, working_dir=repo_path)
 
     args = [
         'reset',
         '--hard'
     ]
-    utilities.run_app(exe_path=exe, args=args, working_dir=repo_path)
+    unreal_auto_mod.app_runner.run_app(exe_path=exe, args=args, working_dir=repo_path)
 
     log_message(f"Successfully resynchronized the repository at '{repo_path}'.")
 

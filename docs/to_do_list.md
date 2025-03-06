@@ -2,14 +2,12 @@
 
 
 ## To Do:
-- [ ] cleanup modules, no imports within functions, etc...
 
 
 ## File Includes:
-- [ ] add each of the new collection commands to the launch json
 - [ ] logic for mod making to scan collection contents
 
-cli commands:
+cli commands/new launch json entries:
         - [ ] create collection
         - [ ] set color
         - [ ] rename collection
@@ -58,31 +56,41 @@ cli commands:
 ## Sooner Later:
 - [ ] localization support
 
+cli commands/new launch json entries:
+        - [ ] get unreal engine version
+        - [ ] get aes key
+        - [ ] get uproject name
+
 
 ## Later Later:
-- [ ] interactive wrappers
+- [ ] retoc commands/functionality
+- [ ] repak commands/functionality
+- [ ] zentools commands/functionality
+- [ ] aes_dumpster commands/functionality
+- [ ]
 - [ ] overrideable colors, ability to disable coloring/progress bars/logging
-- [ ] appease linter
 - [ ] generate project files for uproject
-- [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic
+- [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic, default map change, game instance, 
 - [ ] generate uproject from win 64 exe, will need the unreal engine version
-- [ ] Mod Conflict Checker
 - [ ] unpack/repack game/mods
 - [ ] list game/mod contents
+- [ ]
+- [ ] add toml support
+- [ ] appease linter
 - [ ] linux support
-- [ ] retoc commands/functionality
-- [ ] compatible game list, more for less techy people, since the tool works on virtually all games
-- [ ] compile all blueprints commandlet usage, maybe somehow setup for any commandlets
-- [ ] cli command for dumping usmapping
-- [ ] cli command for getting unreal engine version
-- [ ] cli command for getting aes key
-- [ ] cli command for getting uproject name
+
+
+## Later Later Later:
+- [ ] automate installing from egs
+- [ ] interactive wrappers
+- [ ] Mod Conflict Checker
 - [ ] diff game and file list, and backup diff, so later on can cleanup game list and restore from backup
 - [ ] cli help replies and such are not colorized like the rest of the program, fix this
+- [ ] compile all blueprints commandlet usage, maybe somehow setup for any commandlets
+- [ ] layout support command
 - [ ] Engine pak making compression variants (different types, in one run), defaults to compressed currently, can only do one type in one run right now
 - [ ] Switch to `pathlib` from strings
-- [ ] add toml support
-- [ ] layout support command
+- [ ] compatible game list, more for less techy people, since the tool works on virtually all games
 
 
         ## Events to look into
@@ -121,3 +129,6 @@ cli commands:
         - [ ] Close all hotkey (game, engine, and instances of UAM)
 
 automate asset import for meshes/skeletons/textures/physics assets, pal/da, etc.... and various properties
+
+cli commands/new launch json entries:
+        - [ ] dump usmappings

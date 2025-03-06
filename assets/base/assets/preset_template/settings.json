@@ -1,7 +1,7 @@
 {
   "general_info": {
-    "override_default_working_dir": false,
-    "working_dir": null,
+    "override_default_working_dir": true,
+    "working_dir": "C:/Users/Mythical/Downloads/Output",
     "window_title": "unreal_auto_mod automation script"
   },
   "git_info": {

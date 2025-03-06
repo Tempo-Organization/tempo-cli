@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 
 from dynaconf import Dynaconf
 
-from unreal_auto_mod import configs, file_io, log, packing, process_management, window_management
+from unreal_auto_mod import configs, file_io, log, packing, process_management, settings, window_management
 from unreal_auto_mod.log import log_message
 from unreal_auto_mod.programs import repak, unreal_engine
 
@@ -262,3 +262,12 @@ def custom_get_unreal_engine_version(engine_path: str) -> str:
         return f'{unreal_engine_major_version}.{unreal_engine_minor_version}'
     else:
         return unreal_engine.get_unreal_engine_version(engine_path)
+
+
+def get_working_dir() -> str:
+    if settings.get_is_overriding_default_working_dir():
+        working_dir = settings.get_override_working_dir()
+    else:
+        working_dir = os.path.join(file_io.SCRIPT_DIR, 'working_dir')
+    os.makedirs(working_dir, exist_ok=True)
+    return working_dir
