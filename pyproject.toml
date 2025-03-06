@@ -32,7 +32,8 @@ dependencies = [
   "trogon @ git+https://github.com/Mythical-Github/trogon",
   "tomlkit",
   "pywinctl",
-  "dynaconf"
+  "dynaconf",
+  "pywin32; sys_platform == 'win32'"
 ]
 
 [project.urls]

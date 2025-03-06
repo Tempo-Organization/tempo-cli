@@ -1,5 +1,4 @@
-import ctypes
-
+import sys
 import pywinctl
 import screeninfo
 
@@ -72,7 +71,8 @@ def set_window_size(window: pywinctl.Window, width: int, height: int):
 
 
 def change_window_name(window_name: str):
-    ctypes.windll.kernel32.SetConsoleTitleW(window_name)
+    sys.stdout.write(f"\033]0;{window_name}\007")
+    sys.stdout.flush()
 
 
 def move_window(window: pywinctl.Window, window_settings: list):
