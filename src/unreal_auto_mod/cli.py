@@ -31,7 +31,9 @@ def check_settings():
             index = sys.argv.index("--settings_json") + 1
             if index < len(sys.argv):
                 settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
-                return settings.load_settings(settings_file)
+                settings_to_return = settings.load_settings(settings_file)
+                repak.ensure_repak_installed()
+                return settings_to_return
             else:
                 print("Error: No file path provided after --settings_json.")
                 sys.exit(1)
@@ -54,7 +56,6 @@ def check_generate_wrapper():
 def cli(generate_wrapper, logs_directory, max_content_width=200):
     check_generate_wrapper()
     check_settings()
-    repak.ensure_repak_installed()
 
 
 command_help = 'Builds the uproject specified within the settings JSON'
