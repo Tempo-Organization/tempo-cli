@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import unreal_auto_mod.settings
 from unreal_auto_mod import hook_states, log, process_management, window_management
-from unreal_auto_mod.data_structures import HookStateType
+from unreal_auto_mod.hook_states import HookStateType
 from unreal_auto_mod.programs import unreal_engine
 
 

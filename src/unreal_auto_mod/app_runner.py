@@ -1,10 +1,17 @@
+from enum import Enum
+import os
+import subprocess
+
 from unreal_auto_mod import log
-from unreal_auto_mod.data_structures import ExecutionMode
 from unreal_auto_mod.file_io import ensure_path_quoted
 
 
-import os
-import subprocess
+class ExecutionMode(Enum):
+    """
+    enum for how to execute various processes
+    """
+    SYNC = 'sync'
+    ASYNC = 'async'
 
 
 def run_app(

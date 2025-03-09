@@ -3,7 +3,7 @@ import os
 import psutil
 
 from unreal_auto_mod import file_io, settings
-from unreal_auto_mod.data_structures import HookStateType
+from unreal_auto_mod.hook_states import HookStateType
 from unreal_auto_mod.programs import unreal_engine
 
 

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import unreal_auto_mod.timer
 from unreal_auto_mod import hook_states, log, process_management, utilities, window_management
-from unreal_auto_mod.data_structures import HookStateType
+from unreal_auto_mod.hook_states import HookStateType
 
 
 @dataclass

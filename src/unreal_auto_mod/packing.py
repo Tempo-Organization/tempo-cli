@@ -1,13 +1,26 @@
+from enum import Enum
 import os
 import shutil
 from dataclasses import dataclass
 
 from rich.progress import Progress
 
-from unreal_auto_mod import data_structures, file_io, hook_states, log, settings, utilities
 import unreal_auto_mod.app_runner
-from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
+from unreal_auto_mod import enums, file_io, hook_states, log, settings, utilities
+from unreal_auto_mod.enums import get_enum_from_val
+from unreal_auto_mod.hook_states import HookStateType
 from unreal_auto_mod.programs import repak, unreal_engine, unreal_pak
+import unreal_auto_mod.sig
+
+
+class PackingType(Enum):
+    """
+    enum for how to treat packing mods
+    """
+    ENGINE = 'engine'
+    UNREAL_PAK = 'unreal_pak'
+    REPAK = 'repak'
+    LOOSE = 'loose'
 
 
 @dataclass
@@ -121,6 +134,19 @@ def handle_uninstall_logic(packing_type: PackingType):
                 uninstall_mod(packing_type, mod_info['mod_name'])
 
 
+class CompressionType(Enum):
+    """
+    enum for the types of mod pak compression
+    """
+    NONE = 'None'
+    ZLIB = 'Zlib'
+    GZIP = 'Gzip'
+    OODLE = 'Oodle'
+    ZSTD = 'Zstd'
+    LZ4 = 'Lz4'
+    LZMA = 'Lzma'
+
+
 @hook_states.hook_state_decorator(
         start_hook_state_type=HookStateType.PRE_PAK_DIR_SETUP,
         end_hook_state_type=HookStateType.POST_PAK_DIR_SETUP
@@ -206,11 +232,11 @@ def uninstall_mod(packing_type: PackingType, mod_name: str):
 def install_mod_sig(mod_name: str, use_symlinks: bool):
     game_paks_dir = utilities.custom_get_game_paks_dir()
     pak_dir_str = utilities.get_pak_dir_structure(mod_name)
-    sig_method_type = data_structures.get_enum_from_val(data_structures.SigMethodType, utilities.get_mods_info_dict_from_mod_name(mod_name).get('sig_method_type', 'none'))
+    sig_method_type = enums.get_enum_from_val(unreal_auto_mod.sig.SigMethodType, utilities.get_mods_info_dict_from_mod_name(mod_name).get('sig_method_type', 'none'))
     sig_location = os.path.normpath(f'{game_paks_dir}/{pak_dir_str}/{mod_name}.sig')
     os.makedirs(os.path.dirname(sig_location), exist_ok=True)
-    if sig_method_type in data_structures.SigMethodType:
-        if sig_method_type == data_structures.SigMethodType.COPY:
+    if sig_method_type in unreal_auto_mod.sig.SigMethodType:
+        if sig_method_type == unreal_auto_mod.sig.SigMethodType.COPY:
             sig_files = file_io.filter_by_extension(file_io.get_files_in_dir(game_paks_dir), '.sig')
             if len(sig_files) < 1:
                 no_sigs_found = ''
@@ -221,7 +247,7 @@ def install_mod_sig(mod_name: str, use_symlinks: bool):
                     os.symlink(before_sig_file, sig_location)
                 else:
                     shutil.copy(before_sig_file, sig_location)
-        if sig_method_type == data_structures.SigMethodType.EMPTY:
+        if sig_method_type == unreal_auto_mod.sig.SigMethodType.EMPTY:
             if use_symlinks:
                 other_sig_location = os.path.normpath(f'{settings.get_working_dir()}/sig_files/{mod_name}.sig')
                 os.makedirs(os.path.dirname(other_sig_location), exist_ok=True)
@@ -234,8 +260,8 @@ def install_mod_sig(mod_name: str, use_symlinks: bool):
     else:
         log.log_message(f'Error: You have provided an invalid sig method type in your mod entry for the {mod_name} mod.')
         log.log_message('Error: Valid options are:')
-        for enum in data_structures.get_enum_strings_from_enum(data_structures.SigMethodType):
-            log.log_message(f'Error: {data_structures.get_enum_from_val(data_structures.SigMethodType), enum}')
+        for enum in enums.get_enum_strings_from_enum(unreal_auto_mod.sig.SigMethodType):
+            log.log_message(f'Error: {enums.get_enum_from_val(unreal_auto_mod.sig.SigMethodType), enum}')
         raise RuntimeError
 
 
@@ -633,3 +659,20 @@ def is_unreal_pak_packing_enum_in_use():
         if entry['packing_type'] == "unreal_pak":
             is_in_use = True
     return is_in_use
+
+
+class FileFilterType(Enum):
+    """
+    enum for how to include various files for mod creation functions
+    """
+    ASSET_PATHS = 'asset_paths'  # Takes the paths and gets all files regardless of extension
+    TREE_PATHS = 'tree_paths'  # Takes supplied dirs, and traverses it all, including every file
+
+
+class UnrealModTreeType(Enum):
+    """
+    enum for the mod dir type in the unreal file system
+    there are two main conventions used by communities
+    """
+    CUSTOM_CONTENT = 'CustomContent'  # "Content/CustomContent/ModName"
+    MODS = 'Mods'  # "Content/Mods/ModName"

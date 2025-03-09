@@ -1,8 +1,55 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Callable, Optional
 
-from unreal_auto_mod import log, process_management, settings, timer, app_runner, window_management
-from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
+from unreal_auto_mod import app_runner, log, process_management, settings, timer, window_management
+from unreal_auto_mod.app_runner import ExecutionMode
+from unreal_auto_mod.enums import get_enum_from_val
+from unreal_auto_mod.window_management import WindowAction
+
+
+class HookStateType(Enum):
+    """
+    enum for the various hook states, used to fire off other functions
+    at specific times, constant and init are not for use with the hook_state_decorator
+    """
+    CONSTANT = 'constant'
+    INIT = 'init'
+
+    PRE_ALL = 'pre_all'
+    POST_ALL = 'post_all'
+    PRE_INIT = 'pre_init'
+    POST_INIT = 'post_init'
+    PRE_COOKING = 'pre_cooking'
+    POST_COOKING = 'post_cooking'
+    PRE_MODS_UNINSTALL = 'pre_mods_uninstall'
+    POST_MODS_UNINSTALL = 'post_mods_uninstall'
+    PRE_PAK_DIR_SETUP = 'pre_pak_dir_setup'
+    POST_PAK_DIR_SETUP = 'post_pak_dir_setup'
+    PRE_MODS_INSTALL = 'pre_mods_install'
+    POST_MODS_INSTALL = 'post_mods_install'
+    PRE_GAME_LAUNCH = 'pre_game_launch'
+    POST_GAME_LAUNCH = 'post_game_launch'
+    PRE_GAME_CLOSE = 'pre_game_close'
+    POST_GAME_CLOSE = 'post_game_close'
+    PRE_ENGINE_OPEN = 'pre_engine_open'
+    POST_ENGINE_OPEN = 'post_engine_open'
+    PRE_ENGINE_CLOSE = 'pre_engine_close'
+    POST_ENGINE_CLOSE = 'post_engine_close'
+    PRE_CLEANUP = 'pre_cleanup'
+    POST_CLEANUP = 'post_cleanup'
+    PRE_CHANGES_UPLOAD = 'pre_changes_upload'
+    POST_CHANGES_UPLOAD = 'post_changes_upload'
+    PRE_BUILD_UPROJECT = 'pre_uproject_build'
+    POST_BUILD_UPROJECT = 'post_uproject_build'
+    PRE_GENERATE_MOD_RELEASE = 'pre_generate_mod_release'
+    POST_GENERATE_MOD_RELEASE = 'post_generate_mod_release'
+    PRE_GENERATE_MOD_RELEASES = 'pre_generate_mod_releases'
+    POST_GENERATE_MOD_RELEASES = 'post_generate_mod_releases'
+    PRE_GENERATE_MOD = 'pre_generate_mod'
+    POST_GENERATE_MOD = 'post_generate_mod'
+    PRE_GENERATE_MODS = 'pre_generate_mods'
+    POST_GENERATE_MODS = 'post_generate_mods'
 
 
 @dataclass

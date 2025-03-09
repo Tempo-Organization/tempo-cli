@@ -605,6 +605,25 @@
                 "--settings_json",
                 "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
+        },
+        {
+            "name": "set_color_from_collection_path",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "set_color_from_collection_path",
+                "--collection_path",
+                "${workspaceFolder}/dist/TestingCollection.collection",
+                "--red",
+                "0.5",
+                "--green",
+                "0.5",
+                "--blue",
+                "0.5",
+                "--alpha",
+                "0.5"
+            ]
         }
     ]
 }

@@ -7,16 +7,17 @@ from trogon import tui
 
 from unreal_auto_mod import (
     _version,
+    app_runner,
     collections,
-    data_structures,
+    enums,
     file_io,
     main_logic,
     settings,
-    app_runner,
     window_management,
     wrapper,
 )
 from unreal_auto_mod.programs import repak, stove
+import unreal_auto_mod.unreal
 
 default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 'dist'))
@@ -468,13 +469,13 @@ def generate_uproject(project_file, file_version, engine_major_association, engi
     main_logic.generate_uproject(project_file, file_version, engine_major_association, engine_minor_association, category, description, ignore_safety_checks)
 
 
-host_type_choices = data_structures.get_enum_strings_from_enum(data_structures.UnrealHostTypes)
-loading_phase_choices = data_structures.get_enum_strings_from_enum(data_structures.LoadingPhases)
+host_type_choices = enums.get_enum_strings_from_enum(unreal_auto_mod.unreal.UnrealHostTypes)
+loading_phase_choices = enums.get_enum_strings_from_enum(unreal_auto_mod.unreal.LoadingPhases)
 
 command_help = 'Adds the specified module entry to the descriptor file, overwriting if it already exists.'
 @cli.command(name='add_module_to_descriptor', help=command_help, short_help=command_help)
-@click.option('--host_type', type=click.Choice(host_type_choices), default=data_structures.UnrealHostTypes.DEVELOPER.value, required=True, help='The host type to use.')
-@click.option('--loading_phase', type=click.Choice(loading_phase_choices), default=data_structures.LoadingPhases.DEFAULT.value, required=True, help='The loading phase to use.')
+@click.option('--host_type', type=click.Choice(host_type_choices), default=unreal_auto_mod.unreal.UnrealHostTypes.DEVELOPER.value, required=True, help='The host type to use.')
+@click.option('--loading_phase', type=click.Choice(loading_phase_choices), default=unreal_auto_mod.unreal.LoadingPhases.DEFAULT.value, required=True, help='The loading phase to use.')
 @click.argument('descriptor_file', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path))
 @click.argument('module_name', type=str)
 def add_module_to_descriptor(descriptor_file, module_name, host_type, loading_phase):
