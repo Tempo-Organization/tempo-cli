@@ -3,7 +3,7 @@ import time
 from dataclasses import dataclass
 
 from unreal_auto_mod import hook_states, log
-from unreal_auto_mod.hook_states import HookStateType
+from unreal_auto_mod.data_structures import HookStateType
 
 
 @dataclass

@@ -1,6 +1,4 @@
-from enum import Enum
 import sys
-
 import pywinctl
 import screeninfo
 
@@ -85,14 +83,3 @@ def move_window(window: pywinctl.Window, window_settings: list):
     height = window_settings['resolution']['y']
     if width is not None:
         set_window_size(window, width, height)
-
-
-class WindowAction(Enum):
-    """
-    enum for how to treat handling windows
-    """
-    NONE = 'none'
-    MIN = 'min'
-    MAX = 'max'
-    MOVE = 'move'
-    CLOSE = 'close'

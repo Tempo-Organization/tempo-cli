@@ -2,7 +2,7 @@ import json
 import os
 
 from unreal_auto_mod import file_io, process_management
-from unreal_auto_mod.unreal import PackagingDirType
+from unreal_auto_mod.data_structures import PackagingDirType
 
 
 def get_game_process_name(input_game_exe_path: str) -> str:

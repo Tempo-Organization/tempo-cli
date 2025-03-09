@@ -1,10 +1,8 @@
 
-from enum import Enum
-from unreal_auto_mod.hook_states import HookStateType
 import unreal_auto_mod.settings
 import unreal_auto_mod.timer
-from unreal_auto_mod import app_runner, hook_states, log
-from unreal_auto_mod.app_runner import ExecutionMode
+from unreal_auto_mod import hook_states, log, app_runner
+from unreal_auto_mod.data_structures import ExecutionMode, GameLaunchType, HookStateType
 from unreal_auto_mod.programs.steam import get_steam_exe_location
 
 
@@ -24,20 +22,6 @@ def run_game_steam():
     for param in new_params:
         launch_params.append(param)
     app_runner.run_app(exe_path=steam_exe, exec_mode=ExecutionMode.ASYNC, args=launch_params)
-
-
-class GameLaunchType(Enum):
-    """
-    enum for how to launch the game
-    """
-    EXE = 'exe'
-    STEAM = 'steam'
-    EPIC = 'epic'
-    ITCH_IO = 'itch_io'
-    BATTLE_NET = 'battle_net'
-    ORIGIN = 'origin'
-    UBISOFT = 'ubisoft'
-    OTHER = 'other'
 
 
 @hook_states.hook_state_decorator(HookStateType.PRE_GAME_LAUNCH)

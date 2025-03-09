@@ -2,8 +2,7 @@ import os
 import shutil
 
 from unreal_auto_mod import file_io, log
-from unreal_auto_mod.enums import get_enum_from_val
-from unreal_auto_mod.packing import CompressionType
+from unreal_auto_mod.data_structures import CompressionType, get_enum_from_val
 from unreal_auto_mod.programs import unreal_engine
 from unreal_auto_mod.settings import (
     get_alt_packing_dir_name,

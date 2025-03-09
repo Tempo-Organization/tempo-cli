@@ -8,7 +8,16 @@ import zipfile
 import psutil
 
 import unreal_auto_mod.app_runner
+from unreal_auto_mod.programs import (
+    kismet_analyzer, 
+    spaghetti, 
+    uasset_gui, 
+    umodel,
+    fmodel,
+    unreal_engine
+)
 from unreal_auto_mod import (
+    data_structures,
     engine,
     file_io,
     game_runner,
@@ -21,11 +30,10 @@ from unreal_auto_mod import (
     utilities,
 )
 from unreal_auto_mod.log import log_message
-from unreal_auto_mod.programs import fmodel, kismet_analyzer, spaghetti, uasset_gui, umodel, unreal_engine
 from unreal_auto_mod.threads import constant, game_monitor
 
 
-@hook_states.hook_state_decorator(start_hook_state_type=hook_states.HookStateType.INIT)
+@hook_states.hook_state_decorator(start_hook_state_type=data_structures.HookStateType.INIT)
 def init_thread_system():
     constant.constant_thread()
 
@@ -446,7 +454,7 @@ def cleanup_full(settings_json: str):
         '-X',
         '--force'
     ]
-    unreal_auto_mod.app_runner.run_app(exe_path=exe, exec_mode=unreal_auto_mod.app_runner.ExecutionMode.ASYNC, args=args, working_dir=repo_path)
+    unreal_auto_mod.app_runner.run_app(exe_path=exe, exec_mode=data_structures.ExecutionMode.ASYNC, args=args, working_dir=repo_path)
     log_message(f'Cleaned up repo at: "{repo_path}"')
 
     dist_dir = f'{file_io.SCRIPT_DIR}/dist'

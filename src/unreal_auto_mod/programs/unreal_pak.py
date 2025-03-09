@@ -6,7 +6,7 @@ from rich.progress import Progress
 import unreal_auto_mod.app_runner
 import unreal_auto_mod.settings
 from unreal_auto_mod import file_io, packing, utilities
-from unreal_auto_mod.packing import CompressionType
+from unreal_auto_mod.data_structures import CompressionType
 from unreal_auto_mod.programs import unreal_engine
 
 

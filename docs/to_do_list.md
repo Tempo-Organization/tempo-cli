@@ -3,17 +3,9 @@
 
 ## To Do:
 
-private collection path:
-"ZedfestModdingKit\Content\Developers\Mythical\Collections\Test.collection"
-local collection path:
-"ZedfestModdingKit\Saved\Collections\Test.collection"
-shared collection path:
-"ZedfestModdingKit\Content\Collections\Test.collection"
 
 ## File Includes:
 - [ ] logic for mod making to scan collection contents
-- [ ] https://dev.epicgames.com/documentation/en-us/unreal-engine/advanced-search-syntax-in-unreal-engine?application_version=5.4
-- [ ] https://dev.epicgames.com/documentation/en-us/unreal-engine/asset-metadata-in-unreal-engine
 
 cli commands/new launch json entries:
         - [ ] create collection
