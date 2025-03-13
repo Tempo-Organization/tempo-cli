@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 from rich.progress import Progress
 
-from unreal_auto_mod import data_structures, file_io, hook_states, log, settings, utilities
 import unreal_auto_mod.app_runner
+from unreal_auto_mod import data_structures, file_io, hook_states, log, settings, utilities
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 from unreal_auto_mod.programs import repak, unreal_engine, unreal_pak
 

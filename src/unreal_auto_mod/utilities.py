@@ -1,36 +1,25 @@
 import os
 import shutil
 
-from unreal_auto_mod import file_io, log
+from unreal_auto_mod import file_io, log, settings
 from unreal_auto_mod.data_structures import CompressionType, get_enum_from_val
 from unreal_auto_mod.programs import unreal_engine
-from unreal_auto_mod.settings import (
-    get_alt_packing_dir_name,
-    get_game_exe_path,
-    get_is_using_alt_dir_name,
-    get_mods_info_list_from_json,
-    get_override_automatic_window_title_finding,
-    get_persistant_mod_dir,
-    get_uproject_file,
-    get_window_title_override,
-    get_working_dir,
-)
 
 
 def custom_get_game_dir():
-    return unreal_engine.get_game_dir(get_game_exe_path())
+    return unreal_engine.get_game_dir(settings.get_game_exe_path())
 
 
 def custom_get_game_paks_dir() -> str:
     alt_game_dir = os.path.dirname(custom_get_game_dir())
-    if get_is_using_alt_dir_name():
-        return os.path.join(alt_game_dir, get_alt_packing_dir_name, 'Content', 'Paks')
+    if settings.get_is_using_alt_dir_name():
+        return os.path.join(alt_game_dir, settings.get_alt_packing_dir_name, 'Content', 'Paks')
     else:
-        return unreal_engine.get_game_paks_dir(get_uproject_file(), custom_get_game_dir())
+        return unreal_engine.get_game_paks_dir(settings.get_uproject_file(), custom_get_game_dir())
 
 
 def get_uproject_dir():
-    return os.path.dirname(get_uproject_file())
+    return os.path.dirname(settings.get_uproject_file())
 
 
 def get_uproject_unreal_auto_mod_dir():
@@ -57,14 +46,14 @@ def get_mod_name_dir_name(mod_name: str) -> str:
 
 
 def get_pak_dir_structure(mod_name: str) -> str:
-    for info in get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return info['pak_dir_structure']
     return None
 
 
 def get_mod_compression_type(mod_name: str) -> CompressionType:
-    for info in get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             compression_str = info['compression_type']
             return get_enum_from_val(CompressionType, compression_str)
@@ -72,21 +61,21 @@ def get_mod_compression_type(mod_name: str) -> CompressionType:
 
 
 def get_unreal_mod_tree_type_str(mod_name: str) -> str:
-    for info in get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return info['mod_name_dir_type']
     return None
 
 
 def get_mods_info_dict_from_mod_name(mod_name: str) -> dict:
-    for info in get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return dict(info)
     return None
 
 
 def is_mod_name_in_list(mod_name: str) -> bool:
-    for info in get_mods_info_list_from_json():
+    for info in settings.get_mods_info_list_from_json():
         if info['mod_name'] == mod_name:
             return True
     return False
@@ -94,7 +83,7 @@ def is_mod_name_in_list(mod_name: str) -> bool:
 
 def get_mod_name_dir(mod_name: str) -> dir:
     if is_mod_name_in_list(mod_name):
-        return f'{unreal_engine.get_uproject_dir(get_uproject_file())}/Saved/Cooked/{get_unreal_mod_tree_type_str(mod_name)}/{mod_name}'
+        return f'{unreal_engine.get_uproject_dir(settings.get_uproject_file())}/Saved/Cooked/{get_unreal_mod_tree_type_str(mod_name)}/{mod_name}'
     return None
 
 
@@ -103,11 +92,11 @@ def get_mod_name_dir_files(mod_name: str) -> list:
 
 
 def get_persistant_mod_files(mod_name: str) -> list:
-    return file_io.get_files_in_tree(get_persistant_mod_dir(mod_name))
+    return file_io.get_files_in_tree(settings.get_persistant_mod_dir(mod_name))
 
 
 def clean_working_dir():
-    working_dir = get_working_dir()
+    working_dir = settings.get_working_dir()
     if os.path.isdir(working_dir):
         try:
             shutil.rmtree(working_dir)
@@ -125,7 +114,7 @@ def filter_file_paths(paths_dict: dict) -> dict:
 
 
 def get_game_window_title() -> str:
-    if get_override_automatic_window_title_finding():
-        return get_window_title_override()
+    if settings.get_override_automatic_window_title_finding():
+        return settings.get_window_title_override()
     else:
-        unreal_engine.get_game_process_name(get_game_exe_path())
+        unreal_engine.get_game_process_name(settings.get_game_exe_path())

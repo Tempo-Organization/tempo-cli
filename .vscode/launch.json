@@ -605,6 +605,167 @@
                 "--settings_json",
                 "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
+        },
+        {
+            "name": "create_collection",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "create_collection",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--file_paths",
+                "C:/Users/Mythical/Desktop/12345.txt"
+            ]
+        },
+        {
+            "name": "rename_collection",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "rename_collection",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--new_name",
+                "new_name_test"
+            ]
+        },
+        {
+            "name": "delete_collection",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "delete_collection",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection"
+            ]
+        },
+        {
+            "name": "disable_collection",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "disable_collection",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection"
+            ]
+        },
+        {
+            "name": "set_guid_from_collection_path",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "set_guid_from_collection_path",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection"
+            ]
+        },
+        {
+            "name": "set_parent_guid_from_collection_path",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "set_parent_guid_from_collection_path",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection"
+            ]
+        },
+        {
+            "name": "set_file_version_from_collection_path",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "set_file_version_from_collection_path",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--file_version",
+                "1"
+            ]
+        },
+        {
+            "name": "set_collection_type_from_collection_path",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "set_collection_type_from_collection_path",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--collection_type",
+                "Dynamic"
+            ]
+        },
+        {
+            "name": "add_content_lines_to_collection",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "add_content_lines_to_collection",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--filter_lines",
+                "test_filter_line_one",
+                "--filter_lines",
+                "test_filter_line_two",
+                "--content_path_lines",
+                "test/path/one",
+                "--content_path_lines",
+                "test/path/two",
+                "--unreal_asset_paths",
+                "test/path/one/one.one",
+                "--unreal_asset_paths",
+                "test/path/two/two.two"
+            ]
+        },
+        {
+            "name": "remove_content_lines_from_collection",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "remove_content_lines_from_collection",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--filter_lines",
+                "test_filter_line_one",
+                "--filter_lines",
+                "test_filter_line_two",
+                "--content_path_lines",
+                "test/path/one",
+                "--content_path_lines",
+                "test/path/two",
+                "--unreal_asset_paths",
+                "test/path/one/one.one",
+                "--unreal_asset_paths",
+                "test/path/two/two.two"
+            ]
+        },
+        {
+            "name": "set_color_from_collection_path",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "set_color_from_collection_path",
+                "--collection_path",
+                "${workspaceFolder}/dist/testing.collection",
+                "--red",
+                "0.1",
+                "--green",
+                "0.2",
+                "--blue",
+                "0.3",
+                "--alpha",
+                "0.4"
+            ]
         }
     ]
 }

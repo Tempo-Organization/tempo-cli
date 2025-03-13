@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
-from unreal_auto_mod import log, process_management, settings, timer, app_runner, window_management
+from unreal_auto_mod import app_runner, log, process_management, settings, timer, window_management
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
 
 

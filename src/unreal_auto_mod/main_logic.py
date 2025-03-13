@@ -8,14 +8,6 @@ import zipfile
 import psutil
 
 import unreal_auto_mod.app_runner
-from unreal_auto_mod.programs import (
-    kismet_analyzer, 
-    spaghetti, 
-    uasset_gui, 
-    umodel,
-    fmodel,
-    unreal_engine
-)
 from unreal_auto_mod import (
     data_structures,
     engine,
@@ -30,6 +22,7 @@ from unreal_auto_mod import (
     utilities,
 )
 from unreal_auto_mod.log import log_message
+from unreal_auto_mod.programs import fmodel, kismet_analyzer, spaghetti, uasset_gui, umodel, unreal_engine
 from unreal_auto_mod.threads import constant, game_monitor
 
 

@@ -7,12 +7,12 @@ from trogon import tui
 
 from unreal_auto_mod import (
     _version,
+    app_runner,
     collections,
     data_structures,
     file_io,
     main_logic,
     settings,
-    app_runner,
     window_management,
     wrapper,
 )
@@ -700,25 +700,58 @@ def install_kismet_analyzer(output_directory, run_after_install):
     main_logic.install_kismet_analyzer(output_directory, run_after_install)
 
 
-# command_help = 'Create Collection'
-# @cli.command(name='set_color_from_collection_path', help=command_help, short_help=command_help)
-# @click.option('--collection_path', type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to edit.', required=True)
-# @click.option('--file_version', type=int, default=2, help='The collection file version.')
-# @click.option('--red', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
-# @click.option('--green', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
-# @click.option('--blue', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
-# @click.option('--alpha', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
-# def set_color_from_collection_path(collection_path: pathlib.Path, file_version: int, red: float, green: float, blue: float, alpha: float):
-#     collections.create_collection(
-#         collection_name=os.path.basename(collection_path),
-#         collections_directory=os.path.dirname(collection_path),
-#         file_version=str(file_version),
-#         type='',
-#         guid='',
-#         parent_guid='',
-#         color=collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha),
-#         content_paths=''
-#     )
+file_content_options = data_structures.get_enum_strings_from_enum(collections.UnrealContentLineType)
+command_help = 'Create Collection'
+default_create_collection_guid = collections.UnrealGuid().to_uid()
+default_parent_guid = collections.get_blank_unreal_guid().to_uid()
+@cli.command(name='create_collection', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to edit.', required=True)
+@click.option('--file_version', type=int, default=2, help='The collection file version.')
+@click.option('--content_type', default=file_content_options[0], type=click.Choice(file_content_options), help='The type of content collection, dynamic uses file filters, static uses manual specification')
+@click.option('--guid', default=default_create_collection_guid, type=str, help='The guid of the collection, if not provided one will be automatically generated.')
+@click.option('--parent_guid', default=default_parent_guid, type=str, help='The parent guid of the collection, if not provided no parent is assumed, and a blank one is given.')
+@click.option('--red', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--green', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--blue', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--alpha', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
+@click.option('--file_paths', type=str, multiple=True, help='A list of file paths to include in the collection, they will be automatically converted into unreal asset paths. For use with static collections.')
+@click.option('--unreal_asset_paths', type=str, multiple=True, help='A list of unreal asset paths for the collection, for static collections.')
+@click.option('--filter_lines', type=str, multiple=True, help='A list of asset filter for the collection, for use with dynamic collections.')
+def create_collection(
+    collection_path: pathlib.Path,
+    file_version: int,
+    content_type: str,
+    guid: str,
+    parent_guid: str,
+    red: float,
+    green: float,
+    blue: float,
+    alpha: float,
+    file_paths: list[str],
+    unreal_asset_paths: list[str],
+    filter_lines: list[str]
+):
+    type_of_content = data_structures.get_enum_from_val(collections.UnrealContentLineType, content_type)
+    content_lines = []
+    os.makedirs(os.path.dirname(collection_path), exist_ok=True)
+    if type_of_content == collections.UnrealContentLineType.STATIC:
+        for file_path in file_paths:
+            content_lines.append(collections.UnrealAssetPath(path=file_path))
+        for unreal_asset_path in unreal_asset_paths:
+            content_lines.append(collections.UnrealAssetPath(collections.UnrealAssetPath.from_asset_reference(unreal_asset_path)))
+    if type_of_content == collections.UnrealContentLineType.DYNAMIC:
+        content_lines = filter_lines
+    collections.create_collection(
+        collection_name=os.path.basename(collection_path),
+        collections_directory=os.path.dirname(collection_path),
+        file_version=file_version,
+        type=type_of_content,
+        guid=collections.UnrealGuid.from_uid(guid),
+        parent_guid=collections.UnrealGuid.from_uid(parent_guid),
+        color=collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha),
+        content_lines=content_lines,
+        exist_ok=True
+    )
 
 
 command_help = 'Set Collection Color'
@@ -730,3 +763,218 @@ command_help = 'Set Collection Color'
 @click.option('--alpha', default=0.0, type=float, help='The value of the color, accepts 0.0-1.0.')
 def set_color_from_collection_path(collection_path: pathlib.Path, red: float, green: float, blue: float, alpha: float):
     collections.set_color_from_collection_path(collection_path, collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha))
+
+
+command_help = 'Rename Collection'
+@cli.command(name='rename_collection', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to rename.', required=True)
+@click.option('--new_name', type=str, help='New name for the collection.', required=True)
+def rename_collection(collection_path: str, new_name: str):
+    collections.rename_collection_from_collection_path(collection_path, new_name)
+
+
+command_help = 'Delete Collection'
+@cli.command(name='delete_collection', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to rename.', required=True)
+def delete_collection(collection_path: str):
+    collections.delete_collection(collection_path)
+
+
+command_help = 'Disable Collection'
+@cli.command(name='disable_collection', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to rename.', required=True)
+def disable_collection(collection_path: str):
+    collections.disable_collection(collection_path)
+
+
+command_help = 'Enable Collection'
+@cli.command(name='enable_collection', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to rename.', required=True)
+def enable_collection(collection_path: str):
+    collections.enable_collection(collection_path)
+
+
+command_help = 'Set Guid'
+default_set_guid_from_collection_path_guid = collections.UnrealGuid.to_uid(collections.UnrealGuid())
+@cli.command(name='set_guid_from_collection_path', help=command_help, short_help=command_help)
+@click.option('--collection_path', type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), help='The path to the collection file to rename.', required=True)
+@click.option('--guid', default=default_set_guid_from_collection_path_guid, type=str, help='The new guid in string form for the collection.')
+def set_guid_from_collection_path(collection_path: str, guid: str):
+    collections.set_guid_from_collection_path(collection_path=collection_path, guid=collections.UnrealGuid.from_uid(guid))
+
+
+command_help = 'Set Parent Guid'
+@cli.command(name='set_parent_guid_from_collection_path', help=command_help, short_help=command_help)
+@click.option(
+    '--collection_path',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help='The path to the collection file to rename.',
+    required=True
+)
+@click.option('--parent_guid', default=default_parent_guid, type=str, help='The new parent guid in string form for the collection.')
+def set_parent_guid_from_collection_path(collection_path: str, parent_guid: str):
+    collections.set_parent_guid_from_collection_path(collection_path=collection_path, parent_guid=collections.UnrealGuid.from_uid(parent_guid))
+
+
+command_help = 'Set File Version'
+@cli.command(name='set_file_version_from_collection_path', help=command_help, short_help=command_help)
+@click.option(
+    '--collection_path',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help='The path to the collection file to change the file version of.',
+    required=True
+)
+@click.option('--file_version', default=2, type=int, help='The new file version for the collection.')
+def set_file_version_from_collection_path(collection_path: str, file_version: int):
+    collections.set_file_version_from_collection_path(collection_path=collection_path, file_Version=file_version)
+
+
+set_content_type_options = data_structures.get_enum_strings_from_enum(collections.UnrealContentLineType)
+command_help = 'Set Collection Type'
+@cli.command(name='set_collection_type_from_collection_path', help=command_help, short_help=command_help)
+@click.option(
+    '--collection_path',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help='The path to the collection file to change the file version of.',
+    required=True
+)
+@click.option(
+    '--collection_type',
+    default=collections.UnrealContentLineType.STATIC.value,
+    type=click.Choice(set_content_type_options),
+    help='The new content type for the collection, Static or Dynamic.'
+)
+def set_collection_type_from_collection_path(collection_path: str, collection_type: str):
+    type_to_pass = data_structures.get_enum_from_val(collections.UnrealContentLineType, collection_type)
+    collections.set_collection_type_from_collection_path(collection_path=collection_path, collection_type=type_to_pass)
+
+
+command_help = 'Add content lines to collection file, Dynamic accepts filter lines, while Static accepts content path lines and unreal asset path lines'
+@cli.command(name='add_content_lines_to_collection', help=command_help, short_help=command_help)
+@click.option(
+    '--collection_path',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help='The path to the collection file to edit.',
+    required=True
+)
+@click.option(
+    '--content_path_lines',
+    type=str,
+    help='The new content lines to add to the collection, they will be converted to unreal asset paths.',
+    multiple=True,
+    default=[]
+)
+@click.option(
+    '--filter_lines',
+    type=str,
+    help='The new content filter lines to add to the collection.',
+    multiple=True,
+    default=[]
+)
+@click.option(
+    '--unreal_asset_paths',
+    type=str,
+    help='The new unreal asset path lines to add to the collection.',
+    multiple=True,
+    default=[]
+)
+def add_content_lines_to_collection(collection_path: str, content_path_lines: list[str], filter_lines: list[str], unreal_asset_paths: list[str]):
+    collection = collections.get_unreal_collection_from_unreal_collection_path(collection_path)
+    collection_type = collection.content_type
+    content_lines = []
+    if collection_type == collections.UnrealContentLineType.DYNAMIC:
+        content_lines.extend(filter_lines)
+
+    if collection_type == collections.UnrealContentLineType.STATIC:
+        for content_path_line in content_path_lines:
+            content_lines.append(collections.UnrealAssetPath(content_path_line))
+
+        for unreal_asset_path in unreal_asset_paths:
+            print()
+            test_one = collections.UnrealAssetPath.static_from_asset_reference(unreal_asset_path)
+            print(f'test one: {test_one}')
+            test_two = collections.UnrealAssetPath(test_one)
+            print(f'test two: {test_two}')
+            content_lines.append(test_two)
+    collections.add_content_lines_to_collection(collection=collection, content_lines=content_lines)
+
+
+command_help = 'Remove content lines from collection file, Dynamic accepts filter lines, while Static accepts content path lines and unreal asset path lines'
+@cli.command(name='remove_content_lines_from_collection', help=command_help, short_help=command_help)
+@click.option(
+    '--collection_path',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help='The path to the collection file to edit.',
+    required=True
+)
+@click.option(
+    '--content_path_lines',
+    type=str,
+    help='The new content lines to remove from the collection, they will be converted to unreal asset paths.',
+    multiple=True,
+    default=[]
+)
+@click.option(
+    '--filter_lines',
+    type=str,
+    help='The new content filter lines to remove from the collection.',
+    multiple=True,
+    default=[]
+)
+@click.option(
+    '--unreal_asset_paths',
+    type=str,
+    help='The new unreal asset path lines to remove from the collection.',
+    multiple=True,
+    default=[]
+)
+def remove_content_lines_from_collection(collection_path: str, content_path_lines: list[str], filter_lines: list[str], unreal_asset_paths: list[str]):
+    collection = collections.get_unreal_collection_from_unreal_collection_path(collection_path)
+    content_lines = []
+
+    if collection.content_type == collections.UnrealContentLineType.DYNAMIC:
+        content_lines.extend(filter_lines)
+
+    if collection.content_type == collections.UnrealContentLineType.STATIC:
+        for content_path_line in content_path_lines:
+            content_lines.append(collections.UnrealAssetPath(content_path_line))
+
+        for unreal_asset_path in unreal_asset_paths:
+            content_lines.append(collections.UnrealAssetPath(collections.UnrealAssetPath.static_from_asset_reference(unreal_asset_path)))
+
+    collections.remove_content_lines_from_collection(collection=collection, content_lines=content_lines)
