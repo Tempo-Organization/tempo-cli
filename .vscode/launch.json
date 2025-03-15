@@ -798,21 +798,6 @@
                 "--mod_name",
                 "ExampleLevel"
             ]
-        },
-        {
-            "name": "add_meta_data_tags_for_asset_registry_to_unreal_ini",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "add_meta_data_tags_for_asset_registry_to_unreal_ini",
-                "--init_path",
-                "${workspaceFolder}/assets/configs/inis/DefaultGame.ini",
-                "--tags",
-                "test_tag_one",
-                "--tags",
-                "test_tag_two"
-            ]
         }
     ]
 }
