@@ -608,27 +608,3 @@ def get_mod_file_paths_for_manually_made_pak_mods(mod_name: str) -> dict:
     file_dict.update(get_mod_file_paths_for_manually_made_pak_mods_mod_name_dir_paths(mod_name))
 
     return file_dict
-
-
-def is_loose_packing_enum_in_use():
-    is_in_use = False
-    for entry in settings.get_mods_info_list_from_json():
-        if entry['packing_type'] == "loose":
-            is_in_use = True
-    return is_in_use
-
-
-def is_engine_packing_enum_in_use():
-    is_in_use = False
-    for entry in settings.get_mods_info_list_from_json():
-        if entry['packing_type'] == "engine":
-            is_in_use = True
-    return is_in_use
-
-
-def is_unreal_pak_packing_enum_in_use():
-    is_in_use = False
-    for entry in settings.get_mods_info_list_from_json():
-        if entry['packing_type'] == "unreal_pak":
-            is_in_use = True
-    return is_in_use

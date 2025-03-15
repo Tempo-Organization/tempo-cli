@@ -10,7 +10,8 @@ import psutil
 import requests
 from requests.exceptions import HTTPError, RequestException
 
-from unreal_auto_mod.logger import log_message
+from unreal_auto_mod import logger
+
 
 if getattr(sys, 'frozen', False):
     SCRIPT_DIR = Path(sys.executable).parent
@@ -36,22 +37,22 @@ def download_file(url: str, download_path: str):
                 if chunk:
                     f.write(chunk)
 
-        log_message(f"Download completed: {download_path}")
+        logger.log_message(f"Download completed: {download_path}")
 
     except HTTPError as http_err:
-        log_message(f"HTTP error occurred while downloading {url}: {http_err}")
+        logger.log_message(f"HTTP error occurred while downloading {url}: {http_err}")
     except RequestException as req_err:
-        log_message(f"Request error occurred while downloading {url}: {req_err}")
+        logger.log_message(f"Request error occurred while downloading {url}: {req_err}")
     except OSError as io_err:
-        log_message(f"File I/O error occurred while saving to {download_path}: {io_err}")
+        logger.log_message(f"File I/O error occurred while saving to {download_path}: {io_err}")
     except Exception as err:
-        log_message(f"An unexpected error occurred: {err}")
+        logger.log_message(f"An unexpected error occurred: {err}")
 
 
 def open_dir_in_file_browser(input_directory: str):
     formatted_directory = os.path.abspath(input_directory)
     if not os.path.isdir(formatted_directory):
-        log_message(f"Error: The directory '{formatted_directory}' does not exist.")
+        logger.log_message(f"Error: The directory '{formatted_directory}' does not exist.")
         return
     os.startfile(formatted_directory)
 

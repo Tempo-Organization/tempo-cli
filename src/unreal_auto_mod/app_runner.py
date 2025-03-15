@@ -1,9 +1,8 @@
 import os
 import subprocess
 
-from unreal_auto_mod import logger
+from unreal_auto_mod import logger, file_io
 from unreal_auto_mod.data_structures import ExecutionMode
-from unreal_auto_mod.file_io import ensure_path_quoted
 
 
 def run_app(
@@ -13,7 +12,7 @@ def run_app(
         working_dir: str = None
     ):
 
-    exe_path = ensure_path_quoted(exe_path)
+    exe_path = file_io.ensure_path_quoted(exe_path)
 
     if exec_mode == ExecutionMode.SYNC:
         command = exe_path

@@ -96,7 +96,6 @@ def set_hook_state(new_state: HookStateType):
         logger.log_message(f'Timer: Time since script execution: {timer.get_running_time()}')
 
 
-
 def hook_state_decorator(
     start_hook_state_type: HookStateType,
     end_hook_state_type: Optional[HookStateType] = None

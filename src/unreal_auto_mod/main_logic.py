@@ -7,7 +7,6 @@ import zipfile
 
 import psutil
 
-import unreal_auto_mod.app_runner
 from unreal_auto_mod import (
     data_structures,
     engine,
@@ -20,8 +19,8 @@ from unreal_auto_mod import (
     packing,
     settings,
     utilities,
+    app_runner
 )
-from unreal_auto_mod.logger import log_message
 from unreal_auto_mod.programs import fmodel, kismet_analyzer, spaghetti, uasset_gui, umodel, unreal_engine
 from unreal_auto_mod.threads import constant, game_monitor
 
@@ -99,7 +98,7 @@ def install_spaghetti(output_directory: str, run_after_install: bool):
     if not os.path.isfile(spaghetti.get_spaghetti_path(output_directory)):
         spaghetti.install_spaghetti(output_directory)
     if run_after_install:
-        unreal_auto_mod.app_runner.run_app(spaghetti.get_spaghetti_path(output_directory))
+        app_runner.run_app(spaghetti.get_spaghetti_path(output_directory))
 
 
 def install_kismet_analyzer(output_directory: str, run_after_install: bool):
@@ -119,7 +118,7 @@ def install_uasset_gui(output_directory: str, run_after_install: bool):
     else:
         logger.log_message(f'uasset_gui is already installed at: "{output_directory}"')
     if run_after_install:
-        unreal_auto_mod.app_runner.run_app(uasset_gui.get_uasset_gui_path(output_directory))
+        app_runner.run_app(uasset_gui.get_uasset_gui_path(output_directory))
 
 
 def open_latest_log(settings_json: str):
@@ -155,14 +154,14 @@ def install_umodel(output_directory: str, run_after_install: bool):
     # Sets dir, so it's the dir opened by default in umodel
     # os.chdir(os.path.dirname(utilities.custom_get_game_dir()))
     if run_after_install:
-       unreal_auto_mod.app_runner.run_app(umodel.get_umodel_path(output_directory))
+       app_runner.run_app(umodel.get_umodel_path(output_directory))
 
 
 def install_fmodel(output_directory: str, run_after_install: bool):
     if not os.path.isfile(fmodel.get_fmodel_path(output_directory)):
         fmodel.install_fmodel(output_directory)
     if run_after_install:
-        unreal_auto_mod.app_runner.run_app(fmodel.get_fmodel_path(output_directory))
+        app_runner.run_app(fmodel.get_fmodel_path(output_directory))
 
 
 def get_solo_build_project_command() -> str:
@@ -179,15 +178,15 @@ def run_proj_build_command(command: str):
     command_parts = command.split(' ')
     executable = command_parts[0]
     args = command_parts[1:]
-    unreal_auto_mod.app_runner.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
+    app_runner.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 def build(settings_json: str, toggle_engine: bool):
     if toggle_engine:
         engine.toggle_engine_off()
-    log_message('Project Building Starting')
+    logger.log_message('Project Building Starting')
     run_proj_build_command(get_solo_build_project_command())
-    log_message('Project Building Complete')
+    logger.log_message('Project Building Complete')
     if toggle_engine:
         engine.toggle_engine_on()
 
@@ -199,27 +198,27 @@ def upload_changes_to_repo(settings_json: str):
 
     status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, cwd=repo_path, check=False)
     if status_result.returncode != 0 or not status_result.stdout.strip():
-        log_message("No changes detected or not in a Git repository.")
+        logger.log_message("No changes detected or not in a Git repository.")
         sys.exit(1)
 
     checkout_result = subprocess.run(["git", "checkout", branch], capture_output=True, text=True, cwd=repo_path, check=False)
     if checkout_result.returncode != 0:
-        log_message(f"Failed to switch to the {branch} branch.")
+        logger.log_message(f"Failed to switch to the {branch} branch.")
         sys.exit(1)
 
     subprocess.run(["git", "add", "."], check=True, cwd=repo_path)
 
     commit_result = subprocess.run(["git", "commit", "-m", desc], capture_output=True, text=True, cwd=repo_path, check=False)
     if commit_result.returncode != 0:
-        log_message("Commit failed.")
+        logger.log_message("Commit failed.")
         sys.exit(1)
 
     push_result = subprocess.run(["git", "push", "origin", branch], capture_output=True, text=True, cwd=repo_path, check=False)
     if push_result.returncode != 0:
-        log_message("Push failed.")
+        logger.log_message("Push failed.")
         sys.exit(1)
 
-    log_message("Changes committed and pushed successfully.")
+    logger.log_message("Changes committed and pushed successfully.")
 
 
 def enable_mods(settings_json: str, mod_names: list):
@@ -234,9 +233,9 @@ def enable_mods(settings_json: str, mod_names: list):
                 if not mod["is_enabled"]:
                     mod["is_enabled"] = True
                     mods_enabled = True
-                    log_message(f"Mod '{mod['mod_name']}' has been enabled.")
+                    logger.log_message(f"Mod '{mod['mod_name']}' has been enabled.")
                 else:
-                    log_message(f"Mod '{mod['mod_name']}' is already enabled.")
+                    logger.log_message(f"Mod '{mod['mod_name']}' is already enabled.")
 
         if mods_enabled:
             updated_json_str = json.dumps(settings, indent=4, ensure_ascii=False, separators=(',', ': '))
@@ -244,14 +243,14 @@ def enable_mods(settings_json: str, mod_names: list):
             with open(settings_json, "w", encoding="utf-8") as file:
                 file.write(updated_json_str)
 
-            log_message(f"Mods successfully enabled in '{settings_json}'.")
+            logger.log_message(f"Mods successfully enabled in '{settings_json}'.")
         else:
-            log_message("No mods were enabled because all specified mods were already enabled.")
+            logger.log_message("No mods were enabled because all specified mods were already enabled.")
 
     except json.JSONDecodeError:
-        log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
+        logger.log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logger.log_message(f"An error occurred: {e}")
 
 
 def disable_mods(settings_json: str, mod_names: list):
@@ -266,9 +265,9 @@ def disable_mods(settings_json: str, mod_names: list):
                 if mod["is_enabled"]:
                     mod["is_enabled"] = False
                     mods_disabled = True
-                    log_message(f"Mod '{mod['mod_name']}' has been disabled.")
+                    logger.log_message(f"Mod '{mod['mod_name']}' has been disabled.")
                 else:
-                    log_message(f"Mod '{mod['mod_name']}' is already disabled.")
+                    logger.log_message(f"Mod '{mod['mod_name']}' is already disabled.")
 
         if mods_disabled:
             updated_json_str = json.dumps(settings, indent=4, ensure_ascii=False, separators=(',', ': '))
@@ -276,14 +275,14 @@ def disable_mods(settings_json: str, mod_names: list):
             with open(settings_json, "w", encoding="utf-8") as file:
                 file.write(updated_json_str)
 
-            log_message(f"Mods successfully disabled in '{settings_json}'.")
+            logger.log_message(f"Mods successfully disabled in '{settings_json}'.")
         else:
-            log_message("No mods were disabled because all specified mods were already disabled.")
+            logger.log_message("No mods were disabled because all specified mods were already disabled.")
 
     except json.JSONDecodeError:
-        log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
+        logger.log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logger.log_message(f"An error occurred: {e}")
 
 
 def add_mod(
@@ -325,7 +324,7 @@ def add_mod(
 
         existing_mod = next((mod for mod in settings["mods_info"] if mod["mod_name"] == mod_name), None)
         if existing_mod:
-            log_message(f"Mod '{mod_name}' already exists. Updating its data.")
+            logger.log_message(f"Mod '{mod_name}' already exists. Updating its data.")
             settings["mods_info"].remove(existing_mod)
 
         settings["mods_info"].append(new_mod)
@@ -335,11 +334,11 @@ def add_mod(
         with open(settings_json, "w") as file:
             file.write(settings)
 
-        log_message(f"Mod '{mod_name}' successfully added/updated in '{settings_json}'.")
+        logger.log_message(f"Mod '{mod_name}' successfully added/updated in '{settings_json}'.")
     except json.JSONDecodeError:
-        log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
+        logger.log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logger.log_message(f"An error occurred: {e}")
 
 
 def remove_mods(settings_json: str, mod_names: list):
@@ -354,9 +353,9 @@ def remove_mods(settings_json: str, mod_names: list):
 
         if len(mods_info) < len(settings.get("mods_info", [])):
             mods_removed = True
-            log_message(f"Mods {', '.join(mod_names)} have been removed.")
+            logger.log_message(f"Mods {', '.join(mod_names)} have been removed.")
         else:
-            log_message("No mods were removed because none of the specified mods were found.")
+            logger.log_message("No mods were removed because none of the specified mods were found.")
 
         settings["mods_info"] = mods_info
 
@@ -366,12 +365,12 @@ def remove_mods(settings_json: str, mod_names: list):
             with open(settings_json, "w", encoding="utf-8") as file:
                 file.write(updated_json_str)
 
-            log_message(f"Mods successfully removed from '{settings_json}'.")
+            logger.log_message(f"Mods successfully removed from '{settings_json}'.")
 
     except json.JSONDecodeError:
-        log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
+        logger.log_message(f"Error decoding JSON from file '{settings_json}'. Please check the file format.")
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logger.log_message(f"An error occurred: {e}")
 
 
 def get_solo_cook_project_command() -> str:
@@ -390,9 +389,9 @@ def get_solo_cook_project_command() -> str:
 def cook(settings_json: str, toggle_engine: bool):
     if toggle_engine:
         engine.toggle_engine_off()
-    log_message('Content Cooking Starting')
+    logger.log_message('Content Cooking Starting')
     run_proj_build_command(get_solo_cook_project_command())
-    log_message('Content Cook Complete')
+    logger.log_message('Content Cook Complete')
     if toggle_engine:
         engine.toggle_engine_on()
 
@@ -422,10 +421,10 @@ def package(settings_json: str, toggle_engine: bool, use_symlinks: bool):
         engine.toggle_engine_off()
     for entry in settings.get_mods_info_list_from_json():
         settings.settings_information.mod_names.append(entry['mod_name'])
-    log_message('Packaging Starting')
+    logger.log_message('Packaging Starting')
     run_proj_build_command(get_solo_package_command())
     packing.generate_mods(use_symlinks)
-    log_message('Packaging Complete')
+    logger.log_message('Packaging Complete')
     if toggle_engine:
         engine.toggle_engine_on()
 
@@ -434,12 +433,12 @@ def resave_packages_and_fix_up_redirectors(settings_json: str):
     engine.close_game_engine()
     arg = '-run=ResavePackages -fixupredirects'
     command = f'"{unreal_engine.get_unreal_editor_exe_path(settings.get_unreal_engine_dir())}" "{settings.get_uproject_file()}" {arg}'
-    unreal_auto_mod.app_runner.run_app(command)
+    app_runner.run_app(command)
 
 
 def cleanup_full(settings_json: str):
     repo_path = settings.get_cleanup_repo_path()
-    log_message(f'Cleaning up repo at: "{repo_path}"')
+    logger.log_message(f'Cleaning up repo at: "{repo_path}"')
     exe = 'git'
     args = [
         'clean',
@@ -447,24 +446,24 @@ def cleanup_full(settings_json: str):
         '-X',
         '--force'
     ]
-    unreal_auto_mod.app_runner.run_app(exe_path=exe, exec_mode=data_structures.ExecutionMode.ASYNC, args=args, working_dir=repo_path)
-    log_message(f'Cleaned up repo at: "{repo_path}"')
+    app_runner.run_app(exe_path=exe, exec_mode=data_structures.ExecutionMode.ASYNC, args=args, working_dir=repo_path)
+    logger.log_message(f'Cleaned up repo at: "{repo_path}"')
 
     dist_dir = f'{file_io.SCRIPT_DIR}/dist'
     if os.path.isdir(dist_dir):
         shutil.rmtree(dist_dir)
-    log_message(f'Cleaned up dist dir at: "{dist_dir}"')
+    logger.log_message(f'Cleaned up dist dir at: "{dist_dir}"')
 
     working_dir = settings.get_working_dir()
     if os.path.isdir(working_dir):
         shutil.rmtree(working_dir)
-    log_message(f'Cleaned up working dir at: "{working_dir}"')
+    logger.log_message(f'Cleaned up working dir at: "{working_dir}"')
 
 
 def cleanup_cooked(settings_json: str):
     repo_path = settings.get_cleanup_repo_path()
 
-    log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
+    logger.log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
 
     build_dirs = [
         'Cooked'
@@ -476,15 +475,15 @@ def cleanup_cooked(settings_json: str):
                 full_path = os.path.normpath(os.path.join(root, dir_name))
                 try:
                     shutil.rmtree(full_path)
-                    log_message(f'Removed directory: {full_path}')
+                    logger.log_message(f'Removed directory: {full_path}')
                 except Exception as e:
-                    log_message(f"Failed to remove {full_path}: {e}")
+                    logger.log_message(f"Failed to remove {full_path}: {e}")
 
 
 def cleanup_build(settings_json: str):
     repo_path = settings.get_cleanup_repo_path()
 
-    log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
+    logger.log_message(f'Starting cleanup of Unreal Engine build directories in: "{repo_path}"')
 
     build_dirs = [
         'Intermediate',
@@ -499,9 +498,9 @@ def cleanup_build(settings_json: str):
                 full_path = os.path.normpath(os.path.join(root, dir_name))
                 try:
                     shutil.rmtree(full_path)
-                    log_message(f'Removed directory: {full_path}')
+                    logger.log_message(f'Removed directory: {full_path}')
                 except Exception as e:
-                    log_message(f"Failed to remove {full_path}: {e}")
+                    logger.log_message(f"Failed to remove {full_path}: {e}")
 
 
 def cleanup_game(settings_json: str):
@@ -551,7 +550,7 @@ def zip_directory_tree(input_dir, output_dir, zip_name="archive.zip"):
                 arcname = os.path.relpath(file_path, input_dir)
                 zipf.write(file_path, arcname)
 
-    log_message(f"Directory tree zipped successfully: {zip_path}")
+    logger.log_message(f"Directory tree zipped successfully: {zip_path}")
 
 
 def make_unreal_pak_mod_release(singular_mod_info: dict, base_files_directory: str, output_directory: str):
@@ -560,7 +559,7 @@ def make_unreal_pak_mod_release(singular_mod_info: dict, base_files_directory: s
     final_pak_file = f'{base_files_directory}/{mod_name}/{utilities.get_pak_dir_structure(mod_name)}/{mod_name}.pak'
     if os.path.isfile(final_pak_file):
         os.remove(final_pak_file)
-    log_message(os.path.dirname(final_pak_file))
+    logger.log_message(os.path.dirname(final_pak_file))
     os.makedirs(os.path.dirname(final_pak_file), exist_ok=True)
     shutil.copyfile(before_pak_file, final_pak_file)
     zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
@@ -572,7 +571,7 @@ def make_repak_mod_release(singular_mod_info: dict, base_files_directory: str, o
     final_pak_file = f'{base_files_directory}/{mod_name}/{utilities.get_pak_dir_structure(mod_name)}/{mod_name}.pak'
     if os.path.isfile(final_pak_file):
         os.remove(final_pak_file)
-    log_message(os.path.dirname(final_pak_file))
+    logger.log_message(os.path.dirname(final_pak_file))
     os.makedirs(os.path.dirname(final_pak_file), exist_ok=True)
     shutil.copyfile(before_pak_file, final_pak_file)
     zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
@@ -730,15 +729,15 @@ def resync_dir_with_repo(settings_json: str):
         '-d',
         '-x'
     ]
-    unreal_auto_mod.app_runner.run_app(exe_path=exe, args=args, working_dir=repo_path)
+    app_runner.run_app(exe_path=exe, args=args, working_dir=repo_path)
 
     args = [
         'reset',
         '--hard'
     ]
-    unreal_auto_mod.app_runner.run_app(exe_path=exe, args=args, working_dir=repo_path)
+    app_runner.run_app(exe_path=exe, args=args, working_dir=repo_path)
 
-    log_message(f"Successfully resynchronized the repository at '{repo_path}'.")
+    logger.log_message(f"Successfully resynchronized the repository at '{repo_path}'.")
 
 
 def generate_uproject(
@@ -747,7 +746,7 @@ def generate_uproject(
     engine_major_association: int = 4,
     engine_minor_association: int = 27,
     category: str = 'Modding',
-    description: str = 'Uproject for modding, generated with unreal_auto_mod.',
+    description: str = 'Uproject for modding, generated with ',
     ignore_safety_checks: bool = False
 ) -> str:
 
@@ -944,7 +943,7 @@ def generate_uplugin(
     with open(plugin_file_path, 'w') as plugin_file:
         plugin_file.write(plugin_data_string)
 
-    log_message(f"Plugin '{plugin_name}' generated successfully at {plugin_file_path}.")
+    logger.log_message(f"Plugin '{plugin_name}' generated successfully at {plugin_file_path}.")
 
 
 def remove_uplugins(uplugin_paths: list):
@@ -961,11 +960,11 @@ def save_json_to_file(json_string, file_path):
         with open(file_path, "w") as file:
             json.dump(parsed_json, file, indent=4)
 
-        log_message(f"JSON data successfully saved to {file_path}")
+        logger.log_message(f"JSON data successfully saved to {file_path}")
     except json.JSONDecodeError as e:
-        log_message(f"Invalid JSON string: {e}")
+        logger.log_message(f"Invalid JSON string: {e}")
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logger.log_message(f"An error occurred: {e}")
 
 
 def generate_file_paths_json(dir_path, output_json):
@@ -981,7 +980,7 @@ def generate_file_paths_json(dir_path, output_json):
     with open(output_json, "w", encoding="utf-8") as json_file:
         json_file.write(json_string)
 
-    log_message(f"JSON file with all file paths created at: {output_json}")
+    logger.log_message(f"JSON file with all file paths created at: {output_json}")
 
 
 def delete_unlisted_files(dir_path, json_file):
@@ -994,11 +993,11 @@ def delete_unlisted_files(dir_path, json_file):
                 full_path = os.path.join(root, file)
                 if full_path not in allowed_files:
                     os.remove(full_path)
-                    log_message(f"Deleted: {full_path}")
+                    logger.log_message(f"Deleted: {full_path}")
 
-        log_message("Cleanup complete. All unlisted files have been removed.")
+        logger.log_message("Cleanup complete. All unlisted files have been removed.")
     except Exception as e:
-        log_message(f"An error occurred: {e}")
+        logger.log_message(f"An error occurred: {e}")
 
 
 def close_programs(exe_names: list[str]):

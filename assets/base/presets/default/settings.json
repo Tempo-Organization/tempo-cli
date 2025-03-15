@@ -9,7 +9,7 @@
     "repo_branch": "main"
   },
   "engine_info": {
-    "unreal_engine_dir": "C:/unreal_engine_installs/UE_4.22",
+    "unreal_engine_dir": "D:/unreal_engine_installs/UE_4.22",
     "unreal_project_file": "C:/Users/Mythical/Documents/Github/ZedfestModdingKit/KevinSpel.uproject",
     "engine_launch_args": [],
     "engine_cooking_command": "BuildCookRun",
@@ -21,7 +21,12 @@
       "-noP4"
     ],
     "engine_building_command": "BuildCookRun",
-    "engine_building_args": ["-build", "-skipstage", "-nodebuginfo", "-noP4"],
+    "engine_building_args": [
+      "-build", 
+      "-skipstage", 
+      "-nodebuginfo", 
+      "-noP4"
+    ],
     "engine_packaging_command": "BuildCookRun",
     "engine_packaging_args": [
       "-stage",
@@ -45,7 +50,9 @@
     "game_id": null,
     "override_automatic_window_title_finding": true,
     "window_title_override": "Zedfest",
-    "launch_params": ["-fileopenlog", "-NOSPLASH"]
+    "launch_params": [
+      "-fileopenlog", 
+      "-NOSPLASH"]
   },
   "packaging_uproject_name": { "use_override": false, "name": null },
   "repak_info": {
@@ -91,11 +98,7 @@
       "packing_type": "engine",
       "compression_type": "Zlib",
       "is_enabled": true,
-      "file_includes": {
-        "asset_paths": [],
-        "tree_paths": [],
-        "unreal_collections": []
-      }
+      "file_includes": { "asset_paths": [], "tree_paths": [] , "unreal_collections": [] }
     },
     {
       "mod_name": "MapKit",
@@ -107,11 +110,7 @@
       "packing_type": "repak",
       "compression_type": "Zlib",
       "is_enabled": true,
-      "file_includes": {
-        "asset_paths": [],
-        "tree_paths": [],
-        "unreal_collections": []
-      }
+      "file_includes": { "asset_paths": [], "tree_paths": [] , "unreal_collections": [] }
     },
     {
       "mod_name": "ExampleLevel",
@@ -123,11 +122,7 @@
       "packing_type": "repak",
       "compression_type": "Zlib",
       "is_enabled": true,
-      "file_includes": {
-        "asset_paths": [],
-        "tree_paths": [],
-        "unreal_collections": []
-      }
+      "file_includes": { "asset_paths": [], "tree_paths": [] , "unreal_collections": [] }
     }
   ]
 }

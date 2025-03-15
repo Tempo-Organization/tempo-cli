@@ -5,8 +5,7 @@ from typing import Any, Dict, List
 
 from dynaconf import Dynaconf
 
-from unreal_auto_mod import configs, file_io, logger, packing, process_management, window_management
-from unreal_auto_mod.logger import log_message
+from unreal_auto_mod import configs, file_io, logger, process_management, settings, window_management
 from unreal_auto_mod.programs import repak, unreal_engine
 
 
@@ -57,10 +56,26 @@ def get_unreal_engine_dir() -> str:
     return ue_dir
 
 
+def is_unreal_pak_packing_enum_in_use():
+    is_in_use = False
+    for entry in settings.get_mods_info_list_from_json():
+        if entry['packing_type'] == "unreal_pak":
+            is_in_use = True
+    return is_in_use
+
+
+def is_engine_packing_enum_in_use():
+    is_in_use = False
+    for entry in settings.get_mods_info_list_from_json():
+        if entry['packing_type'] == "engine":
+            is_in_use = True
+    return is_in_use
+
+
 def unreal_engine_check():
     should_do_check = True
 
-    if not packing.is_unreal_pak_packing_enum_in_use() or packing.is_engine_packing_enum_in_use():
+    if not is_unreal_pak_packing_enum_in_use() or is_engine_packing_enum_in_use():
            should_do_check = False
 
     if should_do_check:
@@ -133,7 +148,7 @@ def init_checks():
 
 
 def load_settings(settings_json: str):
-    log_message(f'settings json: {settings_json}')
+    logger.log_message(f'settings json: {settings_json}')
     if not settings_information.init_settings_done:
         init_settings(settings_json)
     init_checks()
@@ -263,3 +278,11 @@ def get_working_dir() -> str:
         working_dir = os.path.join(file_io.SCRIPT_DIR, 'working_dir')
     os.makedirs(working_dir, exist_ok=True)
     return working_dir
+
+
+def is_loose_packing_enum_in_use():
+    is_in_use = False
+    for entry in settings.get_mods_info_list_from_json():
+        if entry['packing_type'] == "loose":
+            is_in_use = True
+    return is_in_use
