@@ -182,9 +182,10 @@
                 "add_mod",
                 "--settings_json",
                 "${workspaceFolder}/assets/base/presets/default/settings.json",
-                "TesNewModName",
+                "--packing_type",
                 "repak",
-                "~mods"
+                "TestNewModName",
+                "LogicMods"
             ]
         },
         {
@@ -196,6 +197,7 @@
                 "remove_mods",
                 "--settings_json",
                 "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--mod_names",
                 "ExampleLevel"
             ]
         },
@@ -765,6 +767,36 @@
                 "0.3",
                 "--alpha",
                 "0.4"
+            ]
+        },
+        {
+            "name": "add_collections_to_mod_entry",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "add_collections_to_mod_entry",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--collection_paths",
+                "${workspaceFolder}/dist/testing.collection",
+                "--mod_name",
+                "ExampleLevel"
+            ]
+        },
+        {
+            "name": "remove_collections_from_mod_entry",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "remove_collections_from_mod_entry",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--collection_paths",
+                "${workspaceFolder}/dist/testing.collection",
+                "--mod_name",
+                "ExampleLevel"
             ]
         }
     ]

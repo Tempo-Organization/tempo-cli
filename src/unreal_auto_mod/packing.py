@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from rich.progress import Progress
 
 import unreal_auto_mod.app_runner
-from unreal_auto_mod import data_structures, file_io, hook_states, log, settings, utilities
+from unreal_auto_mod import data_structures, file_io, hook_states, logger, settings, utilities
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 from unreal_auto_mod.programs import repak, unreal_engine, unreal_pak
 
@@ -77,9 +77,9 @@ def get_engine_pak_command() -> str:
     is_game_iostore = unreal_engine.get_is_game_iostore(settings.get_uproject_file(), utilities.custom_get_game_dir())
     if is_game_iostore:
         command = f'{command} -iostore'
-        log.log_message('Check: Game is iostore')
+        logger.log_message('Check: Game is iostore')
     else:
-        log.log_message('Check: Game is not iostore')
+        logger.log_message('Check: Game is not iostore')
     return command
 
 
@@ -232,10 +232,10 @@ def install_mod_sig(mod_name: str, use_symlinks: bool):
                 with open(sig_location, 'w'):
                     pass
     else:
-        log.log_message(f'Error: You have provided an invalid sig method type in your mod entry for the {mod_name} mod.')
-        log.log_message('Error: Valid options are:')
+        logger.log_message(f'Error: You have provided an invalid sig method type in your mod entry for the {mod_name} mod.')
+        logger.log_message('Error: Valid options are:')
         for enum in data_structures.get_enum_strings_from_enum(data_structures.SigMethodType):
-            log.log_message(f'Error: {data_structures.get_enum_from_val(data_structures.SigMethodType), enum}')
+            logger.log_message(f'Error: {data_structures.get_enum_from_val(data_structures.SigMethodType), enum}')
         raise RuntimeError
 
 
@@ -274,7 +274,7 @@ def install_engine_mod(mod_name: str, use_symlinks: bool):
             before_file = f'{file}{suffix}'
             if not os.path.isfile(before_file):
                 error_message = 'Error: The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.'
-                log.log_message(error_message)
+                logger.log_message(error_message)
                 raise FileNotFoundError('The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.')
             after_file = f'{dir_engine_mod}/{mod_name}.{suffix}'
             if os.path.islink(after_file):
@@ -297,8 +297,8 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
     before_symlinked_dir = f'{settings.get_working_dir()}/{mod_name}'
 
     if not os.path.isdir(before_symlinked_dir) or not os.listdir(before_symlinked_dir):
-        log.log_message(f'Error: {before_symlinked_dir}')
-        log.log_message('Error: does not exist or is empty, indicating a packaging and/or config issue')
+        logger.log_message(f'Error: {before_symlinked_dir}')
+        logger.log_message('Error: does not exist or is empty, indicating a packaging and/or config issue')
         raise FileNotFoundError
 
     intermediate_pak_dir = f'{settings.get_working_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
@@ -356,11 +356,11 @@ def install_mod(
     elif packing_type == PackingType.UNREAL_PAK:
         unreal_pak.install_unreal_pak_mod(mod_name, compression_type, use_symlinks)
     else:
-        log.log_message(f'Error: You have provided an invalid packing_type for your "{mod_name}" mod entry in your settings json')
-        log.log_message(f'Error: You provided "{utilities.get_mods_info_dict_from_mod_name(mod_name).get('packing_type', 'none')}".')
-        log.log_message('Error: Valid packing type options are:')
+        logger.log_message(f'Error: You have provided an invalid packing_type for your "{mod_name}" mod entry in your settings json')
+        logger.log_message(f'Error: You provided "{utilities.get_mods_info_dict_from_mod_name(mod_name).get('packing_type', 'none')}".')
+        logger.log_message('Error: Valid packing type options are:')
         for entry in PackingType:
-            log.log_message(f'Error: "{entry.value}"')
+            logger.log_message(f'Error: "{entry.value}"')
         raise RuntimeError('Invalid packing type, or no packing type, provided for mod entry')
 
 

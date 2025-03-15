@@ -3,7 +3,7 @@ import shutil
 
 import requests
 
-from unreal_auto_mod import file_io, log
+from unreal_auto_mod import file_io, logger
 
 
 def get_latest_stove_version():
@@ -19,13 +19,13 @@ def get_latest_stove_version():
         return latest_release.get('tag_name')  # Use .get() to avoid KeyError if 'tag_name' is missing
 
     except requests.exceptions.HTTPError as http_err:
-        log.log_message(f"HTTP error occurred while accessing {api_url}: {http_err}")
+        logger.log_message(f"HTTP error occurred while accessing {api_url}: {http_err}")
     except requests.exceptions.RequestException as req_err:
-        log.log_message(f"Request error occurred while accessing {api_url}: {req_err}")
+        logger.log_message(f"Request error occurred while accessing {api_url}: {req_err}")
     except ValueError as val_err:
-        log.log_message(f"JSON parsing error: {val_err}")  # Catches invalid JSON
+        logger.log_message(f"JSON parsing error: {val_err}")  # Catches invalid JSON
     except Exception as err:
-        log.log_message(f"An unexpected error occurred: {err}")
+        logger.log_message(f"An unexpected error occurred: {err}")
 
     return None  # Return None in case of failure
 

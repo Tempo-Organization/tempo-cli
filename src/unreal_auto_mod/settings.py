@@ -6,8 +6,8 @@ from typing import Any, Dict, List
 
 from dynaconf import Dynaconf
 
-from unreal_auto_mod import configs, file_io, log, packing, process_management, settings, window_management
-from unreal_auto_mod.log import log_message
+from unreal_auto_mod import configs, file_io, logger, packing, process_management, settings, window_management
+from unreal_auto_mod.logger import log_message
 from unreal_auto_mod.programs import repak, unreal_engine
 
 
@@ -69,12 +69,11 @@ def unreal_engine_check():
         if unreal_engine.is_game_ue5(get_unreal_engine_dir()):
             engine_str = 'UnrealEditor'
         check_file_exists(f'{get_unreal_engine_dir()}/Engine/Binaries/Win64/{engine_str}.exe')
-        log.log_message('Check: Unreal Engine exists')
+        logger.log_message('Check: Unreal Engine exists')
 
 
 def get_game_exe_path() -> str:
     game_exe_path = settings_information.settings['game_info']['game_exe_path']
-    file_io.check_path_exists(game_exe_path)
     return game_exe_path
 
 
@@ -115,7 +114,7 @@ def uproject_check():
     uproject_file = get_uproject_file()
     if uproject_file:
         check_file_exists(uproject_file)
-        log.log_message('Check: Uproject file exists')
+        logger.log_message('Check: Uproject file exists')
 
 
 def init_checks():
@@ -123,16 +122,15 @@ def init_checks():
     unreal_engine_check()
     game_launcher_exe_override_check()
     git_info_check()
-    game_exe_check()
+    # game_exe_check()
 
     if repak.get_is_using_repak_path_override():
         check_file_exists(repak.get_repak_path_override())
-        log.log_message('Check: Repak exists')
+        logger.log_message('Check: Repak exists')
 
-    check_file_exists(get_game_exe_path())
-    log.log_message('Check: Game exists')
+    logger.log_message('Check: Game exists')
 
-    log.log_message('Check: Passed all init checks')
+    logger.log_message('Check: Passed all init checks')
 
 
 def load_settings(settings_json: str):
@@ -140,11 +138,6 @@ def load_settings(settings_json: str):
     if not settings_information.init_settings_done:
         init_settings(settings_json)
     init_checks()
-
-
-def save_settings(settings_json: str):
-    with open(settings_json, 'w') as file:
-        json.dump(settings_information.settings, file, indent=2)
 
 
 def get_unreal_engine_packaging_main_command() -> str:

@@ -2,7 +2,7 @@ import threading
 import time
 from dataclasses import dataclass
 
-from unreal_auto_mod import hook_states, log
+from unreal_auto_mod import hook_states, logger
 from unreal_auto_mod.data_structures import HookStateType
 
 
@@ -35,7 +35,7 @@ def start_constant_thread():
 
 @hook_states.hook_state_decorator(HookStateType.POST_INIT)
 def post_constant_thread_created_message():
-    log.log_message('Thread: Constant Thread Started')
+    logger.log_message('Thread: Constant Thread Started')
 
 
 def constant_thread():
@@ -45,4 +45,4 @@ def constant_thread():
 
 def stop_constant_thread():
     constant_thread_information.run_constant_thread = False
-    log.log_message('Thread: Constant Thread Ended')
+    logger.log_message('Thread: Constant Thread Ended')

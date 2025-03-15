@@ -9,7 +9,7 @@
     "repo_branch": "main"
   },
   "engine_info": {
-    "unreal_engine_dir": "D:/unreal_engine_installs/UE_4.22",
+    "unreal_engine_dir": "C:/unreal_engine_installs/UE_4.22",
     "unreal_project_file": "C:/Users/Mythical/Documents/Github/ZedfestModdingKit/KevinSpel.uproject",
     "engine_launch_args": [],
     "engine_cooking_command": "BuildCookRun",
@@ -21,12 +21,7 @@
       "-noP4"
     ],
     "engine_building_command": "BuildCookRun",
-    "engine_building_args": [
-      "-build", 
-      "-skipstage", 
-      "-nodebuginfo", 
-      "-noP4"
-    ],
+    "engine_building_args": ["-build", "-skipstage", "-nodebuginfo", "-noP4"],
     "engine_packaging_command": "BuildCookRun",
     "engine_packaging_args": [
       "-stage",
@@ -43,16 +38,14 @@
     "unreal_engine_minor_version": null
   },
   "game_info": {
-    "game_exe_path": "D:/SteamLibrary/steamapps/common/Zedfest/KevinSpel/Binaries/Win64/Zedfest.exe",
+    "game_exe_path": "C:/Program Files (x86)/Steam/steamapps/common/Zedfest/KevinSpel/Binaries/Win64/Zedfest.exe",
     "launch_type": "exe",
     "override_automatic_launcher_exe_finding": false,
     "game_launcher_exe": null,
     "game_id": null,
     "override_automatic_window_title_finding": true,
     "window_title_override": "Zedfest",
-    "launch_params": [
-      "-fileopenlog", 
-      "-NOSPLASH"]
+    "launch_params": ["-fileopenlog", "-NOSPLASH"]
   },
   "packaging_uproject_name": { "use_override": false, "name": null },
   "repak_info": {
@@ -82,8 +75,8 @@
       "window_name": "UE4SS",
       "use_substring_check": true,
       "window_behaviour": "move",
-      "hook_state": "constant",
-      "monitor": 0,
+      "hook_state": "post_game_launch",
+      "monitor": 1,
       "resolution": { "x": 1525, "y": 850 }
     }
   ],
@@ -97,9 +90,12 @@
       "pak_chunk_num": 1,
       "packing_type": "engine",
       "compression_type": "Zlib",
-      "sig_method_type": "none",
       "is_enabled": true,
-      "file_includes": { "asset_paths": [], "tree_paths": [], "unreal_collections": [] }
+      "file_includes": {
+        "asset_paths": [],
+        "tree_paths": [],
+        "unreal_collections": []
+      }
     },
     {
       "mod_name": "MapKit",
@@ -110,9 +106,12 @@
       "pak_chunk_num": 2,
       "packing_type": "repak",
       "compression_type": "Zlib",
-      "sig_method_type": "none",
       "is_enabled": true,
-      "file_includes": { "asset_paths": [], "tree_paths": [], "unreal_collections": [] }
+      "file_includes": {
+        "asset_paths": [],
+        "tree_paths": [],
+        "unreal_collections": []
+      }
     },
     {
       "mod_name": "ExampleLevel",
@@ -123,9 +122,12 @@
       "pak_chunk_num": 3,
       "packing_type": "repak",
       "compression_type": "Zlib",
-      "sig_method_type": "none",
       "is_enabled": true,
-      "file_includes": { "asset_paths": [], "tree_paths": [], "unreal_collections": [] }
+      "file_includes": {
+        "asset_paths": [],
+        "tree_paths": [],
+        "unreal_collections": []
+      }
     }
   ]
 }

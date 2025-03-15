@@ -3,7 +3,7 @@ import sys
 import pywinctl
 import screeninfo
 
-from unreal_auto_mod import log
+from unreal_auto_mod import logger
 
 
 def does_window_exist(window_title: str, use_substring_check: bool = False) -> bool:
@@ -16,7 +16,7 @@ def does_window_exist(window_title: str, use_substring_check: bool = False) -> b
             matched_windows = [window for window in all_window_titles if window_title == window]
         return len(matched_windows) > 0
     except RuntimeError as e:
-        log.logging(f'Error: An error occurred: {e}')
+        logger.logging(f'Error: An error occurred: {e}')
         return False
 
 
@@ -27,21 +27,21 @@ def get_windows_by_title(window_title: str, use_substring_check: bool = False) -
         try:
             matched_windows = [window for window in all_windows if window_title in window.title]
         except Exception as error_message:
-            log.log_message(str(error_message))
+            logger.log_message(str(error_message))
     else:
         try:
             for window in all_windows:
                 if str(window.title).strip() == window_title.strip():
                     matched_windows.append(window)
         except Exception as error_message:
-            log.log_message(str(error_message))
+            logger.log_message(str(error_message))
     return matched_windows
 
 
 def get_window_by_title(window_title: str, use_substring_check: bool = False) -> pywinctl.Window:
     windows = get_windows_by_title(window_title, use_substring_check)
     if not windows:
-        log.log_message(f'Warning: No windows found with title "{window_title}"')
+        logger.log_message(f'Warning: No windows found with title "{window_title}"')
         return None
     return windows[0]
 
@@ -64,7 +64,7 @@ def move_window_to_monitor(window: pywinctl.Window, monitor_index: int = 0):
         monitor = screen_info[monitor_index]
         window.moveTo(monitor.x, monitor.y)
     else:
-        log.log_message('Monitor: Invalid monitor index.')
+        logger.log_message('Monitor: Invalid monitor index.')
 
 
 def set_window_size(window: pywinctl.Window, width: int, height: int):

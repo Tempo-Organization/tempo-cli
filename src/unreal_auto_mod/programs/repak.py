@@ -3,7 +3,7 @@ import subprocess
 
 import requests
 
-from unreal_auto_mod import log, settings
+from unreal_auto_mod import logger, settings
 
 
 def is_repak_packing_enum_in_use():
@@ -65,24 +65,24 @@ def download_and_install_latest_version(repository='trumank/repak', install_path
         # utilities.run_app(exe_path=exe, args=args)
         subprocess.run(['powershell.exe', '-ExecutionPolicy', 'Bypass', '-File', script_path], check=True)
 
-        log.log_message('Repak CLI installed successfully.')
+        logger.log_message('Repak CLI installed successfully.')
 
     except requests.RequestException as e:
-        log.log_message(f'Error fetching release information: {e}')
+        logger.log_message(f'Error fetching release information: {e}')
     except subprocess.CalledProcessError as e:
-        log.log_message(f'Error executing the installer script: {e}')
+        logger.log_message(f'Error executing the installer script: {e}')
     except RuntimeError as e:
-        log.log_message(e)
+        logger.log_message(e)
 
 
 def ensure_repak_installed():
     repak_path = get_package_path()
 
     if os.path.exists(repak_path):
-        log.log_message(f'Repak is already installed at {repak_path}. Skipping installation.')
+        logger.log_message(f'Repak is already installed at {repak_path}. Skipping installation.')
         return
 
-    log.log_message('Repak executable not found. Proceeding with installation...')
+    logger.log_message('Repak executable not found. Proceeding with installation...')
 
     download_and_install_latest_version()
 

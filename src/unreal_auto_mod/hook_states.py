@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
-from unreal_auto_mod import app_runner, log, process_management, settings, timer, window_management
+from unreal_auto_mod import app_runner, logger, process_management, settings, timer, window_management
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
 
 
@@ -71,29 +71,29 @@ def window_checks(current_state: WindowAction):
                 elif way_to_change_window == WindowAction.MOVE:
                     window_management.move_window(window_to_change, window_settings)
                 else:
-                    log.log_message('Monitor: invalid window behavior specified in settings')
+                    logger.log_message('Monitor: invalid window behavior specified in settings')
 
 
 def hook_state_checks(hook_state: HookStateType):
     if hook_state != HookStateType.CONSTANT:
-        log.log_message(f'Hook State Check: {hook_state} is running')
+        logger.log_message(f'Hook State Check: {hook_state} is running')
     if is_hook_state_used(hook_state):
         process_management.kill_processes(hook_state)
         window_checks(hook_state)
         exec_events_checks(hook_state)
     if hook_state != HookStateType.CONSTANT:
-        log.log_message(f'Hook State Check: {hook_state} finished')
+        logger.log_message(f'Hook State Check: {hook_state} finished')
 
 
 def set_hook_state(new_state: HookStateType):
     hook_state_info.hook_state = new_state
-    log.log_message(f'Hook State: changed to {new_state}')
+    logger.log_message(f'Hook State: changed to {new_state}')
     # calling this on preinit causes problems so will avoid for now
     if new_state != HookStateType.PRE_INIT:
         hook_state_checks(HookStateType.PRE_ALL)
         hook_state_checks(new_state)
         hook_state_checks(HookStateType.POST_ALL)
-        log.log_message(f'Timer: Time since script execution: {timer.get_running_time()}')
+        logger.log_message(f'Timer: Time since script execution: {timer.get_running_time()}')
 
 
 

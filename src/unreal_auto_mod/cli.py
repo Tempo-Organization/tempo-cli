@@ -1,6 +1,5 @@
 import os
 import pathlib
-import sys
 
 import click
 from trogon import tui
@@ -13,38 +12,13 @@ from unreal_auto_mod import (
     file_io,
     main_logic,
     settings,
-    window_management,
-    wrapper,
+    initialization
 )
-from unreal_auto_mod.programs import repak, stove
+from unreal_auto_mod.programs import stove
 
 default_logs_dir = os.path.normpath(f'{file_io.SCRIPT_DIR}/logs')
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, 'dist'))
 default_releases_dir = os.path.normpath(os.path.join(settings.settings_information.settings_json_dir, 'mod_packaging', 'releases'))
-
-window_management.change_window_name('unreal_auto_mod')
-
-
-def check_settings():
-    try:
-        if "--settings_json" in sys.argv:
-            index = sys.argv.index("--settings_json") + 1
-            if index < len(sys.argv):
-                settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
-                settings_to_return = settings.load_settings(settings_file)
-                repak.ensure_repak_installed()
-                return settings_to_return
-            else:
-                print("Error: No file path provided after --settings_json.")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error processing settings: {e}")
-        sys.exit(1)
-
-
-def check_generate_wrapper():
-    if "--generate_wrapper" in sys.argv:
-        wrapper.generate_wrapper()
 
 
 @tui()
@@ -54,8 +28,8 @@ def check_generate_wrapper():
 # @click.option('--log_name_prefix', default='unreal_auto_mod_', type=str, help='The log name prefix for your logs.')
 @click.option('--logs_directory', default=default_logs_dir, type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path), help='The directory you want your logs outputted to.')
 def cli(generate_wrapper, logs_directory, max_content_width=200):
-    check_generate_wrapper()
-    check_settings()
+    initialization.initialization()
+    
 
 
 command_help = 'Builds the uproject specified within the settings JSON'
@@ -399,9 +373,11 @@ def add_mod(
         mod_name (str): The name of the mod to add.
         pak_dir_structure (str): Path to the directory structure for packing.
     """
+    print(pak_dir_structure)
     main_logic.add_mod(
         settings_json,
-        mod_name, packing_type,
+        mod_name, 
+        packing_type,
         pak_dir_structure,
         mod_name_dir_type,
         use_mod_name_dir_name_override,
@@ -978,3 +954,87 @@ def remove_content_lines_from_collection(collection_path: str, content_path_line
             content_lines.append(collections.UnrealAssetPath(collections.UnrealAssetPath.static_from_asset_reference(unreal_asset_path)))
 
     collections.remove_content_lines_from_collection(collection=collection, content_lines=content_lines)
+
+
+command_help = 'Add collections to the mod entry in the settings json'
+@cli.command(name='add_collections_to_mod_entry', help=command_help, short_help=command_help)
+@click.option(
+    '--settings_json',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help="The path to the settings json, who's mod entry you want to add collections to.",
+    required=True
+)
+@click.option(
+    '--mod_name',
+    type=str,
+    help="The mod name of the mod entry in the settings json to add the collection(s) to.",
+    required=True
+)
+@click.option(
+    '--collection_paths',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help="The path to a collection to add to the settings json, can be specified multiple times.",
+    default=[],
+    multiple=True
+)
+def add_collections_to_mod_entry(settings_json: pathlib.Path, mod_name: str, collection_paths: list[pathlib.Path]):
+    collections_to_pass = []
+    for collection_path in collection_paths:
+        collections_to_pass.append(collections.get_unreal_collection_from_unreal_collection_path(collection_path))
+    collections.add_collections_to_mod_entry(collections_to_pass, mod_name, settings_json)
+
+
+command_help = 'Remove collections to the mod entry in the settings json'
+@cli.command(name='remove_collections_from_mod_entry', help=command_help, short_help=command_help)
+@click.option(
+    '--settings_json',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help="The path to the settings json, who's mod entry you want to remove collections from.",
+    required=True
+)
+@click.option(
+    '--mod_name',
+    type=str,
+    help="The mod name of the mod entry in the settings json to remove the collection(s) from.",
+    required=True
+)
+@click.option(
+    '--collection_paths',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    help="The path to a collection to remove from the settings json, can be specified multiple times.",
+    default=[],
+    multiple=True
+)
+def remove_collections_from_mod_entry(settings_json: pathlib.Path, mod_name: str, collection_paths: list[pathlib.Path]):
+    collections_to_pass = []
+    for collection_path in collection_paths:
+        collections_to_pass.append(collections.get_unreal_collection_from_unreal_collection_path(collection_path))
+    collections.remove_collections_from_mod_entry(collections_to_pass, mod_name, settings_json)

@@ -3,7 +3,7 @@ import time
 from dataclasses import dataclass
 
 import unreal_auto_mod.timer
-from unreal_auto_mod import hook_states, log, process_management, utilities, window_management
+from unreal_auto_mod import hook_states, logger, process_management, utilities, window_management
 from unreal_auto_mod.data_structures import HookStateType
 
 
@@ -38,14 +38,14 @@ def get_game_window():
 
 @hook_states.hook_state_decorator(HookStateType.POST_GAME_LAUNCH)
 def found_game_window():
-    log.log_message('Window: Game Window Found')
+    logger.log_message('Window: Game Window Found')
     game_monitor_thread_information.found_window = True
 
 
 def game_monitor_thread_logic():
     if not game_monitor_thread_information.found_process:
         if process_management.is_process_running(process_management.get_game_process_name()):
-            log.log_message('Process: Found Game Process')
+            logger.log_message('Process: Found Game Process')
             game_monitor_thread_information.found_process = True
     elif not game_monitor_thread_information.found_window:
         time.sleep(4)
@@ -53,7 +53,7 @@ def game_monitor_thread_logic():
             found_game_window()
     elif not game_monitor_thread_information.window_closed:
         if not get_game_window():
-            log.log_message('Window: Game Window Closed')
+            logger.log_message('Window: Game Window Closed')
             stop_game_monitor_thread()
             game_monitor_thread_information.window_closed = True
 
@@ -71,7 +71,7 @@ def stop_game_monitor_thread():
 
 def game_monitor_thread():
     start_game_monitor_thread()
-    log.log_message('Thread: Game Monitoring Thread Started')
+    logger.log_message('Thread: Game Monitoring Thread Started')
     game_monitor_thread_information.game_monitor_thread.join()
-    log.log_message('Thread: Game Monitoring Thread Ended')
-    log.log_message(f'Timer: Time since script execution: {unreal_auto_mod.timer.get_running_time()}')
+    logger.log_message('Thread: Game Monitoring Thread Ended')
+    logger.log_message(f'Timer: Time since script execution: {unreal_auto_mod.timer.get_running_time()}')

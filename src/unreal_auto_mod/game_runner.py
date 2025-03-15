@@ -1,7 +1,7 @@
 
 import unreal_auto_mod.settings
 import unreal_auto_mod.timer
-from unreal_auto_mod import app_runner, hook_states, log
+from unreal_auto_mod import app_runner, hook_states, logger
 from unreal_auto_mod.data_structures import ExecutionMode, GameLaunchType, HookStateType
 from unreal_auto_mod.programs.steam import get_steam_exe_location
 
@@ -26,7 +26,7 @@ def run_game_steam():
 
 @hook_states.hook_state_decorator(HookStateType.PRE_GAME_LAUNCH)
 def run_game():
-    log.log_message(f'Timer: Time since script execution: {unreal_auto_mod.timer.get_running_time()}')
+    logger.log_message(f'Timer: Time since script execution: {unreal_auto_mod.timer.get_running_time()}')
     launch_type = GameLaunchType(unreal_auto_mod.settings.get_game_info_launch_type_enum_str_value())
     if launch_type == GameLaunchType.EXE:
         run_game_exe()

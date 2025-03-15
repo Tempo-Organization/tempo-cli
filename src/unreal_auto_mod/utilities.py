@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from unreal_auto_mod import file_io, log, settings
+from unreal_auto_mod import file_io, logger, settings
 from unreal_auto_mod.data_structures import CompressionType, get_enum_from_val
 from unreal_auto_mod.programs import unreal_engine
 
@@ -101,7 +101,7 @@ def clean_working_dir():
         try:
             shutil.rmtree(working_dir)
         except Exception as e:
-            log.log_message(f"Error: {e}")
+            logger.log_message(f"Error: {e}")
 
 
 def filter_file_paths(paths_dict: dict) -> dict:

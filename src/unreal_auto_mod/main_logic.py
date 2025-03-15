@@ -14,14 +14,14 @@ from unreal_auto_mod import (
     file_io,
     game_runner,
     hook_states,
-    log,
     log_info,
+    logger,
     mods,
     packing,
     settings,
     utilities,
 )
-from unreal_auto_mod.log import log_message
+from unreal_auto_mod.logger import log_message
 from unreal_auto_mod.programs import fmodel, kismet_analyzer, spaghetti, uasset_gui, umodel, unreal_engine
 from unreal_auto_mod.threads import constant, game_monitor
 
@@ -117,7 +117,7 @@ def install_uasset_gui(output_directory: str, run_after_install: bool):
     if not os.path.isfile(uasset_gui.get_uasset_gui_path(output_directory)):
         uasset_gui.install_uasset_gui(output_directory)
     else:
-        log.log_message(f'uasset_gui is already installed at: "{output_directory}"')
+        logger.log_message(f'uasset_gui is already installed at: "{output_directory}"')
     if run_after_install:
         unreal_auto_mod.app_runner.run_app(uasset_gui.get_uasset_gui_path(output_directory))
 
@@ -410,9 +410,9 @@ def get_solo_package_command() -> str:
     is_game_iostore = unreal_engine.get_is_game_iostore(settings.get_uproject_file(), utilities.custom_get_game_dir())
     if is_game_iostore:
         command = f'{command} -iostore'
-        log.log_message('Check: Game is iostore')
+        logger.log_message('Check: Game is iostore')
     else:
-        log.log_message('Check: Game is not iostore')
+        logger.log_message('Check: Game is not iostore')
     return command
 
 

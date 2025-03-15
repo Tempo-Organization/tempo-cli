@@ -3,7 +3,7 @@ import time
 from dataclasses import dataclass
 
 import unreal_auto_mod.settings
-from unreal_auto_mod import hook_states, log, process_management, window_management
+from unreal_auto_mod import hook_states, logger, process_management, window_management
 from unreal_auto_mod.data_structures import HookStateType
 from unreal_auto_mod.programs import unreal_engine
 
@@ -29,9 +29,9 @@ engine_monitor_thread_information = EngineMonitorThreadInformation(
 
 def engine_monitor_thread():
     start_engine_monitor_thread()
-    log.log_message('Thread: Engine Monitoring Thread Started')
+    logger.log_message('Thread: Engine Monitoring Thread Started')
     engine_monitor_thread_information.engine_monitor_thread.join()
-    log.log_message('Thread: Engine Monitoring Thread Ended')
+    logger.log_message('Thread: Engine Monitoring Thread Ended')
 
 
 def engine_monitor_thread_runner(tick_rate: float = 0.01):
@@ -42,7 +42,7 @@ def engine_monitor_thread_runner(tick_rate: float = 0.01):
 
 @hook_states.hook_state_decorator(HookStateType.POST_ENGINE_OPEN)
 def found_engine_window():
-    log.log_message('Window: Engine Window Found')
+    logger.log_message('Window: Engine Window Found')
     engine_monitor_thread_information.found_window = True
 
 
@@ -57,14 +57,14 @@ def engine_monitor_thread_logic():
     if not engine_monitor_thread_information.found_process:
         engine_process_name = unreal_engine.get_engine_process_name(unreal_auto_mod.settings.get_unreal_engine_dir())
         if process_management.is_process_running(engine_process_name):
-            log.log_message('Process: Found Engine Process')
+            logger.log_message('Process: Found Engine Process')
             engine_monitor_thread_information.found_process = True
     elif not engine_monitor_thread_information.found_window:
         if window_management.does_window_exist(engine_window_name):
             found_engine_window()
     elif not engine_monitor_thread_information.window_closed:
         if not window_management.does_window_exist(engine_window_name):
-            log.log_message('Window: Engine Window Closed')
+            logger.log_message('Window: Engine Window Closed')
             engine_monitor_thread_information.window_closed = True
             stop_engine_monitor_thread()
 

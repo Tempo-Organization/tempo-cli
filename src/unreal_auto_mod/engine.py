@@ -1,4 +1,4 @@
-from unreal_auto_mod import app_runner, file_io, hook_states, log, settings
+from unreal_auto_mod import app_runner, file_io, hook_states, logger, settings
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, PackagingDirType
 from unreal_auto_mod.programs import unreal_engine
 from unreal_auto_mod.threads import thread_engine_monitor
@@ -13,7 +13,7 @@ def open_game_engine():
 
 @hook_states.hook_state_decorator(HookStateType.POST_ENGINE_CLOSE)
 def post_engine_closed_message():
-    log.log_message('Closed Unreal Engine.')
+    logger.log_message('Closed Unreal Engine.')
 
 
 @hook_states.hook_state_decorator(HookStateType.PRE_ENGINE_CLOSE)

@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from unreal_auto_mod import log
+from unreal_auto_mod import logger
 from unreal_auto_mod.data_structures import ExecutionMode
 from unreal_auto_mod.file_io import ensure_path_quoted
 
@@ -19,12 +19,12 @@ def run_app(
         command = exe_path
         for arg in args:
             command = f'{command} {arg}'
-        log.log_message('----------------------------------------------------')
-        log.log_message(f'Command: main executable: {exe_path}')
+        logger.log_message('----------------------------------------------------')
+        logger.log_message(f'Command: main executable: {exe_path}')
         for arg in args:
-            log.log_message(f'Command: arg: {arg}')
-        log.log_message('----------------------------------------------------')
-        log.log_message(f'Command: {command} running with the {exec_mode} enum')
+            logger.log_message(f'Command: arg: {arg}')
+        logger.log_message('----------------------------------------------------')
+        logger.log_message(f'Command: {command} running with the {exec_mode} enum')
         if working_dir:
             if os.path.isdir(working_dir):
                 os.chdir(working_dir)
@@ -32,15 +32,15 @@ def run_app(
         process = subprocess.Popen(command, cwd=working_dir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, shell=True)
 
         for line in iter(process.stdout.readline, ''):
-            log.log_message(line.strip())
+            logger.log_message(line.strip())
 
         process.stdout.close()
         process.wait()
-        log.log_message(f'Command: {command} finished')
+        logger.log_message(f'Command: {command} finished')
 
     elif exec_mode == ExecutionMode.ASYNC:
         command = exe_path
         for arg in args:
             command = f'{command} {arg}'
-        log.log_message(f'Command: {command} started with the {exec_mode} enum')
+        logger.log_message(f'Command: {command} started with the {exec_mode} enum')
         subprocess.Popen(command, cwd=working_dir, start_new_session=True, shell=True)

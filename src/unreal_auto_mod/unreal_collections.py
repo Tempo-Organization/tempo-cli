@@ -8,7 +8,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Union
 
-from unreal_auto_mod import data_structures, utilities
+import pyjson5 as json
+
+from unreal_auto_mod import data_structures, utilities, logger
 
 """
 This module does not account for when collections are across 
@@ -884,27 +886,85 @@ def get_unreal_collection_paths_from_mod_name(
 
 def add_collection_to_mod_entry(
         collection: UnrealCollection,
-        mod_name: str
+        mod_name: str,
+        settings_json: Path
     ):
-    collection_path = collection.file_system_path
-    mod_entry = utilities.get_mods_info_dict_from_mod_name(mod_name)
-    new_collections = mod_entry['file_includes']['unreal_collections']
-    if collection_path not in new_collections:
-        new_collections.append(collection_path)
-    mod_entry['file_includes']['unreal_collections'] = new_collections
+    try:
+        collection_path = str(collection.file_system_path)
+        settings_json_str = str(settings_json)
+
+        with open(settings_json_str, "r", encoding="utf-8") as file:
+            settings = json.load(file)
+
+        mod_entry = utilities.get_mods_info_dict_from_mod_name(mod_name)
+
+        if mod_entry:
+            new_collections = mod_entry['file_includes']['unreal_collections']
+            if collection_path not in new_collections:
+                new_collections.append(collection_path)
+                mod_entry['file_includes']['unreal_collections'] = new_collections
+
+                for i, mod in enumerate(settings.get("mods_info", [])):
+                    if mod["mod_name"] == mod_name:
+                        settings["mods_info"][i] = mod_entry
+                        break
+
+                with open(settings_json_str, "w", encoding="utf-8") as file:
+                    updated_json_str = json.dumps(settings, indent=4, ensure_ascii=False, separators=(',', ': '))
+                    file.write(updated_json_str)
+
+                logger.log_message(f"Collection added and config saved for mod '{mod_name}'.")
+            else:
+                logger.log_message(f"Collection is already added to mod '{mod_name}'.")
+
+        else:
+            logger.log_message(f"Mod entry for '{mod_name}' not found.")
+
+    except json.JSONDecodeError:
+        logger.log_message(f"Error decoding JSON from file '{settings_json_str}'. Please check the file format.")
+    except Exception as e:
+        logger.log_message(f"An error occurred: {e}")
 
 
 def remove_collection_from_mod_entry(
         collection: UnrealCollection,
-        mod_name: str
+        mod_name: str,
+        settings_json: Path
     ):
-    collection_path = collection.file_system_path
-    mod_entry = utilities.get_mods_info_dict_from_mod_name(mod_name)
-    new_collections = []
-    for other_collection_path in mod_entry['file_includes']['unreal_collections']:
-        if other_collection_path != collection_path:
-            new_collections.append(other_collection_path)
-    mod_entry['file_includes']['unreal_collections'] = new_collections
+    try:
+        collection_path = str(collection.file_system_path)
+        settings_json_str = str(settings_json)
+
+        with open(settings_json_str, "r", encoding="utf-8") as file:
+            settings = json.load(file)
+
+        mod_entry = utilities.get_mods_info_dict_from_mod_name(mod_name)
+
+        if mod_entry:
+            new_collections = [
+                other_collection_path for other_collection_path in mod_entry['file_includes']['unreal_collections']
+                if other_collection_path != collection_path
+            ]
+            mod_entry['file_includes']['unreal_collections'] = new_collections
+
+            for i, mod in enumerate(settings.get("mods_info", [])):
+                if mod["mod_name"] == mod_name:
+                    settings["mods_info"][i] = mod_entry
+                    break
+
+            with open(settings_json_str, "w", encoding="utf-8") as file:
+                updated_json_str = json.dumps(settings, indent=4, ensure_ascii=False, separators=(',', ': '))
+                file.write(updated_json_str)
+
+            logger.log_message(f"Collection removed and config saved for mod '{mod_name}'.")
+
+        else:
+            logger.log_message(f"Mod entry for '{mod_name}' not found.")
+
+    except json.JSONDecodeError:
+        logger.log_message(f"Error decoding JSON from file '{settings_json_str}'. Please check the file format.")
+    except Exception as e:
+        logger.log_message(f"An error occurred: {e}")
 
 
 def add_collections_to_mod_entry(
