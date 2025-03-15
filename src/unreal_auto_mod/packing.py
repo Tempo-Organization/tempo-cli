@@ -4,7 +4,8 @@ from dataclasses import dataclass
 
 from rich.progress import Progress
 
-from unreal_auto_mod import data_structures, file_io, hook_states, logger, settings, utilities, app_runner
+import unreal_auto_mod.app_runner
+from unreal_auto_mod import data_structures, file_io, hook_states, logger, settings, utilities
 from unreal_auto_mod.data_structures import CompressionType, HookStateType, PackingType, get_enum_from_val
 from unreal_auto_mod.programs import repak, unreal_engine, unreal_pak
 
@@ -109,7 +110,7 @@ def run_proj_command(command: str):
     command_parts = command.split(' ')
     executable = command_parts[0]
     args = command_parts[1:]
-    app_runner.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=executable, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 
@@ -159,7 +160,7 @@ def generate_mods(use_symlinks: bool):
     mods_uninstall()
     mods_install(use_symlinks)
     for command in command_queue:
-        app_runner.run_app(command)
+        unreal_auto_mod.app_runner.run_app(command)
 
 
 def uninstall_loose_mod(mod_name: str):
@@ -313,7 +314,7 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
         os.unlink(final_pak_location)
     if os.path.isfile(final_pak_location):
         os.remove(final_pak_location)
-    app_runner.run_app(command)
+    unreal_auto_mod.app_runner.run_app(command)
     install_mod_sig(mod_name, use_symlinks)
     if use_symlinks == True:
         os.symlink(intermediate_pak_file, final_pak_location)
@@ -401,7 +402,7 @@ def package_project_iostore_ue4():
         f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
-    app_runner.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 def package_project_iostore_ue5():
@@ -435,7 +436,7 @@ def package_project_iostore_ue5():
         f'-clientconfig="{client_config}"',
         '-utf8output'
     ]
-    app_runner.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
+    unreal_auto_mod.app_runner.run_app(exe_path=main_exec, args=args, working_dir=settings.get_unreal_engine_dir())
 
 
 # for if you are just repacking an ini for an iostore game and don't need a ucas or utoc for example
