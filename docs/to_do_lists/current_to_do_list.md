@@ -1,6 +1,6 @@
 ## Current To Do:
 - [ ] logic for mod making to scan collection contents
-- [ ] asset registry ini thing for collections
+- [x] asset registry ini thing for collections
 - [x] create collection
 - [x] set color
 - [x] rename collection

@@ -806,12 +806,31 @@
             "module": "unreal_auto_mod",
             "args": [
                 "add_meta_data_tags_for_asset_registry_to_unreal_ini",
-                "--init_path",
-                "${workspaceFolder}/assets/configs/inis/DefaultGame.ini",
+                "--ini_path",
+                "${workspaceFolder}/assets/base/assets/configs/inis/DefaultGame.ini",
                 "--tags",
                 "test_tag_one",
                 "--tags",
-                "test_tag_two"
+                "test_tag_two",
+                "--tags",
+                "test_tag_three"
+            ]
+        },
+        {
+            "name": "remove_meta_data_tags_for_asset_registry_from_unreal_ini",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "remove_meta_data_tags_for_asset_registry_from_unreal_ini",
+                "--ini_path",
+                "${workspaceFolder}/assets/base/assets/configs/inis/DefaultGame.ini",
+                "--tags",
+                "test_tag_one",
+                "--tags",
+                "test_tag_two",
+                "--tags",
+                "test_tag_three"
             ]
         }
     ]

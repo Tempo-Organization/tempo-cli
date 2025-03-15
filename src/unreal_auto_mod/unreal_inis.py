@@ -4,21 +4,22 @@ from pathlib import Path
 def add_meta_data_tags_for_asset_registry_to_unreal_ini(ini: Path, tags: list[str]):
     with ini.open('r') as file:
         lines = file.readlines()
+
     for i, line in enumerate(lines):
         if line.strip().startswith('MetaDataTagsForAssetRegistry'):
             existing_tags = line.split('=')[1].strip().strip('()').replace('"', '').split(',')
-            existing_tags = [tag.strip() for tag in existing_tags]
+            existing_tags = [tag.strip() for tag in existing_tags if tag.strip()]
 
             for tag in tags:
                 if tag not in existing_tags:
                     existing_tags.append(tag)
 
-            updated_tags = ', '.join([f'"{tag}"' for tag in existing_tags])
-            lines[i] = f'MetaDataTagsForAssetRegistry={{ {updated_tags} }}\n'
+            updated_tags = ','.join(f'"{tag}"' for tag in existing_tags)
+            lines[i] = f'MetaDataTagsForAssetRegistry=({updated_tags})\n'
             break
     else:
-        updated_tags = ', '.join([f'"{tag}"' for tag in tags])
-        lines.append(f'MetaDataTagsForAssetRegistry={{ {updated_tags} }}\n')
+        updated_tags = ','.join(f'"{tag}"' for tag in tags)
+        lines.append(f'MetaDataTagsForAssetRegistry=({updated_tags})\n')
 
     with ini.open('w') as file:
         file.writelines(lines)
@@ -31,15 +32,15 @@ def remove_meta_data_tags_for_asset_registry_from_unreal_ini(ini: Path, tags: li
     for i, line in enumerate(lines):
         if line.strip().startswith('MetaDataTagsForAssetRegistry'):
             existing_tags = line.split('=')[1].strip().strip('()').replace('"', '').split(',')
-            existing_tags = [tag.strip() for tag in existing_tags]
+            existing_tags = [tag.strip() for tag in existing_tags if tag.strip()]
 
             updated_tags = [tag for tag in existing_tags if tag not in tags]
 
             if updated_tags:
-                updated_tags = ', '.join([f'"{tag}"' for tag in updated_tags])
-                lines[i] = f'MetaDataTagsForAssetRegistry={{ {updated_tags} }}\n'
+                updated_tags = ','.join(f'"{tag}"' for tag in updated_tags)
+                lines[i] = f'MetaDataTagsForAssetRegistry=({updated_tags})\n'
             else:
-                lines[i] = f'MetaDataTagsForAssetRegistry={{ }}\n'
+                lines[i] = f'MetaDataTagsForAssetRegistry=()\n'
             break
     else:
         return
