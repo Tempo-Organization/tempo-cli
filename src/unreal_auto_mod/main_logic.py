@@ -1,11 +1,8 @@
-import json
 import os
+import sys
+import json
 import shutil
 import subprocess
-import sys
-import zipfile
-
-import psutil
 
 from unreal_auto_mod import (
     data_structures,
@@ -15,11 +12,11 @@ from unreal_auto_mod import (
     hook_states,
     log_info,
     logger,
-    mods,
     packing,
     settings,
     utilities,
-    app_runner
+    app_runner,
+    process_management
 )
 from unreal_auto_mod.programs import fmodel, kismet_analyzer, spaghetti, uasset_gui, umodel, unreal_engine
 from unreal_auto_mod.threads import constant, game_monitor
@@ -37,12 +34,19 @@ def close_thread_system():
 # all things below this should be functions that correspond to cli logic
 
 
+def generate_mods_other(use_symlinks: bool):
+    packing.cooking()
+    packing.generate_mods(use_symlinks)
+    game_runner.run_game()
+    game_monitor.game_monitor_thread()
+
+
 def test_mods(settings_json: str, input_mod_names: list[str], toggle_engine: bool, use_symlinks: bool):
     if toggle_engine:
         engine.toggle_engine_off()
     for mod_name in input_mod_names:
         settings.settings_information.mod_names.append(mod_name)
-    mods.generate_mods(use_symlinks)
+    generate_mods_other(use_symlinks)
     if toggle_engine:
         engine.toggle_engine_on()
 
@@ -52,7 +56,7 @@ def test_mods_all(settings_json: str, toggle_engine: bool, use_symlinks: bool):
         engine.toggle_engine_off()
     for entry in settings.settings_information.settings['mods_info']:
         settings.settings_information.mod_names.append(entry['mod_name'])
-    mods.generate_mods(use_symlinks)
+    generate_mods_other(use_symlinks)
     if toggle_engine:
         engine.toggle_engine_on()
 
@@ -137,7 +141,7 @@ def run_game(settings_json: str, toggle_engine: bool):
 
 
 def close_game(settings_json: str):
-    file_io.kill_process(os.path.basename(settings.get_game_exe_path()))
+    process_management.kill_process(os.path.basename(settings.get_game_exe_path()))
 
 
 def run_engine(settings_json: str):
@@ -534,23 +538,8 @@ def generate_mods(settings_json: str, input_mod_names: list[str], use_symlinks:b
 def generate_mods_all(settings_json: str, use_symlinks: bool):
     for entry in settings.get_mods_info_list_from_json():
         settings.settings_information.mod_names.append(entry['mod_name'])
-        log_message(entry['mod_name'])
+        logger.log_message(entry['mod_name'])
     packing.generate_mods(use_symlinks)
-
-
-def zip_directory_tree(input_dir, output_dir, zip_name="archive.zip"):
-    os.makedirs(output_dir, exist_ok=True)
-
-    zip_path = os.path.join(output_dir, zip_name)
-
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, dirs, files in os.walk(input_dir):
-            for file in files:
-                file_path = os.path.join(root, file)
-                arcname = os.path.relpath(file_path, input_dir)
-                zipf.write(file_path, arcname)
-
-    logger.log_message(f"Directory tree zipped successfully: {zip_path}")
 
 
 def make_unreal_pak_mod_release(singular_mod_info: dict, base_files_directory: str, output_directory: str):
@@ -562,7 +551,7 @@ def make_unreal_pak_mod_release(singular_mod_info: dict, base_files_directory: s
     logger.log_message(os.path.dirname(final_pak_file))
     os.makedirs(os.path.dirname(final_pak_file), exist_ok=True)
     shutil.copyfile(before_pak_file, final_pak_file)
-    zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
+    file_io.zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
 
 
 def make_repak_mod_release(singular_mod_info: dict, base_files_directory: str, output_directory: str):
@@ -574,7 +563,7 @@ def make_repak_mod_release(singular_mod_info: dict, base_files_directory: str, o
     logger.log_message(os.path.dirname(final_pak_file))
     os.makedirs(os.path.dirname(final_pak_file), exist_ok=True)
     shutil.copyfile(before_pak_file, final_pak_file)
-    zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
+    file_io.zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
 
 
 def make_engine_mod_release(singular_mod_info: dict, base_files_directory: str, output_directory: str):
@@ -598,7 +587,7 @@ def make_engine_mod_release(singular_mod_info: dict, base_files_directory: str, 
                 os.remove(after_file)
             os.makedirs(os.path.dirname(after_file), exist_ok=True)
             shutil.copyfile(before_file, after_file)
-    zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
+    file_io.zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
 
 
 def get_mod_files_asset_paths_for_loose_mods(mod_name: str, base_files_directory: str) -> dict:
@@ -681,7 +670,7 @@ def make_loose_mod_release(singular_mod_info: dict, base_files_directory: str, o
                 os.remove(after_file)
         if os.path.isfile(before_file):
             shutil.copy(before_file, after_file)
-    zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
+    file_io.zip_directory_tree(input_dir=f'{base_files_directory}/{mod_name}', output_dir=output_directory, zip_name=f'{mod_name}.zip')
 
 
 def generate_mod_release(settings_json: str, mod_name: str, base_files_directory: str, output_directory: str):
@@ -953,20 +942,6 @@ def remove_uplugins(uplugin_paths: list):
             shutil.rmtree(uplugin_dir)
 
 
-def save_json_to_file(json_string, file_path):
-    try:
-        parsed_json = json.loads(json_string)
-
-        with open(file_path, "w") as file:
-            json.dump(parsed_json, file, indent=4)
-
-        logger.log_message(f"JSON data successfully saved to {file_path}")
-    except json.JSONDecodeError as e:
-        logger.log_message(f"Invalid JSON string: {e}")
-    except Exception as e:
-        logger.log_message(f"An error occurred: {e}")
-
-
 def generate_file_paths_json(dir_path, output_json):
     all_file_paths = []
 
@@ -1000,22 +975,15 @@ def delete_unlisted_files(dir_path, json_file):
         logger.log_message(f"An error occurred: {e}")
 
 
-def close_programs(exe_names: list[str]):
-    results = {}
+def save_json_to_file(json_string, file_path):
+    try:
+        parsed_json = json.loads(json_string)
 
-    for exe_name in exe_names:
-        found = False
-        for proc in psutil.process_iter(['pid', 'name']):
-            try:
-                if proc.info['name'] and proc.info['name'].lower() == exe_name.lower():
-                    proc.terminate()
-                    proc.wait(timeout=5)
-                    found = True
-                    results[exe_name] = "Closed"
-                    break
-            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.TimeoutExpired):
-                pass
-        if not found:
-            results[exe_name] = "Not Found"
+        with open(file_path, "w") as file:
+            json.dump(parsed_json, file, indent=4)
 
-    return results
+        logger.log_message(f"JSON data successfully saved to {file_path}")
+    except json.JSONDecodeError as e:
+        logger.log_message(f"Invalid JSON string: {e}")
+    except Exception as e:
+        logger.log_message(f"An error occurred: {e}")

@@ -22,7 +22,7 @@ def get_repak_path_override() -> str:
     return settings.settings_information.settings['repak_info']['repak_path_override']
 
 
-def get_package_path():
+def get_repak_package_path():
     if get_is_using_repak_path_override():
         return get_repak_path_override()
     else:
@@ -76,7 +76,7 @@ def download_and_install_latest_version(repository='trumank/repak', install_path
 
 
 def ensure_repak_installed():
-    repak_path = get_package_path()
+    repak_path = get_repak_package_path()
 
     if os.path.exists(repak_path):
         logger.log_message(f'Repak is already installed at {repak_path}. Skipping installation.')

@@ -13,7 +13,8 @@ from unreal_auto_mod import (
     settings,
     initialization,
     unreal_collections,
-    unreal_inis
+    unreal_inis,
+    process_management
 )
 from unreal_auto_mod.programs import stove
 
@@ -599,7 +600,7 @@ command_help = 'Closes all programs with the exe names provided.'
 @cli.command(name='close_programs', help=command_help, short_help=command_help)
 @click.option("--exe_names", multiple=True, type=str, required=True, help='Name of an executable to be closed, can be specified multiple times.')
 def close_programs(exe_names):
-    main_logic.close_programs(exe_names)
+    process_management.close_programs(exe_names)
 
 
 command_help = 'Install Fmodel.'
@@ -1091,3 +1092,28 @@ command_help = "Removes the specified tags to the ini's MetaDataTagsForAssetRegi
 )
 def remove_meta_data_tags_for_asset_registry_from_unreal_ini(ini_path: pathlib.Path, tags: list[str]):
     unreal_inis.remove_meta_data_tags_for_asset_registry_from_unreal_ini(ini=ini_path, tags=tags)
+
+
+command_help = 'Zip Directory Tree'
+@cli.command(name='zip_directory_tree', help=command_help, short_help=command_help)
+@click.option(
+    "--directory_tree",
+    help='Path to the directory tree whose content to zip.',
+    type=click.Path(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    required=True
+)
+@click.option(
+    "--output_zip",
+    help='Path to the output zip file.',
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+def zip_directory_tree(directory_tree, output_zip):
+    file_io.zip_directory_tree(directory_tree, output_zip)

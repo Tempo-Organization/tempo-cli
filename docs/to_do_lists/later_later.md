@@ -11,6 +11,6 @@
 - [ ] unpack/repack game/mods
 - [ ] list game/mod contents
 - [ ]
-- [ ] add toml support
 - [ ] appease linter
 - [ ] linux support
+- [ ] logic for mod making to scan collection contentsEE

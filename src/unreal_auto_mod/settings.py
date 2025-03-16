@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 from dynaconf import Dynaconf
 
 from unreal_auto_mod import configs, file_io, logger, process_management, settings, window_management
-from unreal_auto_mod.programs import repak, unreal_engine
+from unreal_auto_mod.programs import unreal_engine
 
 
 @dataclass
@@ -43,11 +43,10 @@ def init_settings(settings_json_path: pathlib.Path):
     settings_information.settings_json_dir = os.path.dirname(settings_information.settings_json)
 
 
-def check_file_exists(file_path: str) -> bool:
-    if os.path.exists(file_path):
-        return True
-    else:
-        raise FileNotFoundError(f'File "{file_path}" not found.')
+def load_settings(settings_json: str):
+    logger.log_message(f'settings json: {settings_json}')
+    if not settings_information.init_settings_done:
+        init_settings(settings_json)
 
 
 def get_unreal_engine_dir() -> str:
@@ -72,39 +71,13 @@ def is_engine_packing_enum_in_use():
     return is_in_use
 
 
-def unreal_engine_check():
-    should_do_check = True
-
-    if not is_unreal_pak_packing_enum_in_use() or is_engine_packing_enum_in_use():
-           should_do_check = False
-
-    if should_do_check:
-        engine_str = 'UE4Editor'
-        if unreal_engine.is_game_ue5(get_unreal_engine_dir()):
-            engine_str = 'UnrealEditor'
-        check_file_exists(f'{get_unreal_engine_dir()}/Engine/Binaries/Win64/{engine_str}.exe')
-        logger.log_message('Check: Unreal Engine exists')
-
-
 def get_game_exe_path() -> str:
     game_exe_path = settings_information.settings['game_info']['game_exe_path']
     return game_exe_path
 
 
-def game_exe_check():
-    check_file_exists(get_game_exe_path())
-
-
 def get_git_info_repo_path() -> str:
     return settings_information.settings['git_info']['repo_path']
-
-
-def git_info_check():
-    git_repo_path = get_git_info_repo_path()
-    if git_repo_path == None or git_repo_path == '':
-        return
-
-    check_file_exists(git_repo_path)
 
 
 def get_game_launcher_exe_path() -> str:
@@ -115,43 +88,8 @@ def get_override_automatic_launcher_exe_finding() -> bool:
     return settings_information.settings['game_info']['override_automatic_launcher_exe_finding']
 
 
-def game_launcher_exe_override_check():
-    if get_override_automatic_launcher_exe_finding():
-        check_file_exists(get_game_launcher_exe_path())
-
-
 def get_uproject_file() -> str:
     return settings_information.settings['engine_info']['unreal_project_file']
-
-
-def uproject_check():
-    uproject_file = get_uproject_file()
-    if uproject_file:
-        check_file_exists(uproject_file)
-        logger.log_message('Check: Uproject file exists')
-
-
-def init_checks():
-    uproject_check()
-    unreal_engine_check()
-    game_launcher_exe_override_check()
-    git_info_check()
-    # game_exe_check()
-
-    if repak.get_is_using_repak_path_override():
-        check_file_exists(repak.get_repak_path_override())
-        logger.log_message('Check: Repak exists')
-
-    logger.log_message('Check: Game exists')
-
-    logger.log_message('Check: Passed all init checks')
-
-
-def load_settings(settings_json: str):
-    logger.log_message(f'settings json: {settings_json}')
-    if not settings_information.init_settings_done:
-        init_settings(settings_json)
-    init_checks()
 
 
 def get_unreal_engine_packaging_main_command() -> str:

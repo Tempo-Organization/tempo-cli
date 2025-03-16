@@ -306,7 +306,7 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
 
     final_pak_location = f'{pak_dir}/{mod_name}.pak'
 
-    command = f'"{repak.get_package_path()}" pack "{before_symlinked_dir}" "{intermediate_pak_file}"'
+    command = f'"{repak.get_repak_package_path()}" pack "{before_symlinked_dir}" "{intermediate_pak_file}"'
     if compression_type_str != 'None':
         command = f'{command} --compression {compression_type_str} --version {repak.get_repak_pak_version_str()}'
     if os.path.islink(final_pak_location):

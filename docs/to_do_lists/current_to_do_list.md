@@ -1,17 +1,27 @@
+
 ## Current To Do:
-- [ ] logic for mod making to scan collection contents
-- [x] asset registry ini thing for collections
-- [x] create collection
-- [x] set color
-- [x] rename collection
-- [x] delete collection
-- [x] disable collection
-- [x] enable collection
-- [x] set guid
-- [x] set parent guid
-- [x] set file version
-- [x] set collection type
-- [x] add content paths
-- [x] remove content paths
-- [x] add collections to mod entry in json
-- [x] remove collections from mod entry in json
+
+- [ ] cli command move
+- [ ] cli command copy
+- [ ] cli command rename
+- [ ] cli command symlink
+- [ ] cli command delete
+- [ ] cli command zip
+- [ ] cli command unzip
+- [ ] cli command add to json
+- [ ] cli command remove from json
+- [ ] cli command add to ini
+- [ ] cli command remove from ini
+- [ ] cli command add to toml
+- [ ] cli command remove from toml
+- [ ] cli command add to text file
+- [ ] cli command remove from text file
+- [ ] cli command git stuff
+- [ ] cli command gen engine stuff
+- [ ] cli command open game dir
+- [ ] cli command open game paks dir
+- [ ] cli command open mod releases dir
+- [ ] cli command open dist dir
+- [ ] cli command open persistent mods dir
+- [ ] cli command open unreal auto mod dir
+- [ ] cli command open uproject dir

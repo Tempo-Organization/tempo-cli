@@ -499,7 +499,7 @@
             "module": "unreal_auto_mod",
             "args": [
                 "close_programs",
-                "----exe_names",
+                "--exe_names",
                 "Zedfest.exe"
             ]
         },

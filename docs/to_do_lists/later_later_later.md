@@ -12,32 +12,6 @@
 - [ ] check uproject for ini that contains if assign chunk id is enabled, and warn not to use it if so
 
 
-        ## Events to look into
-        - [ ] move
-        - [ ] copy
-        - [ ] rename
-        - [ ] symlink
-        - [ ] delete
-        - [ ] zip
-        - [ ] unzip
-        - [ ] add to json
-        - [ ] remove from json
-        - [ ] add to ini
-        - [ ] remove from ini
-        - [ ] add to toml
-        - [ ] remove from toml
-        - [ ] add to text file
-        - [ ] remove from text file
-        - [ ] git stuff
-        - [ ] gen engine stuff
-        - [ ] open game dir
-        - [ ] open game paks dir
-        - [ ] open mod releases dir
-        - [ ] open dist dir
-        - [ ] openm persistent mods dir
-        - [ ] open unreal auto mod dir
-        - [ ] open uproject dir
-
 
         ## Hot Keys To Make:
         - [ ] General Hotkey functionality

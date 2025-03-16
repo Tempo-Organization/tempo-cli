@@ -1,12 +1,11 @@
-import glob
-import hashlib
 import os
 import sys
-import webbrowser
+import glob
+import hashlib
 import zipfile
+import webbrowser
 from pathlib import Path
 
-import psutil
 import requests
 from requests.exceptions import HTTPError, RequestException
 
@@ -84,16 +83,6 @@ def check_file_exists(file_path: str) -> bool:
         return True
     else:
         raise FileNotFoundError(f'Check: "{file_path}" file not found.')
-
-
-def kill_process(process_name: str):
-    os.system(f'taskkill /f /im "{process_name}"')
-
-
-def get_processes_by_substring(substring: str) -> list:
-    all_processes = psutil.process_iter(['pid', 'name'])
-    matching_processes = [proc.info for proc in all_processes if substring.lower() in proc.info['name'].lower()]
-    return matching_processes
 
 
 def get_file_hash(file_path: str) -> str:
@@ -210,3 +199,19 @@ def get_platform_wrapper_extension() -> str:
 
 def ensure_path_quoted(path: str) -> str:
     return f'"{path}"' if not path.startswith('"') and not path.endswith('"') else path
+
+
+def zip_directory_tree(input_dir, output_dir, zip_name="archive.zip"):
+    os.makedirs(output_dir, exist_ok=True)
+
+    zip_path = os.path.join(output_dir, zip_name)
+
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(input_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, input_dir)
+                zipf.write(file_path, arcname)
+
+    logger.log_message(f"Directory tree zipped successfully: {zip_path}")
+    

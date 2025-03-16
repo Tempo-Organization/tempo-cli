@@ -43,13 +43,34 @@ def kill_processes(state: HookStateType):
         if target_state == current_state:
             if process_info['use_substring_check']:
                 proc_name_substring = process_info['process_name']
-                for proc_info in file_io.get_processes_by_substring(proc_name_substring):
+                for proc_info in get_processes_by_substring(proc_name_substring):
                     proc_name = proc_info['name']
-                    file_io.kill_process(proc_name)
+                    kill_process(proc_name)
             else:
                 proc_name = process_info['process_name']
-                file_io.kill_process(proc_name)
+                kill_process(proc_name)
 
 
 def get_game_process_name():
     return unreal_engine.get_game_process_name(settings.get_game_exe_path())
+
+
+def close_programs(exe_names: list[str]):
+    results = {}
+
+    for exe_name in exe_names:
+        found = False
+        for proc in psutil.process_iter(['pid', 'name']):
+            try:
+                if proc.info['name'] and proc.info['name'].lower() == exe_name.lower():
+                    proc.terminate()
+                    proc.wait(timeout=5)
+                    found = True
+                    results[exe_name] = "Closed"
+                    break
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.TimeoutExpired):
+                pass
+        if not found:
+            results[exe_name] = "Not Found"
+
+    return results
