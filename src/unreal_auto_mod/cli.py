@@ -1165,3 +1165,26 @@ command_help = 'Move a file or directory to a new location.'
 )
 def move(input_path, output_path, overwrite):
     file_io.move(input_path, output_path, overwrite)
+    
+
+command_help = 'Copy a file or directory to a new location.'
+@cli.command(name='copy', help=command_help, short_help=command_help)
+@click.option(
+    "--input_path",
+    help='The input path, to a directory tree or file.',
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+@click.option(
+    "--output_path",
+    help='The output path, to a directory tree or file.',
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+@click.option(
+    "--overwrite",
+    is_flag=True,
+    help="Overwrite existing files if they already exist."
+)
+def copy(input_path, output_path, overwrite):
+    file_io.copy(input_path, output_path, overwrite)

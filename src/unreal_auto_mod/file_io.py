@@ -235,3 +235,27 @@ def move(input_path, output_path, overwrite):
     
     shutil.move(str(input_path), str(output_path))
     logger.log_message(f"Successfully moved {input_path} to {output_path}")
+
+
+def copy(input_path: Path, output_path: Path, overwrite: bool):
+    if input_path == output_path:
+        logger.log_message("Error: Input and output paths must be different.")
+        raise RuntimeError
+
+    if input_path.is_dir() and output_path.is_dir() and output_path in input_path.parents:
+        logger.log_message("Error: Cannot copy a directory inside itself.")
+        raise RuntimeError
+
+    if output_path.exists():
+        if not overwrite:
+            logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
+            raise RuntimeError
+        elif output_path.is_dir():
+            output_path = output_path / input_path.name
+
+    if input_path.is_dir():
+        shutil.copytree(str(input_path), str(output_path), dirs_exist_ok=overwrite)
+    else:
+        shutil.copy2(str(input_path), str(output_path))
+
+    logger.log_message(f"Successfully copied {input_path} to {output_path}")

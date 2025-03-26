@@ -1,8 +1,6 @@
 
 ## Current To Do:
 
-- [ ] cli command copy
-- [ ] cli command rename
 - [ ] cli command symlink
 - [ ] cli command delete
 - [ ] cli command add to json
