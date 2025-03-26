@@ -897,6 +897,19 @@
                 "--output_path",
                 "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
             ]
+        },
+        {
+            "name": "delete",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "delete",
+                "--input_paths",
+                "${workspaceFolder}/dist/zip_dir_tree_example_moved.zip",
+                "--input_paths",
+                "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
+            ]
         }
     ]
 }

@@ -1211,3 +1211,16 @@ command_help = "Symlink a file or directory to a new location."
 )
 def symlink(input_path, output_path, overwrite):
     file_io.symlink(input_path, output_path, overwrite)
+    
+
+command_help = "Delete one or more files and/or directories."
+@cli.command(name="delete", help=command_help, short_help=command_help)
+@click.option(
+    "--input_paths",
+    help="The input path, to a directory tree or file to delete, can be specified multiple times.",
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    required=True,
+    multiple=True
+)
+def delete(input_paths):
+    file_io.delete(input_paths)

@@ -280,3 +280,21 @@ def symlink(input_path, output_path, overwrite):
     except OSError as e:
         logger.log_message(f"Error: Failed to create symlink: {e}")
         raise RuntimeError
+    
+
+def delete(input_paths: list[Path]):
+    for path in input_paths:
+        if not path.exists():
+            logger.log_message(f"Error: {path} does not exist.")
+            raise RuntimeError
+        
+        try:
+            if path.is_dir():
+                for item in path.iterdir():
+                    item.unlink() if item.is_file() else delete([item])
+                path.rmdir()
+            else:
+                path.unlink()
+            logger.log_message(f"Successfully deleted {path}")
+        except Exception as e:
+            logger.log_message(f"Error: Could not delete {path}: {e}")
