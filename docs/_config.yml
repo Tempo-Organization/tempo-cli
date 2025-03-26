@@ -3,4 +3,4 @@ plugins:
 - jekyll-remote-theme
 
 title: Unreal Auto Mod
-description: A verbose unreal engine modding tool, that covers project management, automated builds, and more
+description: An unreal engine modding tool, that covers project management, automated builds, and more.
