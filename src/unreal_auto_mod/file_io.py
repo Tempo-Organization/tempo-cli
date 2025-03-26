@@ -259,3 +259,24 @@ def copy(input_path: Path, output_path: Path, overwrite: bool):
         shutil.copy2(str(input_path), str(output_path))
 
     logger.log_message(f"Successfully copied {input_path} to {output_path}")
+
+
+def symlink(input_path, output_path, overwrite):
+    if output_path.exists():
+        if not overwrite:
+            logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
+            raise RuntimeError
+        try:
+            if output_path.is_dir():
+                os.rmdir(output_path)
+            else:
+                output_path.unlink()
+        except Exception as e:
+            logger.log_message(f"Error: Could not remove existing output path: {e}")
+            raise RuntimeError
+    try:
+        os.symlink(input_path, output_path)
+        logger.log_message(f"Successfully created symlink: {output_path} -> {input_path}")
+    except OSError as e:
+        logger.log_message(f"Error: Failed to create symlink: {e}")
+        raise RuntimeError

@@ -1,7 +1,6 @@
 
 ## Current To Do:
 
-- [ ] cli command symlink
 - [ ] cli command delete
 - [ ] cli command add to json
 - [ ] cli command remove from json
