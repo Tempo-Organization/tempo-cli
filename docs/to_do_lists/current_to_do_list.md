@@ -1,7 +1,6 @@
 
 ## Current To Do:
 
-- [ ] cli command move
 - [ ] cli command copy
 - [ ] cli command rename
 - [ ] cli command symlink
