@@ -1095,9 +1095,9 @@ def remove_meta_data_tags_for_asset_registry_from_unreal_ini(ini_path: pathlib.P
 
 
 command_help = 'Zip Directory Tree'
-@cli.command(name='zip_directory_tree', help=command_help, short_help=command_help)
+@cli.command(name='zip', help=command_help, short_help=command_help)
 @click.option(
-    "--directory_tree",
+    "--directory",
     help='Path to the directory tree whose content to zip.',
     type=click.Path(
         exists=True,
@@ -1110,10 +1110,33 @@ command_help = 'Zip Directory Tree'
     required=True
 )
 @click.option(
-    "--output_zip",
+    "--zip",
     help='Path to the output zip file.',
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     required=True
 )
-def zip_directory_tree(directory_tree, output_zip):
-    file_io.zip_directory_tree(directory_tree, output_zip)
+def zip_directory_tree(directory, zip):
+    file_io.zip_directory_tree(input_dir=directory, output_dir=os.path.dirname(zip), zip_name=os.path.basename(zip))
+
+
+command_help = 'Unzip'
+@cli.command(name='unzip', help=command_help, short_help=command_help)
+@click.option(
+    "--output_directory",
+    help='Path to the directory to unzip the zip to.',
+    type=click.Path(
+        file_okay=False,
+        dir_okay=True,
+        resolve_path=True,
+        path_type=pathlib.Path
+    ),
+    required=True
+)
+@click.option(
+    "--zip",
+    help='Path to the zip.',
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+def unzip(output_directory, zip):
+    file_io.unzip_zip(zip_path=zip, output_location=output_directory)

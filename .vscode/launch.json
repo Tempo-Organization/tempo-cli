@@ -832,6 +832,32 @@
                 "--tags",
                 "test_tag_three"
             ]
+        },
+        {
+            "name": "zip",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "zip",
+                "--directory",
+                "${workspaceFolder}/assets/base",
+                "--zip",
+                "${workspaceFolder}/dist/zip_dir_tree_example.zip"
+            ]
+        },
+        {
+            "name": "unzip",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "unzip",
+                "--zip",
+                "${workspaceFolder}/dist/zip_dir_tree_example.zip",
+                "--output_directory",
+                "${workspaceFolder}/dist/unzip_test"
+            ]
         }
     ]
 }

@@ -13,7 +13,6 @@
 # - screeninfo
 # - tomlkit
 # - trogon@ git+https://github.com/Mythical-Github/trogon
-# - unreal-collections@ git+https://github.com/Mythical-Github/unreal_collections
 #
 
 certifi==2025.1.31
@@ -87,7 +86,5 @@ typing-extensions==4.12.2
     #   textual
 uc-micro-py==1.0.3
     # via linkify-it-py
-unreal-collections @ git+https://github.com/Mythical-Github/unreal_collections@32bbde7e157fba53be6ccc36d2c25b5454f28624
-    # via hatch.envs.default
 urllib3==2.3.0
     # via requests

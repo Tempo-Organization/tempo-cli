@@ -6,8 +6,6 @@
 - [ ] cli command rename
 - [ ] cli command symlink
 - [ ] cli command delete
-- [ ] cli command zip
-- [ ] cli command unzip
 - [ ] cli command add to json
 - [ ] cli command remove from json
 - [ ] cli command add to ini
@@ -25,3 +23,5 @@
 - [ ] cli command open persistent mods dir
 - [ ] cli command open unreal auto mod dir
 - [ ] cli command open uproject dir
+- [ ] cli command open provided dir
+- [ ] cli command open provided file in default opener
