@@ -7,14 +7,14 @@ if sys.platform == "win32":
 
 def get_steam_exe_location():
     if sys.platform != "win32":
-        raise RuntimeError("Steam path retrieval is only supported on Windows.")
+        steam_location_error = "Steam path retrieval is only supported on Windows."
+        raise RuntimeError(steam_location_error)
 
     try:
         reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam", 0, winreg.KEY_READ)
         install_path, _ = winreg.QueryValueEx(reg_key, "InstallPath")
         winreg.CloseKey(reg_key)
-        steam_exe_path = os.path.join(install_path, 'steam.exe')
-        return steam_exe_path
+        return os.path.join(install_path, 'steam.exe')
     except FileNotFoundError:
         return "Steam: installation not found in the registry."
     except Exception as e:

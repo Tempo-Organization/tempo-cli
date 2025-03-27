@@ -13,10 +13,10 @@ import pyjson5 as json
 from unreal_auto_mod import data_structures, logger, utilities
 
 """
-This module does not account for when collections are across 
-different collections directories, like local, shared, and private 
-ones. It is mainly for use with a singular collections directory, 
-but most functions will work across both. However, things relating 
+This module does not account for when collections are across
+different collections directories, like local, shared, and private
+ones. It is mainly for use with a singular collections directory,
+but most functions will work across both. However, things relating
 to ancestors and descendants may fail.
 
 A content line refers to:
@@ -50,7 +50,7 @@ class UnrealGuid:
     def __init__(self, uid: str = None):
         """
         Initializes the UnrealGuid with a given UID string or generates a new one if not provided.
-        
+
         Args:
             uid (str, optional): A string representing the GUID. If not provided, a new GUID is generated.
         """
@@ -322,7 +322,7 @@ def get_unreal_collection_from_unreal_collection_path(collection_path: Path) -> 
         color=get_collection_color_from_unreal_collection_path(collection_path),
         content_lines=get_all_non_key_lines_from_collection_path(collection_path)
     )
-    if collection_to_return == None:
+    if collection_to_return is None:
         raise RuntimeError
     return collection_to_return
 
@@ -528,7 +528,8 @@ def get_all_key_lines_from_collection_path(collection_path: Path) -> list[str]:
 
 def get_all_non_key_lines_from_collection_path(collection_path: Path) -> list[str]:
     if not os.path.isfile(collection_path):
-        raise FileNotFoundError(f'No file exists at the following provided collection path "{collection_path}".')
+        no_collection_error = f'No file exists at the following provided collection path "{collection_path}".'
+        raise FileNotFoundError(no_collection_error)
 
     config_lines = get_all_lines_in_config(collection_path)
 
@@ -775,11 +776,11 @@ def set_config_key_and_value_from_collection_path(collection_path: Path, key: st
     set_all_lines_in_config(str(collection_path), updated_lines)
 
 
-def set_file_version_from_collection_path(collection_path: str, file_Version: int):
+def set_file_version_from_collection_path(collection_path: str, file_version: int):
     set_config_key_and_value_from_collection_path(
         collection_path=collection_path,
         key='FileVersion:',
-        value=str(file_Version)
+        value=str(file_version)
     )
 
 
