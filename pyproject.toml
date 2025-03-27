@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "unreal_auto_mod"
 dynamic = ["version"]
-description = "Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.5"
+description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
@@ -33,7 +33,17 @@ dependencies = [
   "tomlkit",
   "pywinctl",
   "dynaconf",
-  "pywin32; sys_platform == 'win32'"
+  "pywin32; sys_platform == 'win32'",
+  "pyinstaller",
+  "mkdocs-material",
+  "mkdocstrings-python"
+]
+
+[tool.hatch.envs.dev]
+dependencies = [
+  "pyinstaller",
+  "mkdocs-material",
+  "mkdocstrings-python"
 ]
 
 [project.urls]

@@ -1,6 +1,0 @@
-remote_theme: "dracula/gh-pages"
-plugins:
-- jekyll-remote-theme
-
-title: Unreal Auto Mod
-description: An unreal engine modding tool, that covers project management, automated builds, and more.

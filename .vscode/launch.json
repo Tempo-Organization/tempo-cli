@@ -910,6 +910,26 @@
                 "--input_paths",
                 "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
             ]
+        },
+        {
+            "name": "mkdocs_serve",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "mkdocs",
+                "serve"
+            ]
+        },
+        {
+            "name": "mkdocs_build",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "mkdocs",
+                "build"
+            ]
         }
     ]
 }
