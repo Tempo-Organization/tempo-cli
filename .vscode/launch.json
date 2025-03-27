@@ -5,6 +5,234 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "lint_code",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "py_project_dev_tools",
+            "args": [
+                "lint_code",
+                "--project_toml_path",
+                "${workspaceFolder}/pyproject.toml"
+            ]
+        },
+        {
+            "name": "make_exe_release",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "py_project_dev_tools",
+            "args": [
+                "make_exe_release",
+                "--project_toml_path",
+                "${workspaceFolder}/pyproject.toml"
+            ]
+        },
+        {
+            "name": "mkdocs_serve",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "mkdocs",
+            "args": [
+                "serve"
+            ]
+        },
+        {
+            "name": "mkdocs_build",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "mkdocs",
+            "args": [
+                "build"
+            ]
+        },
+        {
+            "name": "tui",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "subProcess": true,
+            "console": "externalTerminal",
+            "args": [
+                "tui"
+            ]
+        },
+        {
+            "name": "test_mods",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "test_mods",
+                "--use_symlinks",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json",
+                "--mod_names",
+                "ModLoader_P",
+                "--mod_names",
+                "MapKit",
+                "--mod_names",
+                "ExampleLevel"
+            ]
+        },
+        {
+            "name": "test_mods_all",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "test_mods_all",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "full_run",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "full_run",
+                "--use_symlinks",
+                "--base_files_directory",
+                "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
+                "--output_directory",
+                "${workspaceFolder}/dist/releases",
+                "--mod_names",
+                "ModLoader_P",
+                "--mod_names",
+                "MapKit",
+                "--mod_names",
+                "ExampleLevel",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "full_run_all",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "full_run_all",
+                "--use_symlinks",
+                "--base_files_directory",
+                "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
+                "--output_directory",
+                "${workspaceFolder}/dist/releases",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "generate_mods",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "generate_mods",
+                "--mod_names",
+                "ModLoader_P",
+                "--mod_names",
+                "MapKit",
+                "--mod_names",
+                "ExampleLevel",
+                "--use_symlinks",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "generate_mods_all",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "generate_mods_all",
+                "--use_symlinks",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "generate_game_file_list_json",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "generate_game_file_list_json",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "cleanup_game",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "cleanup_game",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "cleanup_full",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "cleanup_full",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "cleanup_cooked",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "cleanup_cooked",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "cleanup_build",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "cleanup_build",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "run_game",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "run_game",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "run_engine",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "run_engine",
+                "--settings_json",
+                "${workspaceFolder}/assets/base/presets/default/settings.json"
+            ]
+        },
+        {
+            "name": "--------------------------------------------------------"
+        },
+        {
             "name": "help",
             "type": "debugpy",
             "request": "launch",
@@ -57,74 +285,6 @@
                 "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
         },
-        {
-            "name": "cleanup_full",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "cleanup_full",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "cleanup_cooked",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "cleanup_cooked",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "cleanup_build",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "cleanup_build",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "cleanup_game",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "cleanup_game",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "generate_game_file_list_json",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "generate_game_file_list_json",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        // the ones below this work usually, but not when routed through vscode stuff
-        // {
-        //     "name": "upload_changes_to_repo",
-        //     "type": "debugpy",
-        //     "request": "launch",
-        //     "module": "unreal_auto_mod",
-        //     "subProcess": true,
-        //     "console": "externalTerminal",
-        //     "args": [
-        //         "upload_changes_to_repo",
-        //         "${workspaceFolder}/assets/base/presets/default/settings.json"
-        //     ]
-        // },
         {
             "name": "cleanup_from_file_list",
             "type": "debugpy",
@@ -223,17 +383,6 @@
             ]
         },
         {
-            "name": "run_game",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "run_game",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
             "name": "close_game",
             "type": "debugpy",
             "request": "launch",
@@ -245,120 +394,12 @@
             ]
         },
         {
-            "name": "run_engine",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "run_engine",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
             "name": "close_engine",
             "type": "debugpy",
             "request": "launch",
             "module": "unreal_auto_mod",
             "args": [
                 "close_engine",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "test_mods",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "test_mods",
-                "--use_symlinks",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json",
-                "--mod_names",
-                "ModLoader_P",
-                "--mod_names",
-                "MapKit",
-                "--mod_names",
-                "ExampleLevel"
-            ]
-        },
-        {
-            "name": "test_mods_all",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "test_mods_all",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "full_run",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "full_run",
-                "--use_symlinks",
-                "--base_files_directory",
-                "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
-                "--output_directory",
-                "${workspaceFolder}/dist/releases",
-                "--mod_names",
-                "ModLoader_P",
-                "--mod_names",
-                "MapKit",
-                "--mod_names",
-                "ExampleLevel",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "full_run_all",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "full_run_all",
-                "--use_symlinks",
-                "--base_files_directory",
-                "${workspaceFolder}/assets/base/presets/default/mod_packaging/releases",
-                "--output_directory",
-                "${workspaceFolder}/dist/releases",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "generate_mods",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "generate_mods",
-                "--mod_names",
-                "ModLoader_P",
-                "--mod_names",
-                "MapKit",
-                "--mod_names",
-                "ExampleLevel",
-                "--use_symlinks",
-                "--settings_json",
-                "${workspaceFolder}/assets/base/presets/default/settings.json"
-            ]
-        },
-        {
-            "name": "generate_mods_all",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "args": [
-                "generate_mods_all",
-                "--use_symlinks",
                 "--settings_json",
                 "${workspaceFolder}/assets/base/presets/default/settings.json"
             ]
@@ -561,17 +602,6 @@
             "args": [
                 "install_kismet_analyzer",
                 "${workspaceFolder}/dist/kismet_analyzer"
-            ]
-        },
-        {
-            "name": "tui",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "unreal_auto_mod",
-            "subProcess": true,
-            "console": "externalTerminal",
-            "args": [
-                "tui"
             ]
         },
         {
@@ -909,46 +939,6 @@
                 "${workspaceFolder}/dist/zip_dir_tree_example_moved.zip",
                 "--input_paths",
                 "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
-            ]
-        },
-        {
-            "name": "mkdocs_serve",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "mkdocs",
-            "args": [
-                "serve"
-            ]
-        },
-        {
-            "name": "mkdocs_build",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "mkdocs",
-            "args": [
-                "build"
-            ]
-        },
-        {
-            "name": "make_exe_release",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "py_project_dev_tools",
-            "args": [
-                "make_exe_release",
-                "--project_toml_path",
-                "${workspaceFolder}/pyproject.toml"
-            ]
-        },
-        {
-            "name": "lint_code",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "py_project_dev_tools",
-            "args": [
-                "lint_code",
-                "--project_toml_path",
-                "${workspaceFolder}/pyproject.toml"
             ]
         }
     ]
