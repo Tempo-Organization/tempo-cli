@@ -40,7 +40,7 @@ def remove_meta_data_tags_for_asset_registry_from_unreal_ini(ini: Path, tags: li
                 updated_tags = ','.join(f'"{tag}"' for tag in updated_tags)
                 lines[i] = f'MetaDataTagsForAssetRegistry=({updated_tags})\n'
             else:
-                lines[i] = f'MetaDataTagsForAssetRegistry=()\n'
+                lines[i] = 'MetaDataTagsForAssetRegistry=()\n'
             break
     else:
         return

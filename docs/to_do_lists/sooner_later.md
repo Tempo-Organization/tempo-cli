@@ -7,3 +7,6 @@ cli commands/new launch json entries:
         - [ ] get aes key, uses patternsleuth, or aesdumpster
         - [ ] get uproject name
 
+workspace config
+project config
+mod specific config

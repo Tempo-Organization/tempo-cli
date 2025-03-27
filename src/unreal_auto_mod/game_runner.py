@@ -1,4 +1,4 @@
-from unreal_auto_mod import app_runner, hook_states, logger, timer, settings
+from unreal_auto_mod import app_runner, hook_states, logger, settings, timer
 from unreal_auto_mod.data_structures import ExecutionMode, GameLaunchType, HookStateType
 from unreal_auto_mod.programs.steam import get_steam_exe_location
 

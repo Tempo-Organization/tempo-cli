@@ -10,7 +10,7 @@ from typing import Union
 
 import pyjson5 as json
 
-from unreal_auto_mod import data_structures, utilities, logger
+from unreal_auto_mod import data_structures, logger, utilities
 
 """
 This module does not account for when collections are across 
@@ -893,7 +893,7 @@ def add_collection_to_mod_entry(
         collection_path = str(collection.file_system_path)
         settings_json_str = str(settings_json)
 
-        with open(settings_json_str, "r", encoding="utf-8") as file:
+        with open(settings_json_str, encoding="utf-8") as file:
             settings = json.load(file)
 
         mod_entry = utilities.get_mods_info_dict_from_mod_name(mod_name)
@@ -935,7 +935,7 @@ def remove_collection_from_mod_entry(
         collection_path = str(collection.file_system_path)
         settings_json_str = str(settings_json)
 
-        with open(settings_json_str, "r", encoding="utf-8") as file:
+        with open(settings_json_str, encoding="utf-8") as file:
             settings = json.load(file)
 
         mod_entry = utilities.get_mods_info_dict_from_mod_name(mod_name)

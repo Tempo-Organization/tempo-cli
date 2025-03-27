@@ -928,6 +928,28 @@
             "args": [
                 "build"
             ]
+        },
+        {
+            "name": "make_exe_release",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "py_project_dev_tools",
+            "args": [
+                "make_exe_release",
+                "--project_toml_path",
+                "${workspaceFolder}/pyproject.toml"
+            ]
+        },
+        {
+            "name": "lint_code",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "py_project_dev_tools",
+            "args": [
+                "lint_code",
+                "--project_toml_path",
+                "${workspaceFolder}/pyproject.toml"
+            ]
         }
     ]
 }

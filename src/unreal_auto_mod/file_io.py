@@ -1,17 +1,16 @@
-import os
-import sys
 import glob
-import shutil
 import hashlib
-import zipfile
+import os
+import shutil
+import sys
 import webbrowser
+import zipfile
 from pathlib import Path
 
 import requests
 from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod import logger
-
 
 if getattr(sys, 'frozen', False):
     SCRIPT_DIR = Path(sys.executable).parent
@@ -215,24 +214,24 @@ def zip_directory_tree(input_dir, output_dir, zip_name="archive.zip"):
                 zipf.write(file_path, arcname)
 
     logger.log_message(f"Directory tree zipped successfully: {zip_path}")
-    
+
 
 def move(input_path, output_path, overwrite):
     if input_path == output_path:
         logger.log_message("Error: Input and output paths must be different.")
         raise RuntimeError
-    
+
     if input_path.is_dir() and output_path.is_dir() and output_path in input_path.parents:
         logger.log_message("Error: Cannot move a directory inside itself.")
         raise RuntimeError
-    
+
     if output_path.exists():
         if not overwrite:
             logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
             raise RuntimeError
         elif output_path.is_dir():
             output_path = output_path / input_path.name
-    
+
     shutil.move(str(input_path), str(output_path))
     logger.log_message(f"Successfully moved {input_path} to {output_path}")
 
@@ -280,14 +279,14 @@ def symlink(input_path, output_path, overwrite):
     except OSError as e:
         logger.log_message(f"Error: Failed to create symlink: {e}")
         raise RuntimeError
-    
+
 
 def delete(input_paths: list[Path]):
     for path in input_paths:
         if not path.exists():
             logger.log_message(f"Error: {path} does not exist.")
             raise RuntimeError
-        
+
         try:
             if path.is_dir():
                 for item in path.iterdir():

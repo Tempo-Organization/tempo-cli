@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from unreal_auto_mod import logger, file_io
+from unreal_auto_mod import file_io, logger
 from unreal_auto_mod.data_structures import ExecutionMode
 
 

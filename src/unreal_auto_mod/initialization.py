@@ -1,16 +1,7 @@
 import os
 import sys
 
-from unreal_auto_mod import (
-    customization, 
-    file_io, 
-    log_info, 
-    logger, 
-    main_logic,
-    window_management,
-    wrapper,
-    settings
-)
+from unreal_auto_mod import customization, file_io, log_info, logger, main_logic, settings, window_management, wrapper
 from unreal_auto_mod.programs import repak, unreal_engine
 
 
@@ -88,7 +79,7 @@ def initialization():
         logger.log_message('Check: Game exists')
 
         logger.log_message('Check: Passed all init checks')
-    
+
 
 def check_generate_wrapper():
     if "--generate_wrapper" in sys.argv:

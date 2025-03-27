@@ -36,14 +36,16 @@ dependencies = [
   "pywin32; sys_platform == 'win32'",
   "pyinstaller",
   "mkdocs-material",
-  "mkdocstrings-python"
+  "mkdocstrings-python",
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
 [tool.hatch.envs.dev]
 dependencies = [
   "pyinstaller",
   "mkdocs-material",
-  "mkdocstrings-python"
+  "mkdocstrings-python",
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
 [project.urls]

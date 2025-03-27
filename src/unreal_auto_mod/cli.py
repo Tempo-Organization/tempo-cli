@@ -1,5 +1,4 @@
 import os
-import shutil
 import pathlib
 
 import click
@@ -10,13 +9,12 @@ from unreal_auto_mod import (
     app_runner,
     data_structures,
     file_io,
-    main_logic,
-    settings,
     initialization,
+    main_logic,
+    process_management,
+    settings,
     unreal_collections,
     unreal_inis,
-    process_management,
-    logger
 )
 from unreal_auto_mod.programs import stove
 
@@ -33,7 +31,7 @@ default_releases_dir = os.path.normpath(os.path.join(settings.settings_informati
 @click.option('--logs_directory', default=default_logs_dir, type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path), help='The directory you want your logs outputted to.')
 def cli(generate_wrapper, logs_directory, max_content_width=200):
     initialization.initialization()
-    
+
 
 
 command_help = 'Builds the uproject specified within the settings JSON'
@@ -380,7 +378,7 @@ def add_mod(
     print(pak_dir_structure)
     main_logic.add_mod(
         settings_json,
-        mod_name, 
+        mod_name,
         packing_type,
         pak_dir_structure,
         mod_name_dir_type,
@@ -1142,7 +1140,7 @@ command_help = 'Unzip'
 )
 def unzip(output_directory, zip):
     file_io.unzip_zip(zip_path=zip, output_location=output_directory)
-    
+
 
 command_help = 'Move a file or directory to a new location.'
 @cli.command(name='move', help=command_help, short_help=command_help)
@@ -1165,7 +1163,7 @@ command_help = 'Move a file or directory to a new location.'
 )
 def move(input_path, output_path, overwrite):
     file_io.move(input_path, output_path, overwrite)
-    
+
 
 command_help = 'Copy a file or directory to a new location.'
 @cli.command(name='copy', help=command_help, short_help=command_help)
@@ -1188,7 +1186,7 @@ command_help = 'Copy a file or directory to a new location.'
 )
 def copy(input_path, output_path, overwrite):
     file_io.copy(input_path, output_path, overwrite)
-    
+
 
 command_help = "Symlink a file or directory to a new location."
 @cli.command(name="symlink", help=command_help, short_help=command_help)
@@ -1211,7 +1209,7 @@ command_help = "Symlink a file or directory to a new location."
 )
 def symlink(input_path, output_path, overwrite):
     file_io.symlink(input_path, output_path, overwrite)
-    
+
 
 command_help = "Delete one or more files and/or directories."
 @cli.command(name="delete", help=command_help, short_help=command_help)

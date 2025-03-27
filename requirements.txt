@@ -6,6 +6,7 @@
 # - mkdocs-material
 # - mkdocstrings-python
 # - psutil
+# - py-project-dev-tools@ git+https://github.com/Mythical-Github/py_project_dev_tools
 # - pygetwindow
 # - pyinstaller
 # - pyjson5
@@ -116,6 +117,8 @@ platformdirs==4.3.6
     #   textual
 psutil==7.0.0
     # via hatch.envs.default
+py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@06ddf25a197487c5dcca8de6848cb0d6b1d71668
+    # via hatch.envs.default
 pygetwindow==0.0.9
     # via hatch.envs.default
 pygments==2.19.1
@@ -162,9 +165,11 @@ requests==2.32.3
     # via
     #   hatch.envs.default
     #   mkdocs-material
+    #   py-project-dev-tools
 rich==13.9.4
     # via
     #   hatch.envs.default
+    #   py-project-dev-tools
     #   textual
 screeninfo==0.8.1
     # via hatch.envs.default
