@@ -915,9 +915,8 @@
             "name": "mkdocs_serve",
             "type": "debugpy",
             "request": "launch",
-            "module": "unreal_auto_mod",
+            "module": "mkdocs",
             "args": [
-                "mkdocs",
                 "serve"
             ]
         },
@@ -925,9 +924,8 @@
             "name": "mkdocs_build",
             "type": "debugpy",
             "request": "launch",
-            "module": "unreal_auto_mod",
+            "module": "mkdocs",
             "args": [
-                "mkdocs",
                 "build"
             ]
         }
