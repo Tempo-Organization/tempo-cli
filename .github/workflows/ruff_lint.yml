@@ -1,4 +1,4 @@
-name: ruff-lint
+name: ruff_lint
 on:
   push:
     branches:
