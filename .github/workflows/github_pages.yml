@@ -1,4 +1,4 @@
-name: ci
+name: github_pages
 on:
   push:
     branches:
