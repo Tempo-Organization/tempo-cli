@@ -3,12 +3,8 @@
 #
 # - click
 # - dynaconf
-# - mkdocs-material
-# - mkdocstrings-python
 # - psutil
-# - py-project-dev-tools@ git+https://github.com/Mythical-Github/py_project_dev_tools
 # - pygetwindow
-# - pyinstaller
 # - pyjson5
 # - pywin32; sys_platform == "win32"
 # - pywinctl
@@ -19,12 +15,6 @@
 # - trogon@ git+https://github.com/Mythical-Github/trogon
 #
 
-altgraph==0.17.4
-    # via pyinstaller
-babel==2.17.0
-    # via mkdocs-material
-backrefs==5.8
-    # via mkdocs-material
 certifi==2025.1.31
     # via requests
 charset-normalizer==3.4.1
@@ -32,160 +22,63 @@ charset-normalizer==3.4.1
 click==8.1.8
     # via
     #   hatch.envs.default
-    #   mkdocs
     #   trogon
 colorama==0.4.6
-    # via
-    #   click
-    #   griffe
-    #   mkdocs
-    #   mkdocs-material
+    # via click
 dynaconf==3.2.10
     # via hatch.envs.default
-ghp-import==2.1.0
-    # via mkdocs
-griffe==1.6.3
-    # via mkdocstrings-python
 idna==3.10
     # via requests
-jinja2==3.1.6
-    # via
-    #   mkdocs
-    #   mkdocs-material
-    #   mkdocstrings
 linkify-it-py==2.0.3
     # via markdown-it-py
-markdown==3.7
-    # via
-    #   mkdocs
-    #   mkdocs-autorefs
-    #   mkdocs-material
-    #   mkdocstrings
-    #   pymdown-extensions
 markdown-it-py==3.0.0
     # via
     #   mdit-py-plugins
     #   rich
     #   textual
-markupsafe==3.0.2
-    # via
-    #   jinja2
-    #   mkdocs
-    #   mkdocs-autorefs
-    #   mkdocstrings
 mdit-py-plugins==0.4.2
     # via markdown-it-py
 mdurl==0.1.2
     # via markdown-it-py
-mergedeep==1.3.4
-    # via
-    #   mkdocs
-    #   mkdocs-get-deps
-mkdocs==1.6.1
-    # via
-    #   mkdocs-autorefs
-    #   mkdocs-material
-    #   mkdocstrings
-mkdocs-autorefs==1.4.1
-    # via
-    #   mkdocstrings
-    #   mkdocstrings-python
-mkdocs-get-deps==0.2.0
-    # via mkdocs
-mkdocs-material==9.6.9
-    # via hatch.envs.default
-mkdocs-material-extensions==1.3.1
-    # via mkdocs-material
-mkdocstrings==0.29.0
-    # via mkdocstrings-python
-mkdocstrings-python==1.16.8
-    # via hatch.envs.default
-packaging==24.2
-    # via
-    #   mkdocs
-    #   pyinstaller
-    #   pyinstaller-hooks-contrib
-paginate==0.5.7
-    # via mkdocs-material
-pathspec==0.12.1
-    # via mkdocs
-pefile==2023.2.7
-    # via pyinstaller
-platformdirs==4.3.6
-    # via
-    #   mkdocs-get-deps
-    #   textual
+platformdirs==4.3.7
+    # via textual
 psutil==7.0.0
-    # via hatch.envs.default
-py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@06ddf25a197487c5dcca8de6848cb0d6b1d71668
     # via hatch.envs.default
 pygetwindow==0.0.9
     # via hatch.envs.default
 pygments==2.19.1
-    # via
-    #   mkdocs-material
-    #   rich
-pyinstaller==6.12.0
-    # via hatch.envs.default
-pyinstaller-hooks-contrib==2025.2
-    # via pyinstaller
+    # via rich
 pyjson5==1.6.8
     # via hatch.envs.default
-pymdown-extensions==10.14.3
-    # via
-    #   mkdocs-material
-    #   mkdocstrings
 pymonctl==0.92
     # via pywinctl
 pyrect==0.2.0
     # via pygetwindow
-python-dateutil==2.9.0.post0
-    # via ghp-import
-pywin32==309
+pywin32==310
     # via
     #   hatch.envs.default
     #   pymonctl
     #   pywinbox
     #   pywinctl
-pywin32-ctypes==0.2.3
-    # via pyinstaller
 pywinbox==0.7
     # via pywinctl
 pywinctl==0.4.1
     # via hatch.envs.default
-pyyaml==6.0.2
-    # via
-    #   mkdocs
-    #   mkdocs-get-deps
-    #   pymdown-extensions
-    #   pyyaml-env-tag
-pyyaml-env-tag==0.1
-    # via mkdocs
 requests==2.32.3
-    # via
-    #   hatch.envs.default
-    #   mkdocs-material
-    #   py-project-dev-tools
+    # via hatch.envs.default
 rich==13.9.4
     # via
     #   hatch.envs.default
-    #   py-project-dev-tools
     #   textual
 screeninfo==0.8.1
     # via hatch.envs.default
-setuptools==78.1.0
-    # via
-    #   pyinstaller
-    #   pyinstaller-hooks-contrib
-six==1.17.0
-    # via python-dateutil
-textual==2.1.2
+textual==3.0.0
     # via trogon
 tomlkit==0.13.2
     # via hatch.envs.default
 trogon @ git+https://github.com/Mythical-Github/trogon@56aebfa9feb5730006c30aa2aceda691d74ada4b
     # via hatch.envs.default
-typing-extensions==4.12.2
+typing-extensions==4.13.0
     # via
     #   pymonctl
     #   pywinbox
@@ -195,5 +88,3 @@ uc-micro-py==1.0.3
     # via linkify-it-py
 urllib3==2.3.0
     # via requests
-watchdog==6.0.0
-    # via mkdocs
