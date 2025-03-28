@@ -59,7 +59,7 @@ extra_css:
   - stylesheets/extra.css
 
 repo_url: https://github.com/Mythical-Github/unreal_auto_mod
-repo_name: unreal_auto_mod
+repo_name: UnrealAutoMod
 
 extra:
   social:
