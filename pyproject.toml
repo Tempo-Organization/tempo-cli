@@ -33,11 +33,7 @@ dependencies = [
   "tomlkit",
   "pywinctl",
   "dynaconf",
-  "pywin32; sys_platform == 'win32'",
-  "pyinstaller",
-  "mkdocs-material",
-  "mkdocstrings-python",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+  "pywin32; sys_platform == 'win32'"
 ]
 
 [tool.hatch.envs.dev]
