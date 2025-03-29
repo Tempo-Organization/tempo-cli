@@ -24,7 +24,8 @@ def make_response_file_iostore(mod_name: str) -> str:
             for file_name in files:
                 absolute_path = os.path.join(root, file_name)
                 if not os.path.isfile(absolute_path):
-                    raise FileNotFoundError(f'The following file could not be found: "{absolute_path}"')
+                    file_not_found_error = f'The following file could not be found "{absolute_path}"'
+                    raise FileNotFoundError(file_not_found_error)
 
                 base_path = os.path.splitext(absolute_path)[0]
                 if base_path in processed_base_paths:
@@ -46,7 +47,8 @@ def make_response_file_non_iostore(mod_name: str) -> str:
             for file_name in files:
                 absolute_path = os.path.join(root, file_name)
                 if not os.path.isfile:
-                    raise FileNotFoundError(f'The following file could not be found "{absolute_path}"')
+                    file_not_found_error = f'The following file could not be found "{absolute_path}"'
+                    raise FileNotFoundError(file_not_found_error)
                 relative_path = os.path.relpath(root, dir_to_pack).replace("\\", "/")
                 mount_point = f'../../../{relative_path}/'
                 file.write(f'"{os.path.normpath(absolute_path)}" "{mount_point}"\n')
@@ -57,8 +59,7 @@ def get_iostore_commands_file_contents(mod_name: str, final_pak_file: str) -> st
     chunk_utoc = os.path.normpath(f'{os.path.dirname(final_pak_file)}/{mod_name}.utoc')
     container_name = mod_name
     response_file = make_response_file_iostore(mod_name)
-    commands_file_content = f'''-Output="{chunk_utoc}" -ContainerName={container_name} -ResponseFile="{response_file}"'''
-    return commands_file_content
+    return f'''-Output="{chunk_utoc}" -ContainerName={container_name} -ResponseFile="{response_file}"'''
 
 
 def make_iostore_unreal_pak_mod_checks(
@@ -73,9 +74,10 @@ def make_iostore_unreal_pak_mod_checks(
     file_io.check_file_exists(commands_txt_path)
 
 
-def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool):
+# def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool):
+def make_ue4_iostore_mod(mod_name: str, final_pak_file: str):
     unreal_engine_dir = unreal_auto_mod.settings.get_unreal_engine_dir()
-    unreal_pak = unreal_engine.get_unreal_pak_exe_path(unreal_engine_dir)
+    # unreal_pak = unreal_engine.get_unreal_pak_exe_path(unreal_engine_dir)
     exe = unreal_engine.get_editor_cmd_path(unreal_engine_dir)
     ue_win_dir_str = unreal_engine.get_win_dir_str(unreal_engine_dir)
     uproject_name = os.path.splitext(os.path.basename(unreal_auto_mod.settings.get_uproject_file()))[0]
@@ -94,7 +96,7 @@ def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool)
 
     platform_string = unreal_engine.get_win_dir_str(unreal_auto_mod.settings.get_unreal_engine_dir())
     iostore_txt_location = f'{unreal_auto_mod.settings.get_working_dir()}/iostore_packaging/{mod_name}_iostore.txt'
-    default_engine_patch_padding_alignment = 2048
+    # default_engine_patch_padding_alignment = 2048
     args = [
         # unreal_pak,
         f'"{unreal_auto_mod.settings.get_uproject_file()}"',
@@ -117,9 +119,11 @@ def make_ue4_iostore_mod(mod_name: str, final_pak_file: str, use_symlinks: bool)
     unreal_auto_mod.app_runner.run_app(exe_path=exe, args=args)
 
 
-def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool):
+# def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool):
+
+def make_ue5_iostore_mods(mod_name: str, final_pak_file: str):
     unreal_engine_dir = unreal_auto_mod.settings.get_unreal_engine_dir()
-    unreal_pak = unreal_engine.get_unreal_pak_exe_path(unreal_engine_dir)
+    # unreal_pak = unreal_engine.get_unreal_pak_exe_path(unreal_engine_dir)
     exe = unreal_engine.get_editor_cmd_path(unreal_engine_dir)
     ue_win_dir_str = unreal_engine.get_win_dir_str(unreal_engine_dir)
     uproject_name = os.path.splitext(os.path.basename(unreal_auto_mod.settings.get_uproject_file()))[0]
@@ -141,7 +145,7 @@ def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool
 
     platform_string = unreal_engine.get_win_dir_str(unreal_auto_mod.settings.get_unreal_engine_dir())
     iostore_txt_location = f'{unreal_auto_mod.settings.get_working_dir()}/iostore_packaging/{mod_name}_iostore.txt'
-    default_engine_patch_padding_alignment = 2048
+    # default_engine_patch_padding_alignment = 2048
     args = [
         # f'"{unreal_pak}',
         f'"{unreal_auto_mod.settings.get_uproject_file()}"',
@@ -166,7 +170,7 @@ def make_ue5_iostore_mods(mod_name: str, final_pak_file: str, use_symlinks: bool
     unreal_auto_mod.app_runner.run_app(exe_path=exe, args=args)
 
 
-def make_iostore_unreal_pak_mod(mod_name: str, final_pak_file: str, use_symlinks: bool):
+def make_iostore_unreal_pak_mod(mod_name: str, final_pak_file: str, *, use_symlinks: bool):
         if unreal_engine.is_game_ue4(unreal_auto_mod.settings.get_unreal_engine_dir()):
             make_ue4_iostore_mod(mod_name, final_pak_file, use_symlinks)
         else:
@@ -181,6 +185,7 @@ def make_non_iostore_unreal_pak_mod(
         mod_name: str,
         compression_str: str,
         final_pak_file: str,
+        *,
         use_symlinks: bool
     ):
     command = f'{exe_path} "{intermediate_pak_file}" -Create="{make_response_file_non_iostore(mod_name)}"'
@@ -191,14 +196,14 @@ def make_non_iostore_unreal_pak_mod(
         os.unlink(final_pak_file)
     if os.path.isfile(final_pak_file):
         os.remove(final_pak_file)
-    packing.install_mod_sig(mod_name, use_symlinks)
+    packing.install_mod_sig(mod_name, use_symlinks = use_symlinks)
     if use_symlinks == True:
         os.symlink(intermediate_pak_file, final_pak_file)
     else:
         shutil.copyfile(intermediate_pak_file, final_pak_file)
 
 
-def install_unreal_pak_mod(mod_name: str, compression_type: CompressionType, use_symlinks: bool):
+def install_unreal_pak_mod(mod_name: str, compression_type: CompressionType, *, use_symlinks: bool):
     move_files_for_packing(mod_name)
     compression_str = CompressionType(compression_type).value
     output_pak_dir = f'{unreal_auto_mod.settings.get_working_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
@@ -210,7 +215,7 @@ def install_unreal_pak_mod(mod_name: str, compression_type: CompressionType, use
     is_game_iostore = unreal_engine.get_is_game_iostore(unreal_auto_mod.settings.get_uproject_file(), utilities.custom_get_game_dir())
 
     if is_game_iostore:
-        make_iostore_unreal_pak_mod(mod_name, final_pak_file, use_symlinks)
+        make_iostore_unreal_pak_mod(mod_name, final_pak_file, use_symlinks=use_symlinks)
     else:
         make_non_iostore_unreal_pak_mod(
             exe_path,
@@ -218,7 +223,7 @@ def install_unreal_pak_mod(mod_name: str, compression_type: CompressionType, use
             mod_name,
             compression_str,
             final_pak_file,
-            use_symlinks
+            use_symlinks = use_symlinks
         )
 
 

@@ -24,8 +24,6 @@ def get_latest_stove_version():
         logger.log_message(f"Request error occurred while accessing {api_url}: {req_err}")
     except ValueError as val_err:
         logger.log_message(f"JSON parsing error: {val_err}")  # Catches invalid JSON
-    except Exception as err:
-        logger.log_message(f"An unexpected error occurred: {err}")
 
     return None  # Return None in case of failure
 

@@ -8,7 +8,7 @@ from unreal_auto_mod.data_structures import ExecutionMode
 def run_app(
         exe_path: str,
         exec_mode: ExecutionMode = ExecutionMode.SYNC,
-        args: list = [],
+        args: list[str] | None = None,
         working_dir: str = None
     ):
 

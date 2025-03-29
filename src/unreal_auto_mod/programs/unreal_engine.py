@@ -51,15 +51,13 @@ def get_game_pak_folder_archives(uproject_file_path: str, game_dir: str) -> list
             'utoc',
             'ucas'
         ]
-    else:
-        return ['pak']
+    return ['pak']
 
 
 def get_win_dir_type(unreal_engine_dir: str) -> PackagingDirType:
     if is_game_ue5(unreal_engine_dir):
         return PackagingDirType.WINDOWS
-    else:
-        return PackagingDirType.WINDOWS_NO_EDITOR
+    return PackagingDirType.WINDOWS_NO_EDITOR
 
 
 def get_editor_cmd_path(unreal_engine_dir: str) -> str:
@@ -146,10 +144,9 @@ def get_new_uproject_json_contents(
         category: str = 'Modding',
         description: str = 'Uproject for modding, generated with unreal_auto_mod.'
         ) -> str:
-    uproject_content = f'''{{
+    return f'''{{
   "FileVersion": "{file_version}",
   "EngineAssociation": "{engine_major_association}.{engine_minor_association}",
   "Category": "{category}",
   "Description": "{description}"
 }}'''
-    return uproject_content

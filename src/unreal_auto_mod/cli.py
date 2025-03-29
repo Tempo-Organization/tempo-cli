@@ -1,7 +1,9 @@
+import json
 import os
 import pathlib
 
 import click
+import tomlkit
 from trogon import tui
 
 from unreal_auto_mod import (
@@ -10,6 +12,7 @@ from unreal_auto_mod import (
     data_structures,
     file_io,
     initialization,
+    logger,
     main_logic,
     process_management,
     settings,
@@ -104,7 +107,7 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 )
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
-def full_run_all(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks):
+def full_run(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks):
     main_logic.full_run(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks)
 
 
@@ -375,7 +378,6 @@ def add_mod(
         mod_name (str): The name of the mod to add.
         pak_dir_structure (str): Path to the directory structure for packing.
     """
-    print(pak_dir_structure)
     main_logic.add_mod(
         settings_json,
         mod_name,
@@ -475,7 +477,7 @@ def add_plugin_to_descriptor(descriptor_file, plugin_name, is_enabled):
         descriptor_file (str): Path to the descriptor file to add the plugin to.
         plugin_name (str): Name of the plugin to add.
     """
-    main_logic.add_plugin_to_descriptor(descriptor_file, plugin_name, is_enabled)
+    main_logic.add_plugin_to_descriptor(descriptor_file, plugin_name, is_enabled=is_enabled)
 
 
 command_help = 'Removes the module name entries in the provided descriptor file if they exist.'
@@ -723,7 +725,7 @@ def create_collection(
         collection_name=os.path.basename(collection_path),
         collections_directory=os.path.dirname(collection_path),
         file_version=file_version,
-        type=type_of_content,
+        collection_type=type_of_content,
         guid=unreal_collections.UnrealGuid.from_uid(guid),
         parent_guid=unreal_collections.UnrealGuid.from_uid(parent_guid),
         color=unreal_collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha),
@@ -896,11 +898,8 @@ def add_content_lines_to_collection(collection_path: str, content_path_lines: li
             content_lines.append(unreal_collections.UnrealAssetPath(content_path_line))
 
         for unreal_asset_path in unreal_asset_paths:
-            print()
             test_one = unreal_collections.UnrealAssetPath.static_from_asset_reference(unreal_asset_path)
-            print(f'test one: {test_one}')
             test_two = unreal_collections.UnrealAssetPath(test_one)
-            print(f'test two: {test_two}')
             content_lines.append(test_two)
     unreal_collections.add_content_lines_to_collection(collection=collection, content_lines=content_lines)
 
@@ -1185,7 +1184,7 @@ command_help = 'Copy a file or directory to a new location.'
     help="Overwrite existing files if they already exist."
 )
 def copy(input_path, output_path, overwrite):
-    file_io.copy(input_path, output_path, overwrite)
+    file_io.copy(input_path, output_path, overwrite=overwrite)
 
 
 command_help = "Symlink a file or directory to a new location."
@@ -1222,3 +1221,117 @@ command_help = "Delete one or more files and/or directories."
 )
 def delete(input_paths):
     file_io.delete(input_paths)
+
+
+command_help_add_json = "Add an entry to a JSON file."
+@cli.command(name="add_to_json", help=command_help_add_json, short_help=command_help_add_json)
+@click.option(
+    "--json_path",
+    help="Path to the JSON file.",
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+@click.option(
+    "--key",
+    help="Key to add to the JSON file.",
+    type=str,
+    required=True
+)
+@click.option(
+    "--value",
+    help="Value to associate with the key.",
+    type=str,
+    required=True
+)
+def add_to_json(json_path, key, value):
+    with json_path.open("r+") as f:
+        data = json.load(f)
+        data[key] = value
+        f.seek(0)
+        json.dump(data, f, indent=4)
+        f.truncate()
+    logger.log_message(f"Added {key}: {value} to {json_path}.")
+
+
+command_help_remove_json = "Remove an entry from a JSON file."
+@cli.command(name="remove_from_json", help=command_help_remove_json, short_help=command_help_remove_json)
+@click.option(
+    "--json_path",
+    help="Path to the JSON file.",
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+@click.option(
+    "--key",
+    help="Key to remove from the JSON file.",
+    type=str,
+    required=True
+)
+def remove_from_json(json_path, key):
+    with json_path.open("r+") as f:
+        data = json.load(f)
+        if key in data:
+            del data[key]
+            f.seek(0)
+            json.dump(data, f, indent=4)
+            f.truncate()
+            logger.log_message(f"Removed {key} from {json_path}.")
+        else:
+            logger.log_message(f"Key {key} not found in {json_path}.")
+
+
+command_help_add_toml = "Add an entry to a TOML file."
+@cli.command(name="add_to_toml", help=command_help_add_toml, short_help=command_help_add_toml)
+@click.option(
+    "--toml_path",
+    help="Path to the TOML file.",
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+@click.option(
+    "--key",
+    help="Key to add to the TOML file.",
+    type=str,
+    required=True
+)
+@click.option(
+    "--value",
+    help="Value to associate with the key.",
+    type=str,
+    required=True
+)
+def add_to_toml(toml_path, key, value):
+    with toml_path.open("r+") as f:
+        data = tomlkit.load(f)
+        data[key] = value
+        f.seek(0)
+        f.write(tomlkit.dumps(data))
+        f.truncate()
+    logger.log_message(f"Added {key}: {value} to {toml_path}.")
+
+
+command_help_remove_toml = "Remove an entry from a TOML file."
+@cli.command(name="remove_from_toml", help=command_help_remove_toml, short_help=command_help_remove_toml)
+@click.option(
+    "--toml_path",
+    help="Path to the TOML file.",
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    required=True
+)
+@click.option(
+    "--key",
+    help="Key to remove from the TOML file.",
+    type=str,
+    required=True
+)
+def remove_from_toml(toml_path, key):
+    with toml_path.open("r+") as f:
+        data = tomlkit.load(f)
+        if key in data:
+            del data[key]
+            f.seek(0)
+            f.write(tomlkit.dumps(data))
+            f.truncate()
+            logger.log_message(f"Removed {key} from {toml_path}.")
+        else:
+            logger.log_message(f"Key {key} not found in {toml_path}.")

@@ -167,7 +167,7 @@ class LoadingPhases(Enum):
 class UnrealIostoreFileExtensions(Enum):
     """
     Enum for the file extensions for files that should end up in iostore utoc and ucas files
-    If creating an iostore mod all files with extensions not within this list's corresponding string values 
+    If creating an iostore mod all files with extensions not within this list's corresponding string values
     will be assumed to be pak assets
     """
     UMAP = 'umap'

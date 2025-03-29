@@ -17,5 +17,3 @@ def get_steam_exe_location():
         return os.path.join(install_path, 'steam.exe')
     except FileNotFoundError:
         return "Steam: installation not found in the registry."
-    except Exception as e:
-        return f"Error: An error occurred: {e}"

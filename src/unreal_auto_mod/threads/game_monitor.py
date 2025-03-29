@@ -43,19 +43,21 @@ def found_game_window():
 
 
 def game_monitor_thread_logic():
-    if not game_monitor_thread_information.found_process:
-        if process_management.is_process_running(process_management.get_game_process_name()):
-            logger.log_message('Process: Found Game Process')
-            game_monitor_thread_information.found_process = True
+    if (not game_monitor_thread_information.found_process and
+        process_management.is_process_running(process_management.get_game_process_name())):
+        logger.log_message('Process: Found Game Process')
+        game_monitor_thread_information.found_process = True
+
     elif not game_monitor_thread_information.found_window:
         time.sleep(4)
         if get_game_window():
             found_game_window()
-    elif not game_monitor_thread_information.window_closed:
-        if not get_game_window():
-            logger.log_message('Window: Game Window Closed')
-            stop_game_monitor_thread()
-            game_monitor_thread_information.window_closed = True
+
+    elif not game_monitor_thread_information.window_closed and not get_game_window():
+        logger.log_message('Window: Game Window Closed')
+        stop_game_monitor_thread()
+        game_monitor_thread_information.window_closed = True
+
 
 
 def start_game_monitor_thread():

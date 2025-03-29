@@ -44,10 +44,7 @@ def get_mod_packing_type(mod_name: str) -> PackingType:
 
 
 def get_is_mod_name_in_use(mod_name: str) -> bool:
-    for mod_info in settings.get_mods_info_list_from_json():
-        if mod_name == mod_info['mod_name']:
-            return True
-    return False
+    return any(mod_name == mod_info['mod_name'] for mod_info in settings.get_mods_info_list_from_json())
 
 
 def get_mod_pak_entry(mod_name: str) -> dict:
@@ -58,10 +55,7 @@ def get_mod_pak_entry(mod_name: str) -> dict:
 
 
 def get_is_mod_installed(mod_name: str) -> bool:
-    for info in settings.get_mods_info_list_from_json():
-        if info['mod_name'] == mod_name:
-            return True
-    return False
+    return any(info['mod_name'] == mod_name for info in settings.get_mods_info_list_from_json())
 
 
 def get_engine_pak_command() -> str:
@@ -124,7 +118,7 @@ def handle_uninstall_logic(packing_type: PackingType):
         start_hook_state_type=HookStateType.PRE_PAK_DIR_SETUP,
         end_hook_state_type=HookStateType.POST_PAK_DIR_SETUP
     )
-def handle_install_logic(packing_type: PackingType, use_symlinks: bool):
+def handle_install_logic(packing_type: PackingType, *, use_symlinks: bool):
     for mod_info in settings.get_mods_info_list_from_json():
         if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
             if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
@@ -151,7 +145,7 @@ def mods_uninstall():
     )
 def mods_install(use_symlinks: bool):
     for install_queue_type in queue_information.install_queue_types:
-        handle_install_logic(install_queue_type, use_symlinks)
+        handle_install_logic(install_queue_type, use_symlinks=use_symlinks)
 
 
 def generate_mods(use_symlinks: bool):
@@ -202,7 +196,7 @@ def uninstall_mod(packing_type: PackingType, mod_name: str):
         uninstall_pak_mod(mod_name)
 
 
-def install_mod_sig(mod_name: str, use_symlinks: bool):
+def install_mod_sig(mod_name: str, *, use_symlinks: bool):
     game_paks_dir = utilities.custom_get_game_paks_dir()
     pak_dir_str = utilities.get_pak_dir_structure(mod_name)
     sig_method_type = data_structures.get_enum_from_val(data_structures.SigMethodType, utilities.get_mods_info_dict_from_mod_name(mod_name).get('sig_method_type', 'none'))
@@ -238,7 +232,7 @@ def install_mod_sig(mod_name: str, use_symlinks: bool):
         raise RuntimeError
 
 
-def install_loose_mod(mod_name: str, use_symlinks: bool):
+def install_loose_mod(mod_name: str, *, use_symlinks: bool):
     mod_files = get_mod_paths_for_loose_mods(mod_name)
     dict_keys = mod_files.keys()
     for key in dict_keys:
@@ -251,13 +245,13 @@ def install_loose_mod(mod_name: str, use_symlinks: bool):
             if os.path.isfile(after_file):
                 os.remove(after_file)
         if os.path.isfile(before_file):
-            if use_symlinks == True:
+            if use_symlinks:
                 os.symlink(before_file, after_file)
             else:
                 shutil.copyfile(before_file, after_file)
 
 
-def install_engine_mod(mod_name: str, use_symlinks: bool):
+def install_engine_mod(mod_name: str, *, use_symlinks: bool):
     mod_files = []
     pak_chunk_num = utilities.get_mods_info_dict_from_mod_name(mod_name)['pak_chunk_num']
     uproject_file = settings.get_uproject_file()
@@ -274,14 +268,14 @@ def install_engine_mod(mod_name: str, use_symlinks: bool):
             if not os.path.isfile(before_file):
                 error_message = 'Error: The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.'
                 logger.log_message(error_message)
-                raise FileNotFoundError('The engine did not generate a pak and/or ucas/utoc for your specified chunk id, this indicates an engine, project, or settings.json configuration issue.')
+                raise FileNotFoundError(error_message)
             after_file = f'{dir_engine_mod}/{mod_name}.{suffix}'
             if os.path.islink(after_file):
                 os.unlink(after_file)
             if os.path.isfile(after_file):
                 os.remove(after_file)
-            install_mod_sig(mod_name, use_symlinks)
-            if use_symlinks == True:
+            install_mod_sig(mod_name, use_symlinks = use_symlinks)
+            if use_symlinks:
                 os.symlink(before_file, after_file)
             else:
                 shutil.copyfile(before_file, after_file)
@@ -314,14 +308,14 @@ def make_pak_repak(mod_name: str, use_symlinks: bool):
     if os.path.isfile(final_pak_location):
         os.remove(final_pak_location)
     app_runner.run_app(command)
-    install_mod_sig(mod_name, use_symlinks)
-    if use_symlinks == True:
+    install_mod_sig(mod_name, use_symlinks = use_symlinks)
+    if use_symlinks:
         os.symlink(intermediate_pak_file, final_pak_location)
     else:
         shutil.copyfile(intermediate_pak_file, final_pak_location)
 
 
-def install_repak_mod(mod_name: str, use_symlinks: bool):
+def install_repak_mod(mod_name: str, *, use_symlinks: bool):
     mod_files_dict = get_mod_file_paths_for_manually_made_pak_mods(mod_name)
     mod_files_dict = utilities.filter_file_paths(mod_files_dict)
 
@@ -347,20 +341,21 @@ def install_mod(
         use_symlinks: bool
     ):
     if packing_type == PackingType.LOOSE:
-        install_loose_mod(mod_name, use_symlinks)
+        install_loose_mod(mod_name, use_symlinks = use_symlinks)
     elif packing_type == PackingType.ENGINE:
-        install_engine_mod(mod_name, use_symlinks)
+        install_engine_mod(mod_name, use_symlinks = use_symlinks)
     elif packing_type == PackingType.REPAK:
-        install_repak_mod(mod_name, use_symlinks)
+        install_repak_mod(mod_name, use_symlinks = use_symlinks)
     elif packing_type == PackingType.UNREAL_PAK:
-        unreal_pak.install_unreal_pak_mod(mod_name, compression_type, use_symlinks)
+        unreal_pak.install_unreal_pak_mod(mod_name, compression_type, use_symlinks=use_symlinks)
     else:
         logger.log_message(f'Error: You have provided an invalid packing_type for your "{mod_name}" mod entry in your settings json')
         logger.log_message(f'Error: You provided "{utilities.get_mods_info_dict_from_mod_name(mod_name).get('packing_type', 'none')}".')
         logger.log_message('Error: Valid packing type options are:')
         for entry in PackingType:
             logger.log_message(f'Error: "{entry.value}"')
-        raise RuntimeError('Invalid packing type, or no packing type, provided for mod entry')
+        invalid_packing_type_error = 'Invalid packing type, or no packing type, provided for mod entry'
+        raise RuntimeError(invalid_packing_type_error)
 
 
 def package_project_iostore():

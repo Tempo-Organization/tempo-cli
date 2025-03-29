@@ -745,20 +745,24 @@ def generate_uproject(
     if ignore_safety_checks == False:
     # Validate file version
         if file_version not in range(1, 4):
-            raise ValueError(f'Invalid file version: {file_version}. Valid values are 1-3.')
+            invalid_file_version_error = f'Invalid file version: {file_version}. Valid values are 1-3.'
+            raise ValueError(invalid_file_version_error)
 
         # Validate EngineMajorAssociation
         if engine_major_association not in range(4, 6):  # Only 4-5 is valid
-            raise ValueError(f'Invalid EngineMajorAssociation: {engine_major_association}. Valid value is 4-5.')
+            invalid_major_engine_version_error = f'Invalid EngineMajorAssociation: {engine_major_association}. Valid value is 4-5.'
+            raise ValueError(invalid_major_engine_version_error)
 
         # Validate EngineMinorAssociation
         if engine_minor_association not in range(28):  # Valid range is 0-27
-            raise ValueError(f'Invalid EngineMinorAssociation: {engine_minor_association}. Valid range is 0-27.')
+            invalid_minor_engine_version_error = f'Invalid EngineMinorAssociation: {engine_minor_association}. Valid range is 0-27.'
+            raise ValueError(invalid_minor_engine_version_error)
 
         # Ensure the directory is empty
         project_dir = os.path.dirname(os.path.abspath(project_file))
         if os.path.exists(project_dir) and os.listdir(project_dir):
-            raise FileExistsError(f'The directory "{project_dir}" is not empty. Cannot generate project here.')
+            cannot_generate_in_non_empty_dir_error = f'The directory "{project_dir}" is not empty. Cannot generate project here.'
+            raise FileExistsError(cannot_generate_in_non_empty_dir_error)
 
     # Generate the JSON content for the .uproject file
     json_content = unreal_engine.get_new_uproject_json_contents(
@@ -770,7 +774,8 @@ def generate_uproject(
         with open(project_file, 'w') as f:
             f.write(json_content)
     except OSError as e:
-        raise OSError(f"Failed to write to file '{project_file}': {e}")
+        failed_to_write_project_file_error = f"Failed to write to file '{project_file}': {e}"
+        raise OSError(failed_to_write_project_file_error)
 
     return f"Successfully generated '{project_file}'."
 
@@ -806,7 +811,7 @@ def add_module_to_descriptor(descriptor_file: str, module_name: str, host_type: 
         raise OSError(f"Failed to write to '{descriptor_file}': {e}")
 
 
-def add_plugin_to_descriptor(descriptor_file: str, plugin_name: str, is_enabled: bool):
+def add_plugin_to_descriptor(descriptor_file: str, plugin_name: str, *, is_enabled: bool):
     if not os.path.isfile(descriptor_file):
         raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
 
@@ -833,12 +838,14 @@ def add_plugin_to_descriptor(descriptor_file: str, plugin_name: str, is_enabled:
         with open(descriptor_file, 'w') as file:
             file.write(updated_data)
     except OSError as e:
-        raise OSError(f"Failed to write to '{descriptor_file}': {e}")
+        failed_to_write_to_descriptor_error = f"Failed to write to '{descriptor_file}': {e}"
+        raise OSError(failed_to_write_to_descriptor_error)
 
 
 def remove_modules_from_descriptor(descriptor_file: str, module_names: list):
     if not os.path.isfile(descriptor_file):
-        raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
+        descriptor_not_found_error = f"The file '{descriptor_file}' does not exist."
+        raise FileNotFoundError(descriptor_not_found_error)
 
     with open(descriptor_file) as file:
         uproject_data = json.load(file)
@@ -857,7 +864,8 @@ def remove_modules_from_descriptor(descriptor_file: str, module_names: list):
 
 def remove_plugins_from_descriptor(descriptor_file: str, plugin_names: list):
     if not os.path.isfile(descriptor_file):
-        raise FileNotFoundError(f"The file '{descriptor_file}' does not exist.")
+        descriptor_not_found_error = f"The file '{descriptor_file}' does not exist."
+        raise FileNotFoundError(descriptor_not_found_error)
 
     with open(descriptor_file) as file:
         uproject_data = json.load(file)

@@ -940,6 +940,62 @@
                 "--input_paths",
                 "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
             ]
+        },
+        {
+            "name": "add_to_json",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "add_to_json",
+                "--json_path",
+                "${workspaceFolder}/assets/testing/test.json",
+                "--key",
+                "test_key",
+                "--value",
+                "test_value"
+            ]
+        },
+        {
+            "name": "remove_from_json",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "remove_from_json",
+                "--json_path",
+                "${workspaceFolder}/assets/testing/test.json",
+                "--key",
+                "test_key"
+            ]
+        },
+        {
+            "name": "add_to_toml",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "add_to_toml",
+                "--toml_path",
+                "${workspaceFolder}/assets/testing/test.toml",
+                "--key",
+                "test_key",
+                "--value",
+                "test_value"
+            ]
+        },
+        {
+            "name": "remove_from_toml",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "unreal_auto_mod",
+            "args": [
+                "remove_from_toml",
+                "--toml_path",
+                "${workspaceFolder}/assets/testing/test.toml",
+                "--key",
+                "test_key"
+            ]
         }
     ]
 }

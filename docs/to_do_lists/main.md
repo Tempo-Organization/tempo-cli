@@ -1,9 +1,5 @@
-* `cli command add to json`
-* `cli command remove from json`
 * `cli command add to ini`
 * `cli command remove from ini`
-* `cli command add to toml`
-* `cli command remove from toml`
 * `cli command add to text file`
 * `cli command remove from text file`
 * `cli command git stuff`
@@ -17,3 +13,7 @@
 * `cli command open uproject dir`
 * `cli command open provided dir`
 * `cli command open provided file in default opener`
+create empty text file
+add new line to text file
+remove from text file by start, end, contains, etc....
+create new json file

@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from unreal_auto_mod import file_io, logger, settings
+from unreal_auto_mod import file_io, settings
 from unreal_auto_mod.data_structures import CompressionType, get_enum_from_val
 from unreal_auto_mod.programs import unreal_engine
 
@@ -73,10 +73,7 @@ def get_mods_info_dict_from_mod_name(mod_name: str) -> dict:
 
 
 def is_mod_name_in_list(mod_name: str) -> bool:
-    for info in settings.get_mods_info_list_from_json():
-        if info['mod_name'] == mod_name:
-            return True
-    return False
+    return any(info['mod_name'] == mod_name for info in settings.get_mods_info_list_from_json())
 
 
 def get_mod_name_dir(mod_name: str) -> dir:
@@ -96,10 +93,7 @@ def get_persistant_mod_files(mod_name: str) -> list:
 def clean_working_dir():
     working_dir = settings.get_working_dir()
     if os.path.isdir(working_dir):
-        try:
-            shutil.rmtree(working_dir)
-        except Exception as e:
-            logger.log_message(f"Error: {e}")
+        shutil.rmtree(working_dir)
 
 
 def filter_file_paths(paths_dict: dict) -> dict:

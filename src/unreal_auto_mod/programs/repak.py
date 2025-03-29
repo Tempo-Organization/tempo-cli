@@ -25,8 +25,7 @@ def get_repak_path_override() -> str:
 def get_repak_package_path():
     if get_is_using_repak_path_override():
         return get_repak_path_override()
-    else:
-        return os.path.join(os.path.expanduser('~'), '.cargo', 'bin', 'repak.exe')
+    return os.path.join(os.path.expanduser('~'), '.cargo', 'bin', 'repak.exe')
 
 
 def download_and_install_latest_version(repository='trumank/repak', install_path=None):
@@ -43,7 +42,8 @@ def download_and_install_latest_version(repository='trumank/repak', install_path
         asset = next((asset for asset in release_data['assets'] if asset['name'] == 'repak_cli-installer.ps1'), None)
 
         if asset is None:
-            raise RuntimeError('Asset "repak_cli-installer.ps1" not found in the latest release.')
+            installer_not_found_error = 'Asset "repak_cli-installer.ps1" not found in the latest release.'
+            raise RuntimeError(installer_not_found_error)
 
         asset_url = asset['browser_download_url']
         script_path = os.path.join(os.environ['TEMP'], 'repak_cli-installer.ps1')

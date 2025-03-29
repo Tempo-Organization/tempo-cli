@@ -44,8 +44,6 @@ def download_file(url: str, download_path: str):
         logger.log_message(f"Request error occurred while downloading {url}: {req_err}")
     except OSError as io_err:
         logger.log_message(f"File I/O error occurred while saving to {download_path}: {io_err}")
-    except Exception as err:
-        logger.log_message(f"An unexpected error occurred: {err}")
 
 
 def open_dir_in_file_browser(input_directory: str):
@@ -67,22 +65,22 @@ def open_website(input_url: str):
 def check_directory_exists(dir_path: str) -> bool:
     if os.path.isdir(dir_path):
         return True
-    else:
-        raise NotADirectoryError(f'Check: "{dir_path}" directory not found.')
+    directory_not_found_error = f'Check: "{dir_path}" directory not found.'
+    raise NotADirectoryError(directory_not_found_error)
 
 
 def check_path_exists(path: str) -> bool:
     if os.path.exists(path):
         return True
-    else:
-        raise FileNotFoundError(f'Check: "{path}" path is not a directory or file.')
+    path_not_found_error = f'Check: "{path}" path is not a directory or file.'
+    raise FileNotFoundError(path_not_found_error)
 
 
 def check_file_exists(file_path: str) -> bool:
     if os.path.isfile(file_path):
         return True
-    else:
-        raise FileNotFoundError(f'Check: "{file_path}" file not found.')
+    file_not_found_error = f'Check: "{file_path}" file not found.'
+    raise FileNotFoundError(file_not_found_error)
 
 
 def get_file_hash(file_path: str) -> str:
@@ -96,8 +94,7 @@ def get_file_hash(file_path: str) -> str:
 def get_do_files_have_same_hash(file_path_one: str, file_path_two: str) -> bool:
     if os.path.exists(file_path_one) and os.path.exists(file_path_two):
         return get_file_hash(file_path_one) == get_file_hash(file_path_two)
-    else:
-        return False
+    return False
 
 
 def get_files_in_tree(tree_path: str) -> list:
@@ -236,7 +233,7 @@ def move(input_path, output_path, overwrite):
     logger.log_message(f"Successfully moved {input_path} to {output_path}")
 
 
-def copy(input_path: Path, output_path: Path, overwrite: bool):
+def copy(input_path: Path, output_path: Path, *, overwrite: bool):
     if input_path == output_path:
         logger.log_message("Error: Input and output paths must be different.")
         raise RuntimeError

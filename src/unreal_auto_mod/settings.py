@@ -1,21 +1,21 @@
 import os
 import pathlib
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any
 
 from dynaconf import Dynaconf
 
-from unreal_auto_mod import configs, file_io, logger, process_management, settings, window_management
+from unreal_auto_mod import configs, file_io, logger, process_management, window_management
 from unreal_auto_mod.programs import unreal_engine
 
 
 @dataclass
 class SettingsInformation:
-    settings: Dict[str, Any]
+    settings: dict[str, Any]
     init_settings_done: bool
     settings_json_dir: str
     program_dir: str
-    mod_names: List[str]
+    mod_names: list[str]
     settings_json: str
 
 settings_information = SettingsInformation(
@@ -57,7 +57,7 @@ def get_unreal_engine_dir() -> str:
 
 def is_unreal_pak_packing_enum_in_use():
     is_in_use = False
-    for entry in settings.get_mods_info_list_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "unreal_pak":
             is_in_use = True
     return is_in_use
@@ -65,15 +65,14 @@ def is_unreal_pak_packing_enum_in_use():
 
 def is_engine_packing_enum_in_use():
     is_in_use = False
-    for entry in settings.get_mods_info_list_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "engine":
             is_in_use = True
     return is_in_use
 
 
 def get_game_exe_path() -> str:
-    game_exe_path = settings_information.settings['game_info']['game_exe_path']
-    return game_exe_path
+    return settings_information.settings['game_info']['game_exe_path']
 
 
 def get_git_info_repo_path() -> str:
@@ -205,8 +204,7 @@ def custom_get_unreal_engine_version(engine_path: str) -> str:
         unreal_engine_major_version = settings_information.settings['engine_info']['unreal_engine_major_version']
         unreal_engine_minor_version = settings_information.settings['engine_info']['unreal_engine_minor_version']
         return f'{unreal_engine_major_version}.{unreal_engine_minor_version}'
-    else:
-        return unreal_engine.get_unreal_engine_version(engine_path)
+    return unreal_engine.get_unreal_engine_version(engine_path)
 
 
 def get_working_dir() -> str:
@@ -220,7 +218,7 @@ def get_working_dir() -> str:
 
 def is_loose_packing_enum_in_use():
     is_in_use = False
-    for entry in settings.get_mods_info_list_from_json():
+    for entry in get_mods_info_list_from_json():
         if entry['packing_type'] == "loose":
             is_in_use = True
     return is_in_use
