@@ -41,8 +41,8 @@ def get_windows_by_title(window_title: str, *, use_substring_check: bool = False
 
 
 
-def get_window_by_title(window_title: str, *, use_substring_check: bool = False) -> pywinctl.Window:
-    windows = get_windows_by_title(window_title, use_substring_check)
+def get_window_by_title(*, window_title: str, use_substring_check: bool = False) -> pywinctl.Window:
+    windows = get_windows_by_title(window_title=window_title, use_substring_check=use_substring_check)
     if not windows:
         logger.log_message(f'Warning: No windows found with title "{window_title}"')
         return None

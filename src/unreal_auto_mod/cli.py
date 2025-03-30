@@ -42,7 +42,7 @@ command_help = 'Builds the uproject specified within the settings JSON'
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def build(settings_json, toggle_engine):
-    main_logic.build(settings_json, toggle_engine=toggle_engine)
+    main_logic.build(toggle_engine=toggle_engine)
 
 
 command_help = 'Cooks content for the uproject specified within the settings JSON'
@@ -50,7 +50,7 @@ command_help = 'Cooks content for the uproject specified within the settings JSO
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cook(settings_json, toggle_engine):
-    main_logic.cook(settings_json, toggle_engine=toggle_engine)
+    main_logic.cook(toggle_engine=toggle_engine)
 
 
 command_help = 'Package content for the uproject specified within the settings JSON'
@@ -59,7 +59,7 @@ command_help = 'Package content for the uproject specified within the settings J
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def package(settings_json, toggle_engine, use_symlinks):
-    main_logic.package(settings_json, toggle_engine=toggle_engine, use_symlinks=use_symlinks)
+    main_logic.package(toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
 command_help = 'Run tests for specific mods'
@@ -69,7 +69,7 @@ command_help = 'Run tests for specific mods'
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def test_mods(settings_json, mod_names, toggle_engine, use_symlinks):
-    main_logic.test_mods(settings_json, input_mod_names=mod_names, toggle_engine=toggle_engine, use_symlinks=use_symlinks)
+    main_logic.test_mods(input_mod_names=mod_names, toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
 command_help = 'Run tests for all mods within the specified settings JSON'
@@ -109,7 +109,6 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def full_run(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks):
     main_logic.full_run(
-        settings_json=settings_json,
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
         base_files_directory=base_files_directory,
@@ -144,7 +143,7 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def full_run_all(settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks):
-    main_logic.full_run_all(settings_json=settings_json, toggle_engine=toggle_engine, base_files_directory=base_files_directory, output_directory=output_directory, use_symlinks=use_symlinks)
+    main_logic.full_run_all(toggle_engine=toggle_engine, base_files_directory=base_files_directory, output_directory=output_directory, use_symlinks=use_symlinks)
 
 
 command_help = 'Generates mods for the specified mod names.'
@@ -153,7 +152,7 @@ command_help = 'Generates mods for the specified mod names.'
 @click.option('--use_symlinks', is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mods(settings_json, mod_names, use_symlinks):
-    main_logic.generate_mods(settings_json, input_mod_names=mod_names, use_symlinks=use_symlinks)
+    main_logic.generate_mods(input_mod_names=mod_names, use_symlinks=use_symlinks)
 
 
 command_help = 'Generates mods for all enabled mods within the specified settings JSON.'
@@ -161,7 +160,7 @@ command_help = 'Generates mods for all enabled mods within the specified setting
 @click.option('--use_symlinks', is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mods_all(settings_json, use_symlinks):
-    main_logic.generate_mods_all(settings_json, use_symlinks=use_symlinks)
+    main_logic.generate_mods_all(use_symlinks=use_symlinks)
 
 
 command_help = 'Generate one or more mod releases.'
@@ -188,7 +187,7 @@ command_help = 'Generate one or more mod releases.'
 )
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mod_releases(settings_json, mod_names, base_files_directory, output_directory):
-    main_logic.generate_mod_releases(settings_json, mod_names, base_files_directory, output_directory)
+    main_logic.generate_mod_releases(mod_names, base_files_directory, output_directory)
 
 
 command_help = 'Generate mod releases for all mods within the specified settings JSON.'
@@ -221,28 +220,28 @@ command_help = 'Generate mod releases for all mods within the specified settings
 )
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mod_releases_all(settings_json, base_files_directory, output_directory):
-    main_logic.generate_mod_releases_all(settings_json, base_files_directory, output_directory)
+    main_logic.generate_mod_releases_all(base_files_directory, output_directory)
 
 
 command_help = 'Cleans up the GitHub repository specified within the settings JSON.'
 @cli.command(name='cleanup_full', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_full(settings_json):
-    main_logic.cleanup_full(settings_json)
+    main_logic.cleanup_full()
 
 
 command_help = 'Cleans up the directories made from cooking of the GitHub repository specified within the settings JSON.'
 @cli.command(name='cleanup_cooked', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_cooked(settings_json):
-    main_logic.cleanup_cooked(settings_json)
+    main_logic.cleanup_cooked()
 
 
 command_help = 'Cleans up the directories made from building of the GitHub repository specified within the settings JSON.'
 @cli.command(name='cleanup_build', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_build(settings_json):
-    main_logic.cleanup_build(settings_json)
+    main_logic.cleanup_build()
 
 
 command_help = '''
@@ -252,14 +251,14 @@ To generate a file list JSON, use the generate_file_list_json command.
 @cli.command(name='cleanup_game', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cleanup_game(settings_json):
-    main_logic.cleanup_game(settings_json)
+    main_logic.cleanup_game()
 
 
 command_help = 'Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON.'
 @cli.command(name='generate_game_file_list_json', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_game_file_list_json(settings_json):
-    main_logic.generate_game_file_list_json(settings_json)
+    main_logic.generate_game_file_list_json()
 
 
 command_help = '''
@@ -295,21 +294,21 @@ command_help = 'Uploads the latest changes of the git project to the GitHub repo
 @cli.command(name='upload_changes_to_repo', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def upload_changes_to_repo(settings_json):
-    main_logic.upload_changes_to_repo(settings_json)
+    main_logic.upload_changes_to_repo()
 
 
 command_help = 'Cleans up and resyncs a git project to the GitHub repository and branch specified within the settings JSON.'
 @cli.command(name='resync_dir_with_repo', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def resync_dir_with_repo(settings_json):
-    main_logic.resync_dir_with_repo(settings_json)
+    main_logic.resync_dir_with_repo()
 
 
 command_help = 'Opens the latest log file.'
 @cli.command(name='open_latest_log', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def open_latest_log(settings_json):
-    main_logic.open_latest_log(settings_json)
+    main_logic.open_latest_log()
 
 
 command_help = 'Enable the given mod names in the provided settings JSON.'
@@ -317,7 +316,7 @@ command_help = 'Enable the given mod names in the provided settings JSON.'
 @click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to enable, can be specified multiple times')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def enable_mods(settings_json, mod_names):
-    main_logic.enable_mods(settings_json, mod_names)
+    main_logic.enable_mods(mod_names)
 
 
 command_help = 'Disable the given mod names in the provided settings JSON.'
@@ -325,7 +324,7 @@ command_help = 'Disable the given mod names in the provided settings JSON.'
 @click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to disable, can be specified multiple times')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def disable_mods(settings_json, mod_names):
-    main_logic.disable_mods(settings_json, mod_names)
+    main_logic.disable_mods(mod_names)
 
 
 command_help = 'Adds the given mod name in the provided settings JSON.'
@@ -386,7 +385,6 @@ def add_mod(
         pak_dir_structure (str): Path to the directory structure for packing.
     """
     main_logic.add_mod(
-        settings_json=settings_json,
         mod_name=mod_name,
         packing_type=packing_type,
         pak_dir_structure=pak_dir_structure,
@@ -406,7 +404,7 @@ command_help = 'Removes the given mod names in the provided settings JSON.'
 @click.option("--mod_names", multiple=True, type=str, required=True, help='Name of a mod to be removed, can be specified multiple times.')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def remove_mods(settings_json, mod_names):
-    main_logic.remove_mods(settings_json, mod_names)
+    main_logic.remove_mods(mod_names)
 
 
 command_help = 'Run the game.'
@@ -414,28 +412,28 @@ command_help = 'Run the game.'
 @click.option('--toggle_engine', default=False, type=bool, help='Whether to close engine instances at the start and open at the end of the command process (default: False).')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def run_game(settings_json, toggle_engine):
-    main_logic.run_game(settings_json, toggle_engine=toggle_engine)
+    main_logic.run_game(toggle_engine=toggle_engine)
 
 
 command_help = 'Close the game.'
 @cli.command(name='close_game', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def close_game(settings_json):
-    main_logic.close_game(settings_json)
+    main_logic.close_game()
 
 
 command_help = 'Run the engine.'
 @cli.command(name='run_engine', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def run_engine(settings_json):
-    main_logic.run_engine(settings_json)
+    main_logic.run_engine()
 
 
 command_help = 'Close the engine.'
 @cli.command(name='close_engine', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def close_engine(settings_json):
-    main_logic.close_engine(settings_json)
+    main_logic.close_engine()
 
 
 command_help = 'Generates a uproject file at the specified location, using the given information.'
@@ -607,7 +605,7 @@ command_help = 'Resaves packages and fixes up redirectors for the project.'
 @cli.command(name='resave_packages_and_fix_up_redirectors', help=command_help, short_help=command_help)
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def resave_packages_and_fix_up_redirectors(settings_json):
-    main_logic.resave_packages_and_fix_up_redirectors(settings_json)
+    main_logic.resave_packages_and_fix_up_redirectors()
 
 
 command_help = 'Closes all programs with the exe names provided.'

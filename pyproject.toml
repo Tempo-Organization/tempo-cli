@@ -94,3 +94,9 @@ refresh-deps = [
   "python -c \"import os; os.remove('requirements.txt')\"",
   "hatch env create default",
 ]
+
+[tool.ruff]
+exclude = [
+    "src/unreal_auto_mod/cli.py",
+    "src/unreal_auto_mod/_version.py"
+]

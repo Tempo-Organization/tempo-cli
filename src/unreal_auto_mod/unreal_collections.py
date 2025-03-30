@@ -58,6 +58,8 @@ class UnrealGuid:
         Args:
             uid (str, optional): A string representing the GUID. If not provided, a new GUID is generated.
         """
+        if not uid:
+            uid = None
         if uid:
             self.uid = uid.upper()
         else:

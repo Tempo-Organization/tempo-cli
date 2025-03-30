@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import subprocess
 
-from unreal_auto_mod import file_io, logger, settings
+from unreal_auto_mod import file_io, logger
 from unreal_auto_mod.data_structures import ExecutionMode
 
 
@@ -13,7 +13,10 @@ def run_app(
         args: list[str] | None = None,
         working_dir: str = os.path.normpath(f'{file_io.SCRIPT_DIR}/working_dir')
     ):
+    os.makedirs(working_dir, exist_ok=True)
 
+    if not args:
+        args = []
     exe_path = file_io.ensure_path_quoted(exe_path)
 
     if exec_mode == ExecutionMode.SYNC:

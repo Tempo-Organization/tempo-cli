@@ -33,7 +33,7 @@ def game_monitor_thread_runner(tick_rate: float = 0.01):
 
 
 def get_game_window():
-    return window_management.get_window_by_title(utilities.get_game_window_title())
+    return window_management.get_window_by_title(window_title=utilities.get_game_window_title())
 
 
 @hook_states.hook_state_decorator(HookStateType.POST_GAME_LAUNCH)
