@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import os
 import subprocess
 
-from unreal_auto_mod import file_io, logger
+from unreal_auto_mod import file_io, logger, settings
 from unreal_auto_mod.data_structures import ExecutionMode
 
 
@@ -9,7 +11,7 @@ def run_app(
         exe_path: str,
         exec_mode: ExecutionMode = ExecutionMode.SYNC,
         args: list[str] | None = None,
-        working_dir: str = None
+        working_dir: str = os.path.normpath(f'{file_io.SCRIPT_DIR}/working_dir')
     ):
 
     exe_path = file_io.ensure_path_quoted(exe_path)
@@ -24,11 +26,10 @@ def run_app(
             logger.log_message(f'Command: arg: {arg}')
         logger.log_message('----------------------------------------------------')
         logger.log_message(f'Command: {command} running with the {exec_mode} enum')
-        if working_dir:
-            if os.path.isdir(working_dir):
-                os.chdir(working_dir)
+        if working_dir and os.path.isdir(working_dir):
+            os.chdir(working_dir)
 
-        process = subprocess.Popen(command, cwd=working_dir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, shell=True)
+        process = subprocess.Popen(command, cwd=working_dir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
         for line in iter(process.stdout.readline, ''):
             logger.log_message(line.strip())
@@ -42,4 +43,4 @@ def run_app(
         for arg in args:
             command = f'{command} {arg}'
         logger.log_message(f'Command: {command} started with the {exec_mode} enum')
-        subprocess.Popen(command, cwd=working_dir, start_new_session=True, shell=True)
+        subprocess.Popen(command, cwd=working_dir, start_new_session=True)

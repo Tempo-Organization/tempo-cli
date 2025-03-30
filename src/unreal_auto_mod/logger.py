@@ -65,8 +65,8 @@ def log_message(message: str):
     terminal_width = get_terminal_size().columns
     wrapped_lines = textwrap.wrap(message, width=terminal_width)
 
-    for i, line in enumerate(wrapped_lines):
-        padded_line = line.ljust(terminal_width)  # Ensure full-width background coverage
+    for line in enumerate(wrapped_lines):
+        padded_line = line[1].ljust(terminal_width)
         for keyword, color in color_options.items():
             if keyword in message:
                 rgb_color = f"rgb({color[0]},{color[1]},{color[2]})"

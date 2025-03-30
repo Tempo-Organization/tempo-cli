@@ -1,5 +1,7 @@
 import os
 import pathlib
+import shutil
+import subprocess
 from dataclasses import dataclass
 from typing import Any
 
@@ -37,7 +39,13 @@ def init_settings(settings_json_path: pathlib.Path):
     auto_close_game = settings['process_kill_events']['auto_close_game']
     is_process_running = process_management.is_process_running(process_name)
     if auto_close_game and is_process_running:
-        os.system(f'taskkill /f /im "{process_name}"')
+        taskkill_path = shutil.which("taskkill")
+
+        if taskkill_path:
+            subprocess.run([taskkill_path, "/F", "/IM", process_name], check=False)
+        else:
+            taskkill_exe_not_found_error = "taskkill.exe not found."
+            raise FileNotFoundError(taskkill_exe_not_found_error)
     settings_information.init_settings_done = True
     settings_information.settings_json = settings_json_path
     settings_information.settings_json_dir = os.path.dirname(settings_information.settings_json)

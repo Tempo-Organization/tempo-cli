@@ -197,7 +197,7 @@ def make_non_iostore_unreal_pak_mod(
     if os.path.isfile(final_pak_file):
         os.remove(final_pak_file)
     packing.install_mod_sig(mod_name, use_symlinks = use_symlinks)
-    if use_symlinks == True:
+    if use_symlinks:
         os.symlink(intermediate_pak_file, final_pak_file)
     else:
         shutil.copyfile(intermediate_pak_file, final_pak_file)

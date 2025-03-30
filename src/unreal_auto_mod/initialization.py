@@ -33,7 +33,7 @@ def game_launcher_exe_override_check():
 
 def git_info_check():
     git_repo_path = settings.get_git_info_repo_path()
-    if git_repo_path == None or git_repo_path == '':
+    if git_repo_path is None or git_repo_path == '':
         return
 
     file_io.check_directory_exists(git_repo_path)
@@ -55,13 +55,10 @@ def initialization():
             logger.set_log_base_dir(os.path.normpath(f'{file_io.SCRIPT_DIR}/logs'))
             logger.configure_logging(log_info.LOG_INFO)
     else:
-        try:
-            logger.set_log_base_dir(os.path.normpath(f'{file_io.SCRIPT_DIR}/logs'))
-            logger.configure_logging(log_info.LOG_INFO)
-            customization.enable_vt100()
-            main_logic.init_thread_system()
-        except Exception as error_message:
-            logger.log_message(str(error_message))
+        logger.set_log_base_dir(os.path.normpath(f'{file_io.SCRIPT_DIR}/logs'))
+        logger.configure_logging(log_info.LOG_INFO)
+        customization.enable_vt100()
+        main_logic.init_thread_system()
     check_generate_wrapper()
     check_settings()
     if settings.settings_information.init_settings_done:
@@ -87,16 +84,11 @@ def check_generate_wrapper():
 
 
 def check_settings():
-    try:
-        if "--settings_json" in sys.argv:
-            index = sys.argv.index("--settings_json") + 1
-            if index < len(sys.argv):
-                settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
-                settings_to_return = settings.load_settings(settings_file)
-                return settings_to_return
-            else:
-                print("Error: No file path provided after --settings_json.")
-                sys.exit(1)
-    except Exception as e:
-        print(f"Error processing settings: {e}")
+    if "--settings_json" in sys.argv:
+        index = sys.argv.index("--settings_json") + 1
+        if index < len(sys.argv):
+            settings_file = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
+            return settings.load_settings(settings_file)
+        logger.log_message("Error: No file path provided after --settings_json.")
         sys.exit(1)
+    return

@@ -40,4 +40,5 @@ def run_game():
     # elif launch_type == game_launch_type.UBISOFT:
     #     pass
     else:
-        raise ValueError('Unsupported launch_type specified in the settings.json')
+        unsupported_launch_type_error = 'Unsupported launch_type specified in the settings.json'
+        raise ValueError(unsupported_launch_type_error)

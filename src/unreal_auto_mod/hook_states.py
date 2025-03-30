@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 from unreal_auto_mod import app_runner, logger, process_management, settings, timer, window_management
 from unreal_auto_mod.data_structures import ExecutionMode, HookStateType, WindowAction, get_enum_from_val
@@ -98,7 +100,7 @@ def set_hook_state(new_state: HookStateType):
 
 def hook_state_decorator(
     start_hook_state_type: HookStateType,
-    end_hook_state_type: Optional[HookStateType] = None
+    end_hook_state_type: HookStateType | None = None
 ):
     def decorator(function: Callable[..., Any]):
         def wrapper(*args, **kwargs):

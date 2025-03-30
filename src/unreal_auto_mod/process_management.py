@@ -1,4 +1,6 @@
 import os
+import shutil
+import subprocess
 
 import psutil
 
@@ -8,8 +10,7 @@ from unreal_auto_mod.programs import unreal_engine
 
 
 def get_process_name(exe_path: str) -> str:
-    filename = os.path.basename(exe_path)
-    return filename
+    return os.path.basename(exe_path)
 
 
 def is_process_running(process_name: str) -> bool:
@@ -23,13 +24,18 @@ def is_process_running(process_name: str) -> bool:
 
 
 def kill_process(process_name: str):
-    os.system(f'taskkill /f /im "{process_name}"')
+    taskkill_path = shutil.which("taskkill")
+
+    if taskkill_path:
+        subprocess.run([taskkill_path, "/F", "/IM", process_name], check=False)
+    else:
+        taskkill_exe_not_found_error = "taskkill.exe not found."
+        raise FileNotFoundError(taskkill_exe_not_found_error)
 
 
 def get_processes_by_substring(substring: str) -> list:
     all_processes = psutil.process_iter(['pid', 'name'])
-    matching_processes = [proc.info for proc in all_processes if substring.lower() in proc.info['name'].lower()]
-    return matching_processes
+    return [proc.info for proc in all_processes if substring.lower() in proc.info['name'].lower()]
 
 
 def get_process_kill_events() -> list:

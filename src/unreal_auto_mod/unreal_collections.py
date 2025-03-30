@@ -335,17 +335,20 @@ def get_all_collection_paths(collections_directory: Path) -> list[Path]:
 
 
 def get_enabled_collections(collections_directory: Path) -> list[UnrealCollection]:
-    unreal_collections = []
-    for unreal_collection_path in get_enabled_collection_paths(collections_directory):
-        unreal_collections.append(get_unreal_collection_from_unreal_collection_path(unreal_collection_path))
-    return prune_disabled_parents(unreal_collections, collections_directory)
+    return prune_disabled_parents(
+        [
+            get_unreal_collection_from_unreal_collection_path(unreal_collection_path)
+            for unreal_collection_path in get_enabled_collection_paths(collections_directory)
+        ],
+        collections_directory
+    )
 
 
 def get_disabled_collections(collections_directory: Path) -> list[UnrealCollection]:
-    unreal_collections = []
-    for unreal_collection_path in get_disabled_collection_paths(collections_directory):
-        unreal_collections.append(get_unreal_collection_from_unreal_collection_path(unreal_collection_path))
-    return unreal_collections
+    return [
+        get_unreal_collection_from_unreal_collection_path(unreal_collection_path)
+        for unreal_collection_path in get_disabled_collection_paths(collections_directory)
+    ]
 
 
 def has_disabled_parent(collection: UnrealCollection, collections: list[UnrealCollection], disabled_guids: set[UnrealGuid]) -> bool:
@@ -662,10 +665,8 @@ def set_collection_guid_from_collection(
         fix_child_collections_parent_guids: bool = True
     ):
     original_collection_guid = get_guid_from_unreal_collection_path(collection.file_system_path)
-    all_collection_guids = []
     all_collection_paths = get_all_collection_paths(collections_directory)
-    for path in all_collection_paths:
-        all_collection_guids.append(get_guid_from_unreal_collection_path(path))
+    all_collection_guids = [get_guid_from_unreal_collection_path(path) for path in all_collection_paths]
     if new_guid in all_collection_guids:
         guid_already_in_use_error = ''
         raise RuntimeError(guid_already_in_use_error)

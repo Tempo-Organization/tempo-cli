@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 
 import requests
@@ -63,7 +64,7 @@ def download_and_install_latest_version(repository='trumank/repak', install_path
         #     'script_path'
         # ]
         # utilities.run_app(exe_path=exe, args=args)
-        subprocess.run(['powershell.exe', '-ExecutionPolicy', 'Bypass', '-File', script_path], check=True)
+        subprocess.run([shutil.which("powershell"), '-ExecutionPolicy', 'Bypass', '-File', script_path], check=True)
 
         logger.log_message('Repak CLI installed successfully.')
 

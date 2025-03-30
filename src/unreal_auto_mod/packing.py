@@ -109,8 +109,7 @@ def run_proj_command(command: str):
 
 def handle_uninstall_logic(packing_type: PackingType):
     for mod_info in settings.get_mods_info_list_from_json():
-        if not mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
-            if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
+        if not mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names and get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
                 uninstall_mod(packing_type, mod_info['mod_name'])
 
 
@@ -120,14 +119,13 @@ def handle_uninstall_logic(packing_type: PackingType):
     )
 def handle_install_logic(packing_type: PackingType, *, use_symlinks: bool):
     for mod_info in settings.get_mods_info_list_from_json():
-        if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names:
-            if get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
-                install_mod(
-                    packing_type,
-                    mod_info['mod_name'],
-                    get_enum_from_val(CompressionType, mod_info['compression_type']),
-                    use_symlinks
-                )
+        if mod_info['is_enabled'] and mod_info['mod_name'] in settings.settings_information.mod_names and get_enum_from_val(PackingType, mod_info['packing_type']) == packing_type:
+            install_mod(
+                packing_type=packing_type,
+                mod_name=mod_info['mod_name'],
+                compression_type=get_enum_from_val(CompressionType, mod_info['compression_type']),
+                use_symlinks=use_symlinks
+            )
 
 
 @hook_states.hook_state_decorator(
@@ -143,15 +141,15 @@ def mods_uninstall():
         start_hook_state_type=HookStateType.PRE_MODS_INSTALL,
         end_hook_state_type=HookStateType.POST_MODS_INSTALL
     )
-def mods_install(use_symlinks: bool):
+def mods_install(*, use_symlinks: bool):
     for install_queue_type in queue_information.install_queue_types:
         handle_install_logic(install_queue_type, use_symlinks=use_symlinks)
 
 
-def generate_mods(use_symlinks: bool):
+def generate_mods(*, use_symlinks: bool):
     populate_queue()
     mods_uninstall()
-    mods_install(use_symlinks)
+    mods_install(use_symlinks=use_symlinks)
     for command in command_queue:
         app_runner.run_app(command)
 
@@ -166,7 +164,7 @@ def uninstall_loose_mod(mod_name: str):
         if os.path.islink(file_to_remove):
             os.unlink(file_to_remove)
 
-    for folder in set(os.path.dirname(file) for file in mod_files.values()):
+    for folder in {os.path.dirname(file) for file in mod_files.values()}:
         if os.path.exists(folder) and not os.listdir(folder):
             os.removedirs(folder)
 
@@ -208,12 +206,11 @@ def install_mod_sig(mod_name: str, *, use_symlinks: bool):
             if len(sig_files) < 1:
                 no_sigs_found = ''
                 raise RuntimeError(no_sigs_found)
+            before_sig_file = os.path.normpath(f'{game_paks_dir}/{sig_files[0]}')
+            if use_symlinks:
+                os.symlink(before_sig_file, sig_location)
             else:
-                before_sig_file = os.path.normpath(f'{game_paks_dir}/{sig_files[0]}')
-                if use_symlinks:
-                    os.symlink(before_sig_file, sig_location)
-                else:
-                    shutil.copy(before_sig_file, sig_location)
+                shutil.copy(before_sig_file, sig_location)
         if sig_method_type == data_structures.SigMethodType.EMPTY:
             if use_symlinks:
                 other_sig_location = os.path.normpath(f'{settings.get_working_dir()}/sig_files/{mod_name}.sig')
@@ -281,7 +278,7 @@ def install_engine_mod(mod_name: str, *, use_symlinks: bool):
                 shutil.copyfile(before_file, after_file)
 
 
-def make_pak_repak(mod_name: str, use_symlinks: bool):
+def make_pak_repak(*, mod_name: str, use_symlinks: bool):
     pak_dir = f'{utilities.custom_get_game_paks_dir()}/{utilities.get_pak_dir_structure(mod_name)}'
     os.makedirs(pak_dir, exist_ok=True)
     os.chdir(pak_dir)
@@ -331,10 +328,11 @@ def install_repak_mod(mod_name: str, *, use_symlinks: bool):
                 shutil.copy2(before_file, after_file)
 
             progress.update(task, advance=1)
-    make_pak_repak(mod_name, use_symlinks)
+    make_pak_repak(mod_name=mod_name, use_symlinks=use_symlinks)
 
 
 def install_mod(
+        *,
         packing_type: PackingType,
         mod_name: str,
         compression_type: CompressionType,
@@ -436,8 +434,9 @@ def package_project_iostore_ue5():
 # for if you are just repacking an ini for an iostore game and don't need a ucas or utoc for example
 # actually implement this later on
 def does_iostore_game_need_utoc_ucas() -> bool:
-    needs_more_than_pak = True
-    return needs_more_than_pak
+    # needs_more_than_pak = True
+    # return needs_more_than_pak
+    return True
 
 
 

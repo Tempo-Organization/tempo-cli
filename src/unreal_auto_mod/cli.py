@@ -42,7 +42,7 @@ command_help = 'Builds the uproject specified within the settings JSON'
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def build(settings_json, toggle_engine):
-    main_logic.build(settings_json, toggle_engine)
+    main_logic.build(settings_json, toggle_engine=toggle_engine)
 
 
 command_help = 'Cooks content for the uproject specified within the settings JSON'
@@ -50,7 +50,7 @@ command_help = 'Cooks content for the uproject specified within the settings JSO
 @click.option("--toggle_engine", is_flag=True, default=False, type=bool, help='Will close engine instances at the start and open at the end of the command process')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def cook(settings_json, toggle_engine):
-    main_logic.cook(settings_json, toggle_engine)
+    main_logic.cook(settings_json, toggle_engine=toggle_engine)
 
 
 command_help = 'Package content for the uproject specified within the settings JSON'
@@ -59,7 +59,7 @@ command_help = 'Package content for the uproject specified within the settings J
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def package(settings_json, toggle_engine, use_symlinks):
-    main_logic.package(settings_json, toggle_engine, use_symlinks)
+    main_logic.package(settings_json, toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
 command_help = 'Run tests for specific mods'
@@ -69,7 +69,7 @@ command_help = 'Run tests for specific mods'
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def test_mods(settings_json, mod_names, toggle_engine, use_symlinks):
-    main_logic.test_mods(settings_json, mod_names, toggle_engine, use_symlinks)
+    main_logic.test_mods(settings_json, input_mod_names=mod_names, toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
 command_help = 'Run tests for all mods within the specified settings JSON'
@@ -78,7 +78,7 @@ command_help = 'Run tests for all mods within the specified settings JSON'
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def test_mods_all(settings_json, toggle_engine, use_symlinks):
-    main_logic.test_mods_all(settings_json, toggle_engine, use_symlinks)
+    main_logic.test_mods_all(toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
 command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Releases for the specified mod names.'
@@ -108,7 +108,14 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def full_run(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks):
-    main_logic.full_run(settings_json, mod_names, toggle_engine, base_files_directory, output_directory, use_symlinks)
+    main_logic.full_run(
+        settings_json=settings_json,
+        input_mod_names=mod_names,
+        toggle_engine=toggle_engine,
+        base_files_directory=base_files_directory,
+        output_directory=output_directory,
+        use_symlinks=use_symlinks
+    )
 
 
 command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Releases for all mod entries within the specified settings JSON.'
@@ -137,7 +144,7 @@ command_help = 'Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option("--use_symlinks", is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def full_run_all(settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks):
-    main_logic.full_run_all(settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks)
+    main_logic.full_run_all(settings_json=settings_json, toggle_engine=toggle_engine, base_files_directory=base_files_directory, output_directory=output_directory, use_symlinks=use_symlinks)
 
 
 command_help = 'Generates mods for the specified mod names.'
@@ -146,7 +153,7 @@ command_help = 'Generates mods for the specified mod names.'
 @click.option('--use_symlinks', is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mods(settings_json, mod_names, use_symlinks):
-    main_logic.generate_mods(settings_json, mod_names, use_symlinks)
+    main_logic.generate_mods(settings_json, input_mod_names=mod_names, use_symlinks=use_symlinks)
 
 
 command_help = 'Generates mods for all enabled mods within the specified settings JSON.'
@@ -154,7 +161,7 @@ command_help = 'Generates mods for all enabled mods within the specified setting
 @click.option('--use_symlinks', is_flag=True, default=False, type=bool, help='Whether or not to use symlinks to save time with file operations')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def generate_mods_all(settings_json, use_symlinks):
-    main_logic.generate_mods_all(settings_json, use_symlinks)
+    main_logic.generate_mods_all(settings_json, use_symlinks=use_symlinks)
 
 
 command_help = 'Generate one or more mod releases.'
@@ -379,18 +386,18 @@ def add_mod(
         pak_dir_structure (str): Path to the directory structure for packing.
     """
     main_logic.add_mod(
-        settings_json,
-        mod_name,
-        packing_type,
-        pak_dir_structure,
-        mod_name_dir_type,
-        use_mod_name_dir_name_override,
-        mod_name_dir_name_override,
-        pak_chunk_num,
-        compression_type,
-        is_enabled,
-        asset_paths,
-        tree_paths
+        settings_json=settings_json,
+        mod_name=mod_name,
+        packing_type=packing_type,
+        pak_dir_structure=pak_dir_structure,
+        mod_name_dir_type=mod_name_dir_type,
+        use_mod_name_dir_name_override=use_mod_name_dir_name_override,
+        mod_name_dir_name_override=mod_name_dir_name_override,
+        pak_chunk_num=pak_chunk_num,
+        compression_type=compression_type,
+        is_enabled=is_enabled,
+        asset_paths=asset_paths,
+        tree_paths=tree_paths
     )
 
 
@@ -407,7 +414,7 @@ command_help = 'Run the game.'
 @click.option('--toggle_engine', default=False, type=bool, help='Whether to close engine instances at the start and open at the end of the command process (default: False).')
 @click.option("--settings_json", type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True, resolve_path=True, path_type=pathlib.Path), required=True, help='Path to the settings JSON file')
 def run_game(settings_json, toggle_engine):
-    main_logic.run_game(settings_json, toggle_engine)
+    main_logic.run_game(settings_json, toggle_engine=toggle_engine)
 
 
 command_help = 'Close the game.'
@@ -445,7 +452,7 @@ def generate_uproject(project_file, file_version, engine_major_association, engi
     Arguments:
         project_file (str): Path to generate the project file at.
     """
-    main_logic.generate_uproject(project_file, file_version, engine_major_association, engine_minor_association, category, description, ignore_safety_checks)
+    main_logic.generate_uproject(project_file, file_version, engine_major_association, engine_minor_association, category, description, ignore_safety_checks=ignore_safety_checks)
 
 
 host_type_choices = data_structures.get_enum_strings_from_enum(data_structures.UnrealHostTypes)
@@ -549,25 +556,30 @@ def generate_uplugin(
         plugins_directory (str): Path to the plugins directory, mainly for use with Uproject plugins folder, and engine plugins folder.
         plugin_name (str): Name of the plugin to be generated.
     """
+    # enabled_by_default: bool,
+    # can_contain_content: bool,
+    # is_installed: bool,
+    # is_hidden: bool,
+    # no_code: bool,
     main_logic.generate_uplugin(
-        plugins_directory,
-        plugin_name,
-        can_contain_content,
-        is_installed,
-        is_hidden,
-        no_code,
-        category,
-        created_by,
-        created_by_url,
-        description,
-        docs_url,
-        editor_custom_virtual_path,
-        enabled_by_default,
-        engine_major_version,
-        engine_minor_version,
-        support_url,
-        version,
-        version_name
+        plugins_directory=plugins_directory,
+        plugin_name=plugin_name,
+        category=category,
+        created_by=created_by,
+        created_by_url=created_by_url,
+        description=description,
+        docs_url=docs_url,
+        editor_custom_virtual_path=editor_custom_virtual_path,
+        engine_major_version=engine_major_version,
+        engine_minor_version=engine_minor_version,
+        support_url=support_url,
+        version=version,
+        version_name=version_name,
+        enabled_by_default=enabled_by_default,
+        can_contain_content=can_contain_content,
+        is_installed=is_installed,
+        is_hidden=is_hidden,
+        no_code=no_code,
     )
 
 
@@ -614,7 +626,7 @@ def install_fmodel(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_fmodel(output_directory, run_after_install)
+    main_logic.install_fmodel(output_directory, run_after_install=run_after_install)
 
 
 command_help = 'Install Umodel.'
@@ -626,7 +638,7 @@ def install_umodel(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_umodel(output_directory, run_after_install)
+    main_logic.install_umodel(output_directory, run_after_install=run_after_install)
 
 
 command_help = 'Install Stove.'
@@ -653,7 +665,7 @@ def install_spaghetti(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_spaghetti(output_directory, run_after_install)
+    main_logic.install_spaghetti(output_directory, run_after_install=run_after_install)
 
 
 command_help = 'Install UAssetGUI.'
@@ -665,7 +677,7 @@ def install_uasset_gui(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_uasset_gui(output_directory, run_after_install)
+    main_logic.install_uasset_gui(output_directory, run_after_install=run_after_install)
 
 
 command_help = 'Install Kismet Analyzer.'
@@ -677,7 +689,7 @@ def install_kismet_analyzer(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_kismet_analyzer(output_directory, run_after_install)
+    main_logic.install_kismet_analyzer(output_directory, run_after_install=run_after_install)
 
 
 file_content_options = data_structures.get_enum_strings_from_enum(unreal_collections.UnrealContentLineType)
@@ -1114,8 +1126,8 @@ command_help = 'Zip Directory Tree'
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     required=True
 )
-def zip_directory_tree(directory, zip):
-    file_io.zip_directory_tree(input_dir=directory, output_dir=os.path.dirname(zip), zip_name=os.path.basename(zip))
+def zip_directory_tree(directory, input_zip):
+    file_io.zip_directory_tree(input_dir=directory, output_dir=os.path.dirname(input_zip), zip_name=os.path.basename(input_zip))
 
 
 command_help = 'Unzip'
@@ -1137,8 +1149,8 @@ command_help = 'Unzip'
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     required=True
 )
-def unzip(output_directory, zip):
-    file_io.unzip_zip(zip_path=zip, output_location=output_directory)
+def unzip(output_directory, input_zip):
+    file_io.unzip_zip(zip_path=input_zip, output_location=output_directory)
 
 
 command_help = 'Move a file or directory to a new location.'

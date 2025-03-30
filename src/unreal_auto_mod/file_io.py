@@ -12,10 +12,7 @@ from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod import logger
 
-if getattr(sys, 'frozen', False):
-    SCRIPT_DIR = Path(sys.executable).parent
-else:
-    SCRIPT_DIR = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent
 
 
 def unzip_zip(zip_path: str, output_location: str):
@@ -84,7 +81,7 @@ def check_file_exists(file_path: str) -> bool:
 
 
 def get_file_hash(file_path: str) -> str:
-    md5 = hashlib.md5()
+    md5 = hashlib.sha256()
     with open(file_path, 'rb') as f:
         for chunk in iter(lambda: f.read(4096), b''):
             md5.update(chunk)
@@ -110,12 +107,12 @@ def get_file_extension(file_path: str) -> str:
 def get_file_extensions(file_path: str) -> list:
     directory = os.path.dirname(file_path)
     base_name = os.path.splitext(os.path.basename(file_path))[0]
-    extensions = set()
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            file_base_name, ext = os.path.splitext(file)
-            if file_base_name == base_name and ext:
-                extensions.add(ext)
+    extensions = {
+        os.path.splitext(file)[1]
+        for _, _, files in os.walk(directory)
+        for file in files
+        if os.path.splitext(file)[0] == base_name and os.path.splitext(file)[1]
+    }
     return sorted(extensions)
 
 
@@ -123,7 +120,7 @@ def get_file_extensions(file_path: str) -> list:
 def get_file_extensions_two(directory_with_base_name: str) -> list:
     directory, base_name = os.path.split(directory_with_base_name)
     extensions = set()
-    for _, files in os.walk(directory):
+    for _, _, files in os.walk(directory):
         for file in files:
             if file.startswith(base_name):
                 _, ext = os.path.splitext(file)
@@ -159,7 +156,7 @@ def add_line_to_config(config_path: str, line: str):
 def remove_line_from_config(config_path: str, line: str):
     lines = get_all_lines_in_config(config_path)
     with open(config_path, 'w', encoding='utf-8') as file:
-        file.writelines(l for l in lines if l.rstrip('\n') != line)
+        file.writelines(config_line for config_line in lines if config_line.rstrip('\n') != line)
 
 
 def does_config_have_line(config_path: str, line: str) -> bool:
@@ -204,7 +201,7 @@ def zip_directory_tree(input_dir, output_dir, zip_name="archive.zip"):
     zip_path = os.path.join(output_dir, zip_name)
 
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for root, dirs, files in os.walk(input_dir):
+        for root, _, files in os.walk(input_dir):
             for file in files:
                 file_path = os.path.join(root, file)
                 arcname = os.path.relpath(file_path, input_dir)
@@ -226,7 +223,7 @@ def move(input_path, output_path, overwrite):
         if not overwrite:
             logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
             raise RuntimeError
-        elif output_path.is_dir():
+        if output_path.is_dir():
             output_path = output_path / input_path.name
 
     shutil.move(str(input_path), str(output_path))
@@ -246,7 +243,7 @@ def copy(input_path: Path, output_path: Path, *, overwrite: bool):
         if not overwrite:
             logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
             raise RuntimeError
-        elif output_path.is_dir():
+        if output_path.is_dir():
             output_path = output_path / input_path.name
 
     if input_path.is_dir():
@@ -262,14 +259,10 @@ def symlink(input_path, output_path, overwrite):
         if not overwrite:
             logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
             raise RuntimeError
-        try:
-            if output_path.is_dir():
-                os.rmdir(output_path)
-            else:
-                output_path.unlink()
-        except Exception as e:
-            logger.log_message(f"Error: Could not remove existing output path: {e}")
-            raise RuntimeError
+        if output_path.is_dir():
+            os.rmdir(output_path)
+        else:
+            output_path.unlink()
     try:
         os.symlink(input_path, output_path)
         logger.log_message(f"Successfully created symlink: {output_path} -> {input_path}")
@@ -284,13 +277,10 @@ def delete(input_paths: list[Path]):
             logger.log_message(f"Error: {path} does not exist.")
             raise RuntimeError
 
-        try:
-            if path.is_dir():
-                for item in path.iterdir():
-                    item.unlink() if item.is_file() else delete([item])
-                path.rmdir()
-            else:
-                path.unlink()
-            logger.log_message(f"Successfully deleted {path}")
-        except Exception as e:
-            logger.log_message(f"Error: Could not delete {path}: {e}")
+        if path.is_dir():
+            for item in path.iterdir():
+                item.unlink() if item.is_file() else delete([item])
+            path.rmdir()
+        else:
+            path.unlink()
+        logger.log_message(f"Successfully deleted {path}")
