@@ -7,7 +7,7 @@ name = "unreal_auto_mod"
 dynamic = ["version"]
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.9.1"
 license = { file = "LICENSE" }
 keywords = []
 authors = [
