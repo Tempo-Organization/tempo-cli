@@ -1,5 +1,3 @@
-
-
 import os
 import shutil
 
@@ -7,7 +5,7 @@ from unreal_auto_mod import file_io
 
 
 def download_spaghetti(output_directory: str):
-    url = 'https://github.com/bananaturtlesandwich/spaghetti/releases/latest/download/spaghetti.exe'
+    url = "https://github.com/bananaturtlesandwich/spaghetti/releases/latest/download/spaghetti.exe"
     download_path = f"{output_directory}/spaghetti.exe"
     file_io.download_file(url, download_path)
 
@@ -15,8 +13,8 @@ def download_spaghetti(output_directory: str):
 def install_spaghetti(output_directory: str):
     os.makedirs(output_directory, exist_ok=True)
     download_spaghetti(output_directory)
-    exe_path = f'{output_directory}/spaghetti.exe'
-    shutil.move(exe_path, f'{output_directory}/spaghetti.exe')
+    exe_path = f"{output_directory}/spaghetti.exe"
+    shutil.move(exe_path, f"{output_directory}/spaghetti.exe")
 
 
 def get_spaghetti_path(output_directory: str) -> str:

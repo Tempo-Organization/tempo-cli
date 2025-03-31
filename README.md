@@ -40,31 +40,31 @@ For an in editor menu version check out [UnrealAutoModInEditor](https://github.c
 
 Most users will only need to edit a few settings, which can be done with a text editor. In the JSON file, you typically need to update the following:
 
-- **Unreal Engine `.uproject` File Path**  
+- **Unreal Engine `.uproject` File Path**
   Specify the path to your Unreal Engine project file.
 
-- **Unreal Engine Directory**  
+- **Unreal Engine Directory**
   Define the directory where Unreal Engine is installed.
 
-- **Game's Win64 Executable Path**  
+- **Game's Win64 Executable Path**
   Set the path to the game's Win64 executable. Ensure that the path is valid:
 
-  - **Correct Example:**  
+  - **Correct Example:**
     `"D:\SteamLibrary\steamapps\common\Zedfest\KevinSpel\Binaries\Win64\Zedfest.exe"`
-  - **Incorrect Example:**  
+  - **Incorrect Example:**
     `"D:\SteamLibrary\steamapps\common\Zedfest\KevinSpel.exe"`
 
-- **Steam App ID**  
+- **Steam App ID**
   If using the Steam launch method (as opposed to the executable method), enter the Steam App ID.
 
-- **Window Title Override String**  
+- **Window Title Override String**
   Specify the string for the launched game's window label.
 
 After configuring these settings, you can proceed to configure the mod list.
 
 ###
 
-3. **Configure the mod list:**  
+3. **Configure the mod list:**
    You can include any number of mod entries in the list.
 
 ```
@@ -142,7 +142,7 @@ After configuring these settings, you can proceed to configure the mod list.
 
 ###
 
-4. **Run the application:**  
+4. **Run the application:**
    Once everything is set up, you can proceed to the [Running Steps](#running-steps).
 
 <h2 id="running-steps">🏃 Running Steps:</h2>
@@ -178,7 +178,7 @@ If you have ideas or suggestions for the tool, feel free to open a [suggestions 
 
 
 ### 🐞 Bug Reports
-If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Mythical-Github/unreal_auto_mod/issues).  
+If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Mythical-Github/unreal_auto_mod/issues).
 When creating an issue, please provide as much information as possible, including:
 - Steps to reproduce the issue
 - What you expect to happen, versus what is happening

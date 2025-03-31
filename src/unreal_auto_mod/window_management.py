@@ -10,39 +10,54 @@ def does_window_exist(window_title: str, *, use_substring_check: bool = False) -
     try:
         if use_substring_check:
             all_window_titles = pywinctl.getAllTitles()
-            matched_windows = [window for window in all_window_titles if window_title in window]
+            matched_windows = [
+                window for window in all_window_titles if window_title in window
+            ]
         else:
             all_window_titles = pywinctl.getAllTitles()
-            matched_windows = [window for window in all_window_titles if window_title == window]
+            matched_windows = [
+                window for window in all_window_titles if window_title == window
+            ]
         return len(matched_windows) > 0
     except RuntimeError as e:
-        logger.logging(f'Error: An error occurred: {e}')
+        logger.logging(f"Error: An error occurred: {e}")
         return False
 
 
-def get_windows_by_title(window_title: str, *, use_substring_check: bool = False) -> list:
+def get_windows_by_title(
+    window_title: str, *, use_substring_check: bool = False
+) -> list:
     matched_windows = []
     all_windows = pywinctl.getAllWindows()
 
     if use_substring_check:
         try:
-            matched_windows = [window for window in all_windows if window_title in window.title]
+            matched_windows = [
+                window for window in all_windows if window_title in window.title
+            ]
         except (AttributeError, TypeError) as error_message:
-            logger.log_message(f"Error processing windows in substring check: {error_message}")
+            logger.log_message(
+                f"Error processing windows in substring check: {error_message}"
+            )
     else:
         try:
             for window in all_windows:
                 if str(window.title).strip() == window_title.strip():
                     matched_windows.append(window)
         except (AttributeError, TypeError) as error_message:
-            logger.log_message(f"Error processing windows in exact match: {error_message}")
+            logger.log_message(
+                f"Error processing windows in exact match: {error_message}"
+            )
 
     return matched_windows
 
 
-
-def get_window_by_title(*, window_title: str, use_substring_check: bool = False) -> pywinctl.Window:
-    windows = get_windows_by_title(window_title=window_title, use_substring_check=use_substring_check)
+def get_window_by_title(
+    *, window_title: str, use_substring_check: bool = False
+) -> pywinctl.Window:
+    windows = get_windows_by_title(
+        window_title=window_title, use_substring_check=use_substring_check
+    )
     if not windows:
         logger.log_message(f'Warning: No windows found with title "{window_title}"')
         return None
@@ -67,7 +82,7 @@ def move_window_to_monitor(window: pywinctl.Window, monitor_index: int = 0):
         monitor = screen_info[monitor_index]
         window.moveTo(monitor.x, monitor.y)
     else:
-        logger.log_message('Monitor: Invalid monitor index.')
+        logger.log_message("Monitor: Invalid monitor index.")
 
 
 def set_window_size(window: pywinctl.Window, width: int, height: int):
@@ -80,10 +95,10 @@ def change_window_name(window_name: str):
 
 
 def move_window(window: pywinctl.Window, window_settings: list):
-    monitor_index = window_settings['monitor']
+    monitor_index = window_settings["monitor"]
     if monitor_index is not None:
         move_window_to_monitor(window, monitor_index)
-    width = window_settings['resolution']['x']
-    height = window_settings['resolution']['y']
+    width = window_settings["resolution"]["x"]
+    height = window_settings["resolution"]["y"]
     if width is not None:
         set_window_size(window, width, height)

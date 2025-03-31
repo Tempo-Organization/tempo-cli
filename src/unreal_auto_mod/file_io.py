@@ -12,12 +12,16 @@ from requests.exceptions import HTTPError, RequestException
 
 from unreal_auto_mod import logger
 
-SCRIPT_DIR = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent
+SCRIPT_DIR = (
+    Path(sys.executable).parent
+    if getattr(sys, "frozen", False)
+    else Path(__file__).resolve().parent
+)
 
 
 def unzip_zip(zip_path: str, output_location: str):
     if os.path.exists(zip_path):
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(output_location)
 
 
@@ -28,7 +32,7 @@ def download_file(url: str, download_path: str):
 
         os.makedirs(os.path.dirname(download_path), exist_ok=True)
 
-        with open(download_path, 'wb') as f:
+        with open(download_path, "wb") as f:
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
@@ -40,13 +44,17 @@ def download_file(url: str, download_path: str):
     except RequestException as req_err:
         logger.log_message(f"Request error occurred while downloading {url}: {req_err}")
     except OSError as io_err:
-        logger.log_message(f"File I/O error occurred while saving to {download_path}: {io_err}")
+        logger.log_message(
+            f"File I/O error occurred while saving to {download_path}: {io_err}"
+        )
 
 
 def open_dir_in_file_browser(input_directory: str):
     formatted_directory = os.path.abspath(input_directory)
     if not os.path.isdir(formatted_directory):
-        logger.log_message(f"Error: The directory '{formatted_directory}' does not exist.")
+        logger.log_message(
+            f"Error: The directory '{formatted_directory}' does not exist."
+        )
         return
     os.startfile(formatted_directory)
 
@@ -82,8 +90,8 @@ def check_file_exists(file_path: str) -> bool:
 
 def get_file_hash(file_path: str) -> str:
     md5 = hashlib.sha256()
-    with open(file_path, 'rb') as f:
-        for chunk in iter(lambda: f.read(4096), b''):
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
             md5.update(chunk)
     return md5.hexdigest()
 
@@ -95,7 +103,7 @@ def get_do_files_have_same_hash(file_path_one: str, file_path_two: str) -> bool:
 
 
 def get_files_in_tree(tree_path: str) -> list:
-    return glob.glob(tree_path + '/**/*', recursive=True)
+    return glob.glob(tree_path + "/**/*", recursive=True)
 
 
 def get_file_extension(file_path: str) -> str:
@@ -130,7 +138,9 @@ def get_file_extensions_two(directory_with_base_name: str) -> list:
 
 
 def get_files_in_dir(directory):
-    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+    return [
+        f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))
+    ]
 
 
 def filter_by_extension(files, extension):
@@ -138,32 +148,36 @@ def filter_by_extension(files, extension):
 
 
 def get_all_lines_in_config(config_path: str) -> list[str]:
-    with open(config_path, encoding='utf-8') as file:
+    with open(config_path, encoding="utf-8") as file:
         return file.readlines()
 
 
 def set_all_lines_in_config(config_path: str, lines: list[str]):
-    with open(config_path, 'w', encoding='utf-8') as file:
+    with open(config_path, "w", encoding="utf-8") as file:
         file.writelines(lines)
 
 
 def add_line_to_config(config_path: str, line: str):
     if not does_config_have_line(config_path, line):
-        with open(config_path, 'a', encoding='utf-8') as file:
-            file.write(line + '\n')
+        with open(config_path, "a", encoding="utf-8") as file:
+            file.write(line + "\n")
 
 
 def remove_line_from_config(config_path: str, line: str):
     lines = get_all_lines_in_config(config_path)
-    with open(config_path, 'w', encoding='utf-8') as file:
-        file.writelines(config_line for config_line in lines if config_line.rstrip('\n') != line)
+    with open(config_path, "w", encoding="utf-8") as file:
+        file.writelines(
+            config_line for config_line in lines if config_line.rstrip("\n") != line
+        )
 
 
 def does_config_have_line(config_path: str, line: str) -> bool:
-    return line + '\n' in get_all_lines_in_config(config_path)
+    return line + "\n" in get_all_lines_in_config(config_path)
 
 
-def remove_lines_from_config_that_start_with_substring(config_path: str, substring: str):
+def remove_lines_from_config_that_start_with_substring(
+    config_path: str, substring: str
+):
     new_lines = []
     for line in get_all_lines_in_config(config_path):
         if not line.startswith(substring):
@@ -200,7 +214,7 @@ def zip_directory_tree(input_dir, output_dir, zip_name="archive.zip"):
 
     zip_path = os.path.join(output_dir, zip_name)
 
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for root, _, files in os.walk(input_dir):
             for file in files:
                 file_path = os.path.join(root, file)
@@ -215,13 +229,19 @@ def move(input_path, output_path, overwrite):
         logger.log_message("Error: Input and output paths must be different.")
         raise RuntimeError
 
-    if input_path.is_dir() and output_path.is_dir() and output_path in input_path.parents:
+    if (
+        input_path.is_dir()
+        and output_path.is_dir()
+        and output_path in input_path.parents
+    ):
         logger.log_message("Error: Cannot move a directory inside itself.")
         raise RuntimeError
 
     if output_path.exists():
         if not overwrite:
-            logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
+            logger.log_message(
+                f"Error: {output_path} already exists. Use --overwrite to replace."
+            )
             raise RuntimeError
         if output_path.is_dir():
             output_path = output_path / input_path.name
@@ -235,13 +255,19 @@ def copy(input_path: Path, output_path: Path, *, overwrite: bool):
         logger.log_message("Error: Input and output paths must be different.")
         raise RuntimeError
 
-    if input_path.is_dir() and output_path.is_dir() and output_path in input_path.parents:
+    if (
+        input_path.is_dir()
+        and output_path.is_dir()
+        and output_path in input_path.parents
+    ):
         logger.log_message("Error: Cannot copy a directory inside itself.")
         raise RuntimeError
 
     if output_path.exists():
         if not overwrite:
-            logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
+            logger.log_message(
+                f"Error: {output_path} already exists. Use --overwrite to replace."
+            )
             raise RuntimeError
         if output_path.is_dir():
             output_path = output_path / input_path.name
@@ -257,7 +283,9 @@ def copy(input_path: Path, output_path: Path, *, overwrite: bool):
 def symlink(input_path, output_path, overwrite):
     if output_path.exists():
         if not overwrite:
-            logger.log_message(f"Error: {output_path} already exists. Use --overwrite to replace.")
+            logger.log_message(
+                f"Error: {output_path} already exists. Use --overwrite to replace."
+            )
             raise RuntimeError
         if output_path.is_dir():
             os.rmdir(output_path)
@@ -265,7 +293,9 @@ def symlink(input_path, output_path, overwrite):
             output_path.unlink()
     try:
         os.symlink(input_path, output_path)
-        logger.log_message(f"Successfully created symlink: {output_path} -> {input_path}")
+        logger.log_message(
+            f"Successfully created symlink: {output_path} -> {input_path}"
+        )
     except OSError as e:
         logger.log_message(f"Error: Failed to create symlink: {e}")
         raise RuntimeError

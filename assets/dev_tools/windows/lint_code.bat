@@ -9,5 +9,3 @@ set "toml=%CD%\..\..\..\pyproject.toml"
 "%py_project_dev_tools_exe%" lint_code --project_toml_path "%toml%"
 
 exit /b 0
-
-

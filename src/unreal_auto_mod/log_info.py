@@ -19,9 +19,9 @@ LOG_INFO = {
         "LogCook: Display:": (123, 104, 238),  # Medium Slate Blue
         "LogCookCommandlet: Display:": (135, 206, 250),  # Light Sky Blue
         "LogInit": (238, 130, 238),  # Violet
-        "Timer:": (255, 105, 180)  # Hot Pink
+        "Timer:": (255, 105, 180),  # Hot Pink
     },
     "default_color": (94, 94, 255),  # Light Blue
     "background_color": (40, 42, 54),  # Dark Background (Dark Slate Gray)
-    "log_name_prefix": "unreal_auto_mod_"
+    "log_name_prefix": "unreal_auto_mod_",
 }

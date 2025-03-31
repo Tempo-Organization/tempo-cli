@@ -4,9 +4,9 @@
 - [ ] zentools commands/functionality
 - [ ] aes_dumpster commands/functionality
 - [ ]
-- [ ] overrideable colors, ability to disable coloring/progress bars/logging
+- [ ] overridable colors, ability to disable coloring/progress bars/logging
 - [ ] generate project files for uproject
-- [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic, default map change, game instance, 
+- [ ] uproject, uplugin, engine ini edits, for popular things, maybe also generic, default map change, game instance,
 - [ ] generate uproject from win 64 exe, will need the unreal engine version
 - [ ] unpack/repack game/mods
 - [ ] list game/mod contents

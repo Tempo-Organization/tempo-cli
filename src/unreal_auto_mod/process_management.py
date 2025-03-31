@@ -34,26 +34,30 @@ def kill_process(process_name: str):
 
 
 def get_processes_by_substring(substring: str) -> list:
-    all_processes = psutil.process_iter(['pid', 'name'])
-    return [proc.info for proc in all_processes if substring.lower() in proc.info['name'].lower()]
+    all_processes = psutil.process_iter(["pid", "name"])
+    return [
+        proc.info
+        for proc in all_processes
+        if substring.lower() in proc.info["name"].lower()
+    ]
 
 
 def get_process_kill_events() -> list:
-    return settings.settings_information.settings['process_kill_events']['processes']
+    return settings.settings_information.settings["process_kill_events"]["processes"]
 
 
 def kill_processes(state: HookStateType):
     current_state = state.value if isinstance(state, HookStateType) else state
     for process_info in get_process_kill_events():
-        target_state = process_info.get('hook_state')
+        target_state = process_info.get("hook_state")
         if target_state == current_state:
-            if process_info['use_substring_check']:
-                proc_name_substring = process_info['process_name']
+            if process_info["use_substring_check"]:
+                proc_name_substring = process_info["process_name"]
                 for proc_info in get_processes_by_substring(proc_name_substring):
-                    proc_name = proc_info['name']
+                    proc_name = proc_info["name"]
                     kill_process(proc_name)
             else:
-                proc_name = process_info['process_name']
+                proc_name = process_info["process_name"]
                 kill_process(proc_name)
 
 
@@ -66,9 +70,9 @@ def close_programs(exe_names: list[str]):
 
     for exe_name in exe_names:
         found = False
-        for proc in psutil.process_iter(['pid', 'name']):
+        for proc in psutil.process_iter(["pid", "name"]):
             try:
-                if proc.info['name'] and proc.info['name'].lower() == exe_name.lower():
+                if proc.info["name"] and proc.info["name"].lower() == exe_name.lower():
                     proc.terminate()
                     proc.wait(timeout=5)
                     found = True

@@ -9,5 +9,3 @@ set "toml=%CD%\..\..\..\pyproject.toml"
 "%py_project_dev_tools_exe%" setup_virtual_environment --project_toml_path "%toml%" --env_name "default"
 
 exit /b 0
-
-

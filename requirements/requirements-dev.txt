@@ -5,6 +5,7 @@
 # - mkdocs-material
 # - mkdocstrings-python
 # - py_project_dev_tools@ git+https://github.com/Mythical-Github/py_project_dev_tools
+# - pre-commit
 # - click
 # - dynaconf
 # - psutil
@@ -27,6 +28,8 @@ backrefs==5.8
     # via mkdocs-material
 certifi==2025.1.31
     # via requests
+cfgv==3.4.0
+    # via pre-commit
 charset-normalizer==3.4.1
     # via requests
 click==8.1.8
@@ -40,12 +43,18 @@ colorama==0.4.6
     #   griffe
     #   mkdocs
     #   mkdocs-material
+distlib==0.3.9
+    # via virtualenv
 dynaconf==3.2.10
     # via hatch.envs.dev
+filelock==3.18.0
+    # via virtualenv
 ghp-import==2.1.0
     # via mkdocs
 griffe==1.7.0
     # via mkdocstrings-python
+identify==2.6.9
+    # via pre-commit
 idna==3.10
     # via requests
 jinja2==3.1.6
@@ -100,6 +109,8 @@ mkdocstrings==0.29.0
     # via mkdocstrings-python
 mkdocstrings-python==1.16.8
     # via hatch.envs.dev
+nodeenv==1.9.1
+    # via pre-commit
 packaging==24.2
     # via
     #   mkdocs
@@ -115,6 +126,9 @@ platformdirs==4.3.7
     # via
     #   mkdocs-get-deps
     #   textual
+    #   virtualenv
+pre-commit==4.2.0
+    # via hatch.envs.dev
 psutil==7.0.0
     # via hatch.envs.dev
 py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@06ddf25a197487c5dcca8de6848cb0d6b1d71668
@@ -157,6 +171,7 @@ pyyaml==6.0.2
     # via
     #   mkdocs
     #   mkdocs-get-deps
+    #   pre-commit
     #   pymdown-extensions
     #   pyyaml-env-tag
 pyyaml-env-tag==0.1
@@ -195,5 +210,7 @@ uc-micro-py==1.0.3
     # via linkify-it-py
 urllib3==2.3.0
     # via requests
+virtualenv==20.29.3
+    # via pre-commit
 watchdog==6.0.0
     # via mkdocs

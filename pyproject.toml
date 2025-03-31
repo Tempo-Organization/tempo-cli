@@ -41,7 +41,8 @@ dependencies = [
   "pyinstaller",
   "mkdocs-material",
   "mkdocstrings-python",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pre-commit"
 ]
 
 [project.urls]
@@ -100,3 +101,7 @@ exclude = [
     "src/unreal_auto_mod/cli.py",
     "src/unreal_auto_mod/_version.py"
 ]
+
+[tool.typos]
+[tool.typos.default]
+extend-words = { ue = "ue" }

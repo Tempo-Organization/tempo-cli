@@ -9,5 +9,3 @@ set "toml=%CD%\..\..\..\pyproject.toml"
 "%py_project_dev_tools_exe%" test_exe_release --project_toml_path "%toml%"
 
 exit /b 0
-
-

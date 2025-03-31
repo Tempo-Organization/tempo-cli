@@ -17,21 +17,22 @@ class EngineMonitorThreadInformation:
     run_engine_monitor_thread: bool
     engine_monitor_thread: threading.Thread
 
+
 engine_monitor_thread_information = EngineMonitorThreadInformation(
-    init_done = False,
-    found_window= False,
-    found_process= False,
-    window_closed= False,
-    run_engine_monitor_thread = False,
-    engine_monitor_thread = None
+    init_done=False,
+    found_window=False,
+    found_process=False,
+    window_closed=False,
+    run_engine_monitor_thread=False,
+    engine_monitor_thread=None,
 )
 
 
 def engine_monitor_thread():
     start_engine_monitor_thread()
-    logger.log_message('Thread: Engine Monitoring Thread Started')
+    logger.log_message("Thread: Engine Monitoring Thread Started")
     engine_monitor_thread_information.engine_monitor_thread.join()
-    logger.log_message('Thread: Engine Monitoring Thread Ended')
+    logger.log_message("Thread: Engine Monitoring Thread Ended")
 
 
 def engine_monitor_thread_runner(tick_rate: float = 0.01):
@@ -42,7 +43,7 @@ def engine_monitor_thread_runner(tick_rate: float = 0.01):
 
 @hook_states.hook_state_decorator(HookStateType.POST_ENGINE_OPEN)
 def found_engine_window():
-    logger.log_message('Window: Engine Window Found')
+    logger.log_message("Window: Engine Window Found")
     engine_monitor_thread_information.found_window = True
 
 
@@ -53,25 +54,31 @@ def engine_monitor_thread_logic():
         engine_monitor_thread_information.window_closed = False
         engine_monitor_thread_information.init_done = True
 
-    engine_window_name = unreal_engine.get_engine_window_title(unreal_auto_mod.settings.get_uproject_file())
+    engine_window_name = unreal_engine.get_engine_window_title(
+        unreal_auto_mod.settings.get_uproject_file()
+    )
     if not engine_monitor_thread_information.found_process:
-        engine_process_name = unreal_engine.get_engine_process_name(unreal_auto_mod.settings.get_unreal_engine_dir())
+        engine_process_name = unreal_engine.get_engine_process_name(
+            unreal_auto_mod.settings.get_unreal_engine_dir()
+        )
         if process_management.is_process_running(engine_process_name):
-            logger.log_message('Process: Found Engine Process')
+            logger.log_message("Process: Found Engine Process")
             engine_monitor_thread_information.found_process = True
     elif not engine_monitor_thread_information.found_window:
         if window_management.does_window_exist(engine_window_name):
             found_engine_window()
     elif not engine_monitor_thread_information.window_closed:
         if not window_management.does_window_exist(engine_window_name):
-            logger.log_message('Window: Engine Window Closed')
+            logger.log_message("Window: Engine Window Closed")
             engine_monitor_thread_information.window_closed = True
             stop_engine_monitor_thread()
 
 
 def start_engine_monitor_thread():
     engine_monitor_thread_information.run_engine_monitor_thread = True
-    engine_monitor_thread_information.engine_monitor_thread = threading.Thread(target=engine_monitor_thread_runner, daemon=True)
+    engine_monitor_thread_information.engine_monitor_thread = threading.Thread(
+        target=engine_monitor_thread_runner, daemon=True
+    )
     engine_monitor_thread_information.engine_monitor_thread.start()
 
 

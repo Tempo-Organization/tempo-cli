@@ -22,9 +22,9 @@
     ],
     "engine_building_command": "BuildCookRun",
     "engine_building_args": [
-      "-build", 
-      "-skipstage", 
-      "-nodebuginfo", 
+      "-build",
+      "-skipstage",
+      "-nodebuginfo",
       "-noP4"
     ],
     "engine_packaging_command": "BuildCookRun",
@@ -51,7 +51,7 @@
     "override_automatic_window_title_finding": true,
     "window_title_override": "Zedfest",
     "launch_params": [
-      "-fileopenlog", 
+      "-fileopenlog",
       "-NOSPLASH"]
   },
   "packaging_uproject_name": { "use_override": false, "name": null },
