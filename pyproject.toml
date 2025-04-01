@@ -107,5 +107,3 @@ extend-words = { ue = "ue" }
 
 [tool.pyright]
 extraPaths = [".venv/Lib/site-packages"]
-venvPath = ".venv"
-venv = ".venv/bin/python"
