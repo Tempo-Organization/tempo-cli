@@ -45,7 +45,6 @@ repos:
   hooks:
     - id: pyright
 
-
 # - repo: local
 #   hooks:
 #   - id: fix
