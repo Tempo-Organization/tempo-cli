@@ -44,12 +44,6 @@ repos:
   rev: v1.1.398
   hooks:
     - id: pyright
-      additional_dependencies:
-        - requests
-        - psutil
-        - click
-        - trogon
-        - tomlkit
 
 
 # - repo: local
