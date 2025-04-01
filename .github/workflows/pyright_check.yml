@@ -22,7 +22,7 @@ jobs:
 
       - name: Create virtual environment with hatch
         run: |
-          hatch env create
+          hatch env create dev
 
       - name: Run Pyright using hatch
         run: |

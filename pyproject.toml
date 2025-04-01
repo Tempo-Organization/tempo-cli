@@ -41,7 +41,8 @@ dependencies = [
   "mkdocs-material",
   "mkdocstrings-python",
   "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
-  "pre-commit"
+  "pre-commit",
+  "pyright"
 ]
 
 [project.urls]
@@ -107,5 +108,3 @@ extend-words = { ue = "ue" }
 
 [tool.pyright]
 extraPaths = [".venv/Lib/site-packages"]
-venvPath = "."
-venv = ".venv"
