@@ -21,5 +21,5 @@ def get_spaghetti_path(output_directory: str) -> str:
     return f"{output_directory}/spaghetti.exe"
 
 
-def does_spaghetti_exist() -> bool:
-    return os.path.isfile(get_spaghetti_path())
+def does_spaghetti_exist(output_directory: str) -> bool:
+    return os.path.isfile(get_spaghetti_path(output_directory))

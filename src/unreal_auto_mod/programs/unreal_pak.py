@@ -195,9 +195,11 @@ def make_iostore_unreal_pak_mod(
     mod_name: str, final_pak_file: str, *, use_symlinks: bool
 ):
     if unreal_engine.is_game_ue4(unreal_auto_mod.settings.get_unreal_engine_dir()):
-        make_ue4_iostore_mod(mod_name, final_pak_file, use_symlinks)
+        make_ue4_iostore_mod(mod_name, final_pak_file)
+        # make_ue4_iostore_mod(mod_name, final_pak_file, use_symlinks)
     else:
-        make_ue5_iostore_mods(mod_name, final_pak_file, use_symlinks)
+        make_ue5_iostore_mods(mod_name, final_pak_file)
+        # make_ue5_iostore_mods(mod_name, final_pak_file, use_symlinks)
 
 
 def make_non_iostore_unreal_pak_mod(

@@ -14,7 +14,7 @@ def custom_get_game_paks_dir() -> str:
     alt_game_dir = os.path.dirname(custom_get_game_dir())
     if settings.get_is_using_alt_dir_name():
         return os.path.join(
-            alt_game_dir, settings.get_alt_packing_dir_name, "Content", "Paks"
+            alt_game_dir, settings.get_alt_packing_dir_name(), "Content", "Paks"
         )
     return unreal_engine.get_game_paks_dir(
         settings.get_uproject_file(), custom_get_game_dir()
@@ -37,7 +37,7 @@ def get_use_mod_name_dir_name_override(mod_name: str) -> bool:
     return get_mods_info_dict_from_mod_name(mod_name)["use_mod_name_dir_name_override"]
 
 
-def get_mod_name_dir_name_override(mod_name: str) -> bool:
+def get_mod_name_dir_name_override(mod_name: str) -> str:
     return get_mods_info_dict_from_mod_name(mod_name)["mod_name_dir_name_override"]
 
 
@@ -51,29 +51,37 @@ def get_pak_dir_structure(mod_name: str) -> str:
     for info in settings.get_mods_info_list_from_json():
         if info["mod_name"] == mod_name:
             return info["pak_dir_structure"]
-    return None
+    pak_dir_structure_missing_error = "Could not find the proper pak dir structure within the mod entry in the provided settings file"
+    raise RuntimeError(pak_dir_structure_missing_error)
 
 
 def get_mod_compression_type(mod_name: str) -> CompressionType:
     for info in settings.get_mods_info_list_from_json():
         if info["mod_name"] == mod_name:
             compression_str = info["compression_type"]
-            return get_enum_from_val(CompressionType, compression_str)
-    return None
+            return CompressionType(get_enum_from_val(CompressionType, compression_str))
+    missing_compression_type_error = (
+        f'Could not find the compression type for the following mod name "{mod_name}"'
+    )
+    raise RuntimeError(missing_compression_type_error)
 
 
 def get_unreal_mod_tree_type_str(mod_name: str) -> str:
     for info in settings.get_mods_info_list_from_json():
         if info["mod_name"] == mod_name:
             return info["mod_name_dir_type"]
-    return None
+    missing_mod_tree_type_error = f'Was unable to find the unreal mod tree type for the following mod name "{mod_name}"'
+    raise RuntimeError(missing_mod_tree_type_error)
 
 
 def get_mods_info_dict_from_mod_name(mod_name: str) -> dict:
     for info in settings.get_mods_info_list_from_json():
         if info["mod_name"] == mod_name:
             return dict(info)
-    return None
+    missing_mods_info_dict_error = (
+        f'Was unable to find the mods info dict for the following mod name "{mod_name}"'
+    )
+    raise RuntimeError(missing_mods_info_dict_error)
 
 
 def is_mod_name_in_list(mod_name: str) -> bool:
@@ -82,10 +90,11 @@ def is_mod_name_in_list(mod_name: str) -> bool:
     )
 
 
-def get_mod_name_dir(mod_name: str) -> dir:
+def get_mod_name_dir(mod_name: str) -> str:
     if is_mod_name_in_list(mod_name):
         return f"{unreal_engine.get_uproject_dir(settings.get_uproject_file())}/Saved/Cooked/{get_unreal_mod_tree_type_str(mod_name)}/{mod_name}"
-    return None
+    get_mod_name_dir_name_error = "Was unable to find the mod name dir name"
+    raise RuntimeError(get_mod_name_dir_name_error)
 
 
 def get_mod_name_dir_files(mod_name: str) -> list:

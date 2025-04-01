@@ -40,10 +40,12 @@ def run_app(
             text=True,
         )
 
-        for line in iter(process.stdout.readline, ""):
-            logger.log_message(line.strip())
+        if process.stdout:
+            for line in iter(process.stdout.readline, ""):
+                logger.log_message(line.strip())
 
-        process.stdout.close()
+            process.stdout.close()
+
         process.wait()
         logger.log_message(f"Command: {command} finished")
 

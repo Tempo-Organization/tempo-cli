@@ -26,5 +26,5 @@ def get_kismet_analyzer_path(output_directory: str) -> str:
     return f"{output_directory}/kismet-analyzer-3d06645-win-x64/kismet-analyzer.exe"
 
 
-def does_kismet_analyzer_exist() -> bool:
-    return os.path.isfile(get_kismet_analyzer_path())
+def does_kismet_analyzer_exist(output_directory: str) -> bool:
+    return os.path.isfile(get_kismet_analyzer_path(output_directory))

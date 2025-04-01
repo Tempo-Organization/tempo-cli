@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Type, Any
 
 
 class PackingType(Enum):
@@ -206,15 +207,12 @@ class SigMethodType(Enum):
     )
 
 
-def get_enum_from_val(enum: Enum, value: str) -> Enum:
-    for member in enum:
-        if member.value == value:
-            return member
-    return None
+def get_enum_from_val(enum_cls: Type[Enum], value: Any) -> Enum:
+    for entry in enum_cls:
+        if entry.value == value:
+            return entry
+    raise ValueError(f"{value} is not a valid value for {enum_cls.__name__}")
 
 
-def get_enum_strings_from_enum(enum: Enum) -> list[str]:
-    strings = []
-    for entry in enum:
-        strings.append(entry.value)
-    return strings
+def get_enum_strings_from_enum(enum_cls: Type[Enum]) -> list[str]:
+    return [entry.value for entry in enum_cls]

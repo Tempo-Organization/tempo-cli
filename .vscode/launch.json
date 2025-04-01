@@ -3,8 +3,7 @@
     {
       "args": [
         "run",
-        "--all-files",
-        "--verbose"
+        "--all-files"
       ],
       "module": "pre_commit",
       "name": "pre-commit_run_all",
@@ -53,6 +52,9 @@
       "name": "mkdocs_build",
       "request": "launch",
       "type": "debugpy"
+    },
+    {
+      "name": "-------------------------------------------------------"
     },
     {
       "args": [

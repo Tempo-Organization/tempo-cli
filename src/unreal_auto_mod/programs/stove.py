@@ -7,11 +7,8 @@ from unreal_auto_mod import file_io, logger
 
 
 def get_latest_stove_version():
+    api_url = "https://api.github.com/repos/bananaturtlesandwich/stove/releases/latest"
     try:
-        api_url = (
-            "https://api.github.com/repos/bananaturtlesandwich/stove/releases/latest"
-        )
-
         # Attempt to fetch the latest release information
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)

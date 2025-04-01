@@ -36,9 +36,9 @@ def kill_process(process_name: str):
 def get_processes_by_substring(substring: str) -> list:
     all_processes = psutil.process_iter(["pid", "name"])
     return [
-        proc.info
+        proc.info  # type: ignore
         for proc in all_processes
-        if substring.lower() in proc.info["name"].lower()
+        if substring.lower() in proc.info["name"].lower()  # type: ignore
     ]
 
 
@@ -72,7 +72,7 @@ def close_programs(exe_names: list[str]):
         found = False
         for proc in psutil.process_iter(["pid", "name"]):
             try:
-                if proc.info["name"] and proc.info["name"].lower() == exe_name.lower():
+                if proc.info["name"] and proc.info["name"].lower() == exe_name.lower():  # type: ignore
                     proc.terminate()
                     proc.wait(timeout=5)
                     found = True

@@ -20,7 +20,7 @@ def does_window_exist(window_title: str, *, use_substring_check: bool = False) -
             ]
         return len(matched_windows) > 0
     except RuntimeError as e:
-        logger.logging(f"Error: An error occurred: {e}")
+        logger.log_message(f"Error: An error occurred: {e}")
         return False
 
 
@@ -54,7 +54,7 @@ def get_windows_by_title(
 
 def get_window_by_title(
     *, window_title: str, use_substring_check: bool = False
-) -> pywinctl.Window:
+) -> pywinctl.Window | None:
     windows = get_windows_by_title(
         window_title=window_title, use_substring_check=use_substring_check
     )
@@ -94,7 +94,7 @@ def change_window_name(window_name: str):
     sys.stdout.flush()
 
 
-def move_window(window: pywinctl.Window, window_settings: list):
+def move_window(window: pywinctl.Window, window_settings: dict):
     monitor_index = window_settings["monitor"]
     if monitor_index is not None:
         move_window_to_monitor(window, monitor_index)

@@ -13,7 +13,8 @@ class ConstantThreadInformation:
 
 
 constant_thread_information = ConstantThreadInformation(
-    run_constant_thread=False, constant_thread=None
+    run_constant_thread=False,
+    constant_thread=None,  # type: ignore
 )
 
 

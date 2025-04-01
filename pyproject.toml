@@ -22,7 +22,6 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-  "pyjson5",
   "requests",
   "psutil",
   "pygetwindow",
@@ -105,3 +104,6 @@ exclude = [
 [tool.typos]
 [tool.typos.default]
 extend-words = { ue = "ue" }
+
+[tool.pyright]
+extraPaths = [".venv/Lib/site-packages"]

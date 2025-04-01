@@ -282,7 +282,6 @@ def full_run(
     use_symlinks,
 ):
     main_logic.full_run(
-        settings_json=settings_json,
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
         base_files_directory=base_files_directory,
@@ -338,7 +337,6 @@ def full_run_all(
     settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks
 ):
     main_logic.full_run_all(
-        settings_json=settings_json,
         toggle_engine=toggle_engine,
         base_files_directory=base_files_directory,
         output_directory=output_directory,
@@ -787,7 +785,7 @@ command_help = "Enable the given mod names in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def enable_mods(settings_json, mod_names):
-    main_logic.enable_mods(mod_names)
+    main_logic.enable_mods(settings_json=settings_json, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -815,7 +813,7 @@ command_help = "Disable the given mod names in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def disable_mods(settings_json, mod_names):
-    main_logic.disable_mods(mod_names)
+    main_logic.disable_mods(settings_json=settings_json, mod_names=mod_names)
 
 
 command_help = "Adds the given mod name in the provided settings JSON."
@@ -923,6 +921,7 @@ def add_mod(
         pak_dir_structure (str): Path to the directory structure for packing.
     """
     main_logic.add_mod(
+        settings_json=settings_json,
         mod_name=mod_name,
         packing_type=packing_type,
         pak_dir_structure=pak_dir_structure,
@@ -962,7 +961,7 @@ command_help = "Removes the given mod names in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def remove_mods(settings_json, mod_names):
-    main_logic.remove_mods(mod_names)
+    main_logic.remove_mods(settings_json=settings_json, mod_names=mod_names)
 
 
 command_help = "Run the game."
@@ -1112,12 +1111,12 @@ def generate_uproject(
         project_file (str): Path to generate the project file at.
     """
     main_logic.generate_uproject(
-        project_file,
-        file_version,
-        engine_major_association,
-        engine_minor_association,
-        category,
-        description,
+        project_file=project_file,
+        file_version=file_version,
+        engine_major_association=engine_major_association,
+        engine_minor_association=engine_minor_association,
+        category=category,
+        description=description,
         ignore_safety_checks=ignore_safety_checks,
     )
 
@@ -1478,7 +1477,7 @@ def install_fmodel(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_fmodel(output_directory, run_after_install=run_after_install)
+    main_logic.install_fmodel(output_directory=output_directory, run_after_install=run_after_install)
 
 
 command_help = "Install Umodel."
@@ -1501,7 +1500,7 @@ def install_umodel(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_umodel(output_directory, run_after_install=run_after_install)
+    main_logic.install_umodel(output_directory=output_directory, run_after_install=run_after_install)
 
 
 command_help = "Install Stove."
@@ -1550,7 +1549,7 @@ def install_spaghetti(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_spaghetti(output_directory, run_after_install=run_after_install)
+    main_logic.install_spaghetti(output_directory=output_directory, run_after_install=run_after_install)
 
 
 command_help = "Install UAssetGUI."
@@ -1573,7 +1572,7 @@ def install_uasset_gui(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    main_logic.install_uasset_gui(output_directory, run_after_install=run_after_install)
+    main_logic.install_uasset_gui(output_directory=output_directory, run_after_install=run_after_install)
 
 
 command_help = "Install Kismet Analyzer."
@@ -1597,7 +1596,7 @@ def install_kismet_analyzer(output_directory, run_after_install):
         output_directory (str): Path to the output directory
     """
     main_logic.install_kismet_analyzer(
-        output_directory, run_after_install=run_after_install
+        output_directory=output_directory, run_after_install=run_after_install
     )
 
 
@@ -1605,7 +1604,7 @@ file_content_options = data_structures.get_enum_strings_from_enum(
     unreal_collections.UnrealContentLineType
 )
 command_help = "Create Collection"
-default_create_collection_guid = unreal_collections.UnrealGuid().to_uid()
+default_create_collection_guid = unreal_collections.UnrealGuid.generate_unreal_guid()
 default_parent_guid = unreal_collections.get_blank_unreal_guid().to_uid()
 
 
@@ -1692,7 +1691,7 @@ def create_collection(
         for unreal_asset_path in unreal_asset_paths:
             content_lines.append(
                 unreal_collections.UnrealAssetPath(
-                    unreal_collections.UnrealAssetPath.from_asset_reference(
+                    unreal_collections.UnrealAssetPath.static_from_asset_reference(
                         unreal_asset_path
                     )
                 )
@@ -1701,9 +1700,9 @@ def create_collection(
         content_lines = filter_lines
     unreal_collections.create_collection(
         collection_name=os.path.basename(collection_path),
-        collections_directory=os.path.dirname(collection_path),
+        collections_directory=pathlib.Path(os.path.dirname(collection_path)),
         file_version=file_version,
-        collection_type=type_of_content,
+        collection_type=unreal_collections.UnrealContentLineType(type_of_content),
         guid=unreal_collections.UnrealGuid.from_uid(guid),
         parent_guid=unreal_collections.UnrealGuid.from_uid(parent_guid),
         color=unreal_collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha),
@@ -1773,7 +1772,7 @@ command_help = "Rename Collection"
     "--new_name", type=str, help="New name for the collection.", required=True
 )
 def rename_collection(collection_path: str, new_name: str):
-    unreal_collections.rename_collection_from_collection_path(collection_path, new_name)
+    unreal_collections.rename_collection_from_collection_path(pathlib.Path(collection_path), new_name)
 
 
 command_help = "Delete Collection"
@@ -1836,12 +1835,12 @@ command_help = "Enable Collection"
     required=True,
 )
 def enable_collection(collection_path: str):
-    unreal_collections.enable_collection(collection_path)
+    unreal_collections.enable_collection(unreal_collections.get_unreal_collection_from_unreal_collection_path(pathlib.Path(collection_path)))
 
 
 command_help = "Set Guid"
 default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_uid(
-    unreal_collections.UnrealGuid()
+    unreal_collections.UnrealGuid(unreal_collections.UnrealGuid.generate_unreal_guid())
 )
 
 
@@ -1869,7 +1868,7 @@ default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_ui
 )
 def set_guid_from_collection_path(collection_path: str, guid: str):
     unreal_collections.set_guid_from_collection_path(
-        collection_path=collection_path,
+        collection_path=pathlib.Path(collection_path),
         guid=unreal_collections.UnrealGuid.from_uid(guid),
     )
 
@@ -1903,8 +1902,8 @@ command_help = "Set Parent Guid"
 )
 def set_parent_guid_from_collection_path(collection_path: str, parent_guid: str):
     unreal_collections.set_parent_guid_from_collection_path(
-        collection_path=collection_path,
-        parent_guid=unreal_collections.UnrealGuid.from_uid(parent_guid),
+        collection_path=pathlib.Path(collection_path),
+        parent_guid=unreal_collections.UnrealGuid(parent_guid),
     )
 
 
@@ -1936,9 +1935,7 @@ command_help = "Set File Version"
     help="The new file version for the collection.",
 )
 def set_file_version_from_collection_path(collection_path: str, file_version: int):
-    unreal_collections.set_file_version_from_collection_path(
-        collection_path=collection_path, file_Version=file_version
-    )
+    unreal_collections.set_file_version_from_collection_path(collection_path=pathlib.Path(collection_path), file_version=file_version)
 
 
 set_content_type_options = data_structures.get_enum_strings_from_enum(
@@ -1978,7 +1975,7 @@ def set_collection_type_from_collection_path(
         unreal_collections.UnrealContentLineType, collection_type
     )
     unreal_collections.set_collection_type_from_collection_path(
-        collection_path=collection_path, collection_type=type_to_pass
+        collection_path=pathlib.Path(collection_path), collection_type=unreal_collections.UnrealContentLineType(type_to_pass)
     )
 
 
@@ -2029,7 +2026,7 @@ def add_content_lines_to_collection(
     unreal_asset_paths: list[str],
 ):
     collection = unreal_collections.get_unreal_collection_from_unreal_collection_path(
-        collection_path
+        pathlib.Path(collection_path)
     )
     collection_type = collection.content_type
     content_lines = []
@@ -2100,7 +2097,7 @@ def remove_content_lines_from_collection(
     unreal_asset_paths: list[str],
 ):
     collection = unreal_collections.get_unreal_collection_from_unreal_collection_path(
-        collection_path
+        pathlib.Path(collection_path)
     )
     content_lines = []
 

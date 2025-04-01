@@ -84,7 +84,11 @@ def full_run(
         settings.settings_information.mod_names.append(mod_name)
     packing.cooking()
     generate_mods(input_mod_names=input_mod_names, use_symlinks=use_symlinks)
-    generate_mod_releases(input_mod_names, base_files_directory, output_directory)
+    generate_mod_releases(
+        mod_names=input_mod_names,
+        base_files_directory=base_files_directory,
+        output_directory=output_directory,
+    )
     if toggle_engine:
         engine.toggle_engine_on()
 
@@ -214,9 +218,14 @@ def upload_changes_to_repo():
     repo_path = settings.settings_information.settings["git_info"]["repo_path"]
     branch = settings.settings_information.settings["git_info"]["repo_branch"]
     desc = input("Enter commit description: ")
+    git_path = shutil.which("git")
+    if git_path is None:
+        raise FileNotFoundError(
+            "Git executable not found. Ensure it's installed and in your system PATH."
+        )
 
     status_result = subprocess.run(
-        [shutil.which("git"), "status", "--porcelain"],
+        [git_path, "status", "--porcelain"],
         capture_output=True,
         text=True,
         cwd=repo_path,
@@ -227,7 +236,7 @@ def upload_changes_to_repo():
         sys.exit(1)
 
     checkout_result = subprocess.run(
-        [shutil.which("git"), "checkout", branch],
+        [git_path, "checkout", branch],
         capture_output=True,
         text=True,
         cwd=repo_path,
@@ -237,10 +246,10 @@ def upload_changes_to_repo():
         logger.log_message(f"Failed to switch to the {branch} branch.")
         sys.exit(1)
 
-    subprocess.run([shutil.which("git"), "add", "."], check=True, cwd=repo_path)
+    subprocess.run([git_path, "add", "."], check=True, cwd=repo_path)
 
     commit_result = subprocess.run(
-        [shutil.which("git"), "commit", "-m", desc],
+        [git_path, "commit", "-m", desc],
         capture_output=True,
         text=True,
         cwd=repo_path,
@@ -251,7 +260,7 @@ def upload_changes_to_repo():
         sys.exit(1)
 
     push_result = subprocess.run(
-        [shutil.which("git"), "push", "origin", branch],
+        [git_path, "push", "origin", branch],
         capture_output=True,
         text=True,
         cwd=repo_path,
@@ -527,10 +536,7 @@ def cleanup_cooked():
 
     build_dirs = ["Cooked"]
 
-    for (
-        root,
-        dirs,
-    ) in os.walk(repo_path):
+    for root, dirs, _ in os.walk(repo_path):
         for dir_name in dirs:
             if dir_name in build_dirs:
                 full_path = os.path.normpath(os.path.join(root, dir_name))
@@ -552,10 +558,7 @@ def cleanup_build():
         "Binaries",
     ]
 
-    for (
-        root,
-        dirs,
-    ) in os.walk(repo_path):
+    for root, dirs, _ in os.walk(repo_path):
         for dir_name in dirs:
             if dir_name in build_dirs:
                 full_path = os.path.normpath(os.path.join(root, dir_name))
@@ -680,7 +683,7 @@ def get_mod_files_asset_paths_for_loose_mods(
     mod_info = packing.get_mod_pak_entry(mod_name)
     for asset in mod_info["file_includes"]["asset_paths"]:
         base_path = f"{cooked_uproject_dir}/{asset}"
-        for extension in file_io.general_utils.get_file_extensions(base_path):
+        for extension in file_io.get_file_extensions(base_path):
             before_path = f"{base_path}{extension}"
             after_path = (
                 f"{base_files_directory}/{mod_name}/mod_files/{asset}{extension}"
@@ -790,7 +793,6 @@ def generate_mod_release(
             for mod_info in settings.get_mods_info_list_from_json()
             if mod_info["mod_name"] == mod_name
         ),
-        "",
     )
     if singular_mod_info["packing_type"] == "unreal_pak":
         make_unreal_pak_mod_release(
@@ -811,7 +813,7 @@ def generate_mod_release(
 
 
 def generate_mod_releases(
-    mod_names: str, base_files_directory: str, output_directory: str
+    mod_names: list[str], base_files_directory: str, output_directory: str
 ):
     for mod_name in mod_names:
         generate_mod_release(mod_name, base_files_directory, output_directory)

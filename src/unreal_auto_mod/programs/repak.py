@@ -75,9 +75,13 @@ def download_and_install_latest_version(repository="trumank/repak", install_path
         #     'script_path'
         # ]
         # utilities.run_app(exe_path=exe, args=args)
+        powershell_exe = shutil.which("powershell")
+        if not powershell_exe:
+            powershell_not_found_error = "Was unable to find powershell"
+            raise FileNotFoundError(powershell_not_found_error)
         subprocess.run(
             [
-                shutil.which("powershell"),
+                powershell_exe,
                 "-ExecutionPolicy",
                 "Bypass",
                 "-File",
@@ -92,8 +96,6 @@ def download_and_install_latest_version(repository="trumank/repak", install_path
         logger.log_message(f"Error fetching release information: {e}")
     except subprocess.CalledProcessError as e:
         logger.log_message(f"Error executing the installer script: {e}")
-    except RuntimeError as e:
-        logger.log_message(e)
 
 
 def ensure_repak_installed():

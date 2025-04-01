@@ -41,8 +41,8 @@ def populate_queue():
             mod_info["is_enabled"]
             and mod_info["mod_name"] in settings.settings_information.mod_names
         ):
-            install_queue_type = get_enum_from_val(
-                PackingType, mod_info["packing_type"]
+            install_queue_type = PackingType(
+                get_enum_from_val(PackingType, mod_info["packing_type"])
             )
             if install_queue_type not in queue_information.install_queue_types:
                 queue_information.install_queue_types.append(install_queue_type)
@@ -50,8 +50,8 @@ def populate_queue():
             not mod_info["is_enabled"]
             and mod_info["mod_name"] in settings.settings_information.mod_names
         ):
-            uninstall_queue_type = get_enum_from_val(
-                PackingType, mod_info["packing_type"]
+            uninstall_queue_type = PackingType(
+                get_enum_from_val(PackingType, mod_info["packing_type"])
             )
             if uninstall_queue_type not in queue_information.uninstall_queue_types:
                 queue_information.uninstall_queue_types.append(uninstall_queue_type)
@@ -60,8 +60,11 @@ def populate_queue():
 def get_mod_packing_type(mod_name: str) -> PackingType:
     for mods_info in settings.get_mods_info_list_from_json():
         if mod_name == mods_info["mod_name"]:
-            return get_enum_from_val(PackingType, mods_info["packing_type"])
-    return None
+            return PackingType(
+                get_enum_from_val(PackingType, mods_info["packing_type"])
+            )
+    invalid_packing_type_error = "invalid packing type found in config file"
+    raise RuntimeError(invalid_packing_type_error)
 
 
 def get_is_mod_name_in_use(mod_name: str) -> bool:
@@ -75,7 +78,7 @@ def get_mod_pak_entry(mod_name: str) -> dict:
     for info in settings.get_mods_info_list_from_json():
         if info["mod_name"] == mod_name:
             return dict(info)
-    return None
+    return {}
 
 
 def get_is_mod_installed(mod_name: str) -> bool:
@@ -160,8 +163,8 @@ def handle_install_logic(packing_type: PackingType, *, use_symlinks: bool):
             install_mod(
                 packing_type=packing_type,
                 mod_name=mod_info["mod_name"],
-                compression_type=get_enum_from_val(
-                    CompressionType, mod_info["compression_type"]
+                compression_type=CompressionType(
+                    get_enum_from_val(CompressionType, mod_info["compression_type"])
                 ),
                 use_symlinks=use_symlinks,
             )
@@ -283,7 +286,7 @@ def install_mod_sig(mod_name: str, *, use_symlinks: bool):
             data_structures.SigMethodType
         ):
             logger.log_message(
-                f"Error: {data_structures.get_enum_from_val(data_structures.SigMethodType), enum}"
+                f"Error: {data_structures.get_enum_from_val(data_structures.SigMethodType, enum)}"
             )
         raise RuntimeError
 

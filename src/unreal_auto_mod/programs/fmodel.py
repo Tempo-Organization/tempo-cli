@@ -19,5 +19,5 @@ def download_fmodel():
     file_io.download_file(url, download_path)
 
 
-def does_fmodel_exist() -> bool:
-    return os.path.isfile(get_fmodel_path())
+def does_fmodel_exist(output_directory: str) -> bool:
+    return os.path.isfile(get_fmodel_path(output_directory))

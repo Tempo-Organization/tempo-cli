@@ -55,10 +55,10 @@ def rename_latest_log(log_dir):
 
 def log_message(message: str):
     color_options = LOG_INFO.get("theme_colors", {})
-    default_background_color = LOG_INFO.get("background_color")
+    default_background_color = LOG_INFO.get("background_color", (40, 42, 54))
     default_background_color = f"rgb({default_background_color[0]},{default_background_color[1]},{default_background_color[2]})"
 
-    default_text_color = LOG_INFO.get("default_color")
+    default_text_color = LOG_INFO.get("default_color", (94, 94, 255))
     default_text_color = (
         f"rgb({default_text_color[0]},{default_text_color[1]},{default_text_color[2]})"
     )

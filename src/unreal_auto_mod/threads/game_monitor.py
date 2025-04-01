@@ -29,7 +29,7 @@ game_monitor_thread_information = GameMonitorThreadInformation(
     found_process=False,
     window_closed=False,
     run_game_monitor_thread=False,
-    game_monitor_thread=None,
+    game_monitor_thread=None,  # type: ignore
 )
 
 

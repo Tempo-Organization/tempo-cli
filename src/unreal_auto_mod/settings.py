@@ -4,11 +4,9 @@ import shutil
 import subprocess
 from dataclasses import dataclass
 from typing import Any
-
-from dynaconf import Dynaconf
+import json
 
 from unreal_auto_mod import (
-    configs,
     file_io,
     logger,
     process_management,
@@ -38,8 +36,11 @@ settings_information = SettingsInformation(
 
 
 def init_settings(settings_json_path: pathlib.Path):
-    raw_settings = Dynaconf(settings_files=[settings_json_path])
-    settings_information.settings = configs.DynamicSettings(raw_settings)
+    with open(settings_json_path, "r") as file:
+        raw_settings = json.load(file)
+    # raw_settings = Dynaconf(settings_files=[settings_json_path])
+    # settings_information.settings = configs.DynamicSettings(raw_settings)
+    settings_information.settings = raw_settings
     settings = settings_information.settings
     process_name = os.path.basename(settings["game_info"]["game_exe_path"])
     window_management.change_window_name(settings["general_info"]["window_title"])
@@ -54,7 +55,7 @@ def init_settings(settings_json_path: pathlib.Path):
             taskkill_exe_not_found_error = "taskkill.exe not found."
             raise FileNotFoundError(taskkill_exe_not_found_error)
     settings_information.init_settings_done = True
-    settings_information.settings_json = settings_json_path
+    settings_information.settings_json = str(settings_json_path)
     settings_information.settings_json_dir = os.path.dirname(
         settings_information.settings_json
     )
@@ -63,7 +64,7 @@ def init_settings(settings_json_path: pathlib.Path):
 def load_settings(settings_json: str):
     logger.log_message(f"settings json: {settings_json}")
     if not settings_information.init_settings_done:
-        init_settings(settings_json)
+        init_settings(pathlib.Path(settings_json))
 
 
 def get_unreal_engine_dir() -> str:

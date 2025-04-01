@@ -25,6 +25,6 @@ def enable_vt100():
             cmd = [sys.executable] + sys.argv
             proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
 
-            proc.daemon = True
+            proc.daemon = True  # type: ignore
 
             sys.exit()

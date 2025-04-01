@@ -29,7 +29,7 @@ engine_monitor_thread_information = EngineMonitorThreadInformation(
     found_process=False,
     window_closed=False,
     run_engine_monitor_thread=False,
-    engine_monitor_thread=None,
+    engine_monitor_thread=None,  # type: ignore
 )
 
 

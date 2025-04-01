@@ -38,7 +38,11 @@ def exec_events_checks(hook_state_type: HookStateType):
             exe_exec_mode = get_enum_from_val(
                 ExecutionMode, exec_event["execution_mode"]
             )
-            app_runner.run_app(exe_path, exe_exec_mode, exe_args)
+            if not exe_exec_mode:
+                app_runner.run_app(exe_path, exe_exec_mode, exe_args)
+            else:
+                exe_exec_error = "exe_exec_mode returned none"
+                raise RuntimeError(exe_exec_error)
 
 
 def is_hook_state_used(state: HookStateType) -> bool:
@@ -49,29 +53,23 @@ def is_hook_state_used(state: HookStateType) -> bool:
             )
             if "processes" in process_kill_events:
                 for process in process_kill_events["processes"]:
-                    if isinstance(state, HookStateType):
-                        state = state.value
                     if process.get("hook_state") == state:
                         return True
 
         if "window_management_events" in settings.settings_information.settings:
             for window in settings.get_window_management_events():
-                if isinstance(state, HookStateType):
-                    state = state.value
                 if window.get("hook_state") == state:
                     return True
 
         if "exec_events" in settings.settings_information.settings:
             for method in settings.get_exec_events():
-                if isinstance(state, HookStateType):
-                    state = state.value
                 if method.get("hook_state") == state:
                     return True
 
     return False
 
 
-def window_checks(current_state: WindowAction):
+def window_checks(current_state: HookStateType):
     window_settings_list = settings.get_window_management_events()
     for window_settings in window_settings_list:
         settings_state = get_enum_from_val(HookStateType, window_settings["hook_state"])
