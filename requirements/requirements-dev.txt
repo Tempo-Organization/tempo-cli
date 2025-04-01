@@ -10,7 +10,6 @@
 # - dynaconf
 # - psutil
 # - pygetwindow
-# - pyjson5
 # - pywin32; sys_platform == "win32"
 # - pywinctl
 # - requests
@@ -143,8 +142,6 @@ pyinstaller==6.12.0
     # via hatch.envs.dev
 pyinstaller-hooks-contrib==2025.2
     # via pyinstaller
-pyjson5==1.6.8
-    # via hatch.envs.dev
 pymdown-extensions==10.14.3
     # via
     #   mkdocs-material
