@@ -1,0 +1,31 @@
+name: test
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: sets up hatch env
+        run: hatch env create dev
+
+      - name: Runs pre-commit hooks through hatch
+        run: hatch -e "dev" run pre-commit run --all-files
