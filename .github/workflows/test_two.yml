@@ -1,0 +1,31 @@
+name: test_two
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.x'
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Lint with ruff through hatch
+        run: hatch fmt
+
+      - name: Runs pyright through hatch/uv
+        run: hatch -e "dev" run pyright
