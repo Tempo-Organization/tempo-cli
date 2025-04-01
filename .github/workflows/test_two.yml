@@ -24,8 +24,8 @@ jobs:
       - name: Install Hatch
         run: pip install hatch
 
-      - name: Lint with ruff through hatch
-        run: hatch fmt
+      - name: Lint with ruff
+        run: hatch -e "dev" run ruff check
 
       - name: Runs pyright through hatch/uv
         run: hatch -e "dev" run pyright
