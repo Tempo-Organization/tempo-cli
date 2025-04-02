@@ -9,7 +9,7 @@ on:
       - dev
 
 jobs:
-  build:
+  lint:
     runs-on: windows-2022
 
     steps:
