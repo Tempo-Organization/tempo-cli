@@ -25,10 +25,10 @@ jobs:
         run: pip install hatch
 
       - name: Create Hatch virtual env
-        run: hatch env create dev
+        run: hatch env create lint
 
       - name: Lint with Ruff
-        run: hatch -e "dev" run ruff check
+        run: hatch -e lint run ruff check
 
       - name: Lint with Pyright
-        run: hatch -e "dev" run pyright
+        run: hatch -e lint run pyright

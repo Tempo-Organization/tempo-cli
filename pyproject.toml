@@ -46,6 +46,23 @@ dependencies = [
   "ruff"
 ]
 
+[tool.hatch.envs.lint]
+dependencies = [
+  "pyright",
+  "ruff"
+]
+
+[tool.hatch.envs.docs]
+dependencies = [
+  "mkdocs-material",
+  "mkdocstrings-python"
+]
+
+[tool.hatch.envs.release]
+dependencies = [
+  "pyinstaller"
+]
+
 [project.urls]
 Documentation = "https://github.com/Mythical-Github/unreal_auto_mod/blob/main/README.md"
 Issues = "https://github.com/Mythical-Github/unreal_auto_mod/issues"
