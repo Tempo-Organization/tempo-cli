@@ -8,3 +8,9 @@
 fix it so all settings are loaded and saved from one place, there are several functions that don't follow this
 
 - [ ] add toml support
+
+
+workspace config
+project config
+mod specific config
+game config

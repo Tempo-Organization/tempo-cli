@@ -11,6 +11,11 @@
 - [ ] unpack/repack game/mods
 - [ ] list game/mod contents
 - [ ]
-- [ ] appease linter
 - [ ] linux support
 - [ ] logic for mod making to scan collection contentsEE
+
+
+cli commands/new launch json entries:
+        - [ ] get unreal engine version, uses patternsleuth
+        - [ ] get aes key, uses patternsleuth, or aesdumpster
+        - [ ] get uproject name

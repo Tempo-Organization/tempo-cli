@@ -1,0 +1,31 @@
+name: releases
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Create Hatch virtual env
+        run: hatch env create windows_release
+
+      - name: Create Windows release
+        run: hatch -e windows_release run build:exe

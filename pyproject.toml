@@ -31,8 +31,7 @@ dependencies = [
   "trogon @ git+https://github.com/Mythical-Github/trogon",
   "tomlkit",
   "pywinctl",
-  "dynaconf",
-  "pywin32; sys_platform == 'win32'"
+  "dynaconf"
 ]
 
 [tool.hatch.envs.dev]
@@ -55,7 +54,13 @@ dependencies = [
   "pre-commit"
 ]
 
-[tool.hatch.envs.release]
+[tool.hatch.envs.windows_release]
+dependencies = [
+  "pyinstaller",
+  "pywin32"
+]
+
+[tool.hatch.envs.linux_release]
 dependencies = [
   "pyinstaller"
 ]

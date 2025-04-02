@@ -13,15 +13,9 @@
 
 
 
-        ## Hot Keys To Make:
-        - [ ] General Hotkey functionality
-        - [ ] Close game hotkey
-        - [ ] Run script again hotkey
-        - [ ] Bring Unreal Engine to front hotkey
-        - [ ] Bring game to front hotkey
-        - [ ] Close all hotkey (game, engine, and instances of UAM)
-
 automate asset import for meshes/skeletons/textures/physics assets, pal/da, etc.... and various properties
 
 cli commands/new launch json entries:
         - [ ] dump usmappings
+
+check hatch, uv, ruff, pyinstaller, etc... for inspiration and patterns
