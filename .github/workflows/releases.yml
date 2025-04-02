@@ -25,7 +25,7 @@ jobs:
         run: pip install hatch
 
       - name: Create Hatch virtual env
-        run: hatch env create windows_release
+        run: hatch env create linux_release
 
       - name: Create Windows release
-        run: hatch -e windows_release run build:exe
+        run: hatch -e linux_release run build:exe
