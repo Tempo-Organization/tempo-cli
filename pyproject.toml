@@ -37,13 +37,8 @@ dependencies = [
 
 [tool.hatch.envs.dev]
 dependencies = [
-  "pyinstaller",
-  "mkdocs-material",
-  "mkdocstrings-python",
   "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
-  "pre-commit",
-  "pyright",
-  "ruff"
+  "pre-commit"
 ]
 
 [tool.hatch.envs.lint]
@@ -55,7 +50,9 @@ dependencies = [
 [tool.hatch.envs.docs]
 dependencies = [
   "mkdocs-material",
-  "mkdocstrings-python"
+  "mkdocstrings-python",
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pre-commit"
 ]
 
 [tool.hatch.envs.release]
