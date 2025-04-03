@@ -3,11 +3,11 @@
 #
 # - py_project_dev_tools@ git+https://github.com/Mythical-Github/py_project_dev_tools
 # - pre-commit
+# - commitizen
 # - click
 # - dynaconf
 # - psutil
 # - pygetwindow
-# - pywin32; sys_platform == "win32"
 # - pywinctl
 # - requests
 # - rich
@@ -16,18 +16,28 @@
 # - trogon@ git+https://github.com/Mythical-Github/trogon
 #
 
+argcomplete==3.5.3
+    # via commitizen
 certifi==2025.1.31
     # via requests
 cfgv==3.4.0
     # via pre-commit
 charset-normalizer==3.4.1
-    # via requests
+    # via
+    #   commitizen
+    #   requests
 click==8.1.8
     # via
     #   hatch.envs.dev
     #   trogon
 colorama==0.4.6
-    # via click
+    # via
+    #   click
+    #   commitizen
+commitizen==4.4.1
+    # via hatch.envs.dev
+decli==0.6.2
+    # via commitizen
 distlib==0.3.9
     # via virtualenv
 dynaconf==3.2.10
@@ -38,6 +48,8 @@ identify==2.6.9
     # via pre-commit
 idna==3.10
     # via requests
+jinja2==3.1.6
+    # via commitizen
 linkify-it-py==2.0.3
     # via markdown-it-py
 markdown-it-py==3.0.0
@@ -45,18 +57,24 @@ markdown-it-py==3.0.0
     #   mdit-py-plugins
     #   rich
     #   textual
+markupsafe==3.0.2
+    # via jinja2
 mdit-py-plugins==0.4.2
     # via markdown-it-py
 mdurl==0.1.2
     # via markdown-it-py
 nodeenv==1.9.1
     # via pre-commit
+packaging==24.2
+    # via commitizen
 platformdirs==4.3.7
     # via
     #   textual
     #   virtualenv
 pre-commit==4.2.0
     # via hatch.envs.dev
+prompt-toolkit==3.0.50
+    # via questionary
 psutil==7.0.0
     # via hatch.envs.dev
 py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@06ddf25a197487c5dcca8de6848cb0d6b1d71668
@@ -71,7 +89,6 @@ pyrect==0.2.0
     # via pygetwindow
 pywin32==310
     # via
-    #   hatch.envs.dev
     #   pymonctl
     #   pywinbox
     #   pywinctl
@@ -80,7 +97,11 @@ pywinbox==0.7
 pywinctl==0.4.1
     # via hatch.envs.dev
 pyyaml==6.0.2
-    # via pre-commit
+    # via
+    #   commitizen
+    #   pre-commit
+questionary==2.1.0
+    # via commitizen
 requests==2.32.3
     # via
     #   hatch.envs.dev
@@ -92,10 +113,14 @@ rich==13.9.4
     #   textual
 screeninfo==0.8.1
     # via hatch.envs.dev
+termcolor==2.5.0
+    # via commitizen
 textual==3.0.0
     # via trogon
 tomlkit==0.13.2
-    # via hatch.envs.dev
+    # via
+    #   hatch.envs.dev
+    #   commitizen
 trogon @ git+https://github.com/Mythical-Github/trogon@56aebfa9feb5730006c30aa2aceda691d74ada4b
     # via hatch.envs.dev
 typing-extensions==4.13.0
@@ -110,3 +135,5 @@ urllib3==2.3.0
     # via requests
 virtualenv==20.29.3
     # via pre-commit
+wcwidth==0.2.13
+    # via prompt-toolkit

@@ -68,9 +68,9 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/Mythical-Github/unreal_auto_mod/blob/main/README.md"
-Issues = "https://github.com/Mythical-Github/unreal_auto_mod/issues"
-Source = "https://github.com/Mythical-Github/unreal_auto_mod"
+Documentation = "https://github.com/unreal_auto_mod/unreal_auto_mod/blob/main/README.md"
+Issues = "https://github.com/unreal_auto_mod/unreal_auto_mod/issues"
+Source = "https://github.com/unreal_auto_mod/unreal_auto_mod"
 
 [project.scripts]
 unreal_auto_mod = "unreal_auto_mod.__main__:main"
