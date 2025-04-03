@@ -55,6 +55,11 @@ dependencies = [
   "pywin32"
 ]
 
+[tool.hatch.envs.linux_release]
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+]
+
 [project.urls]
 Documentation = "https://github.com/unreal_auto_mod/unreal_auto_mod/blob/main/README.md"
 Issues = "https://github.com/unreal_auto_mod/unreal_auto_mod/issues"
@@ -85,7 +90,7 @@ pip-compile-installer = "uv"
 template = "build"
 installer = "uv"
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pyinstaller",
 ]
 
 [tool.hatch.envs.build.scripts]
