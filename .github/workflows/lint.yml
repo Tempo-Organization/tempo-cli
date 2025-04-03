@@ -10,7 +10,7 @@ on:
 
 jobs:
   lint:
-    runs-on: windows-2022
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -25,10 +25,10 @@ jobs:
         run: pip install hatch
 
       - name: Create Hatch virtual env
-        run: hatch env create lint
+        run: hatch env create
 
       - name: Lint with Ruff
-        run: hatch -e lint run ruff check
+        run: hatch run uvx ruff check
 
       - name: Lint with Pyright
-        run: hatch -e lint run pyright
+        run: hatch run uvx pyright

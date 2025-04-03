@@ -41,12 +41,6 @@ dependencies = [
   "commitizen"
 ]
 
-[tool.hatch.envs.lint]
-dependencies = [
-  "pyright",
-  "ruff"
-]
-
 [tool.hatch.envs.docs]
 dependencies = [
   "mkdocs-material",
