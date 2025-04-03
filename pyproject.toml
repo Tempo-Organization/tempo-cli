@@ -52,13 +52,7 @@ dependencies = [
 
 [tool.hatch.envs.windows_release]
 dependencies = [
-  "pyinstaller",
   "pywin32"
-]
-
-[tool.hatch.envs.linux_release]
-dependencies = [
-  "pyinstaller"
 ]
 
 [project.urls]
@@ -91,7 +85,7 @@ pip-compile-installer = "uv"
 template = "build"
 installer = "uv"
 dependencies = [
-  "pyinstaller",
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
 ]
 
 [tool.hatch.envs.build.scripts]

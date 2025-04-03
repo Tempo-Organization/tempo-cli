@@ -25,7 +25,7 @@ jobs:
         run: pip install hatch
 
       - name: Create Hatch virtual env
-        run: hatch env create linux_release
+        run: hatch env create
 
       - name: Create Linux release
-        run: hatch -e linux_release run build:exe
+        run: hatch run py_project_dev_tools make_exe_release --project_toml_path pyproject.toml
