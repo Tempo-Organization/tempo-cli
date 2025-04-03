@@ -27,5 +27,5 @@ jobs:
       - name: Create Hatch virtual env
         run: hatch env create linux_release
 
-      - name: Create Windows release
+      - name: Create Linux release
         run: hatch -e linux_release run build:exe
