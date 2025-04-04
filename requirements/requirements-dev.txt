@@ -13,7 +13,7 @@
 # - rich
 # - screeninfo
 # - tomlkit
-# - trogon@ git+https://github.com/Mythical-Github/trogon
+# - trogon
 #
 
 argcomplete==3.5.3
@@ -77,7 +77,7 @@ prompt-toolkit==3.0.50
     # via questionary
 psutil==7.0.0
     # via hatch.envs.dev
-py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@06ddf25a197487c5dcca8de6848cb0d6b1d71668
+py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@8a8732d768e95f2dbcba983c3cf32d4d177c1cec
     # via hatch.envs.dev
 pygetwindow==0.0.9
     # via hatch.envs.dev
@@ -121,7 +121,7 @@ tomlkit==0.13.2
     # via
     #   hatch.envs.dev
     #   commitizen
-trogon @ git+https://github.com/Mythical-Github/trogon@56aebfa9feb5730006c30aa2aceda691d74ada4b
+trogon==0.6.0
     # via hatch.envs.dev
 typing-extensions==4.13.0
     # via
