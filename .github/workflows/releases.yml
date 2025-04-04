@@ -10,7 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64, x86, arm64, armv7, arm32]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout repository
@@ -24,8 +28,8 @@ jobs:
       - name: Install Hatch
         run: pip install hatch
 
-      - name: Create Hatch virtual env
-        run: hatch env create linux_release
+      - name: Create Hatch virtual environment
+        run: hatch env create ${{ matrix.os }}_${{ matrix.arch }}
 
-      - name: Create Linux release
+      - name: Build Release
         run: hatch run py_project_dev_tools make_exe_release_ci_cd
