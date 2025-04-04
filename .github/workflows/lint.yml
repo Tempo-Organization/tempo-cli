@@ -22,7 +22,7 @@ jobs:
           version: "latest"
 
       - name: Install pip
-        run: uv python install cpython-3.12.3-linux-x86_64-none
+        run: uv python install
 
       - name: Install Hatch
         run: uv tool install hatch
