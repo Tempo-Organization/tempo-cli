@@ -14,7 +14,8 @@
       "args": [
         "commit",
         "--all",
-        "--signoff"
+        "--",
+        "-s"
       ],
       "console": "externalTerminal",
       "module": "commitizen",

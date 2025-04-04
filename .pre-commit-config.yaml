@@ -50,13 +50,3 @@ repos:
   rev: v1.1.398
   hooks:
     - id: pyright
-
-
-# - repo: local
-#   hooks:
-#   - id: fix
-#     name: Apply code fixes
-#     entry: hatch fmt
-#     language: system
-#     types: [python]
-#     require_serial: true
