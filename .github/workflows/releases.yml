@@ -33,6 +33,9 @@ jobs:
       - name: Build Wheels and Source Distributions
         run: hatch build
 
+      - name: Twine check
+        run: hatch run uvx twine check dist/*
+
       - name: Publish Wheels and Source Distributions
         env:
           HATCH_INDEX_REPO: "test"
