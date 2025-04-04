@@ -21,8 +21,11 @@ jobs:
         with:
           version: "latest"
 
-      - name: Install pip
+      - name: Install Python
         run: uv python install
+
+      - name: Install Pip
+        run: uv tool install pip
 
       - name: Install Hatch
         run: uv tool install hatch
