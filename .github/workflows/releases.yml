@@ -114,5 +114,8 @@ jobs:
       - name: Twine check
         run: hatch run uvx twine check dist/*
 
+      # - name: Publish Wheels and Source Distributions
+      #   run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+
       - name: Publish Wheels and Source Distributions
-        run: hatch publish --repo "test" --user "mythical_python" --auth "${{ secrets.PYPI_PASSWORD }}"
+        run: hatch uvx twine upload --repository-url https://test.pypi.org/legacy/ dist/ --user "__token__" --password "${{ secrets.PYPI_PASSWORD }}"
