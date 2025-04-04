@@ -91,4 +91,4 @@ jobs:
         run: hatch env create i686-pc-windows-msvc
 
       - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "i686-pc-windows-msvc"
