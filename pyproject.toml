@@ -157,16 +157,26 @@ dependencies = [
 ]
 
 [tool.hatch.envs.windows-latest_arm32]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pywin32"
+]
 
 [tool.hatch.envs.windows-latest_arm64]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pywin32"
+]
 
 [tool.hatch.envs.windows-latest_armv7]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pywin32"
+]
 
 [tool.hatch.envs.windows-latest_x64]
 dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pywin32"
 ]
 
