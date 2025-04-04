@@ -28,7 +28,7 @@ dependencies = [
   "screeninfo",
   "rich",
   "click",
-  "trogon @ git+https://github.com/Mythical-Github/trogon",
+  "trogon",
   "tomlkit",
   "pywinctl",
   "dynaconf"
