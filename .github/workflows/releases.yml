@@ -28,7 +28,7 @@ jobs:
         run: hatch env create x86_64-unknown-linux-gnu
 
       - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "x86_64-unknown-linux-gnu"
 
   setup_ubuntu_aarch64:
     runs-on: ubuntu-24.04-arm
@@ -49,7 +49,7 @@ jobs:
         run: hatch env create aarch64-unknown-linux-gnu
 
       - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "aarch64-unknown-linux-gnu"
 
   setup_windows_x86_64:
     runs-on: windows-latest
@@ -70,7 +70,7 @@ jobs:
         run: hatch env create x86_64-pc-windows-msvc
 
       - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "x86_64-pc-windows-msvc"
 
   setup_windows_i686:
     runs-on: windows-latest
