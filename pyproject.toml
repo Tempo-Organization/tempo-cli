@@ -110,7 +110,7 @@ extraPaths = [".venv/Lib/site-packages"]
 name = "cz_conventional_commits"
 tag_format = "$version"
 version_scheme = "semver2"
-version_provider = "uv"
+version_provider = "pep621"
 update_changelog_on_bump = true
 
 [tool.hatch.envs.x86_64-pc-windows-msvc]
