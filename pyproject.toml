@@ -130,3 +130,33 @@ tag_format = "$version"
 version_scheme = "semver2"
 version_provider = "uv"
 update_changelog_on_bump = true
+
+[tool.hatch.envs.ubuntu-latest_arm32]
+dependencies = []
+
+[tool.hatch.envs.ubuntu-latest_arm64]
+dependencies = []
+
+[tool.hatch.envs.ubuntu-latest_armv7]
+dependencies = []
+
+[tool.hatch.envs.ubuntu-latest_x64]
+dependencies = []
+
+[tool.hatch.envs.ubuntu-latest_x86]
+dependencies = []
+
+[tool.hatch.envs.windows-latest_arm32]
+dependencies = []
+
+[tool.hatch.envs.windows-latest_arm64]
+dependencies = []
+
+[tool.hatch.envs.windows-latest_armv7]
+dependencies = []
+
+[tool.hatch.envs.windows-latest_x64]
+dependencies = []
+
+[tool.hatch.envs.windows-latest_x86]
+dependencies = []
