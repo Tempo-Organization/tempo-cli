@@ -31,7 +31,7 @@ jobs:
         run: hatch run py_project_dev_tools make_exe_release_ci_cd
 
   setup_ubuntu_aarch64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
