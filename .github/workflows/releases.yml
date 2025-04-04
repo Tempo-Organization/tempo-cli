@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +25,7 @@ jobs:
         run: pip install hatch
 
       - name: Create Hatch virtual env
-        run: hatch env create
+        run: hatch env create linux_release
 
       - name: Create Linux release
-        run: hatch run build:exe
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd
