@@ -92,7 +92,7 @@ jobs:
 
       - name: Build Release
         run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "i686-pc-windows-msvc"
-        
+
   setup_wheels_and_source_distributions:
     runs-on: ubuntu-latest
     steps:
@@ -115,4 +115,4 @@ jobs:
         run: hatch run uvx twine check dist/*
 
       - name: Publish Wheels and Source Distributions
-        run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+        run: hatch publish --repo "test" --user "mythical_python" --auth "${{ secrets.PYPI_PASSWORD }}"
