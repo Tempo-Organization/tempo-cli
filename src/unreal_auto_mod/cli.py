@@ -7,7 +7,6 @@ import tomlkit
 from trogon import tui
 
 from unreal_auto_mod import (
-    _version,
     app_runner,
     data_structures,
     file_io,
@@ -31,7 +30,7 @@ default_releases_dir = os.path.normpath(
 
 
 @tui()
-@click.version_option(version=_version.version)
+@click.version_option()
 @click.group(chain=True)
 @click.option(
     "--generate_wrapper",
