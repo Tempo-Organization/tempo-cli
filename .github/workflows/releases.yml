@@ -9,27 +9,107 @@ on:
       - dev
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        arch: [x64, x86, arm64, armv7, arm32]
-    runs-on: ${{ matrix.os }}
-
+  setup_ubuntu_x86_64:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Python (x64)
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
+          architecture: "x64"  # Explicitly using 64-bit architecture for Ubuntu x86_64
 
       - name: Install Hatch
         run: pip install hatch
 
-      - name: Create Hatch virtual environment
-        run: hatch env create ${{ matrix.os }}_${{ matrix.arch }}
+      - name: Create Hatch virtual environment for x86_64-linux
+        run: hatch env create x86_64-unknown-linux-gnu
+
+      - name: Build Release
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+
+  setup_ubuntu_i686:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (x86)
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: "x86"  # Explicitly using 32-bit architecture for Ubuntu i686
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Create Hatch virtual environment for i686-linux
+        run: hatch env create i686-unknown-linux-gnu
+
+      - name: Build Release
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+
+  setup_ubuntu_aarch64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (arm64)
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: "arm64"  # Explicitly using ARM 64-bit architecture for Ubuntu aarch64
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Create Hatch virtual environment for aarch64-linux
+        run: hatch env create aarch64-unknown-linux-gnu
+
+      - name: Build Release
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+
+  setup_windows_x86_64:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (x64)
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: "x64"  # Explicitly using 64-bit architecture for Windows x86_64
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Create Hatch virtual environment for x86_64-windows
+        run: hatch env create x86_64-pc-windows-msvc
+
+      - name: Build Release
+        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+
+  setup_windows_i686:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (x86)
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: "x86"  # Explicitly using 32-bit architecture for Windows i686
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Create Hatch virtual environment for i686-windows
+        run: hatch env create i686-pc-windows-msvc
 
       - name: Build Release
         run: hatch run py_project_dev_tools make_exe_release_ci_cd

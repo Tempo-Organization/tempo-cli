@@ -131,57 +131,29 @@ version_scheme = "semver2"
 version_provider = "uv"
 update_changelog_on_bump = true
 
-[tool.hatch.envs.ubuntu-latest_arm32]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.ubuntu-latest_arm64]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.ubuntu-latest_armv7]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.ubuntu-latest_x64]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.ubuntu-latest_x86]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.windows-latest_arm32]
+[tool.hatch.envs.x86_64-pc-windows-msvc]
 dependencies = [
   "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pywin32"
 ]
 
-[tool.hatch.envs.windows-latest_arm64]
+[tool.hatch.envs.i686-pc-windows-msvc]
 dependencies = [
   "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pywin32"
 ]
 
-[tool.hatch.envs.windows-latest_armv7]
+[tool.hatch.envs.aarch64-unknown-linux-gnu]
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
-  "pywin32"
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
-[tool.hatch.envs.windows-latest_x64]
+[tool.hatch.envs.x86_64-unknown-linux-gnu]
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
-  "pywin32"
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
-[tool.hatch.envs.windows-latest_x86]
+[tool.hatch.envs.i686-unknown-linux-gnu]
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
-  "pywin32"
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
