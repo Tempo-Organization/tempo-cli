@@ -24,9 +24,6 @@ jobs:
       - name: Install Hatch
         run: pip install hatch
 
-      - name: Install Hatch
-        run: uvx hatch
-
       - name: Create Hatch virtual environment for x86_64-linux
         run: uvx hatch env create x86_64-unknown-linux-gnu
 
