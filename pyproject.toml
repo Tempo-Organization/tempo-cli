@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "unreal_auto_mod"
-dynamic = ["version"]
+version = "1.7.0"
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
 requires-python = ">=3.9.1"
@@ -71,12 +71,6 @@ unreal_auto_mod = "unreal_auto_mod.__main__:main"
 [tool.hatch.metadata]
 allow-direct-references = true
 
-[tool.hatch.version]
-source = "vcs"
-
-[tool.hatch.build.hooks.vcs]
-version-file = "src/unreal_auto_mod/_version.py"
-
 [tool.hatch.env]
 requires = ["hatch-pip-compile"]
 
@@ -113,8 +107,7 @@ refresh-deps = [
 
 [tool.ruff]
 exclude = [
-    "src/unreal_auto_mod/cli.py",
-    "src/unreal_auto_mod/_version.py"
+    "src/unreal_auto_mod/cli.py"
 ]
 
 [tool.typos]
@@ -149,11 +142,6 @@ dependencies = [
 ]
 
 [tool.hatch.envs.x86_64-unknown-linux-gnu]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.i686-unknown-linux-gnu]
 dependencies = [
   "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
