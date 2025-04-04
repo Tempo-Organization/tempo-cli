@@ -25,7 +25,9 @@ jobs:
         run: uv python install
 
       - name: Install Pip
-        run: uv tool install pip
+        run: |
+          python -m ensurepip --upgrade
+          python -m pip install --upgrade pip
 
       - name: Install Hatch
         run: uv tool install hatch
