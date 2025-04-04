@@ -123,3 +123,16 @@ Parameters:
 AutomationTool exiting with ExitCode=0 (Success)
 
 =====================================================================================
+
+
+
+Projects to look into:
+https://github.com/PyO3/maturin
+https://github.com/PyO3/pyo3
+https://github.com/ofek/venum
+https://github.com/ofek/userpath
+https://github.com/ofek/privy
+https://github.com/scientific-python/lazy-loader
+
+
+
