@@ -16,13 +16,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.x
+          version: "latest"
 
       - name: Install Hatch
-        run: pip install hatch
+        run: uv tool install hatch
 
       - name: Create Hatch virtual env
         run: hatch env create
