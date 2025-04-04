@@ -36,7 +36,6 @@ dependencies = [
 
 [tool.hatch.envs.dev]
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pre-commit",
   "commitizen"
 ]
@@ -45,7 +44,6 @@ dependencies = [
 dependencies = [
   "mkdocs-material",
   "mkdocstrings-python",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pre-commit",
   "commitizen"
 ]
@@ -117,22 +115,16 @@ update_changelog_on_bump = true
 
 [tool.hatch.envs.x86_64-pc-windows-msvc]
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pywin32"
 ]
 
 [tool.hatch.envs.i686-pc-windows-msvc]
 dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
   "pywin32"
 ]
 
 [tool.hatch.envs.aarch64-unknown-linux-gnu]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
+dependencies = []
 
 [tool.hatch.envs.x86_64-unknown-linux-gnu]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
+dependencies = []

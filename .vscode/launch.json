@@ -12,26 +12,23 @@
     },
     {
       "args": [
-        "upload_latest_to_repo",
-        "--project_toml_path",
-        "${workspaceFolder}/pyproject.toml",
-        "--repo_branch",
-        "dev"
+        "commit",
+        "--all",
+        "--signoff"
       ],
       "console": "externalTerminal",
-      "module": "py_project_dev_tools",
-      "name": "upload_latest_to_repo",
+      "module": "commitizen",
+      "name": "commit_to_repo",
       "request": "launch",
       "type": "debugpy"
     },
     {
       "args": [
-        "make_exe_release",
-        "--project_toml_path",
-        "${workspaceFolder}/pyproject.toml"
+        "push_to_repo"
       ],
+      "console": "externalTerminal",
       "module": "py_project_dev_tools",
-      "name": "make_exe_release",
+      "name": "push_to_repo",
       "request": "launch",
       "type": "debugpy"
     },
@@ -50,6 +47,17 @@
       ],
       "module": "mkdocs",
       "name": "mkdocs_build",
+      "request": "launch",
+      "type": "debugpy"
+    },
+    {
+      "args": [
+        "make_exe_release",
+        "--project_toml_path",
+        "${workspaceFolder}/pyproject.toml"
+      ],
+      "module": "py_project_dev_tools",
+      "name": "make_exe_release",
       "request": "launch",
       "type": "debugpy"
     },
