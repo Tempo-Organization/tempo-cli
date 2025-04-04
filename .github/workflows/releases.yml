@@ -36,11 +36,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python (x86)
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.13.2
-          architecture: "x86"  # Explicitly using 32-bit architecture for Ubuntu i686
+      - name: Enable 32-bit architecture support
+        run: |
+          # Enable the 32-bit (i386) architecture
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+  
+      - name: Install 32-bit Python 3
+        run: |
+          # Install 32-bit version of Python 3
+          sudo apt-get install -y python3:i386 python3-dev:i386 python3-venv:i386
+  
+      - name: Verify Python 3 version
+        run: |
+          python3 --version  # Verify the 32-bit Python version
 
       - name: Install Hatch
         run: pip install hatch
