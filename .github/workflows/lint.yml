@@ -21,6 +21,9 @@ jobs:
         with:
           version: "latest"
 
+      - name: Install pip
+        run: uv python install x86_64-pc-windows-msvc
+
       - name: Install Hatch
         run: uv tool install hatch
 
