@@ -132,19 +132,29 @@ version_provider = "uv"
 update_changelog_on_bump = true
 
 [tool.hatch.envs.ubuntu-latest_arm32]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+]
 
 [tool.hatch.envs.ubuntu-latest_arm64]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+]
 
 [tool.hatch.envs.ubuntu-latest_armv7]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+]
 
 [tool.hatch.envs.ubuntu-latest_x64]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+]
 
 [tool.hatch.envs.ubuntu-latest_x86]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+]
 
 [tool.hatch.envs.windows-latest_arm32]
 dependencies = []
@@ -156,7 +166,12 @@ dependencies = []
 dependencies = []
 
 [tool.hatch.envs.windows-latest_x64]
-dependencies = []
+dependencies = [
+  "pywin32"
+]
 
 [tool.hatch.envs.windows-latest_x86]
-dependencies = []
+dependencies = [
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools",
+  "pywin32"
+]
