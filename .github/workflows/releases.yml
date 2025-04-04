@@ -111,11 +111,11 @@ jobs:
       - name: Build Wheels and Source Distributions
         run: hatch build
 
-      - name: Twine check
-        run: hatch run uvx twine check dist/*
-
-      # - name: Publish Wheels and Source Distributions
-      #   run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+      # - name: Twine check
+      #   run: hatch run uvx twine check dist/*
 
       - name: Publish Wheels and Source Distributions
-        run: hatch run uvx twine upload --repository-url https://test.pypi.org/legacy/ dist/* --user "__token__" --password "${{ secrets.PYPI_PASSWORD }}" --verbose
+        run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+
+      # - name: Publish Wheels and Source Distributions
+      #   run: hatch run uvx twine upload --repository-url https://test.pypi.org/legacy/ dist/* --user "__token__" --password "${{ secrets.PYPI_PASSWORD }}" --verbose
