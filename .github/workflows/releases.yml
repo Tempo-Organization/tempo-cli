@@ -18,47 +18,17 @@ jobs:
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13.2
-          architecture: "x64"  # Explicitly using 64-bit architecture for Ubuntu x86_64
+          python-version: 3.x
+          architecture: "x64"
 
       - name: Install Hatch
-        run: pip install hatch
+        run: uvx hatch
 
       - name: Create Hatch virtual environment for x86_64-linux
-        run: hatch env create x86_64-unknown-linux-gnu
+        run: uvx hatch env create x86_64-unknown-linux-gnu
 
       - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd
-
-  setup_ubuntu_i686:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Enable 32-bit architecture support
-        run: |
-          sudo apt update
-          sudo apt upgrade
-          sudo dpkg --add-architecture i386
-          sudo apt-get update
-  
-      - name: Install 32-bit Python 3
-        run: |
-          sudo apt-get install -y python3:i386 python3-dev:i386 python3-venv:i386
-  
-      - name: Verify Python 3 version
-        run: |
-          python3 --version  # Verify the 32-bit Python version
-
-      - name: Install Hatch
-        run: pip install hatch
-
-      - name: Create Hatch virtual environment for i686-linux
-        run: hatch env create i686-unknown-linux-gnu
-
-      - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd
+        run: uvx hatch run py_project_dev_tools make_exe_release_ci_cd
 
   setup_ubuntu_aarch64:
     runs-on: ubuntu-latest
@@ -69,8 +39,8 @@ jobs:
       - name: Setup Python (arm64)
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13.2
-          architecture: "arm64"  # Explicitly using ARM 64-bit architecture for Ubuntu aarch64
+          python-version: 3.x
+          architecture: "arm64"
 
       - name: Install Hatch
         run: pip install hatch
@@ -90,8 +60,8 @@ jobs:
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13.2
-          architecture: "x64"  # Explicitly using 64-bit architecture for Windows x86_64
+          python-version: 3.x
+          architecture: "x64"
 
       - name: Install Hatch
         run: pip install hatch
@@ -111,8 +81,8 @@ jobs:
       - name: Setup Python (x86)
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13.2
-          architecture: "x86"  # Explicitly using 32-bit architecture for Windows i686
+          python-version: 3.x
+          architecture: "x86"
 
       - name: Install Hatch
         run: pip install hatch
