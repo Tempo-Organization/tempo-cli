@@ -30,15 +30,6 @@ jobs:
       - name: Build Release
         run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "x86_64-unknown-linux-gnu"
 
-      - name: Build Wheels and Source Distributions
-        run: hatch build
-
-      - name: Twine check
-        run: hatch run uvx twine check dist/*
-
-      - name: Publish Wheels and Source Distributions
-        run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
-
   setup_ubuntu_aarch64:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -101,3 +92,27 @@ jobs:
 
       - name: Build Release
         run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "i686-pc-windows-msvc"
+        
+  setup_wheels_and_source_distributions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python (x64)
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: "x64"
+
+      - name: Install Hatch
+        run: pip install hatch
+
+      - name: Build Wheels and Source Distributions
+        run: hatch build
+
+      - name: Twine check
+        run: hatch run uvx twine check dist/*
+
+      - name: Publish Wheels and Source Distributions
+        run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
