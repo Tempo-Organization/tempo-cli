@@ -37,9 +37,7 @@ jobs:
         run: hatch run uvx twine check dist/*
 
       - name: Publish Wheels and Source Distributions
-        env:
-          HATCH_INDEX_REPO: "test"
-        run: hatch publish --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+        run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
 
   setup_ubuntu_aarch64:
     runs-on: ubuntu-24.04-arm
