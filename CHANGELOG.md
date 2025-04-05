@@ -1,3 +1,13 @@
+## 1.9.0 (2025-04-05)
+
+### Feat
+
+- **releases.yml**: testing artifact code
+
+### Fix
+
+- **releases.yaml**: update artifact name errors
+
 ## 1.8.0 (2025-04-04)
 
 ### Feat
