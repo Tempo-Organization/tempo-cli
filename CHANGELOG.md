@@ -1,3 +1,9 @@
+## 1.10.1 (2025-04-05)
+
+### Fix
+
+- **releases.yml**: fix version issue
+
 ## 1.10.0 (2025-04-05)
 
 ### Feat
