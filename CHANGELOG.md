@@ -1,3 +1,9 @@
+## 1.9.5 (2025-04-05)
+
+### Fix
+
+- **releases.yml**: testing auto rename with version
+
 ## 1.9.4 (2025-04-05)
 
 ### Fix
