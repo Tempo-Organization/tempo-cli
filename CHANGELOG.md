@@ -1,3 +1,9 @@
+## 1.9.3 (2025-04-05)
+
+### Fix
+
+- **py_project_dev_tools**: reverted to external repo
+
 ## 1.9.2 (2025-04-05)
 
 ### Fix
