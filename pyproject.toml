@@ -37,7 +37,8 @@ dependencies = [
 [tool.hatch.envs.dev]
 dependencies = [
   "pre-commit",
-  "commitizen"
+  "commitizen",
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
 [tool.hatch.envs.docs]
@@ -45,7 +46,8 @@ dependencies = [
   "mkdocs-material",
   "mkdocstrings-python",
   "pre-commit",
-  "commitizen"
+  "commitizen",
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
 [project.urls]

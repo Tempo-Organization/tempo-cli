@@ -3,6 +3,7 @@
 #
 # - pre-commit
 # - commitizen
+# - py_project_dev_tools@ git+https://github.com/Mythical-Github/py_project_dev_tools
 # - click
 # - dynaconf
 # - psutil
@@ -76,6 +77,8 @@ prompt-toolkit==3.0.50
     # via questionary
 psutil==7.0.0
     # via hatch.envs.dev
+py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@345e2e0c2111796fb9ef215dc8bf7e2ad8baa2e4
+    # via hatch.envs.dev
 pygetwindow==0.0.9
     # via hatch.envs.dev
 pygments==2.19.1
@@ -100,10 +103,13 @@ pyyaml==6.0.2
 questionary==2.1.0
     # via commitizen
 requests==2.32.3
-    # via hatch.envs.dev
+    # via
+    #   hatch.envs.dev
+    #   py-project-dev-tools
 rich==13.9.4
     # via
     #   hatch.envs.dev
+    #   py-project-dev-tools
     #   textual
 screeninfo==0.8.1
     # via hatch.envs.dev
