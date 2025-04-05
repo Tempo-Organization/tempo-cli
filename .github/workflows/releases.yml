@@ -255,5 +255,17 @@ jobs:
             fi
           done
 
+      - name: Generate SHA256 hashes for each file
+        run: |
+          cd dist
+          
+          # For each file in dist, generate its SHA256 hash and create a .sha256 file
+          for FILE in *; do
+            if [[ -f "$FILE" ]]; then
+              # Generate SHA256 hash and save it to a .sha256 file
+              sha256sum "$FILE" | awk '{print $1}' > "$FILE.sha256"
+            fi
+          done
+
       - name: List files in dist
         run: ls -R dist
