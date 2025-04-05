@@ -269,3 +269,18 @@ jobs:
 
       - name: List files in dist
         run: ls -R dist
+
+      - name: Set up release files list
+        run: |
+          # List all files in dist/ and set them as an environment variable
+          echo "FILES=$(find dist -type f | tr '\n' ' ')" >> $GITHUB_ENV
+      
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: "body.md"
+          tag_name: ${{ env.REVISION }}
+          files: ${{ env.FILES }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILES: ${{ env.FILES }}
