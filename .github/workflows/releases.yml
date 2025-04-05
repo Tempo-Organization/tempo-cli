@@ -233,5 +233,25 @@ jobs:
           name: ${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}
           path: ./dist
 
+      - name: Extract version from sdist filename
+        id: extract_version
+        run: |
+          FILENAME="${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}"
+          VERSION=$(echo "$FILENAME" | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+  
+      - name: Rename artifacts with version suffix
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+    
+          cd dist
+    
+          for FILE in unreal_auto_mod*.zip; do
+            if [[ "$FILE" != *"$VERSION"* ]]; then
+              BASE="${FILE%.zip}"
+              mv "$FILE" "${BASE}_v$VERSION.zip"
+            fi
+          done
+
       - name: List files in dist
         run: ls -R dist
