@@ -1,3 +1,9 @@
+## 1.9.7 (2025-04-05)
+
+### Fix
+
+- **releases.yml**: testing creating hash files
+
 ## 1.9.6 (2025-04-05)
 
 ### Fix
