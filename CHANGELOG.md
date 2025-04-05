@@ -1,3 +1,9 @@
+## 1.9.1 (2025-04-05)
+
+### Fix
+
+- **releases.yaml**: testing using dist dir with list all
+
 ## 1.9.0 (2025-04-05)
 
 ### Feat
