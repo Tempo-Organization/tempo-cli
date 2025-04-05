@@ -279,7 +279,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body_path: "body.md"
-          tag_name: ${{ env.REVISION }}
+          tag_name: ${{ steps.extract_version.outputs.version }}
           files: ${{ env.FILES }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
