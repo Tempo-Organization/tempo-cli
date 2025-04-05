@@ -119,6 +119,9 @@ jobs:
 
   bump_version_then_setup_wheels_and_source_distributions:
     runs-on: ubuntu-latest
+    outputs:
+      wheel_artifact_name: ${{ steps.find_wheel.outputs.artifact_name }}
+      sdist_artifact_name: ${{ steps.find_sdist.outputs.artifact_name }}
     needs: [setup_ubuntu_x86_64, setup_ubuntu_aarch64, setup_windows_x86_64, setup_windows_i686]
     steps:
       - name: Check out
@@ -154,6 +157,40 @@ jobs:
       # - name: Publish Wheels and Source Distributions
       #   run: hatch run uvx twine upload --repository-url https://test.pypi.org/legacy/ dist/* --user "__token__" --password "${{ secrets.PYPI_PASSWORD }}" --verbose
 
+      - name: Find wheel file
+        id: find_wheel
+        run: |
+          WHEEL_PATH=$(find dist -name "*.whl" | head -n 1)
+          WHEEL_NAME=$(basename "$WHEEL_PATH")
+          ARTIFACT_NAME="${WHEEL_NAME%.whl}"
+          echo "wheel_path=$WHEEL_PATH" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
+      
+      - name: Upload python wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.find_wheel.outputs.artifact_name }}
+          path: ${{ steps.find_wheel.outputs.wheel_path }}
+
+      - name: Find sdist file
+        id: find_sdist
+        run: |
+          SDIST_PATH=$(find dist -name "*.tar.gz" | head -n 1)
+          SDIST_NAME=$(basename "$SDIST_PATH")
+          ARTIFACT_NAME="${SDIST_NAME%.tar.gz}"
+          echo "sdist_path=$SDIST_PATH" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
+        
+      - name: Upload python sdist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.find_sdist.outputs.artifact_name }}
+          path: ${{ steps.find_sdist.outputs.sdist_path }}
+
+  setup_github_releases:
+    runs-on: ubuntu-latest
+    needs: [bump_version_then_setup_wheels_and_source_distributions]
+    steps:      
       - name: Download ubuntu_x86_64_artifact
         uses: actions/download-artifact@v4
         with:
@@ -176,6 +213,24 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: unreal_auto_mod_i686-pc-windows-msvc
+          path: ./dist
+
+      - name: Download windows_i686_artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: unreal_auto_mod_i686-pc-windows-msvc
+          path: ./dist
+
+      - name: Download python_wheel_artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.wheel_artifact_name }}
+          path: ./dist
+  
+      - name: Download python_sdist_artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}
           path: ./dist
 
       - name: List files in dist

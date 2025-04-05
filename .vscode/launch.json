@@ -25,6 +25,16 @@
     },
     {
       "args": [
+        "pull_from_repo"
+      ],
+      "console": "externalTerminal",
+      "module": "py_project_dev_tools",
+      "name": "pull_from_repo",
+      "request": "launch",
+      "type": "debugpy"
+    },
+    {
+      "args": [
         "push_to_repo"
       ],
       "console": "externalTerminal",
