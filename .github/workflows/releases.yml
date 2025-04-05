@@ -33,7 +33,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu_x86_64_artifact
+          name: unreal_auto_mod_x86_64-unknown-linux-gnu
           path: dist/unreal_auto_mod_x86_64-unknown-linux-gnu.zip
 
   setup_ubuntu_aarch64:
@@ -60,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu_x86_64_artifact
+          name: unreal_auto_mod_aarch64-unknown-linux-gnu
           path: dist/unreal_auto_mod_aarch64-unknown-linux-gnu.zip
 
   setup_windows_x86_64:
@@ -87,7 +87,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu_x86_64_artifact
+          name: unreal_auto_mod_x86_64-pc-windows-msvc
           path: dist/unreal_auto_mod_x86_64-pc-windows-msvc.zip
 
   setup_windows_i686:
@@ -114,7 +114,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu_x86_64_artifact
+          name: unreal_auto_mod_i686-pc-windows-msvc
           path: dist/unreal_auto_mod_i686-pc-windows-msvc.zip
 
   bump_version_then_setup_wheels_and_source_distributions:
@@ -157,22 +157,22 @@ jobs:
       - name: Download ubuntu_x86_64_artifact
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu_x86_64_artifact
+          name: unreal_auto_mod_x86_64-unknown-linux-gnu
 
       - name: Download ubuntu_aarch64_artifact
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu_aarch64_artifact
+          name: unreal_auto_mod_aarch64-unknown-linux-gnu
 
       - name: Download windows_x86_64_artifact
         uses: actions/download-artifact@v4
         with:
-          name: windows_x86_64_artifact
+          name: unreal_auto_mod_x86_64-pc-windows-msvc
 
       - name: Download windows_i686_artifact
         uses: actions/download-artifact@v4
         with:
-          name: windows_i686_aarch64_artifact
+          name: unreal_auto_mod_i686-pc-windows-msvc
 
       - name: List files
         run: ls -R
