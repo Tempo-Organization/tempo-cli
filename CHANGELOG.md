@@ -1,3 +1,9 @@
+## 1.10.0 (2025-04-05)
+
+### Feat
+
+- **releases.yaml**: testing publishing releases
+
 ## 1.9.7 (2025-04-05)
 
 ### Fix
