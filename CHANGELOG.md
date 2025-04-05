@@ -1,3 +1,9 @@
+## 1.9.6 (2025-04-05)
+
+### Fix
+
+- **releases.yaml**: fixing naming convention
+
 ## 1.9.5 (2025-04-05)
 
 ### Fix
