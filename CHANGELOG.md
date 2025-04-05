@@ -1,3 +1,9 @@
+## 1.9.4 (2025-04-05)
+
+### Fix
+
+- **releases.yaml**: Testing whl and sdist artifacts
+
 ## 1.9.3 (2025-04-05)
 
 ### Fix
