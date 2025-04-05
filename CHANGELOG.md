@@ -1,3 +1,9 @@
+## 1.9.2 (2025-04-05)
+
+### Fix
+
+- **releases.yaml**: fix naming issue
+
 ## 1.9.1 (2025-04-05)
 
 ### Fix
