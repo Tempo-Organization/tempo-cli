@@ -249,7 +249,9 @@ jobs:
           for FILE in unreal_auto_mod*.zip; do
             if [[ "$FILE" != *"$VERSION"* ]]; then
               BASE="${FILE%.zip}"
-              mv "$FILE" "${BASE}_v$VERSION.zip"
+              # Replace underscores with hyphens and add version
+              NEW_NAME=$(echo "$BASE" | sed 's/_/-/g')-"$VERSION".zip
+              mv "$FILE" "$NEW_NAME"
             fi
           done
 
