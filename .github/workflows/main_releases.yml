@@ -12,6 +12,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check for bump in commit message
+        id: bump_check
+        run: |
+          echo "COMMIT_MSG<<EOF" >> $GITHUB_ENV
+          git log -1 --pretty=%B >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "Checking for 'bump' in commit message..."
+          if git log -1 --pretty=%B | grep -iq '\bbump\b'; then
+            echo "bump=true" >> $GITHUB_OUTPUT
+          else
+            echo "bump=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Step that runs only if bump is NOT in commit message
+        if: steps.bump_check.outputs.bump != 'true'
+        run: echo "This step runs because the commit message does NOT contain 'bump'."
+
+      - name: Always runs
+        run: echo "This always runs."
+
+      - name: Step that runs only if bump IS in commit message
+        if: steps.bump_check.outputs.bump == 'true'
+        run: echo "This step runs because the commit message contains 'bump'."
+
+
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
         with:
