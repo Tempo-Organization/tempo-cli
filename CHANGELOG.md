@@ -1,3 +1,9 @@
+## 1.10.2 (2025-04-06)
+
+### Fix
+
+- **releases.yml**: fix changelog body.md
+
 ## 1.10.1 (2025-04-05)
 
 ### Fix
