@@ -339,5 +339,6 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
             dist/*.sha256
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
