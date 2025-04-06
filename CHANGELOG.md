@@ -1,3 +1,9 @@
+## 1.10.4 (2025-04-06)
+
+### Fix
+
+- **releases.yml**: changed token being passesd
+
 ## 1.10.3 (2025-04-06)
 
 ### Fix
