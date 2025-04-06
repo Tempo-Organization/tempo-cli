@@ -1,7 +1,8 @@
 name: dev_releases
 
 on:
-  workflow_dispatch
+  schedule:
+    - cron: '0 8 * * *'
 
 jobs:
   setup_ubuntu_x86_64:
