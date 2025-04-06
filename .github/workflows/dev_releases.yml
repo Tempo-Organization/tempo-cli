@@ -1,11 +1,7 @@
 name: dev_releases
 
 on:
-  pull_request:
-    branches:
-      - dev
-    types:
-      - closed
+  workflow_dispatch
 
 jobs:
   setup_ubuntu_x86_64:
