@@ -1,7 +1,9 @@
 name: main_releases
 
 on:
-  workflow_dispatch
+  push:
+    branches:
+      - main
 
 jobs:
   setup_ubuntu_x86_64:
