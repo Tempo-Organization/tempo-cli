@@ -1,3 +1,13 @@
+## 1.11.0-dev.14288019020 (2025-04-06)
+
+### Feat
+
+- **main_releases.yml**: adds a main releases.yml
+
+### Fix
+
+- **releases.yml**: attempting to fix missing files upload
+
 ## 1.10.5-dev.14287915154 (2025-04-06)
 
 ### Fix
