@@ -1,3 +1,9 @@
+## 1.10.3 (2025-04-06)
+
+### Fix
+
+- **releases.yml**: test fixing passing the files for release
+
 ## 1.10.2 (2025-04-06)
 
 ### Fix
