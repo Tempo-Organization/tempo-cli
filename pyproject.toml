@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "unreal_auto_mod"
-version = "1.10.5-dev.14287915154"
+version = "1.11.0-dev.14288064426"
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
 requires-python = ">=3.9.1"
