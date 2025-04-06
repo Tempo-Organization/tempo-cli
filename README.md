@@ -8,98 +8,99 @@ For an in editor menu version check out [UnrealAutoModInEditor](https://github.c
 
 [![Project Screenshot](https://github.com/Mythical-Github/UnrealAutoMod/assets/4b65e3a3-ae7f-4881-bea4-e73191594587.png)](https://github.com/user-attachments/assets/76da1afc-9c30-4ec8-b27c-8c072e73f696)
 
+
 <h2 id="features">💪 Features</h2>
 
-- Supports Unreal Engine versions: 4.0-5.5
-- Supports loose file modding (unreal assets, not in a mod archive, like a .pak)
-- Supports modding iostore games
-- Automatic mod creation and placement
-- Automatic engine cooking, and packaging
-- Automatic game running
-- Automatic editor running
-- Event management system
-- Process management events
-- Window management events
-- Automatic script/exec running events
-- Supports creation of mod archives, through unreal_pak, repak, and engine made archives
-- Ability to add launch params to various script/exec running
-- Supports games with alternative packing structures (example game: Kingdom Hearts 3)
-- Supports packing edited files, through the persistent_files dir, or through the Event Management System
-- Easily configure what files end up in your final mod(s) and how with the Mod list within the config
-- Supports loading from json file, so you can have multiple projects easily
-- Logging
-- Colorful printouts
-- Ability to run in the background, with no windows
+* Supports Unreal Engine versions: 4.0-5.5
+* Supports loose file modding (unreal assets, not in a mod archive, like a .pak)
+* Supports modding iostore games
+* Automatic mod creation and placement
+* Automatic engine cooking, and packaging
+* Automatic game running
+* Automatic editor running
+* Event management system
+* Process management events
+* Window management events
+* Automatic script/exec running events
+* Supports creation of mod archives, through unreal_pak, repak, and engine made archives
+* Ability to add launch params to various script/exec running
+* Supports games with alternative packing structures (example game: Kingdom Hearts 3)
+* Supports packing edited files, through the persistent_files dir, or through the Event Management System
+* Easily configure what files end up in your final mod(s) and how with the Mod list within the config
+* Supports loading from json file, so you can have multiple projects easily
+* Logging
+* Colorful printouts
+* Ability to run in the background, with no windows
+
 
 <h2 id="installation_steps">🛠️ Installation Steps:</h2>
 
 1. Download and unzip the latest [release](https://github.com/Mythical-Github/UnrealAutoMod/releases/latest).\
-   You can keep the program anywhere you'd like.
+You can keep the program anywhere you'd like.
 
 ### 2. **Configure the Default JSON File**
 
 Most users will only need to edit a few settings, which can be done with a text editor. In the JSON file, you typically need to update the following:
 
-- **Unreal Engine `.uproject` File Path**
+- **Unreal Engine `.uproject` File Path**  
   Specify the path to your Unreal Engine project file.
 
-- **Unreal Engine Directory**
+- **Unreal Engine Directory**  
   Define the directory where Unreal Engine is installed.
 
-- **Game's Win64 Executable Path**
+- **Game's Win64 Executable Path**  
   Set the path to the game's Win64 executable. Ensure that the path is valid:
-
-  - **Correct Example:**
+  - **Correct Example:**  
     `"D:\SteamLibrary\steamapps\common\Zedfest\KevinSpel\Binaries\Win64\Zedfest.exe"`
-  - **Incorrect Example:**
+  - **Incorrect Example:**  
     `"D:\SteamLibrary\steamapps\common\Zedfest\KevinSpel.exe"`
 
-- **Steam App ID**
+- **Steam App ID**  
   If using the Steam launch method (as opposed to the executable method), enter the Steam App ID.
 
-- **Window Title Override String**
+- **Window Title Override String**  
   Specify the string for the launched game's window label.
 
 After configuring these settings, you can proceed to configure the mod list.
 
 ###
-
-3. **Configure the mod list:**
+3. **Configure the mod list:**  
    You can include any number of mod entries in the list.
+  
 
-```
- {
+  ```
+   {
+      {
+      "mod_name": "MapKit",
+      "pak_dir_structure": "~mods",
+      "mod_name_dir_type": "Mods",
+      "use_mod_name_dir_name_override": false,
+      "mod_name_dir_name_override": null,
+      "pak_chunk_num": null,
+      "packing_type": "repak",
+      "compression_type": "Zlib",
+      "is_enabled": true,
+      "manually_specified_assets": {
+        "asset_paths": [],
+        "tree_paths": []
+      }
+    },
     {
-    "mod_name": "MapKit",
-    "pak_dir_structure": "~mods",
-    "mod_name_dir_type": "Mods",
-    "use_mod_name_dir_name_override": false,
-    "mod_name_dir_name_override": null,
-    "pak_chunk_num": null,
-    "packing_type": "repak",
-    "compression_type": "Zlib",
-    "is_enabled": true,
-    "file_includes": {
-      "asset_paths": [],
-      "tree_paths": []
+      "mod_name": "ExampleLevel",
+      "pak_dir_structure": "~mods",
+      "mod_name_dir_type": "Mods",
+      "use_mod_name_dir_name_override": false,
+      "mod_name_dir_name_override": null,
+      "pak_chunk_num": null,
+      "packing_type": "repak",
+      "compression_type": "Zlib",
+      "is_enabled": true,
+      "manually_specified_assets": {
+        "asset_paths": [],
+        "tree_paths": []
+      }
     }
-  },
-  {
-    "mod_name": "ExampleLevel",
-    "pak_dir_structure": "~mods",
-    "mod_name_dir_type": "Mods",
-    "use_mod_name_dir_name_override": false,
-    "mod_name_dir_name_override": null,
-    "pak_chunk_num": null,
-    "packing_type": "repak",
-    "compression_type": "Zlib",
-    "is_enabled": true,
-    "file_includes": {
-      "asset_paths": [],
-      "tree_paths": []
-    }
-  }
-```
+  ```
 
 ### Configuration Details
 
@@ -108,7 +109,6 @@ After configuring these settings, you can proceed to configure the mod list.
 - **`pak_dir_structure`**: Specifies the folder structure within the game's `Content/Paks/` directory. Common values are `~mods` and `LogicMods`.
 
 - **`mod_name_dir_type`**: Determines the built-in auto-include directory.
-
   - `Mods` will include files from `Game/Mods/ModName/`.
   - `CustomContent` will include files from `Game/CustomContent/ModName/`.
 
@@ -119,7 +119,6 @@ After configuring these settings, you can proceed to configure the mod list.
 - **`pak_chunk_num`**: Used only if you are using the engine packing enum. Set this to match what you configured inside Unreal Engine.
 
 - **`packing_type`**: Specifies the packing method:
-
   - `repak` for general use.
   - `engine` for iostore games.
   - `loose` for games using loose file modding.
@@ -129,7 +128,7 @@ After configuring these settings, you can proceed to configure the mod list.
 
 - **`is_enabled`**: Set to `false` to disable packaging of the mod and uninstall it if it exists in the specified mod directory.
 
-- **`file_includes`**: Lists additional assets to include:
+- **`manually_specified_assets`**: Lists additional assets to include:
   - **`asset_paths`**: Direct paths to specific files (e.g., `test.uasset`, `test.uexp`).
   - **`tree_paths`**: Include all files in subfolders within specified directories.
 
@@ -138,11 +137,10 @@ After configuring these settings, you can proceed to configure the mod list.
 - For JSON paths, use forward slashes (`/`) instead of backslashes (`\`). Make sure your paths match this format when editing the JSON file.
 - [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
 - [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
-- [Guifier (Online Config Editor)](https://guifier.com/json/)
 
 ###
 
-4. **Run the application:**
+4. **Run the application:**  
    Once everything is set up, you can proceed to the [Running Steps](#running-steps).
 
 <h2 id="running-steps">🏃 Running Steps:</h2>
@@ -169,39 +167,17 @@ unreal_auto_mod.exe test_mods_all --settings_json_path <settings_json_path>
 unreal_auto_mod.exe settings.json test_mods --settings_json_path <settings_json_path> --mod_names [<mod_name> ...]
 ```
 
-### 📢 Join the Discord
-If you have any problems, suggestions, or just want to chat, feel free to join the [Discord](https://discord.gg/EvUuAD4QvS)
+<h2>💻 References</h2>
 
+* [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
+* [Enums Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/enums.md)
+* [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
+* [Youtube Example Setup Reference](https://www.youtube.com/watch?v=6MUkUFhumo8)
 
-### 💡 Suggestions
-If you have ideas or suggestions for the tool, feel free to open a [suggestions issue](https://github.com/Mythical-Github/unreal_auto_mod/issues) or mention it in the Discord.
+<h2>💻 Built with</h2>
 
+* Python
 
-### 🐞 Bug Reports
-If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Mythical-Github/unreal_auto_mod/issues).
-When creating an issue, please provide as much information as possible, including:
-- Steps to reproduce the issue
-- What you expect to happen, versus what is happening
-- Any error messages or logs
-- Your system operating system
+<h2>🛡️ License:</h2>
 
-
-### 🛠️ Contributing
-Contributions are always appreciated, but please keep in mind the following:
-- Before coding new features, try to make an issue to see if the idea/implementation needs any tweaking or is out of scope.
-- Try to make sure your new code passes lint checks from ruff; this isn't super strict, but preferred.
-
-### 💻 References
-
-  - [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
-  - [Enums Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/enums.md)
-  - [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
-  - [Youtube Example Setup Reference](https://www.youtube.com/watch?v=6MUkUFhumo8)
-
-### 💻 Built with
-
-  - Python
-
-### 🛡️ License:
-
-  [![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)
+[![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)
