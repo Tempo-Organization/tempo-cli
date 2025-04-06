@@ -1,3 +1,9 @@
+## 1.10.5-dev.14287600343 (2025-04-06)
+
+### Fix
+
+- **releases.yml**: attempt to fix dev versioning
+
 ## 1.10.5-dev.14287369479 (2025-04-06)
 
 ### Fix
