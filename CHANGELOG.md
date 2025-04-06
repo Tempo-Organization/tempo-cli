@@ -1,3 +1,9 @@
+## 1.10.5-dev.14287369479 (2025-04-06)
+
+### Fix
+
+- **releases.yml**: testing bumping as dev release
+
 ## 1.10.4 (2025-04-06)
 
 ### Fix
