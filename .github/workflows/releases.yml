@@ -132,6 +132,7 @@ jobs:
         with:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           changelog_increment_filename: body.md
+          devrelease: ${{ github.run_id }}
 
       - name: Upload changelog body.md
         uses: actions/upload-artifact@v4

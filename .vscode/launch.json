@@ -35,7 +35,9 @@
     },
     {
       "args": [
-        "push_to_repo"
+        "push",
+        "--devrelease",
+        "${GITHUB_RUN_ID}"
       ],
       "console": "externalTerminal",
       "module": "py_project_dev_tools",
