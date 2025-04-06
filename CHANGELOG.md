@@ -1,3 +1,9 @@
+## 1.10.5-dev.14287676403 (2025-04-06)
+
+### Fix
+
+- **releases.yaml**: fix it pushing to latest not pre-release
+
 ## 1.10.5-dev.14287600343 (2025-04-06)
 
 ### Fix
