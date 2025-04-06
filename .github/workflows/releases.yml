@@ -117,11 +117,8 @@ jobs:
           name: unreal_auto_mod_i686-pc-windows-msvc
           path: dist/unreal_auto_mod_i686-pc-windows-msvc.zip
 
-  bump_version_then_setup_wheels_and_source_distributions:
+  bump_version:
     runs-on: ubuntu-latest
-    outputs:
-      wheel_artifact_name: ${{ steps.find_wheel.outputs.artifact_name }}
-      sdist_artifact_name: ${{ steps.find_sdist.outputs.artifact_name }}
     needs: [setup_ubuntu_x86_64, setup_ubuntu_aarch64, setup_windows_x86_64, setup_windows_i686]
     steps:
       - name: Check out
@@ -142,6 +139,16 @@ jobs:
           name: body.md
           path: body.md
 
+  setup_wheels_and_source_distributions:
+      runs-on: ubuntu-latest
+      outputs:
+        wheel_artifact_name: ${{ steps.find_wheel.outputs.artifact_name }}
+        sdist_artifact_name: ${{ steps.find_sdist.outputs.artifact_name }}
+      needs: [bump_version]
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
         with:
@@ -154,14 +161,8 @@ jobs:
       - name: Build Wheels and Source Distributions
         run: hatch build
 
-      # - name: Twine check
-      #   run: hatch run uvx twine check dist/*
-
       - name: Publish Wheels and Source Distributions
         run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
-
-      # - name: Publish Wheels and Source Distributions
-      #   run: hatch run uvx twine upload --repository-url https://test.pypi.org/legacy/ dist/* --user "__token__" --password "${{ secrets.PYPI_PASSWORD }}" --verbose
 
       - name: Find wheel file
         id: find_wheel
@@ -195,7 +196,7 @@ jobs:
 
   setup_github_releases:
     runs-on: ubuntu-latest
-    needs: [bump_version_then_setup_wheels_and_source_distributions]
+    needs: [setup_wheels_and_source_distributions]
     steps:      
       - name: Download ubuntu_x86_64_artifact
         uses: actions/download-artifact@v4
@@ -230,19 +231,19 @@ jobs:
       - name: Download python_wheel_artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.wheel_artifact_name }}
+          name: ${{ needs.setup_wheels_and_source_distributions.outputs.wheel_artifact_name }}
           path: ./dist
   
       - name: Download python_sdist_artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}
+          name: ${{ needs.setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}
           path: ./dist
 
       - name: Extract version from sdist filename
         id: extract_version
         run: |
-          FILENAME="${{ needs.bump_version_then_setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}"
+          FILENAME="${{ needs.setup_wheels_and_source_distributions.outputs.sdist_artifact_name }}"
           VERSION=$(echo "$FILENAME" | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
   
@@ -276,11 +277,6 @@ jobs:
       - name: List files in dist
         run: ls -R dist
 
-      - name: Set up release files list
-        run: |
-          # List all files in dist/ and set them as an environment variable
-          echo "FILES=$(find dist -type f | tr '\n' ' ')" >> $GITHUB_ENV
-      
       - name: Download body.md artifact
         uses: actions/download-artifact@v4
         with:
@@ -291,7 +287,10 @@ jobs:
         with:
           body_path: "body.md"
           tag_name: ${{ steps.extract_version.outputs.version }}
-          files: ${{ env.FILES }}
+          files: |
+            dist/*.zip
+            dist/*.whl
+            dist/*.tar.gz
+            dist/*.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILES: ${{ env.FILES }}
