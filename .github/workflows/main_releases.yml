@@ -6,36 +6,32 @@ on:
       - main
 
 jobs:
-  setup_ubuntu_x86_64:
+  check-bump:
     runs-on: ubuntu-latest
+    outputs:
+      bump: ${{ steps.bump_check.outputs.bump }}
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check for bump in commit message
+      - name: Check for 'bump' in commit message
         id: bump_check
         run: |
-          echo "COMMIT_MSG<<EOF" >> $GITHUB_ENV
-          git log -1 --pretty=%B >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-          echo "Checking for 'bump' in commit message..."
-          if git log -1 --pretty=%B | grep -iq '\bbump\b'; then
+          COMMIT_MSG="$(git log -1 --pretty=%B)"
+          echo "Commit message: $COMMIT_MSG"
+          if echo "$COMMIT_MSG" | grep -iq '\bbump\b'; then
             echo "bump=true" >> $GITHUB_OUTPUT
           else
             echo "bump=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Step that runs only if bump is NOT in commit message
-        if: steps.bump_check.outputs.bump != 'true'
-        run: echo "This step runs because the commit message does NOT contain 'bump'."
-
-      - name: Always runs
-        run: echo "This always runs."
-
-      - name: Step that runs only if bump IS in commit message
-        if: steps.bump_check.outputs.bump == 'true'
-        run: echo "This step runs because the commit message contains 'bump'."
-
+  setup_ubuntu_x86_64:
+    needs: check-bump
+    if: needs.check-bump.outputs.bump != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -59,6 +55,8 @@ jobs:
           path: dist/unreal_auto_mod_x86_64-unknown-linux-gnu.zip
 
   setup_ubuntu_aarch64:
+    needs: check-bump
+    if: needs.check-bump.outputs.bump != 'true'
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout repository
@@ -86,6 +84,8 @@ jobs:
           path: dist/unreal_auto_mod_aarch64-unknown-linux-gnu.zip
 
   setup_windows_x86_64:
+    needs: check-bump
+    if: needs.check-bump.outputs.bump != 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -113,6 +113,8 @@ jobs:
           path: dist/unreal_auto_mod_x86_64-pc-windows-msvc.zip
 
   setup_windows_i686:
+    needs: check-bump
+    if: needs.check-bump.outputs.bump != 'true'
     runs-on: windows-latest
     steps:
       - name: Checkout repository
