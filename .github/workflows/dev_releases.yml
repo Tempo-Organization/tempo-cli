@@ -2,7 +2,7 @@ name: dev_releases
 
 on:
   schedule:
-    - cron: '25 0 * * *'
+    - cron: '0 2 * * *'
 
 jobs:
   setup_ubuntu_x86_64:
