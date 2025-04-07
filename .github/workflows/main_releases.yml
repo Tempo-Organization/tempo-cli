@@ -182,7 +182,7 @@ jobs:
       steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
         with:
@@ -196,7 +196,7 @@ jobs:
         run: hatch build
 
       - name: Publish Wheels and Source Distributions
-        run: hatch publish --repo "test" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+        run: hatch publish --repo "main" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
 
       - name: Find wheel file
         id: find_wheel
@@ -206,7 +206,7 @@ jobs:
           ARTIFACT_NAME="${WHEEL_NAME%.whl}"
           echo "wheel_path=$WHEEL_PATH" >> "$GITHUB_OUTPUT"
           echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
-      
+
       - name: Upload python wheel artifact
         uses: actions/upload-artifact@v4
         with:
@@ -221,7 +221,7 @@ jobs:
           ARTIFACT_NAME="${SDIST_NAME%.tar.gz}"
           echo "sdist_path=$SDIST_PATH" >> "$GITHUB_OUTPUT"
           echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
-        
+
       - name: Upload python sdist artifact
         uses: actions/upload-artifact@v4
         with:
@@ -231,7 +231,7 @@ jobs:
   setup_github_releases:
     runs-on: ubuntu-latest
     needs: [setup_wheels_and_source_distributions]
-    steps:      
+    steps:
       - name: Download ubuntu_x86_64_artifact
         uses: actions/download-artifact@v4
         with:
@@ -267,7 +267,7 @@ jobs:
         with:
           name: ${{ needs.setup_wheels_and_source_distributions.outputs.wheel_artifact_name }}
           path: ./dist
-  
+
       - name: Download python_sdist_artifact
         uses: actions/download-artifact@v4
         with:
@@ -286,13 +286,13 @@ jobs:
           VERSION=$(cat version.txt | grep -oP 'Revision: \K.*')  # Extract the version number after "Revision: "
           echo "Version extracted: $VERSION"
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
-  
+
       - name: Rename artifacts with version suffix
         run: |
           VERSION="${{ steps.extract_version.outputs.version }}"
-    
+
           cd dist
-    
+
           for FILE in unreal_auto_mod*.zip; do
             if [[ "$FILE" != *"$VERSION"* ]]; then
               BASE="${FILE%.zip}"
@@ -305,7 +305,7 @@ jobs:
       - name: Generate SHA256 hashes for each file
         run: |
           cd dist
-          
+
           # For each file in dist, generate its SHA256 hash and create a .sha256 file
           for FILE in *; do
             if [[ -f "$FILE" ]]; then
@@ -323,7 +323,7 @@ jobs:
           name: body.md
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body_path: "body.md"
           tag_name: ${{ steps.extract_version.outputs.version }}

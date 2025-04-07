@@ -194,3 +194,4 @@ assets/base/unreal_auto_mod_background.exe
 /assets/base/presets/default/mod_packaging/persistent_files/TestMod
 *.pyc
 *.log
+requirements.txt
