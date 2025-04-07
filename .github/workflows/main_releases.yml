@@ -158,10 +158,9 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
         with:
-          ref: 'refs/heads/main'
-        with:
           token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           fetch-depth: 0
+          ref: 'refs/heads/main'
 
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
