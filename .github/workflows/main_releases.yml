@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
 
       - name: Check for 'bump' in commit message
         id: bump_check
@@ -32,6 +34,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -61,6 +65,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
 
       - name: Setup Python (arm64)
         uses: actions/setup-python@v5
@@ -90,6 +96,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -119,6 +127,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
 
       - name: Setup Python (x86)
         uses: actions/setup-python@v5
@@ -147,6 +157,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
         with:
           token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           fetch-depth: 0
@@ -182,6 +194,8 @@ jobs:
       steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/main'
         
       - name: Setup Python (x64)
         uses: actions/setup-python@v5

@@ -5,14 +5,12 @@
 # - dynaconf
 # - psutil
 # - pygetwindow
-# - pyjson5
-# - pywin32; sys_platform == "win32"
 # - pywinctl
 # - requests
 # - rich
 # - screeninfo
 # - tomlkit
-# - trogon@ git+https://github.com/Mythical-Github/trogon
+# - trogon
 #
 
 certifi==2025.1.31
@@ -48,15 +46,12 @@ pygetwindow==0.0.9
     # via hatch.envs.default
 pygments==2.19.1
     # via rich
-pyjson5==1.6.8
-    # via hatch.envs.default
 pymonctl==0.92
     # via pywinctl
 pyrect==0.2.0
     # via pygetwindow
 pywin32==310
     # via
-    #   hatch.envs.default
     #   pymonctl
     #   pywinbox
     #   pywinctl
@@ -76,7 +71,7 @@ textual==3.0.0
     # via trogon
 tomlkit==0.13.2
     # via hatch.envs.default
-trogon @ git+https://github.com/Mythical-Github/trogon@56aebfa9feb5730006c30aa2aceda691d74ada4b
+trogon==0.6.0
     # via hatch.envs.default
 typing-extensions==4.13.0
     # via

@@ -2,15 +2,17 @@ name: dev_releases
 
 on:
   schedule:
-    - cron: '10 23 * * *'
+    - cron: '20 0 * * *'
 
 jobs:
   setup_ubuntu_x86_64:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/main'  
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -34,11 +36,13 @@ jobs:
           path: dist/unreal_auto_mod_x86_64-unknown-linux-gnu.zip
 
   setup_ubuntu_aarch64:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/main' 
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (arm64)
         uses: actions/setup-python@v5
@@ -62,11 +66,13 @@ jobs:
           path: dist/unreal_auto_mod_aarch64-unknown-linux-gnu.zip
 
   setup_windows_x86_64:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/main' 
     runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -90,11 +96,13 @@ jobs:
           path: dist/unreal_auto_mod_x86_64-pc-windows-msvc.zip
 
   setup_windows_i686:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/main' 
     runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (x86)
         uses: actions/setup-python@v5
@@ -126,6 +134,7 @@ jobs:
         with:
           token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           fetch-depth: 0
+          ref: 'refs/heads/dev'
 
       - name: Create bump and changelog
         uses: commitizen-tools/commitizen-action@master
@@ -161,6 +170,8 @@ jobs:
       steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
         
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
