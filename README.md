@@ -1,4 +1,4 @@
-<h1 id="title" align="left">UnrealAutoMod</h1>
+<h1 id="title" align="left">Tempo</h1>
 
 NOTICE: The below documentation is slightly out of date, but mostly valid. It will be updated soon.  <br>
 
@@ -154,19 +154,19 @@ The program itself, supports various command line parameters.
 Here are some examples of how you would use it.
 
 ```
-unreal_auto_mod.exe -h
+tempo.exe -h
 ```
 
 ```
-unreal_auto_mod.exe command -h
+tempo.exe command -h
 ```
 
 ```
-unreal_auto_mod.exe test_mods_all --settings_json_path <settings_json_path>
+tempo.exe test_mods_all --settings_json_path <settings_json_path>
 ```
 
 ```
-unreal_auto_mod.exe settings.json test_mods --settings_json_path <settings_json_path> --mod_names [<mod_name> ...]
+tempo.exe settings.json test_mods --settings_json_path <settings_json_path> --mod_names [<mod_name> ...]
 ```
 
 <h2>💻 References</h2>

@@ -5,9 +5,9 @@ cd "%~dp0"
 
 cd ..
 
-taskkill /f /im "unreal_auto_mod.exe" > nul 2>&1
+taskkill /f /im "tempo.exe" > nul 2>&1
 
-set exe_file="%CD%\unreal_auto_mod.exe"
+set exe_file="%CD%\tempo.exe"
 set settings_json="%CD%\presets\default\settings.json"
 set arg=generate_mods_all
 

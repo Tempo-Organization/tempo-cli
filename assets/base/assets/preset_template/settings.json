@@ -49,7 +49,7 @@
   },
   "general_info": {
     "override_default_working_dir": true,
-    "window_title": "unreal_auto_mod automation script",
+    "window_title": "tempo automation script",
     "working_dir": "C:/Users/Mythical/Downloads/Output"
   },
   "git_info": {

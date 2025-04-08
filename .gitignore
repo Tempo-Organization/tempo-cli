@@ -168,22 +168,22 @@ src/shoal/assets/plutonium_updater/plutonium-updater.exe
 
 
 /assets/game_presets/kingdom_hearts_iii/mod_packaging/persistent_files
-assets/base/UnrealAutoModCLI.exe
-assets/base/UnrealAutoMod.zip
+assets/base/tempoCLI.exe
+assets/base/tempo.zip
 /assets/base/working_dir
 /assets/build_scripts/build
 /assets/build_scripts/dist
 assets/build_scripts/__main__.spec
 /src/working_dir
 /assets/base/logs
-/src/unreal_auto_mod/working_dir
+/src/tempo/working_dir
 /dist
 /build
 /*.spec
 /assets/dev_tools/logs
-assets/base/unreal_auto_mod.exe
+assets/base/tempo.exe
 /src/logs
-assets/base/unreal_auto_mod_background.exe
+assets/base/tempo_background.exe
 /assets/base/default/mod_packaging/releases/ExampleLevel/mod_files
 /assets/base/default/mod_packaging/releases/MapKit/mod_files
 /assets/base/default/mod_packaging/releases/ModLoader_P/mod_files

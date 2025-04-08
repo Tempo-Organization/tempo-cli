@@ -1,5 +1,5 @@
-site_name: UnrealAutoMod
-site_url: https://mythical-github.github.io/unreal_auto_mod/
+site_name: Tempo
+site_url: https://tempo-organization.github.io/tempo/
 
 theme:
   name: material
@@ -58,14 +58,14 @@ nav:
 extra_css:
   - stylesheets/extra.css
 
-repo_url: https://github.com/Mythical-Github/unreal_auto_mod
-repo_name: unreal_auto_mod
+repo_url: https://github.com/Tempo-Organization/tempo
+repo_name: tempo
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Mythical-Github/unreal_auto_mod
-      name: UnrealAutoMod on Github
+      link: https://github.com/Tempo-Organization/tempo
+      name: Tempo on Github
     - icon: fontawesome/brands/discord
       link: https://discord.gg/EvUuAD4QvS
-      name: UnrealAutoMod Discord Server
+      name: Tempo Discord Server

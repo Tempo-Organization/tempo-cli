@@ -1,10 +1,28 @@
-## 1.11.0-dev.14288112597 (2025-04-06)
+## Unreleased
 
 ### Fix
 
-- **releases.yaml**: attempting to fix ci/cd issues
-
-## 1.11.0-dev.14288064426 (2025-04-06)
+- **README.md**: notice
+- **whole-repo**: merging fixes
+- **dev_releases.yml**: schedule test
+- **releases.yml**: testing ci/cd
+- **dev_releases.yml**: testing fixing schedule
+- **main_releases.yml**: attempt to fix it using pywin32 at wrong times
+- **releases.yml**: syntax fix
+- **releases.yaml**: attempt to fix incorrect firing times
+- **dev_releases.yml**: cron testing
+- **dev_releases.yml**: cron testing
+- **dev_releases.yml**: fix it firing for main
+- **main_releases.yml**: fix extra building
+- **main_releases.yml**: fix attempt for cyclic actions
+- **main_releases.yaml**: testing automatic release making on merge
+- **main_releases.yml**: attempt to fix using non test pypi
+- **main_releases.yml**: attempt to mix main_releases.yml
+- **releases.yml**: attempt to fix actions
+- **main_releases.yml**: attempt to fix firing
+- **main_releases.yml**: attempt to fix firing off at wrong time
+- **releases.yml**: attempting to fix on issues with ymls
+- **main_releases.yml**: attempt to fix firing at wrong time
 
 ## v1.9.0 (2024-11-19)
 
@@ -16,132 +34,35 @@
 
 ## v1.6.0 (2024-11-04)
 
-## 1.11.0-dev.14288019020 (2025-04-06)
-
 ### Feat
 
 - **main_releases.yml**: adds a main releases.yml
-
-### Fix
-
-- **releases.yml**: attempting to fix missing files upload
-
-## 1.10.5-dev.14287915154 (2025-04-06)
-
-### Fix
-
-- **releases.yaml**: removed linting
-
-## 1.10.5-dev.14287676403 (2025-04-06)
-
-### Fix
-
-- **releases.yaml**: fix it pushing to latest not pre-release
-
-## 1.10.5-dev.14287600343 (2025-04-06)
-
-### Fix
-
-- **releases.yml**: attempt to fix dev versioning
-
-## 1.10.5-dev.14287369479 (2025-04-06)
-
-### Fix
-
-- **releases.yml**: testing bumping as dev release
-
-## 1.10.4 (2025-04-06)
-
-### Fix
-
-- **releases.yml**: changed token being passesd
-
-## 1.10.3 (2025-04-06)
-
-### Fix
-
-- **releases.yml**: test fixing passing the files for release
-
-## 1.10.2 (2025-04-06)
-
-### Fix
-
-- **releases.yml**: fix changelog body.md
-
-## 1.10.1 (2025-04-05)
-
-### Fix
-
-- **releases.yml**: fix version issue
-
-## 1.10.0 (2025-04-05)
-
-### Feat
-
 - **releases.yaml**: testing publishing releases
-
-## 1.9.7 (2025-04-05)
-
-### Fix
-
-- **releases.yml**: testing creating hash files
-
-## 1.9.6 (2025-04-05)
-
-### Fix
-
-- **releases.yaml**: fixing naming convention
-
-## 1.9.5 (2025-04-05)
-
-### Fix
-
-- **releases.yml**: testing auto rename with version
-
-## 1.9.4 (2025-04-05)
-
-### Fix
-
-- **releases.yaml**: Testing whl and sdist artifacts
-
-## 1.9.3 (2025-04-05)
-
-### Fix
-
-- **py_project_dev_tools**: reverted to external repo
-
-## 1.9.2 (2025-04-05)
-
-### Fix
-
-- **releases.yaml**: fix naming issue
-
-## 1.9.1 (2025-04-05)
-
-### Fix
-
-- **releases.yaml**: testing using dist dir with list all
-
-## 1.9.0 (2025-04-05)
-
-### Feat
-
 - **releases.yml**: testing artifact code
-
-### Fix
-
-- **releases.yaml**: update artifact name errors
-
-## 1.8.0 (2025-04-04)
-
-### Feat
-
 - **releases.yml**: Testing commitizen bump
 - **py_project_dev_tools**: Changing from external to internal
 - testing commitizen with pre-commit
 
 ### Fix
 
+- **releases.yaml**: attempting to fix ci/cd issues
+- **releases.yml**: attempting to fix missing files upload
+- **releases.yaml**: removed linting
+- **releases.yaml**: fix it pushing to latest not pre-release
+- **releases.yml**: attempt to fix dev versioning
+- **releases.yml**: testing bumping as dev release
+- **releases.yml**: changed token being passesd
+- **releases.yml**: test fixing passing the files for release
+- **releases.yml**: fix changelog body.md
+- **releases.yml**: fix version issue
+- **releases.yml**: testing creating hash files
+- **releases.yaml**: fixing naming convention
+- **releases.yml**: testing auto rename with version
+- **releases.yaml**: Testing whl and sdist artifacts
+- **py_project_dev_tools**: reverted to external repo
+- **releases.yaml**: fix naming issue
+- **releases.yaml**: testing using dist dir with list all
+- **releases.yaml**: update artifact name errors
 - **pyproject.toml**: changes version provider
 - **pyproject.toml**: fixed issues with missing module
 

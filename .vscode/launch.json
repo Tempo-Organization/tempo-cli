@@ -13,7 +13,6 @@
     {
       "args": [
         "commit",
-        "--retry",
         "--all",
         "--",
         "-s"
@@ -81,7 +80,7 @@
         "tui"
       ],
       "console": "externalTerminal",
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "tui",
       "request": "launch",
       "subProcess": true,
@@ -100,7 +99,7 @@
         "--mod_names",
         "ExampleLevel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "test_mods",
       "request": "launch",
       "type": "debugpy"
@@ -111,7 +110,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "test_mods_all",
       "request": "launch",
       "type": "debugpy"
@@ -133,7 +132,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "full_run",
       "request": "launch",
       "type": "debugpy"
@@ -149,7 +148,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "full_run_all",
       "request": "launch",
       "type": "debugpy"
@@ -167,7 +166,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_mods",
       "request": "launch",
       "type": "debugpy"
@@ -179,7 +178,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_mods_all",
       "request": "launch",
       "type": "debugpy"
@@ -190,7 +189,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_game_file_list_json",
       "request": "launch",
       "type": "debugpy"
@@ -201,7 +200,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "cleanup_game",
       "request": "launch",
       "type": "debugpy"
@@ -212,7 +211,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "cleanup_full",
       "request": "launch",
       "type": "debugpy"
@@ -223,7 +222,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "cleanup_cooked",
       "request": "launch",
       "type": "debugpy"
@@ -234,7 +233,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "cleanup_build",
       "request": "launch",
       "type": "debugpy"
@@ -245,7 +244,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "run_game",
       "request": "launch",
       "type": "debugpy"
@@ -256,7 +255,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "run_engine",
       "request": "launch",
       "type": "debugpy"
@@ -268,7 +267,7 @@
       "args": [
         "--help"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "help",
       "request": "launch",
       "type": "debugpy"
@@ -277,7 +276,7 @@
       "args": [
         "--version"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "version",
       "request": "launch",
       "type": "debugpy"
@@ -288,7 +287,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "build",
       "request": "launch",
       "type": "debugpy"
@@ -300,7 +299,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "cook",
       "request": "launch",
       "type": "debugpy"
@@ -312,7 +311,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "package",
       "request": "launch",
       "type": "debugpy"
@@ -323,7 +322,7 @@
         "${workspaceFolder}/dist/test_file_list.json",
         "${workspaceFolder}/assets/images"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "cleanup_from_file_list",
       "request": "launch",
       "type": "debugpy"
@@ -334,7 +333,7 @@
         "${workspaceFolder}/assets/images",
         "${workspaceFolder}/dist/test_file_list.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_file_list",
       "request": "launch",
       "type": "debugpy"
@@ -346,7 +345,7 @@
         "${workspaceFolder}/assets/base/presets/default/settings.json",
         "ExampleLevel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "enable_mods",
       "request": "launch",
       "type": "debugpy"
@@ -360,7 +359,7 @@
         "MapKit",
         "ExampleLevel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "disable_mods",
       "request": "launch",
       "type": "debugpy"
@@ -375,7 +374,7 @@
         "TestNewModName",
         "LogicMods"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_mod",
       "request": "launch",
       "type": "debugpy"
@@ -388,7 +387,7 @@
         "--mod_names",
         "ExampleLevel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_mods",
       "request": "launch",
       "type": "debugpy"
@@ -399,7 +398,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "resync_dir_with_repo",
       "request": "launch",
       "type": "debugpy"
@@ -410,7 +409,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "close_game",
       "request": "launch",
       "type": "debugpy"
@@ -421,7 +420,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "close_engine",
       "request": "launch",
       "type": "debugpy"
@@ -431,7 +430,7 @@
         "generate_uproject",
         "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_uproject",
       "request": "launch",
       "type": "debugpy"
@@ -446,7 +445,7 @@
         "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject",
         "test_module_name"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_module_to_descriptor",
       "request": "launch",
       "type": "debugpy"
@@ -457,7 +456,7 @@
         "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject",
         "test_plugin_name"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_plugin_to_descriptor",
       "request": "launch",
       "type": "debugpy"
@@ -469,7 +468,7 @@
         "test_module_name",
         "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_modules_from_descriptor",
       "request": "launch",
       "type": "debugpy"
@@ -481,7 +480,7 @@
         "test_plugin_name",
         "${workspaceFolder}/dist/TestingGeneratedUproject/Testing.uproject"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_plugins_from_descriptor",
       "request": "launch",
       "type": "debugpy"
@@ -492,7 +491,7 @@
         "${workspaceFolder}/dist/TestingGeneratedUproject/Plugins",
         "test_plugin_name"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_uplugin",
       "request": "launch",
       "type": "debugpy"
@@ -503,7 +502,7 @@
         "--uplugin_paths",
         "${workspaceFolder}/dist/TestingGeneratedUproject/Plugins/test_plugin_name/test_plugin_name.uplugin"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_uplugins",
       "request": "launch",
       "type": "debugpy"
@@ -524,7 +523,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_mod_releases",
       "request": "launch",
       "type": "debugpy"
@@ -539,7 +538,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_mod_releases_all",
       "request": "launch",
       "type": "debugpy"
@@ -550,7 +549,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "resave_packages_and_fix_up_redirectors",
       "request": "launch",
       "type": "debugpy"
@@ -561,7 +560,7 @@
         "--exe_names",
         "Zedfest.exe"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "close_programs",
       "request": "launch",
       "type": "debugpy"
@@ -571,7 +570,7 @@
         "install_fmodel",
         "${workspaceFolder}/dist/fmodel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "install_fmodel",
       "request": "launch",
       "type": "debugpy"
@@ -581,7 +580,7 @@
         "install_umodel",
         "${workspaceFolder}/dist/umodel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "install_umodel",
       "request": "launch",
       "type": "debugpy"
@@ -591,7 +590,7 @@
         "install_stove",
         "${workspaceFolder}/dist/stove"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "install_stove",
       "request": "launch",
       "type": "debugpy"
@@ -601,7 +600,7 @@
         "install_spaghetti",
         "${workspaceFolder}/dist/spaghetti"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "install_spaghetti",
       "request": "launch",
       "type": "debugpy"
@@ -611,7 +610,7 @@
         "install_uasset_gui",
         "${workspaceFolder}/dist/uasset_gui"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "install_uasset_gui",
       "request": "launch",
       "type": "debugpy"
@@ -621,7 +620,7 @@
         "install_kismet_analyzer",
         "${workspaceFolder}/dist/kismet_analyzer"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "install_kismet_analyzer",
       "request": "launch",
       "type": "debugpy"
@@ -643,7 +642,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "multichained_command_test",
       "request": "launch",
       "type": "debugpy"
@@ -655,7 +654,7 @@
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "generate_wrapper_test",
       "request": "launch",
       "type": "debugpy"
@@ -668,7 +667,7 @@
         "--file_paths",
         "C:/Users/Mythical/Desktop/12345.txt"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "create_collection",
       "request": "launch",
       "type": "debugpy"
@@ -681,7 +680,7 @@
         "--new_name",
         "new_name_test"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "rename_collection",
       "request": "launch",
       "type": "debugpy"
@@ -692,7 +691,7 @@
         "--collection_path",
         "${workspaceFolder}/dist/testing.collection"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "delete_collection",
       "request": "launch",
       "type": "debugpy"
@@ -703,7 +702,7 @@
         "--collection_path",
         "${workspaceFolder}/dist/testing.collection"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "disable_collection",
       "request": "launch",
       "type": "debugpy"
@@ -714,7 +713,7 @@
         "--collection_path",
         "${workspaceFolder}/dist/testing.collection"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "set_guid_from_collection_path",
       "request": "launch",
       "type": "debugpy"
@@ -725,7 +724,7 @@
         "--collection_path",
         "${workspaceFolder}/dist/testing.collection"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "set_parent_guid_from_collection_path",
       "request": "launch",
       "type": "debugpy"
@@ -738,7 +737,7 @@
         "--file_version",
         "1"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "set_file_version_from_collection_path",
       "request": "launch",
       "type": "debugpy"
@@ -751,7 +750,7 @@
         "--collection_type",
         "Dynamic"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "set_collection_type_from_collection_path",
       "request": "launch",
       "type": "debugpy"
@@ -774,7 +773,7 @@
         "--unreal_asset_paths",
         "test/path/two/two.two"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_content_lines_to_collection",
       "request": "launch",
       "type": "debugpy"
@@ -797,7 +796,7 @@
         "--unreal_asset_paths",
         "test/path/two/two.two"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_content_lines_from_collection",
       "request": "launch",
       "type": "debugpy"
@@ -816,7 +815,7 @@
         "--alpha",
         "0.4"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "set_color_from_collection_path",
       "request": "launch",
       "type": "debugpy"
@@ -831,7 +830,7 @@
         "--mod_name",
         "ExampleLevel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_collections_to_mod_entry",
       "request": "launch",
       "type": "debugpy"
@@ -846,7 +845,7 @@
         "--mod_name",
         "ExampleLevel"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_collections_from_mod_entry",
       "request": "launch",
       "type": "debugpy"
@@ -863,7 +862,7 @@
         "--tags",
         "test_tag_three"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_meta_data_tags_for_asset_registry_to_unreal_ini",
       "request": "launch",
       "type": "debugpy"
@@ -880,7 +879,7 @@
         "--tags",
         "test_tag_three"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_meta_data_tags_for_asset_registry_from_unreal_ini",
       "request": "launch",
       "type": "debugpy"
@@ -893,7 +892,7 @@
         "--zip",
         "${workspaceFolder}/dist/zip_dir_tree_example.zip"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "zip",
       "request": "launch",
       "type": "debugpy"
@@ -906,7 +905,7 @@
         "--output_directory",
         "${workspaceFolder}/dist/unzip_test"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "unzip",
       "request": "launch",
       "type": "debugpy"
@@ -919,7 +918,7 @@
         "--output_path",
         "${workspaceFolder}/dist/zip_dir_tree_example_moved.zip"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "move",
       "request": "launch",
       "type": "debugpy"
@@ -932,7 +931,7 @@
         "--output_path",
         "${workspaceFolder}/dist/zip_dir_tree_example.zip"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "copy",
       "request": "launch",
       "type": "debugpy"
@@ -945,7 +944,7 @@
         "--output_path",
         "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "symlink",
       "request": "launch",
       "type": "debugpy"
@@ -958,7 +957,7 @@
         "--input_paths",
         "${workspaceFolder}/dist/zip_dir_tree_example_symlink.zip"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "delete",
       "request": "launch",
       "type": "debugpy"
@@ -973,7 +972,7 @@
         "--value",
         "test_value"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_to_json",
       "request": "launch",
       "type": "debugpy"
@@ -986,7 +985,7 @@
         "--key",
         "test_key"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_from_json",
       "request": "launch",
       "type": "debugpy"
@@ -1001,7 +1000,7 @@
         "--value",
         "test_value"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "add_to_toml",
       "request": "launch",
       "type": "debugpy"
@@ -1014,7 +1013,7 @@
         "--key",
         "test_key"
       ],
-      "module": "unreal_auto_mod",
+      "module": "tempo",
       "name": "remove_from_toml",
       "request": "launch",
       "type": "debugpy"

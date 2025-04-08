@@ -4,4 +4,4 @@
 - [ ] Run script again hotkey
 - [ ] Bring Unreal Engine to front hotkey
 - [ ] Bring game to front hotkey
-- [ ] Close all hotkey (game, engine, and instances of UAM)
+- [ ] Close all hotkey (game, engine, and instances of tempo)
