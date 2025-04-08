@@ -1,7 +1,20 @@
-## Unreleased
+## 2.0.0-dev.14322560528 (2025-04-08)
+
+### Feat
+
+- **dev_releases.yml**: added workflow dispatch to dev releases
+- **all**: changing from unreal_auto_mod to tempo
+- **main_releases.yml**: adds a main releases.yml
+- **releases.yaml**: testing publishing releases
+- **releases.yml**: testing artifact code
+- **releases.yml**: Testing commitizen bump
+- **py_project_dev_tools**: Changing from external to internal
+- testing commitizen with pre-commit
 
 ### Fix
 
+- **pyproject.toml**: attempt to fix building
+- **pyproject.toml**: fixed building
 - **README.md**: notice
 - **whole-repo**: merging fixes
 - **dev_releases.yml**: schedule test
@@ -23,6 +36,26 @@
 - **main_releases.yml**: attempt to fix firing off at wrong time
 - **releases.yml**: attempting to fix on issues with ymls
 - **main_releases.yml**: attempt to fix firing at wrong time
+- **releases.yaml**: attempting to fix ci/cd issues
+- **releases.yml**: attempting to fix missing files upload
+- **releases.yaml**: removed linting
+- **releases.yaml**: fix it pushing to latest not pre-release
+- **releases.yml**: attempt to fix dev versioning
+- **releases.yml**: testing bumping as dev release
+- **releases.yml**: changed token being passesd
+- **releases.yml**: test fixing passing the files for release
+- **releases.yml**: fix changelog body.md
+- **releases.yml**: fix version issue
+- **releases.yml**: testing creating hash files
+- **releases.yaml**: fixing naming convention
+- **releases.yml**: testing auto rename with version
+- **releases.yaml**: Testing whl and sdist artifacts
+- **py_project_dev_tools**: reverted to external repo
+- **releases.yaml**: fix naming issue
+- **releases.yaml**: testing using dist dir with list all
+- **releases.yaml**: update artifact name errors
+- **pyproject.toml**: changes version provider
+- **pyproject.toml**: fixed issues with missing module
 
 ## v1.9.0 (2024-11-19)
 
