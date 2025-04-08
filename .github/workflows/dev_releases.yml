@@ -3,6 +3,7 @@ name: dev_releases
 on:
   schedule:
     - cron: '0 19 * * *'
+  workflow_dispatch:
 
 jobs:
   setup_ubuntu_x86_64:
