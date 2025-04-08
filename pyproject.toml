@@ -47,7 +47,7 @@ dependencies = [
   "mkdocstrings-python",
   "pre-commit",
   "commitizen",
-  "py_project_dev_tools @ git+https://github.com/Tempo-Organization/py_project_dev_tools"
+  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
 
 [project.urls]
