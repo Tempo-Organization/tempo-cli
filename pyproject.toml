@@ -136,3 +136,6 @@ dependencies = [
 dependencies = [
   "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tempo"]
