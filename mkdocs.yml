@@ -6,7 +6,7 @@ theme:
   features:
     - navigation.tabs
   icon:
-    logo: fontawesome/solid/u
+    logo: fontawesome/solid/t
     repo: fontawesome/brands/github
   palette:
     # Auto toggle for the user to switch between modes based on system preference
