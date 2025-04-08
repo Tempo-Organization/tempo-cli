@@ -186,8 +186,8 @@ jobs:
       - name: Build Wheels and Source Distributions
         run: hatch build
 
-      - name: Publish Wheels and Source Distributions
-        run: hatch publish --repo "main" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
+      # - name: Publish Wheels and Source Distributions
+      #   run: hatch publish --repo "main" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
 
       - name: Find wheel file
         id: find_wheel
