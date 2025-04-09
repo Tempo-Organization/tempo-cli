@@ -343,6 +343,7 @@
         "enable_mods",
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json",
+        "--mod_names",
         "ExampleLevel"
       ],
       "module": "tempo",
@@ -355,8 +356,11 @@
         "disable_mods",
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json",
+        "--mod_names",
         "ModLoader_P",
+        "--mod_names",
         "MapKit",
+        "--mod_names",
         "ExampleLevel"
       ],
       "module": "tempo",

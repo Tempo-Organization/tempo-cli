@@ -18,20 +18,3 @@ add new line to text file
 remove from text file by start, end, contains, etc....
 create new json file
 - no logginng options
-
-# windows 64 packed
-# windows 32 packed
-# windows 64 exe with internal
-# windows 32 exe with internal
-# linux exec arm 32
-# linux exec arm aarch64 (64 bit)
-# linux exec arm71
-
-#  .tar.gz
-# .whl
-# .sdist
-
-# SHA2-256SUMS
-# SHA2-256SUMS.sig
-# SHA2-512SUMS
-# SHA2-512SUMS.sig
