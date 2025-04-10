@@ -21,8 +21,16 @@ def set_log_base_dir(base_dir: str):
     log_information.log_base_dir = base_dir
 
 
-def configure_logging(colors_config):
-    log_information.log_prefix = colors_config["log_name_prefix"]
+def get_default_log_name_prefix() -> str:
+    return f"{__name__.split('.')[0]}"
+
+
+def configure_logging(
+    colors_config,
+    disable_logging: bool = False,
+    log_name_prefix: str = get_default_log_name_prefix(),
+):
+    log_information.log_prefix = f"{log_name_prefix}_"
 
     log_dir = os.path.join(log_information.log_base_dir)
     if not os.path.isdir(log_dir):

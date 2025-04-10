@@ -17,4 +17,3 @@ create empty text file
 add new line to text file
 remove from text file by start, end, contains, etc....
 create new json file
-- no logginng options

@@ -39,14 +39,27 @@ default_releases_dir = os.path.normpath(
     type=bool,
     help="Generate a wrapper that contains the current commandline.",
 )
-# @click.option('--log_name_prefix', default='tempo', type=str, help='The log name prefix for your logs.')
+@click.option(
+    "--disable_logging",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Whether or not to disable creating log files, defaults to false.",
+)
+@click.option('--log_name_prefix', default='tempo', type=str, help='The log name prefix for your logs.')
 @click.option(
     "--logs_directory",
     default=default_logs_dir,
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
     help="The directory you want your logs outputted to.",
 )
-def cli(generate_wrapper, logs_directory, max_content_width=200):
+def cli(
+    generate_wrapper,
+    disable_logging,
+    log_name_prefix,
+    logs_directory,
+    max_content_width=200
+):
     initialization.initialization()
 
 
