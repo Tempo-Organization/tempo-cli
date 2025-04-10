@@ -1,3 +1,14 @@
+## 2.0.0-dev.14388474976 (2025-04-10)
+
+### Feat
+
+- **logger.py**: added log_name_prefix option
+- **logger.py**: default log name prefix is main package name
+
+### Fix
+
+- **launch.json**: fixed passing args
+
 ## 2.0.0-dev.14341733809 (2025-04-08)
 
 ## 2.0.0-dev.14322560528 (2025-04-08)
