@@ -23,5 +23,4 @@ LOG_INFO = {
     },
     "default_color": (94, 94, 255),  # Light Blue
     "background_color": (40, 42, 54),  # Dark Background (Dark Slate Gray)
-    "log_name_prefix": "tempo_",
 }

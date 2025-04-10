@@ -73,8 +73,14 @@ def initialization():
         logger.configure_logging(log_info.LOG_INFO)
         customization.enable_vt100()
         main_logic.init_thread_system()
+    if "--log_name_prefix" in sys.argv:
+        index = sys.argv.index("--log_name_prefix") + 1
+        if index < len(sys.argv):
+            logger.log_information.log_prefix = sys.argv[index]
+
     check_generate_wrapper()
     check_settings()
+
     if settings.settings_information.init_settings_done:
         uproject_check()
         unreal_engine_check()

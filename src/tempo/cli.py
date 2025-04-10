@@ -46,7 +46,7 @@ default_releases_dir = os.path.normpath(
     type=bool,
     help="Whether or not to disable creating log files, defaults to false.",
 )
-@click.option('--log_name_prefix', default='tempo', type=str, help='The log name prefix for your logs.')
+@click.option('--log_name_prefix', type=str, help='The log name prefix for your logs.')
 @click.option(
     "--logs_directory",
     default=default_logs_dir,
