@@ -106,6 +106,8 @@
     },
     {
       "args": [
+        "--rich_console_color_system",
+        "none",
         "test_mods_all",
         "--settings_json",
         "${workspaceFolder}/assets/base/presets/default/settings.json"

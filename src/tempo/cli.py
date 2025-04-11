@@ -1,6 +1,8 @@
+from __future__ import annotations
 import json
 import os
 import pathlib
+from typing import Literal
 
 import click
 import tomlkit
@@ -46,6 +48,12 @@ default_releases_dir = os.path.normpath(
     type=bool,
     help="Whether or not to disable creating log files, defaults to false.",
 )
+@click.option(
+    "--rich_console_color_system",
+    default='auto',
+    type=click.Choice(['auto', 'standard', '256', 'truecolor', 'windows', 'none']),
+    help="The color system of the console, uses rich's color system.",
+)
 @click.option('--log_name_prefix', type=str, help='The log name prefix for your logs.')
 @click.option(
     "--logs_directory",
@@ -56,6 +64,7 @@ default_releases_dir = os.path.normpath(
 def cli(
     generate_wrapper,
     disable_logging,
+    rich_console_color_system,
     log_name_prefix,
     logs_directory,
     max_content_width=200
@@ -64,8 +73,6 @@ def cli(
 
 
 command_help = "Builds the uproject specified within the settings JSON"
-
-
 @cli.command(name="build", help=command_help, short_help=command_help)
 @click.option(
     "--toggle_engine",
