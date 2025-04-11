@@ -4,7 +4,6 @@ import sys
 from tempo import (
     customization,
     file_io,
-    log_info,
     logger,
     main_logic,
     settings,
@@ -64,13 +63,13 @@ def initialization():
         if index < len(sys.argv):
             log_dir = f"{os.path.normpath(sys.argv[index].strip("'").strip('"'))}"
             logger.set_log_base_dir(log_dir)
-            logger.configure_logging(log_info.LOG_INFO)
+            logger.configure_logging()
         else:
             logger.set_log_base_dir(os.path.normpath(f"{file_io.SCRIPT_DIR}/logs"))
-            logger.configure_logging(log_info.LOG_INFO)
+            logger.configure_logging()
     else:
         logger.set_log_base_dir(os.path.normpath(f"{file_io.SCRIPT_DIR}/logs"))
-        logger.configure_logging(log_info.LOG_INFO)
+        logger.configure_logging()
         customization.enable_vt100()
         main_logic.init_thread_system()
     if "--log_name_prefix" in sys.argv:

@@ -2,7 +2,6 @@ from __future__ import annotations
 import json
 import os
 import pathlib
-from typing import Literal
 
 import click
 import tomlkit
@@ -42,7 +41,7 @@ default_releases_dir = os.path.normpath(
     help="Generate a wrapper that contains the current commandline.",
 )
 @click.option(
-    "--disable_logging",
+    "--disable_log_file_output",
     is_flag=True,
     default=False,
     type=bool,
@@ -63,7 +62,7 @@ default_releases_dir = os.path.normpath(
 )
 def cli(
     generate_wrapper,
-    disable_logging,
+    disable_log_file_output,
     rich_console_color_system,
     log_name_prefix,
     logs_directory,

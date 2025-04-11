@@ -9,6 +9,10 @@ from tempo.console import console
 from tempo.log_info import LOG_INFO
 
 
+def get_is_log_file_use_disabled() -> bool:
+    return "--disable_log_file_output" in sys.argv
+
+
 def get_default_log_name_prefix() -> str:
     if "--log_name_prefix" in sys.argv:
         index = sys.argv.index("--log_name_prefix") + 1
@@ -36,8 +40,6 @@ def set_log_base_dir(base_dir: str):
 
 
 def configure_logging(
-    colors_config,
-    disable_logging: bool = False,
     log_name_prefix: str = get_default_log_name_prefix(),
 ):
     log_information.log_prefix = log_name_prefix
@@ -103,12 +105,14 @@ def log_message(message: str):
         log_path = os.path.join(log_dir, f"{log_information.log_prefix}_latest.log")
 
         if not os.path.isdir(log_dir):
-            os.makedirs(log_dir)
+            if not get_is_log_file_use_disabled():
+                os.makedirs(log_dir)
 
         if not os.path.isfile(log_path):
             try:
-                with open(log_path, "w") as log_file:
-                    log_file.write("")
+                if not get_is_log_file_use_disabled():
+                    with open(log_path, "w") as log_file:
+                        log_file.write("")
             except OSError as e:
                 error_color = LOG_INFO.get("error_color", (255, 0, 0))
                 error_color = f"rgb({error_color[0]},{error_color[1]},{error_color[2]})"
@@ -119,8 +123,9 @@ def log_message(message: str):
                 return
 
         try:
-            with open(log_path, "a") as log_file:
-                log_file.write(f"{message}\n")
+            if not get_is_log_file_use_disabled():
+                with open(log_path, "a") as log_file:
+                    log_file.write(f"{message}\n")
         except OSError as e:
             error_color = LOG_INFO.get("error_color", (255, 0, 0))
             error_color = f"rgb({error_color[0]},{error_color[1]},{error_color[2]})"
