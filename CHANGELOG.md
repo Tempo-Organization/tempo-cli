@@ -1,3 +1,10 @@
+## 2.0.0-dev.14410403916 (2025-04-11)
+
+### Feat
+
+- **cli.py,-logger.py**: added disable log file usage option
+- **cli.py,-console.py**: added ability to set color system
+
 ## 2.0.0-dev.14388474976 (2025-04-10)
 
 ### Feat
