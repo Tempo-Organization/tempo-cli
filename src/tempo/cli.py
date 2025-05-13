@@ -1541,10 +1541,7 @@ def install_stove(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    if not stove.does_stove_exist(output_directory):
-        stove.install_stove(output_directory)
-    if run_after_install:
-        app_runner.run_app(stove.get_stove_path(output_directory))
+    main_logic.install_stove(output_directory=output_directory, run_after_install=run_after_install)
 
 
 command_help = "Install Spaghetti."

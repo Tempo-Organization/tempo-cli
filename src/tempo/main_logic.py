@@ -25,6 +25,7 @@ from tempo.programs import (
     uasset_gui,
     umodel,
     unreal_engine,
+    stove
 )
 from tempo.threads import constant, game_monitor
 
@@ -120,17 +121,24 @@ def install_spaghetti(*, output_directory: str, run_after_install: bool):
         app_runner.run_app(spaghetti.get_spaghetti_path(output_directory))
 
 
-def install_kismet_analyzer(*, output_directory: str, run_after_install: bool):
-    # add shell stuff to run app later or something
-    if not os.path.isfile(kismet_analyzer.get_kismet_analyzer_path(output_directory)):
-        kismet_analyzer.install_kismet_analyzer(output_directory)
+def install_stove(*, output_directory: str, run_after_install: bool):
+    if not stove.does_stove_exist(output_directory):
+        stove.install_stove(output_directory)
     if run_after_install:
-        kismet_analyzer_path = kismet_analyzer.get_kismet_analyzer_path(
-            output_directory
-        )
-        kismet_directory = os.path.dirname(kismet_analyzer_path)
-        command = f'cd /d "{kismet_directory}" && "{kismet_analyzer_path}" -h && set ka=kismet-analyzer.exe && cmd /k'
-        subprocess.run(command, check=False)
+        app_runner.run_app(stove.get_stove_path(output_directory))
+
+
+def install_kismet_analyzer(*, output_directory: str, run_after_install: bool):
+    analyzer_path = kismet_analyzer.get_kismet_analyzer_path(output_directory)
+    
+    if not os.path.isfile(analyzer_path):
+        kismet_analyzer.install_kismet_analyzer(output_directory)
+    
+    if run_after_install:
+        try:
+            subprocess.run([analyzer_path, '-h'], cwd=output_directory)
+        except Exception as e:
+            print(f"Failed to run kismet-analyzer: {e}")
 
 
 def install_uasset_gui(*, output_directory: str, run_after_install: bool):

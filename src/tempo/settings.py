@@ -168,7 +168,8 @@ def get_override_working_dir() -> str:
 
 
 def get_is_overriding_default_working_dir() -> bool:
-    return settings_information.settings["general_info"]["override_default_working_dir"]
+    general_info = settings_information.settings.get("general_info", {})
+    return bool(general_info.get("override_default_working_dir", False))
 
 
 def get_persistent_mod_dir(mod_name: str) -> str:
