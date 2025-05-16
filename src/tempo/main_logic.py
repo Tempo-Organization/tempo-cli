@@ -136,7 +136,7 @@ def install_kismet_analyzer(*, output_directory: str, run_after_install: bool):
     
     if run_after_install:
         try:
-            subprocess.run([analyzer_path, '-h'], cwd=output_directory)
+            subprocess.Popen(f'start cmd /k kismet-analyzer.exe -h', shell=True, cwd=os.path.dirname(kismet_analyzer.get_kismet_analyzer_path(output_directory)))
         except Exception as e:
             print(f"Failed to run kismet-analyzer: {e}")
 
