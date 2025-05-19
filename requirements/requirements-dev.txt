@@ -5,13 +5,7 @@
 # - commitizen
 # - py_project_dev_tools@ git+https://github.com/Mythical-Github/py_project_dev_tools
 # - click
-# - dynaconf
-# - psutil
-# - pygetwindow
-# - pywinctl
-# - requests
-# - rich
-# - screeninfo
+# - tempo-core@ git+https://github.com/Tempo-Organization/tempo_core
 # - tomlkit
 # - trogon
 #
@@ -41,7 +35,7 @@ decli==0.6.2
 distlib==0.3.9
     # via virtualenv
 dynaconf==3.2.10
-    # via hatch.envs.dev
+    # via tempo-core
 filelock==3.18.0
     # via virtualenv
 identify==2.6.9
@@ -76,11 +70,11 @@ pre-commit==4.2.0
 prompt-toolkit==3.0.50
     # via questionary
 psutil==7.0.0
-    # via hatch.envs.dev
-py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@345e2e0c2111796fb9ef215dc8bf7e2ad8baa2e4
+    # via tempo-core
+py-project-dev-tools @ git+https://github.com/Mythical-Github/py_project_dev_tools@4c90459d55182759c2abf0a0f35e636b8475add8
     # via hatch.envs.dev
 pygetwindow==0.0.9
-    # via hatch.envs.dev
+    # via tempo-core
 pygments==2.19.1
     # via rich
 pymonctl==0.92
@@ -95,7 +89,7 @@ pywin32==310
 pywinbox==0.7
     # via pywinctl
 pywinctl==0.4.1
-    # via hatch.envs.dev
+    # via tempo-core
 pyyaml==6.0.2
     # via
     #   commitizen
@@ -104,14 +98,16 @@ questionary==2.1.0
     # via commitizen
 requests==2.32.3
     # via
-    #   hatch.envs.dev
     #   py-project-dev-tools
+    #   tempo-core
 rich==13.9.4
     # via
-    #   hatch.envs.dev
     #   py-project-dev-tools
+    #   tempo-core
     #   textual
 screeninfo==0.8.1
+    # via tempo-core
+tempo-core @ git+https://github.com/Tempo-Organization/tempo_core@9b8b72113d1adc45df67d2a0a48eb27032dfc866
     # via hatch.envs.dev
 termcolor==2.5.0
     # via commitizen
@@ -121,6 +117,7 @@ tomlkit==0.13.2
     # via
     #   hatch.envs.dev
     #   commitizen
+    #   tempo-core
 trogon==0.6.0
     # via hatch.envs.dev
 typing-extensions==4.13.0

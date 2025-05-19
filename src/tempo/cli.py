@@ -7,7 +7,7 @@ import click
 import tomlkit
 from trogon import tui
 
-from tempo import (
+from tempo_core import (
     app_runner,
     data_structures,
     file_io,
@@ -19,7 +19,7 @@ from tempo import (
     unreal_collections,
     unreal_inis,
 )
-from tempo.programs import stove
+from tempo_core.programs import stove
 
 default_logs_dir = os.path.normpath(f"{file_io.SCRIPT_DIR}/logs")
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, "dist"))

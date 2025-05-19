@@ -22,16 +22,10 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-  "requests",
-  "psutil",
-  "pygetwindow",
-  "screeninfo",
-  "rich",
   "click",
   "trogon",
   "tomlkit",
-  "pywinctl",
-  "dynaconf"
+  "tempo_core @ git+https://github.com/Tempo-Organization/tempo_core"
 ]
 
 [tool.hatch.envs.dev]
