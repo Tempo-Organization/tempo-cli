@@ -1,4 +1,30 @@
-## 2.0.0 (2025-04-08)
+## 2.0.0-dev.15121285732 (2025-05-19)
+
+## 2.0.0-dev.15099188694 (2025-05-18)
+
+## 2.0.0-dev.15075736176 (2025-05-16)
+
+## 2.0.0-dev.15029118605 (2025-05-14)
+
+## 2.0.0-dev.14410403916 (2025-04-11)
+
+### Feat
+
+- **cli.py,-logger.py**: added disable log file usage option
+- **cli.py,-console.py**: added ability to set color system
+
+## 2.0.0-dev.14388474976 (2025-04-10)
+
+### Feat
+
+- **logger.py**: added log_name_prefix option
+- **logger.py**: default log name prefix is main package name
+
+### Fix
+
+- **launch.json**: fixed passing args
+
+## 2.0.0-dev.14341733809 (2025-04-08)
 
 ## 2.0.0-dev.14322560528 (2025-04-08)
 

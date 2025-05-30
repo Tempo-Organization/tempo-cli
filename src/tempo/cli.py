@@ -1,3 +1,4 @@
+from __future__ import annotations
 import json
 import os
 import pathlib
@@ -6,7 +7,7 @@ import click
 import tomlkit
 from trogon import tui
 
-from tempo import (
+from tempo_core import (
     app_runner,
     data_structures,
     file_io,
@@ -18,7 +19,7 @@ from tempo import (
     unreal_collections,
     unreal_inis,
 )
-from tempo.programs import stove
+from tempo_core.programs import stove
 
 default_logs_dir = os.path.normpath(f"{file_io.SCRIPT_DIR}/logs")
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, "dist"))
@@ -39,20 +40,38 @@ default_releases_dir = os.path.normpath(
     type=bool,
     help="Generate a wrapper that contains the current commandline.",
 )
-# @click.option('--log_name_prefix', default='tempo', type=str, help='The log name prefix for your logs.')
+@click.option(
+    "--disable_log_file_output",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Whether or not to disable creating log files, defaults to false.",
+)
+@click.option(
+    "--rich_console_color_system",
+    default='auto',
+    type=click.Choice(['auto', 'standard', '256', 'truecolor', 'windows', 'none']),
+    help="The color system of the console, uses rich's color system.",
+)
+@click.option('--log_name_prefix', type=str, help='The log name prefix for your logs.')
 @click.option(
     "--logs_directory",
     default=default_logs_dir,
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
     help="The directory you want your logs outputted to.",
 )
-def cli(generate_wrapper, logs_directory, max_content_width=200):
+def cli(
+    generate_wrapper,
+    disable_log_file_output,
+    rich_console_color_system,
+    log_name_prefix,
+    logs_directory,
+    max_content_width=200
+):
     initialization.initialization()
 
 
 command_help = "Builds the uproject specified within the settings JSON"
-
-
 @cli.command(name="build", help=command_help, short_help=command_help)
 @click.option(
     "--toggle_engine",
@@ -1522,10 +1541,7 @@ def install_stove(output_directory, run_after_install):
     Arguments:
         output_directory (str): Path to the output directory
     """
-    if not stove.does_stove_exist(output_directory):
-        stove.install_stove(output_directory)
-    if run_after_install:
-        app_runner.run_app(stove.get_stove_path(output_directory))
+    main_logic.install_stove(output_directory=output_directory, run_after_install=run_after_install)
 
 
 command_help = "Install Spaghetti."
