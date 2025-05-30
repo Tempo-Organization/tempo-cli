@@ -194,5 +194,4 @@ assets/base/tempo_background.exe
 /assets/base/presets/default/mod_packaging/persistent_files/TestMod
 *.pyc
 *.log
-requirements.txt
 assets/base/tempo_headless.exe
