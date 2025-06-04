@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tempo"
-version = "2.0.0-dev.15453013398"
+version = "2.1.0-dev.15483013398"
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
 requires-python = ">=3.9.1"
