@@ -195,3 +195,5 @@ assets/base/tempo_background.exe
 *.pyc
 *.log
 assets/base/tempo_headless.exe
+requirements/requirements-dev.txt
+requirements.txt
