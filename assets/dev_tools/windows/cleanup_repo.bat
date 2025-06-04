@@ -1,11 +1,11 @@
-@echo off
+@echo of
 
-cd /d %~dp0
+cd /d "%~dp0"
 
-set "py_project_dev_tools_exe=%CD%\..\py_project_dev_tools.exe"
+call install_hatch.bat
 
-set "toml=%CD%\..\..\..\pyproject.toml"
+cd /d "..\..\.."
 
-"%py_project_dev_tools_exe%" cleanup_repo --project_toml_path "%toml%"
+hatch run scripts:clean
 
-exit /b 0
+exit /b
