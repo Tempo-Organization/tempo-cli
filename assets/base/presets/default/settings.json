@@ -28,10 +28,10 @@
     ],
     "engine_packaging_command": "BuildCookRun",
     "override_automatic_version_finding": false,
-    "unreal_engine_dir": "D:/unreal_engine_installs/UE_4.22",
+    "unreal_engine_dir": "C:/Program Files/Epic Games/UE_4.22",
     "unreal_engine_major_version": null,
     "unreal_engine_minor_version": null,
-    "unreal_project_file": "C:/Users/Mythical/Documents/Github/ZedfestModdingKit/KevinSpel.uproject"
+    "unreal_project_file": "C:/Users/Mythi/Documents/GitHub/ZedfestModdingKit/KevinSpel.uproject"
   },
   "exec_events": [],
   "game_info": {
@@ -50,11 +50,11 @@
   "general_info": {
     "override_default_working_dir": true,
     "window_title": "tempo automation script",
-    "working_dir": "C:/Users/Mythical/Downloads/Output"
+    "working_dir": "C:/Users/Mythi/Downloads/Output"
   },
   "git_info": {
     "repo_branch": "main",
-    "repo_path": "C:/Users/Mythical/Documents/GitHub/ZedfestModdingKit"
+    "repo_path": "C:/Users/Mythi/Documents/GitHub/ZedfestModdingKit"
   },
   "mods_info": [
     {
