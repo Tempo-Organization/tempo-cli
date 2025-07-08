@@ -1,13 +1,9 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
-name = "tempo"
+name = "tempo-cli"
 version = "3.0.0-dev.16091256411"
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
-requires-python = ">=3.9.1"
+requires-python = ">=3.12"
 license = { file = "LICENSE" }
 keywords = []
 authors = [
@@ -22,77 +18,49 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-  "click",
-  "trogon",
-  "tomlkit",
-  "tempo_core @ git+https://github.com/Tempo-Organization/tempo_core"
+    "click>=8.2.1",
+    "tempo-core",
+    "tomlkit>=0.13.3",
+    "trogon>=0.6.0",
 ]
 
-[tool.hatch.envs.dev]
-dependencies = [
-  "pre-commit",
-  "commitizen",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
+[tool.uv.sources]
+tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core" }
+py-project-dev-tools = { git = "https://github.com/Mythical-Github/py-project-dev-tools" }
 
-[tool.hatch.envs.docs]
-dependencies = [
-  "mkdocs-material",
-  "mkdocstrings-python",
-  "pre-commit",
-  "commitizen",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
+[dependency-groups]
+aarch64-unknown-linux-gnu = [
+    "py-project-dev-tools",
+]
+dev = [
+    "commitizen>=4.8.3",
+    "mkdocs-material>=9.6.15",
+    "mkdocstrings-python>=1.16.12",
+    "pre-commit>=4.2.0",
+    "py-project-dev-tools",
+    "pyinstaller>=6.14.2",
+]
+i686-pc-windows-msvc = [
+    "py-project-dev-tools",
+]
+x86-64-pc-windows-msvc = [
+    "py-project-dev-tools",
+]
+x86-64-unknown-linux-gnu = [
+    "py-project-dev-tools",
 ]
 
 [project.urls]
-Documentation = "https://github.com/Tempo-Organization/tempo/blob/main/README.md"
-Issues = "https://github.com/Tempo-Organization/tempo/issues"
-Source = "https://github.com/Tempo-Organization/tempo"
+Documentation = "https://github.com/Tempo-Organization/tempo-cli/blob/main/README.md"
+Issues = "https://github.com/Tempo-Organization/tempo-cli/issues"
+Source = "https://github.com/Tempo-Organization/tempo-cli"
 
 [project.scripts]
-tempo = "tempo.__main__:main"
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.env]
-requires = ["hatch-pip-compile"]
-
-[tool.hatch.envs.default]
-type = "pip-compile"
-path = ".venv"
-pip-compile-resolver = "uv"
-pip-compile-installer = "uv"
-
-[tool.hatch.envs.build]
-template = "build"
-installer = "uv"
-dependencies = [
-  "pyinstaller",
-]
-
-[tool.hatch.envs.build.scripts]
-exe = [
-  "pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo --collect-data trogon src/tempo/__main__.py",
-  "pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_headless --collect-data trogon src/tempo/__main__.pyw"
-]
-
-[tool.hatch.envs.scripts]
-template = "scripts"
-detached = true
-installer = "uv"
-
-[tool.hatch.envs.scripts.scripts]
-clean = "git clean -d -X --force"
-refresh-deps = [
-  "hatch env remove default",
-  "python -c \"import os; os.remove('requirements.txt')\"",
-  "hatch env create default",
-]
+tempo_cli = "tempo_cli.__main__:main"
 
 [tool.ruff]
 exclude = [
-    "src/tempo/cli.py"
+    "src/tempo_cli/cli.py"
 ]
 
 [tool.typos]
@@ -109,27 +77,5 @@ version_scheme = "semver2"
 version_provider = "pep621"
 update_changelog_on_bump = true
 
-[tool.hatch.envs.x86_64-pc-windows-msvc]
-dependencies = [
-  "pywin32",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.i686-pc-windows-msvc]
-dependencies = [
-  "pywin32",
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.aarch64-unknown-linux-gnu]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.envs.x86_64-unknown-linux-gnu]
-dependencies = [
-  "py_project_dev_tools @ git+https://github.com/Mythical-Github/py_project_dev_tools"
-]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/tempo"]
+[tool.uv]
+reinstall-package = ["py-project-dev-tools"]

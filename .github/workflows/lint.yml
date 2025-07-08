@@ -21,14 +21,14 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install Hatch
-        run: pip install hatch
+      - name: Install uv
+        run: pip install uv
 
-      - name: Create Hatch virtual env
-        run: hatch env create
+      - name: Create uv virtual env
+        run: uv venv
 
       - name: Lint with Ruff
-        run: hatch run uvx ruff check
+        run: uvx ruff check
 
       - name: Lint with Pyright
-        run: hatch run uvx pyright
+        run: uvx pyright

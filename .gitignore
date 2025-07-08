@@ -197,3 +197,5 @@ assets/base/tempo_background.exe
 assets/base/tempo_headless.exe
 requirements/requirements-dev.txt
 requirements.txt
+assets/base/tempo_cli.exe
+assets/base/tempo_cli_headless.exe
