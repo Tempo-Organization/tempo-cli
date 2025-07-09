@@ -54,7 +54,7 @@ alias cz_commit_retry := commitizen_commit_retry
 alias commit_retry := commitizen_commit_retry
 
 commitizen_commit_retry:
-  uv run cz commit -- --retry
+  uv run cz commit --retry
 
 switch_to_main_branch:
   git switch main
@@ -79,12 +79,6 @@ git_add_all:
 
 git_reset:
   git reset
-
-merge_dev_into_main:
-  git checkout main
-  git pull origin main
-  git merge dev
-  git push origin main
 
 pre_commit_auto_update:
   uv run pre-commit autoupdate

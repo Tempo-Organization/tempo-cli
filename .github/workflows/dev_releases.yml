@@ -242,7 +242,7 @@ jobs:
           python-version: 3.x
           architecture: "x64"
 
-      - name: Install Hatch
+      - name: Install uv
         run: pip install uv
 
       - name: Build Wheels and Source Distributions
@@ -340,20 +340,27 @@ jobs:
           echo "Version extracted: $VERSION"
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Rename artifacts with version suffix
+      - name: Rename artifacts with version suffix and standardize name
         run: |
           VERSION="${{ steps.extract_version.outputs.version }}"
 
           cd dist
 
+          # Step 1: Rename with version and replace underscores with hyphens
           for FILE in tempo*.zip; do
             if [[ "$FILE" != *"$VERSION"* ]]; then
               BASE="${FILE%.zip}"
-              # Replace underscores with hyphens and add version
               NEW_NAME=$(echo "$BASE" | sed 's/_/-/g')-"$VERSION".zip
               mv "$FILE" "$NEW_NAME"
             fi
           done
+
+          # Step 2: Replace all occurrences of 'tempo-cli' with 'tempo_cli'
+          for FILE in *tempo-cli*.zip; do
+            NEW_NAME=$(echo "$FILE" | sed 's/tempo-cli/tempo_cli/g')
+            mv "$FILE" "$NEW_NAME"
+          done
+
 
       - name: Generate SHA256 hashes for each file
         run: |
@@ -366,6 +373,7 @@ jobs:
               sha256sum "$FILE" | awk '{print $1}' > "$FILE.sha256"
             fi
           done
+
 
       - name: List files in dist
         run: ls -R dist

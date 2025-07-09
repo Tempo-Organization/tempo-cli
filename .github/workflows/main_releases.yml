@@ -26,12 +26,13 @@ jobs:
           fi
 
   setup_ubuntu_x86_64:
-    needs: check-bump
-    if: needs.check-bump.outputs.bump != 'true'
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -39,14 +40,30 @@ jobs:
           python-version: 3.x
           architecture: "x64"
 
-      - name: Install Hatch
-        run: pip install hatch
+      - name: Install uv
+        run: pip install uv
 
-      - name: Create Hatch virtual environment for x86_64-linux
-        run: hatch env create x86_64-unknown-linux-gnu
+      - name: Create uv virtual environment for x86_64-linux
+        run: uv venv x86_64-unknown-linux-gnu
 
-      - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "x86_64-unknown-linux-gnu"
+      - name: Build cli release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli src/tempo_cli/__main__.py
+
+      - name: Build cli headless release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless src/tempo_cli/__main__.pyw
+
+      - name: Copy cli executable over
+        run: cp dist/tempo_cli assets/base/tempo_cli
+
+      - name: Copy cli headless executable over
+        run: cp dist/tempo_cli_headless assets/base/tempo_cli_headless
+
+      - name: Zip Files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: assets/base/
+          recursive: true
+          dest: dist/tempo_cli_x86_64-unknown-linux-gnu.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -55,12 +72,13 @@ jobs:
           path: dist/tempo_cli_x86_64-unknown-linux-gnu.zip
 
   setup_ubuntu_aarch64:
-    needs: check-bump
-    if: needs.check-bump.outputs.bump != 'true'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (arm64)
         uses: actions/setup-python@v5
@@ -68,14 +86,30 @@ jobs:
           python-version: 3.x
           architecture: "arm64"
 
-      - name: Install Hatch
-        run: pip install hatch
+      - name: Install uv
+        run: pip install uv
 
-      - name: Create Hatch virtual environment for aarch64-linux
-        run: hatch env create aarch64-unknown-linux-gnu
+      - name: Create uv virtual environment for aarch64-linux
+        run: uv venv aarch64-unknown-linux-gnu
 
-      - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "aarch64-unknown-linux-gnu"
+      - name: Build cli release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli src/tempo_cli/__main__.py
+
+      - name: Build cli headless release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless src/tempo_cli/__main__.pyw
+
+      - name: Copy cli executable over
+        run: cp dist/tempo_cli assets/base/tempo_cli
+
+      - name: Copy cli headless executable over
+        run: cp dist/tempo_cli_headless assets/base/tempo_cli_headless
+
+      - name: Zip Files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: assets/base/
+          recursive: true
+          dest: dist/tempo_cli_aarch64-unknown-linux-gnu.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -84,12 +118,13 @@ jobs:
           path: dist/tempo_cli_aarch64-unknown-linux-gnu.zip
 
   setup_windows_x86_64:
-    needs: check-bump
-    if: needs.check-bump.outputs.bump != 'true'
+    if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (x64)
         uses: actions/setup-python@v5
@@ -97,14 +132,30 @@ jobs:
           python-version: 3.x
           architecture: "x64"
 
-      - name: Install Hatch
-        run: pip install hatch
+      - name: Install uv
+        run: pip install uv
 
-      - name: Create Hatch virtual environment for x86_64-windows
-        run: hatch env create x86_64-pc-windows-msvc
+      - name: Create uv virtual environment for x86_64-windows
+        run: uv venv x86_64-pc-windows-msvc
 
-      - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "x86_64-pc-windows-msvc"
+      - name: Build cli release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli src/tempo_cli/__main__.py
+
+      - name: Build cli headless release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless src/tempo_cli/__main__.pyw
+
+      - name: Copy cli executable over
+        run: copy dist/tempo_cli.exe assets/base/tempo_cli.exe
+
+      - name: Copy cli headless executable over
+        run: copy dist/tempo_cli_headless.exe assets/base/tempo_cli_headless.exe
+
+      - name: Zip Files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: assets/base/
+          recursive: true
+          dest: dist/tempo_cli_x86_64-pc-windows-msvc.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -113,12 +164,13 @@ jobs:
           path: dist/tempo_cli_x86_64-pc-windows-msvc.zip
 
   setup_windows_i686:
-    needs: check-bump
-    if: needs.check-bump.outputs.bump != 'true'
+    if: github.ref == 'refs/heads/main'
     runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: 'refs/heads/dev'
 
       - name: Setup Python (x86)
         uses: actions/setup-python@v5
@@ -126,14 +178,30 @@ jobs:
           python-version: 3.x
           architecture: "x86"
 
-      - name: Install Hatch
-        run: pip install hatch
+      - name: Install uv
+        run: pip install uv
 
-      - name: Create Hatch virtual environment for i686-windows
-        run: hatch env create i686-pc-windows-msvc
+      - name: Create uv virtual environment for i686-windows
+        run: uv venv i686-pc-windows-msvc
 
-      - name: Build Release
-        run: hatch run py_project_dev_tools make_exe_release_ci_cd --os_arch_line "i686-pc-windows-msvc"
+      - name: Build cli release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli src/tempo_cli/__main__.py
+
+      - name: Build cli headless release
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless src/tempo_cli/__main__.pyw
+
+      - name: Copy cli executable over
+        run: copy dist/tempo_cli.exe assets/base/tempo_cli.exe
+
+      - name: Copy cli headless executable over
+        run: copy dist/tempo_cli_headless.exe assets/base/tempo_cli_headless.exe
+
+      - name: Zip Files
+        uses: vimtor/action-zip@v1.2
+        with:
+          files: assets/base/
+          recursive: true
+          dest: dist/tempo_cli_i686-pc-windows-msvc.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -189,11 +257,11 @@ jobs:
           python-version: 3.x
           architecture: "x64"
 
-      - name: Install Hatch
-        run: pip install hatch
+      - name: Install uv
+        run: pip install uv
 
       - name: Build Wheels and Source Distributions
-        run: hatch build
+        run: uv build
 
       # - name: Publish Wheels and Source Distributions
       #   run: hatch publish --repo "main" --user "__token__" --auth "${{ secrets.PYPI_PASSWORD }}"
@@ -287,19 +355,25 @@ jobs:
           echo "Version extracted: $VERSION"
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Rename artifacts with version suffix
+      - name: Rename artifacts with version suffix and standardize name
         run: |
           VERSION="${{ steps.extract_version.outputs.version }}"
 
           cd dist
 
+          # Step 1: Rename with version and replace underscores with hyphens
           for FILE in tempo*.zip; do
             if [[ "$FILE" != *"$VERSION"* ]]; then
               BASE="${FILE%.zip}"
-              # Replace underscores with hyphens and add version
               NEW_NAME=$(echo "$BASE" | sed 's/_/-/g')-"$VERSION".zip
               mv "$FILE" "$NEW_NAME"
             fi
+          done
+
+          # Step 2: Replace all occurrences of 'tempo-cli' with 'tempo_cli'
+          for FILE in *tempo-cli*.zip; do
+            NEW_NAME=$(echo "$FILE" | sed 's/tempo-cli/tempo_cli/g')
+            mv "$FILE" "$NEW_NAME"
           done
 
       - name: Generate SHA256 hashes for each file
