@@ -1,3 +1,4 @@
-from tempo_cli import main
+from tempo_cli import main as other_main
 
-main.main()
+def main():
+    other_main.main()

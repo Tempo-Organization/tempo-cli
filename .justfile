@@ -99,5 +99,4 @@ refresh_deps: pre_commit_auto_update
   uv lock --upgrade
 
 run:
-  uv pip install -e .
   uv run tempo_cli --help
