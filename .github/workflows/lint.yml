@@ -28,7 +28,7 @@ jobs:
         run: uv venv dev
 
       - name: Lint with Ruff
-        run: uv ruff check
+        run: uv run ruff check
 
       - name: Lint with Pyright
-        run: uv pyright
+        run: uv run pyright
