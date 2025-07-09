@@ -26,29 +26,19 @@ dependencies = [
 
 [tool.uv.sources]
 tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core" }
-py-project-dev-tools = { git = "https://github.com/Mythical-Github/py-project-dev-tools" }
 
 [dependency-groups]
-aarch64-unknown-linux-gnu = [
-    "py-project-dev-tools",
-]
+aarch64-unknown-linux-gnu = []
 dev = [
     "commitizen>=4.8.3",
     "mkdocs-material>=9.6.15",
     "mkdocstrings-python>=1.16.12",
     "pre-commit>=4.2.0",
-    "py-project-dev-tools",
     "pyinstaller>=6.14.2",
 ]
-i686-pc-windows-msvc = [
-    "py-project-dev-tools",
-]
-x86-64-pc-windows-msvc = [
-    "py-project-dev-tools",
-]
-x86-64-unknown-linux-gnu = [
-    "py-project-dev-tools",
-]
+i686-pc-windows-msvc = []
+x86-64-pc-windows-msvc = []
+x86-64-unknown-linux-gnu = []
 
 [project.urls]
 Documentation = "https://github.com/Tempo-Organization/tempo-cli/blob/main/README.md"
@@ -76,6 +66,3 @@ tag_format = "$version"
 version_scheme = "semver2"
 version_provider = "pep621"
 update_changelog_on_bump = true
-
-[tool.uv]
-reinstall-package = ["py-project-dev-tools"]
