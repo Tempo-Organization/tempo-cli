@@ -1,3 +1,10 @@
+## 4.0.0-dev.16159179379 (2025-07-09)
+
+### Fix
+
+- **dev_releases.yml**: fixed 64 bit releases
+- **dev_releases.yml**: fixed icon issue
+
 ## 4.0.0-dev.16156185278 (2025-07-08)
 
 ## 4.0.0-dev.16156029939 (2025-07-08)
