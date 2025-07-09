@@ -88,10 +88,10 @@ jobs:
         run: uv venv x86_64-pc-windows-msvc
 
       - name: Build cli release
-        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli --icon=assets/images/project_main_ico.ico src/tempo_cli/__main__.py
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli src/tempo_cli/__main__.py
 
       - name: Build cli headless release
-        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless --icon=assets/images/project_main_ico.ico src/tempo_cli/__main__.pyw
+        run: uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless src/tempo_cli/__main__.pyw
 
       - name: Copy cli executable over
         run: copy dist/tempo_cli.exe assets/base/tempo_cli.exe
