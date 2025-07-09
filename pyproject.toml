@@ -28,17 +28,19 @@ dependencies = [
 tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core" }
 
 [dependency-groups]
-aarch64-unknown-linux-gnu = []
 dev = [
     "commitizen>=4.8.3",
     "mkdocs-material>=9.6.15",
     "mkdocstrings-python>=1.16.12",
     "pre-commit>=4.2.0",
     "pyinstaller>=6.14.2",
+    "pyright>=1.1.402",
+    "ruff>=0.12.2",
 ]
-i686-pc-windows-msvc = []
 x86-64-pc-windows-msvc = []
+i686-pc-windows-msvc = []
 x86-64-unknown-linux-gnu = []
+aarch64-unknown-linux-gnu = []
 
 [project.urls]
 Documentation = "https://github.com/Tempo-Organization/tempo-cli/blob/main/README.md"
