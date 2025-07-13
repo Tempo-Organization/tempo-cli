@@ -27,7 +27,11 @@ setup: clean_up
 
 build:
   uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli --collect-data trogon src/tempo_cli/__main__.py
+
+build_all:
+  uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli --collect-data trogon src/tempo_cli/__main__.py
   uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli_headless --collect-data trogon src/tempo_cli/__main__.pyw
+
 
 run_exe:
   dist\tempo_cli.exe --help
