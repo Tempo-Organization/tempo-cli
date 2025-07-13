@@ -839,7 +839,7 @@ wheels = [
 
 [[package]]
 name = "tempo-cli"
-version = "4.0.1.dev16182556196"
+version = "4.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
