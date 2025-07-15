@@ -131,6 +131,12 @@
     "repak_path_override": null,
     "repak_version": null
   },
+  "retoc_info": {
+    "override_automatic_version_finding": false,
+    "override_default_retoc_path": false,
+    "retoc_path_override": null,
+    "retoc_version": null
+  },
   "window_management_events": [
     {
       "hook_state": "post_game_launch",
