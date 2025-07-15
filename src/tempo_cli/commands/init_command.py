@@ -266,13 +266,31 @@ def basic_init():
             engine_minor_association=unreal_engine_minor_version,
             ignore_safety_checks=True,
         )
+        deep_update(
+            tempo_json,
+            {
+                "engine_info": {
+                    "unreal_project_file": os.path.normpath(
+                        f"{cwd}/{uproject_name}.uproject"
+                    )
+                }
+            },
+        )
+    else:
+        if not uproject_path == "" and uproject_path:
+            deep_update(
+                tempo_json, {"engine_info": {"unreal_project_file": uproject_path}}
+            )
 
     window_override_title = questionary.text(
         message='What is title of the game window, when the game is launched? Example: "Zedfest" (press enter to skip)'
     ).ask()
     if not window_override_title == "" and window_override_title:
         deep_update(
-            tempo_json, {"general_info": {"window_title": window_override_title}}
+            tempo_json, {"game_info": {"window_title_override": window_override_title}}
+        )
+        deep_update(
+            tempo_json, {"game_info": {"override_automatic_window_title_finding": True}}
         )
 
     should_close_fmodel_and_umodel = questionary.confirm(
