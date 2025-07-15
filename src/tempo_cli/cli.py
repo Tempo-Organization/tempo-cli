@@ -19,6 +19,9 @@ from tempo_core import (
     unreal_inis,
 )
 
+from tempo_cli.commands import init_command
+from tempo_cli import checks
+
 default_logs_dir = os.path.normpath(f"{file_io.SCRIPT_DIR}/logs")
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, "dist"))
 default_releases_dir = os.path.normpath(
@@ -2568,3 +2571,29 @@ def remove_from_toml(toml_path, key):
             logger.log_message(f"Removed {key} from {toml_path}.")
         else:
             logger.log_message(f"Key {key} not found in {toml_path}.")
+
+
+@cli.command(
+    name="init",
+    help="Creates a new tempo project in the current directory.",
+    short_help="Creates a new tempo project in the current directory.",
+)
+@click.option(
+    "--advanced",
+    is_flag=True,
+    default=False,
+    help="When passed, more in-depth questions for init creation occur.",
+)
+def init(advanced):
+    if not checks.check_git_is_installed():
+        no_git_error = f'You need git installed to use this functionality.'
+        raise RuntimeError(no_git_error)
+
+    if not checks.check_uv_is_installed():
+        no_uv_error = f'You need uv installed to use this functionality.'
+        raise RuntimeError(no_uv_error)
+
+    if advanced:
+        init_command.advanced_init()
+    else:
+        init_command.basic_init()

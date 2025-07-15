@@ -839,10 +839,11 @@ wheels = [
 
 [[package]]
 name = "tempo-cli"
-version = "4.0.1"
+version = "4.1.1.dev16252560654"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
+    { name = "questionary" },
     { name = "tempo-core" },
     { name = "tomlkit" },
     { name = "trogon" },
@@ -862,6 +863,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.2.1" },
+    { name = "questionary", specifier = ">=2.1.0" },
     { name = "tempo-core", git = "https://github.com/Tempo-Organization/tempo-core" },
     { name = "tomlkit", specifier = ">=0.13.3" },
     { name = "trogon", specifier = ">=0.6.0" },
