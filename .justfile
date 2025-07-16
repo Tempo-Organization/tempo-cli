@@ -101,6 +101,7 @@ git_add_files:
 
 refresh_deps: pre_commit_auto_update
   uv lock --upgrade
+  uv sync
 
 run:
   uv run tempo_cli --help

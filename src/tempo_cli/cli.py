@@ -2597,3 +2597,6 @@ def init(advanced):
         init_command.advanced_init()
     else:
         init_command.basic_init()
+
+# tempo_cli add (allows adding a new mod entry, or installing one from a link, which contains it's own tempo json with specific info this one can read, also adds to tempo.lock file)
+# tempo_cli remove same as above but remove version
