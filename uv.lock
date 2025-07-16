@@ -839,7 +839,7 @@ wheels = [
 
 [[package]]
 name = "tempo-cli"
-version = "4.2.1"
+version = "4.2.1.dev16329372468"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -887,7 +887,7 @@ x86-64-unknown-linux-gnu = []
 [[package]]
 name = "tempo-core"
 version = "0.1.0"
-source = { git = "https://github.com/Tempo-Organization/tempo-core#15a3e2a1fa67298942193d8de04a673ae02c8537" }
+source = { git = "https://github.com/Tempo-Organization/tempo-core#18de94519a16197ccdd90efc116159cc3a98c6a6" }
 dependencies = [
     { name = "psutil" },
     { name = "requests" },
