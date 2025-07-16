@@ -41,10 +41,10 @@ repos:
     -   id: pretty-format-json
         args: ["--autofix"]
 
-- repo: https://github.com/crate-ci/typos
-  rev: v1
-  hooks:
-    - id: typos
+-   repo: https://github.com/adhtruong/mirrors-typos
+    rev: v1.34.0
+    hooks:
+    -   id: typos
 
 - repo: https://github.com/RobertCraigie/pyright-python
   rev: v1.1.403
