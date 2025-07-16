@@ -24,6 +24,7 @@ setup: clean_up
   uv venv
   uv run pre-commit install
   uv run pre-commit install --hook-type commit-msg
+  uv run pre-commit install --hook-type pre-push
 
 build:
   uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli --collect-data trogon src/tempo_cli/__main__.py
