@@ -1,4 +1,11 @@
 
+## 4.2.2-dev.16353947497 (2025-07-17)
+
+### Fix
+
+- **pyproject.toml**: manual version bump
+- **uv.lock**: fixed taskkill
+
 ## 4.2.1-dev.16329372468 (2025-07-16)
 
 ## 4.2.1-dev.16328277586 (2025-07-16)
