@@ -2579,12 +2579,18 @@ def remove_from_toml(toml_path, key):
     short_help="Creates a new tempo project in the current directory.",
 )
 @click.option(
+    "--directory",
+    default=os.getcwd(),
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    help="The directory to create your new tempo project in, defaults to current working directory.",
+)
+@click.option(
     "--advanced",
     is_flag=True,
     default=False,
     help="When passed, more in-depth questions for init creation occur.",
 )
-def init(advanced):
+def init(directory, advanced):
     if not checks.check_git_is_installed():
         no_git_error = f'You need git installed to use this functionality.'
         raise RuntimeError(no_git_error)
@@ -2592,6 +2598,9 @@ def init(advanced):
     if not checks.check_uv_is_installed():
         no_uv_error = f'You need uv installed to use this functionality.'
         raise RuntimeError(no_uv_error)
+
+    os.makedirs(str(directory), exist_ok=True)
+    os.chdir(str(directory))
 
     if advanced:
         init_command.advanced_init()
