@@ -1,4 +1,11 @@
 
+## 4.3.0-dev.16505830627 (2025-07-24)
+
+### Feat
+
+- **cli.py**: added directory arg
+- **All**: updated deps
+
 ## 4.2.2-dev.16353947497 (2025-07-17)
 
 ### Fix
