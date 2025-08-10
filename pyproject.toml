@@ -20,6 +20,7 @@ classifiers = [
 dependencies = [
     "click>=8.2.1",
     "questionary>=2.1.0",
+    "rich-click>=1.8.9",
     "tempo-core",
     "tomlkit>=0.13.3",
     "trogon>=0.6.0",

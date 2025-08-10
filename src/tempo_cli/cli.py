@@ -3,7 +3,7 @@ import json
 import os
 import pathlib
 
-import click
+import rich_click as click
 import tomlkit
 from trogon import tui
 
