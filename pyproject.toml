@@ -30,7 +30,7 @@ requires = ["uv_build>=0.7.19,<0.8"]
 build-backend = "uv_build"
 
 [tool.uv.sources]
-tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core" }
+tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core", branch = "unit_testing" }
 
 [dependency-groups]
 dev = [
