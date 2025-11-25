@@ -13,7 +13,7 @@ For an in editor menu version check out [UnrealAutoModInEditor](https://github.c
 
 <h2 id="features">💪 Features</h2>
 
-* Supports Unreal Engine versions: 4.0-5.5
+* Supports Unreal Engine versions: 4.0-5.7
 * Supports loose file modding (unreal assets, not in a mod archive, like a .pak)
 * Supports modding iostore games
 * Automatic mod creation and placement
