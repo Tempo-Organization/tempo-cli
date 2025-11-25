@@ -2,7 +2,7 @@
 
 NOTICE: The below documentation is slightly out of date, but mostly valid. It will be updated soon.  <br>
 
-Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.5 <br>
+Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.7 <br>
 Automates creation, and placement, of mod archives, and other various actions. <br>
 For an in editor menu version check out [UnrealAutoModInEditor](https://github.com/Mythical-Github/UnrealAutoModInEditor)
 
