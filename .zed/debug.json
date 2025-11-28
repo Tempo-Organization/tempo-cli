@@ -1,0 +1,15 @@
+[
+  {
+    "label": "test etb project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "test_mods_all",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../../etb_mod_loader_uproject",
+    "justMyCode": false
+  }
+]
