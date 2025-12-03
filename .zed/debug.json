@@ -1,6 +1,6 @@
 [
   {
-    "label": "test etb project",
+    "label": "Test Zedfest Project",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
@@ -9,7 +9,20 @@
       "--settings_json",
       ".tempo.json"
     ],
-    "cwd": "$ZED_WORKTREE_ROOT/../../etb_mod_loader_uproject",
+    "cwd": "$ZED_WORKTREE_ROOT/../ZedfestModdingKit",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Escape The Backrooms Project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "test_mods_all",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../etb_mod_loader_uproject",
     "justMyCode": false
   }
 ]

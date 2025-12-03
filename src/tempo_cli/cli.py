@@ -1,4 +1,4 @@
-from __future__ import annotations
+0from __future__ import annotations
 import json
 import os
 import pathlib
@@ -837,11 +837,14 @@ def disable_mods(settings_json, mod_names):
 
 command_help = "Adds the given mod name in the provided settings JSON."
 
+packing_type_choices = data_structures.get_enum_strings_from_enum(
+    data_structures.PackingType
+)
 
 @cli.command(name="add_mod", help=command_help, short_help=command_help)
 @click.option(
     "--packing_type",
-    type=click.Choice(["unreal_pak", "repak", "engine", "loose"]),
+    type=click.Choice(packing_type_choices),
     help="Packing type for the mod.",
     required=True,
     default="unreal_pak",
