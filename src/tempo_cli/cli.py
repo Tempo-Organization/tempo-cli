@@ -872,7 +872,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
 )
 @click.option(
     "--compression_type",
-    default="",
+    default=None,
     type=str,
     help="Compression type for the mod (optional).",
 )
