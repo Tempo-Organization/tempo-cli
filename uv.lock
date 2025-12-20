@@ -964,7 +964,7 @@ x86-64-unknown-linux-gnu = []
 [[package]]
 name = "tempo-core"
 version = "0.1.0"
-source = { git = "https://github.com/Tempo-Organization/tempo-core?branch=unit_testing#b4b0086eb6e808ffcb17d2f897045a347d549e53" }
+source = { git = "https://github.com/Tempo-Organization/tempo-core?branch=unit_testing#011b36021d2a5029d6777747059b217efdcd390b" }
 dependencies = [
     { name = "platformdirs" },
     { name = "psutil" },

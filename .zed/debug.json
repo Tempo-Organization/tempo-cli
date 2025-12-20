@@ -39,12 +39,12 @@
     "justMyCode": false
   },
   {
-    "label": "Test Clair Obscure: Expedition 33 Open Latest Log",
+    "label": "Test Clair Obscure: Expedition 33 generate_game_file_list_json",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
-      "open_latest_log",
+      "generate_game_file_list_json",
       "--settings_json",
       ".tempo.json"
     ],
