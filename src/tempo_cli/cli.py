@@ -922,14 +922,19 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     help="Path to the settings JSON file",
 )
 @click.argument("mod_name", type=str)
-@click.argument("pak_dir_structure", type=str)
+# @click.argument("pak_dir_structure", type=str)
+@click.argument(
+    "pak_dir_structure",
+    type=click.Path( # IMPORTANT
+        path_type=pathlib.Path,
+    ),
+)
 def add_mod(
     settings_json,
     mod_name,
     packing_type,
     pak_dir_structure,
     mod_name_dir_type,
-    use_mod_name_dir_name_override,
     mod_name_dir_name_override,
     pak_chunk_num,
     compression_type,
