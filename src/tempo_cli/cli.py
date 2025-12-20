@@ -841,7 +841,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     data_structures.PackingType
 )
 
-@cli.command(name="add_mod", help=command_help, short_help=command_help, windows_expand_args=False)
+@cli.command(name="add_mod", help=command_help, short_help=command_help)
 @click.option(
     "--packing_type",
     type=click.Choice(packing_type_choices),
@@ -916,14 +916,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     help="Path to the settings JSON file",
 )
 @click.argument("mod_name", type=str)
-@click.argument(
-    "pak_dir_structure",
-    type=click.Path(
-        expand_user=False,
-        resolve_path=False,
-        path_type=str,  # or pathlib.Path if you want
-    ),
-)
+@click.argument("pak_dir_structure", type=str)
 
 def add_mod(
     settings_json,
