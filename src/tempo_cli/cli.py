@@ -856,12 +856,6 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     help='Directory type for the mod name (default: "Mods").',
 )
 @click.option(
-    "--use_mod_name_dir_name_override",
-    type=bool,
-    default=False,
-    help="Whether to override the mod name directory (default: False).",
-)
-@click.option(
     "--mod_name_dir_name_override",
     type=str,
     default=None,
