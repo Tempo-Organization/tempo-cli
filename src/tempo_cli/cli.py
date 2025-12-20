@@ -945,7 +945,7 @@ def add_mod(
         settings_json=settings_json,
         mod_name=mod_name,
         packing_type=packing_type,
-        pak_dir_structure=pak_dir_structure,
+        pak_dir_structure=str(pak_dir_structure),
         mod_name_dir_type=mod_name_dir_type,
         mod_name_dir_name_override=mod_name_dir_name_override,
         pak_chunk_num=pak_chunk_num,
