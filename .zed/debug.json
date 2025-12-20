@@ -24,5 +24,31 @@
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../etb_mod_loader_uproject",
     "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "test_mods_all",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 Open Latest Log",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "open_latest_log",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
   }
 ]
