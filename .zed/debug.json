@@ -52,14 +52,16 @@
     "justMyCode": false
   },
   {
-    "label": "Test Clair Obscure: Expedition 33 full_run_all",
+    "label": "Test Clair Obscure: Expedition 33 add_mod",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
-      "full_run_all",
+      "add_mod",
       "--settings_json",
-      ".tempo.json"
+      ".tempo.json",
+      "Testing",
+      "~mods"
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
     "justMyCode": false
