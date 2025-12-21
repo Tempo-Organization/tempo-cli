@@ -4,6 +4,6 @@ cd /d "%~dp0"
 
 cd ../..
 
-tempo_cli open_latest_log --settings_json .tempo.json
+uv run tempo_cli open_latest_log --settings_json .tempo.json
 
 exit /b

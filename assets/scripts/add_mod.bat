@@ -17,6 +17,6 @@ if "%pak_dir_structure%"=="" (
     set "pak_dir_structure=~mods"
 )
 
-tempo_cli add_mod --settings_json .tempo.json "%mod_name%" "%pak_dir_structure%"
+uv run tempo_cli add_mod --settings_json .tempo.json "%mod_name%" "%pak_dir_structure%"
 
 exit /b

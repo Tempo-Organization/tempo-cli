@@ -4,6 +4,6 @@ cd /d "%~dp0"
 
 cd ../..
 
-tempo_cli cook --settings_json .tempo.json
+uv run tempo_cli cook --settings_json .tempo.json
 
 exit /b
