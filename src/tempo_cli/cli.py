@@ -2352,11 +2352,11 @@ command_help = "Zip Directory Tree"
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     required=True,
 )
-def zip_directory_tree(directory, input_zip):
+def zip_directory_tree(directory, zip):
     file_io.zip_directory_tree(
         input_dir=directory,
-        output_dir=os.path.dirname(input_zip),
-        zip_name=os.path.basename(input_zip),
+        output_dir=os.path.dirname(zip),
+        zip_name=os.path.basename(zip),
     )
 
 
