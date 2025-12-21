@@ -637,8 +637,19 @@ command_help = "Generates a JSON file containing all of the files in the game di
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_game_file_list_json(settings_json):
-    main_logic.generate_game_file_list_json()
+@click.option(
+    "--output_json",
+    type=click.Path(
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    help="Path to the output game file list json."
+)
+def generate_game_file_list_json(settings_json, output_json):
+    if output_json:
+        main_logic.generate_game_file_list_json(output_json)
+    else:
+        main_logic.generate_game_file_list_json(None)
 
 
 command_help = """
