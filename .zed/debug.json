@@ -63,5 +63,31 @@
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
     "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 add_mod",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "add_mod",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 remove_mod",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "remove_mod",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
   }
 ]

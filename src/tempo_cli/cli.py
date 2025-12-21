@@ -2,6 +2,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+from typing_extensions import Required
 
 import click
 import tomlkit
@@ -938,8 +939,9 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     required=True,
     help="Path to the settings JSON file",
 )
-@click.argument("mod_name", type=str)
-@click.argument("pak_dir_structure", type=str)
+@click.option("--mod_name", type=str, required=True, prompt="What is your mod name?")
+@click.option("--pak_dir_structure", type=str, required=True, prompt="What is your pak dir structure? If left blank, defaults to ~mods", default="~mods")
+
 
 def add_mod(
     settings_json,
@@ -974,6 +976,34 @@ def add_mod(
     )
 
 
+command_help = "Remove the given mod name in the provided settings JSON."
+
+
+@cli.command(name="remove_mod", help=command_help, short_help=command_help)
+@click.option(
+    "--mod_name",
+    type=str,
+    required=True,
+    help="Name of a mod to be removed.",
+    prompt="What is the name of the mod to remove?"
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+def remove_mod(settings_json, mod_name):
+    main_logic.remove_mods(settings_json=settings_json, mod_names=[mod_name])
+
+
 command_help = "Removes the given mod names in the provided settings JSON."
 
 
@@ -983,7 +1013,7 @@ command_help = "Removes the given mod names in the provided settings JSON."
     multiple=True,
     type=str,
     required=True,
-    help="Name of a mod to be removed, can be specified multiple times.",
+    help="Name of a mod to be removed, can be specified multiple times."
 )
 @click.option(
     "--settings_json",
