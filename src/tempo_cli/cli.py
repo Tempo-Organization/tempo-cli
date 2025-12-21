@@ -614,8 +614,20 @@ To generate a file list JSON, use the generate_file_list_json command.
     required=True,
     help="Path to the settings JSON file",
 )
-def cleanup_game(settings_json):
-    main_logic.cleanup_game()
+@click.option(
+    "--output_json",
+    type=click.Path(
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    help="Path to the output game file list json."
+)
+def cleanup_game(settings_json, output_json):
+    if output_json:
+        main_logic.cleanup_game(output_json)
+    else:
+        main_logic.cleanup_game(None)
+
 
 
 command_help = "Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON."
