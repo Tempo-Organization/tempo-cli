@@ -858,6 +858,20 @@ wheels = [
 ]
 
 [[package]]
+name = "rich-click"
+version = "1.9.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bf/d8/f2c1b7e9a645ba40f756d7a5b195fc104729bc6b19061ba3ab385f342931/rich_click-1.9.4.tar.gz", hash = "sha256:af73dc68e85f3bebb80ce302a642b9fe3b65f3df0ceb42eb9a27c467c1b678c8", size = 73632, upload-time = "2025-10-25T01:08:49.142Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5b/6a/1f03adcb3cc7beb6f63aecc21565e9d515ccee653187fc4619cd0b42713b/rich_click-1.9.4-py3-none-any.whl", hash = "sha256:d70f39938bcecaf5543e8750828cbea94ef51853f7d0e174cda1e10543767389", size = 70245, upload-time = "2025-10-25T01:08:47.939Z" },
+]
+
+[[package]]
 name = "ruff"
 version = "0.14.10"
 source = { registry = "https://pypi.org/simple" }
@@ -919,8 +933,8 @@ name = "tempo-cli"
 version = "4.2.2"
 source = { editable = "." }
 dependencies = [
-    { name = "click" },
     { name = "questionary" },
+    { name = "rich-click" },
     { name = "tempo-core" },
     { name = "tomlkit" },
     { name = "trogon" },
@@ -939,8 +953,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "click", specifier = ">=8.2.1" },
     { name = "questionary", specifier = ">=2.1.0" },
+    { name = "rich-click", specifier = ">=1.9.4" },
     { name = "tempo-core", git = "https://github.com/Tempo-Organization/tempo-core?branch=unit_testing" },
     { name = "tomlkit", specifier = ">=0.13.3" },
     { name = "trogon", specifier = ">=0.6.0" },

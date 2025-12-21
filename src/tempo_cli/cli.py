@@ -4,7 +4,7 @@ import os
 import pathlib
 from typing_extensions import Required
 
-import click
+import rich_click as click
 import tomlkit
 from trogon import tui
 
@@ -803,6 +803,34 @@ def open_latest_log(settings_json):
     main_logic.open_latest_log()
 
 
+command_help = "Enable the given mod name in the provided settings JSON."
+
+
+@cli.command(name="enable_mod", help=command_help, short_help=command_help)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--mod_name",
+    type=str,
+    required=True,
+    help="Name of a mod to enable, can be specified multiple times",
+    prompt="What is the name of the mod you want to enable?"
+)
+def enable_mod(settings_json, mod_name):
+    main_logic.enable_mods(settings_json=settings_json, mod_names=[mod_name])
+
+
 command_help = "Enable the given mod names in the provided settings JSON."
 
 
@@ -857,6 +885,34 @@ command_help = "Disable the given mod names in the provided settings JSON."
 )
 def disable_mods(settings_json, mod_names):
     main_logic.disable_mods(settings_json=settings_json, mod_names=mod_names)
+
+
+command_help = "Disable the given mod names in the provided settings JSON."
+
+
+@cli.command(name="disable_mod", help=command_help, short_help=command_help)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--mod_name",
+    type=str,
+    required=True,
+    help="Name of a mod to disable, can be specified multiple times",
+    prompt="What is the name of the mod you want to disable?"
+)
+def disable_mod(settings_json, mod_name):
+    main_logic.disable_mods(settings_json=settings_json, mod_names=[mod_name])
 
 
 command_help = "Adds the given mod name in the provided settings JSON."

@@ -18,8 +18,8 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-    "click>=8.2.1",
     "questionary>=2.1.0",
+    "rich-click>=1.9.4",
     "tempo-core",
     "tomlkit>=0.13.3",
     "trogon>=0.6.0",
