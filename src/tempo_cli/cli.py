@@ -1,4 +1,5 @@
 from __future__ import annotations
+from itertools import compress
 import json
 import os
 import pathlib
@@ -30,6 +31,7 @@ default_releases_dir = os.path.normpath(
         str(settings.settings_information.settings_json_dir), "mod_packaging", "releases"
     )
 )
+
 
 
 @tui()
@@ -922,33 +924,47 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
 )
 
 @cli.command(name="add_mod", help=command_help, short_help=command_help)
+@click.option("--mod_name", type=str, required=True, prompt="What is your mod name?")
+@click.option("--pak_dir_structure", type=str, required=True, prompt="What is your pak dir structure? If left blank, defaults to ", default="~mods")
 @click.option(
     "--packing_type",
     type=click.Choice(packing_type_choices),
     help="Packing type for the mod.",
     required=True,
-    default="unreal_pak",
+    default=packing_type_choices[1],
+    prompt="What will be the packaging method for your mod? If left blank, defaults to "
 )
 @click.option(
     "--mod_name_dir_type",
     type=str,
     default="Mods",
     help='Directory type for the mod name (default: "Mods").',
+    required=True,
+    prompt="What is the directory name for your mod type? e.g. The Mods in Content/Mods/ModName or CustomContent in Content/CustomContent/ModName, or another pattern. If left blank, defaults to "
 )
 @click.option(
     "--mod_name_dir_name_override",
     type=str,
-    default=None,
+    default="",
     help="Override the mod name directory with this value (optional).",
+    required=True,
+    prompt="if you need one, what is your mod name dir name override? Useful for Content/Mods/ModName but having ModName_P.pak for example. If left blank, defaults to None and uses the mod_name"
 )
 @click.option(
-    "--pak_chunk_num", type=int, default=None, help="Pak chunk number (optional)."
+    "--pak_chunk_num",
+    type=int,
+    default=0,
+    help="Pak chunk number (optional).",
+    required=True,
+    prompt="If you are using the engine packing method, what is your mod's chunk id? If left blank, defaults to "
 )
 @click.option(
     "--compression_type",
-    default=None,
+    default="",
     type=str,
     help="Compression type for the mod (optional).",
+    required=True,
+    prompt="What if any is your compression method for packing? If left blank, defaults to None"
 )
 @click.option(
     "--is_enabled",
@@ -994,9 +1010,8 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     ),
     required=True,
     help="Path to the settings JSON file",
+    prompt="What is the path to your tempo config file?"
 )
-@click.option("--mod_name", type=str, required=True, prompt="What is your mod name?")
-@click.option("--pak_dir_structure", type=str, required=True, prompt="What is your pak dir structure? If left blank, defaults to ~mods", default="~mods")
 
 
 def add_mod(
@@ -1012,11 +1027,12 @@ def add_mod(
     asset_paths,
     tree_paths,
 ):
-    """
-    Arguments:
-        mod_name (str): The name of the mod to add.
-        pak_dir_structure (str): Path to the directory structure for packing.
-    """
+    if pak_chunk_num == 0:
+        pak_chunk_num = None
+    if mod_name_dir_name_override == "":
+        mod_name_dir_name_override = None
+    if compression_type == "":
+        compression_type = None
     main_logic.add_mod(
         settings_json=settings_json,
         mod_name=mod_name,
@@ -1063,14 +1079,7 @@ def remove_mod(settings_json, mod_name):
 command_help = "Removes the given mod names in the provided settings JSON."
 
 
-@cli.command(name="remove_mods", help=command_help, short_help=command_help)
-@click.option(
-    "--mod_names",
-    multiple=True,
-    type=str,
-    required=True,
-    help="Name of a mod to be removed, can be specified multiple times."
-)
+
 @click.option(
     "--settings_json",
     type=click.Path(
@@ -2684,12 +2693,13 @@ def remove_from_toml(toml_path, key):
     short_help="Creates a new tempo project in the current directory.",
 )
 @click.option(
-    "--advanced",
-    is_flag=True,
-    default=False,
-    help="When passed, more in-depth questions for init creation occur.",
+    "--directory",
+    default=os.getcwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    help="The directory you want your logs outputted to.",
 )
-def init(advanced):
+# add game preset options later?
+def init(directory):
     if not checks.check_git_is_installed():
         no_git_error = f'You need git installed to use this functionality.'
         raise RuntimeError(no_git_error)
@@ -2698,10 +2708,7 @@ def init(advanced):
         no_uv_error = f'You need uv installed to use this functionality.'
         raise RuntimeError(no_uv_error)
 
-    if advanced:
-        init_command.advanced_init()
-    else:
-        init_command.basic_init()
+    init_command.project_init(directory)
 
 # tempo_cli add (allows adding a new mod entry, or installing one from a link, which contains it's own tempo json with specific info this one can read, also adds to tempo.lock file)
 # tempo_cli remove same as above but remove version
