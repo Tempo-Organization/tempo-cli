@@ -134,7 +134,7 @@ def project_init(directory: pathlib.Path):
         subprocess.run("uv init --package", cwd=directory_)
     subprocess.run("uv add git+https://www.github.com/Tempo-Organization/tempo-cli@unit_testing", cwd=directory_)
 
-    shutil.rmtree(os.path.normpath(f'{directory_}/src'))
+    # shutil.rmtree(os.path.normpath(f'{directory_}/src'))
 
     unreal_engine_dir = questionary.path(
         message='What is the path to your unreal engine install directory (Most mods will need this but not all)? Example: "C:/Program Files/Epic Games/UE_4.22" (press enter to skip)',
