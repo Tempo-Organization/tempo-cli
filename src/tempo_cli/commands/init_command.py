@@ -206,7 +206,7 @@ def project_init(directory: pathlib.Path):
         default=True,
     ).ask()
     if should_make_docs:
-        subprocess.run("uv add mkdocs-material --frozen")
+        subprocess.run("uv add mkdocs-material")
         files = [
             "mkdocs.yml",
             ".github/workflows/github_pages.yml",
@@ -244,15 +244,15 @@ def project_init(directory: pathlib.Path):
             file_paths=[".pre-commit-config.yaml"],
             output_directory=directory_,
         )
-        subprocess.run("uv add pre-commit --frozen")
-        subprocess.run("uv run pre-commit install --frozen")
+        subprocess.run("uv add pre-commit")
+        subprocess.run("uv run pre-commit install")
 
     should_use_versioning = questionary.confirm(
         message="Would you like have tempo setup versioning management for your project?",
         default=True,
     ).ask()
     if should_use_versioning:
-        subprocess.run("uv add commitizen --frozen")
+        subprocess.run("uv add commitizen")
         toml_path = os.path.normpath(f"{directory_}/pyproject.toml")
         with open(toml_path, "r", encoding="utf-8") as f:
             content = f.read()
