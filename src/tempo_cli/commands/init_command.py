@@ -13,6 +13,22 @@ from tempo_core import file_io
 from tempo_cli import validators
 
 
+def replace_text_in_file(file_path, old_text, new_text):
+    """
+    Reads a file, replaces all occurrences of old_text with new_text,
+    and writes the changes back to the file.
+    """
+    with open(file_path, 'r') as file:
+        file_data = file.read()
+
+    file_data = file_data.replace(old_text, new_text)
+
+    with open(file_path, 'w') as file:
+        file.write(file_data)
+
+    print(f"Text replacement completed successfully in {file_path}")
+
+
 def get_unreal_engine_version(engine_path: str) -> str:
     version_file_path = f"{engine_path}/Engine/Build/Build.version"
     file_io.check_path_exists(version_file_path)
@@ -203,6 +219,19 @@ def project_init(directory: pathlib.Path):
             file_paths=files,
             output_directory=directory_,
         )
+        mkdocs_yml_path = os.path.normpath(f'{directory}/mkdocs.yml')
+        index_md_path = os.path.normpath(f'{directory}/docs/index.md')
+        mod_name = questionary.text(message="What is the main name for your docs? Usually your main Mod Name.").ask()
+        github_account_name = questionary.text(message="What is your github account name?").ask()
+        discord_server_link = questionary.text(message="If you have one, what is your discord server link? If none leave blank and hit enter.").ask()
+        if discord_server_link == '':
+            discord_server_link = 'https://discord.gg/EvUuAD4QvS'
+        replace_text_in_file(index_md_path, "ModName", mod_name)
+        replace_text_in_file(mkdocs_yml_path, "ModName", mod_name)
+        replace_text_in_file(mkdocs_yml_path, "GithubAccount", github_account_name)
+        replace_text_in_file(mkdocs_yml_path, "logo: fontawesome/solid/?", f'logo: fontawesome/solid/{mod_name[0]}')
+        replace_text_in_file(mkdocs_yml_path, "Your Discord Here", discord_server_link)
+
 
     should_use_pre_commit = questionary.confirm(
         message="Would you like have tempo setup pre-commit for various features?",
@@ -332,7 +361,66 @@ def project_init(directory: pathlib.Path):
             {"process_kill_events": {"auto_close_game": should_auto_close_game}},
         )
 
+    should_download_easy_scripts = questionary.confirm(
+        message="Would you like have tempo download easy to use generic bat scripts for the project?",
+        default=True,
+    ).ask()
+    if should_download_easy_scripts:
+        download_files_from_github_repo(
+            repo_url="https://github.com/Tempo-Organization/tempo-template",
+            repo_branch="main",
+            file_paths=[
+                "Modding/scripts/add_mod.bat",
+                "Modding/scripts/build.bat",
+                "Modding/scripts/cleanup_build.bat",
+                "Modding/scripts/cleanup_cooked.bat",
+                "Modding/scripts/cleanup_full.bat",
+                "Modding/scripts/cleanup_game.bat",
+                "Modding/scripts/close_engine.bat",
+                "Modding/scripts/close_game.bat",
+                "Modding/scripts/commitizen_bump_version.bat",
+                "Modding/scripts/commitizen_commit.bat",
+                "Modding/scripts/cook.bat",
+                "Modding/scripts/disable_mod.bat",
+                "Modding/scripts/enable_mod.bat",
+                "Modding/scripts/full_run_all.bat",
+                "Modding/scripts/generate_game_file_list_json.bat",
+                "Modding/scripts/generate_mod_releases_all.bat",
+                "Modding/scripts/generate_mods_all.bat",
+                "Modding/scripts/mkdocs_build.bat",
+                "Modding/scripts/mkdocs_serve.bat",
+                "Modding/scripts/open_latest_log.bat",
+                "Modding/scripts/package.bat",
+                "Modding/scripts/refresh_deps.bat",
+                "Modding/scripts/remove_mod.bat",
+                "Modding/scripts/resync_dir_with_repo.bat",
+                "Modding/scripts/run_engine.bat",
+                "Modding/scripts/run_game.bat",
+                "Modding/scripts/setup.bat",
+                "Modding/scripts/test_mods_all.bat"
+            ],
+            output_directory=directory_
+        )
+
     with open(tempo_config, "w") as config_file:
         json.dump(tempo_json_contents, config_file, indent=4)
 
     print(f'.tempo.json created at "{tempo_config}".')
+
+
+# fix
+# #       Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
+# Prepared 1 package in 219ms
+# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
+# Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
+# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
+# ? Would you like have tempo setup versioning management for your project? Yes
+# Resolved 76 packages in 279ms
+# Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
+# Prepared 1 package in 202ms
+# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
+# Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
+# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
+# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
+# ? What is the path to your uproject, if
+#
