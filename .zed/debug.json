@@ -89,5 +89,18 @@
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
     "justMyCode": false
+  },
+  {
+    "label": "Test BIY dump aes keys",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump_aes_keys",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
+    "justMyCode": false
   }
 ]

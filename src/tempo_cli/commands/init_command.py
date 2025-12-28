@@ -2,7 +2,6 @@ import os
 import json
 import subprocess
 import pathlib
-import shutil
 
 import tomlkit
 import requests
@@ -397,7 +396,8 @@ def project_init(directory: pathlib.Path):
                 "Modding/scripts/run_engine.bat",
                 "Modding/scripts/run_game.bat",
                 "Modding/scripts/setup.bat",
-                "Modding/scripts/test_mods_all.bat"
+                "Modding/scripts/test_mods_all.bat",
+                "Modding/scripts/dump_aes_keys.bat"
             ],
             output_directory=directory_
         )
@@ -406,21 +406,3 @@ def project_init(directory: pathlib.Path):
         json.dump(tempo_json_contents, config_file, indent=4)
 
     print(f'.tempo.json created at "{tempo_config}".')
-
-
-# fix
-# #       Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
-# Prepared 1 package in 219ms
-# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
-# Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
-# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
-# ? Would you like have tempo setup versioning management for your project? Yes
-# Resolved 76 packages in 279ms
-# Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
-# Prepared 1 package in 202ms
-# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
-# Built tempo-cli @ file:///C:/Users/mythi/OneDrive/Documents/GitHub/tempo-cli
-# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
-# error: failed to remove file `C:\Users\mythi\OneDrive\Documents\GitHub\tempo-cli\.venv\Lib\site-packages\../../Scripts/tempo_cli.exe`: The process cannot access the file because it is being used by another process. (os error 32)
-# ? What is the path to your uproject, if
-#

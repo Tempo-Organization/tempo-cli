@@ -4,6 +4,7 @@ import json
 import os
 import pathlib
 from typing_extensions import Required
+import subprocess
 
 import rich_click as click
 import tomlkit
@@ -2709,6 +2710,69 @@ def init(directory):
         raise RuntimeError(no_uv_error)
 
     init_command.project_init(directory)
+
+
+@cli.command(
+    name="dump_aes_keys",
+    help="Dumps the aes key(s) from the game in the provided settings json.",
+    short_help="Dumps the key(s) from the game in the provided settings json.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--directory",
+    default=os.getcwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    help="The directory you want your aes key outputted to.",
+)
+def dump_aes_keys(settings_json, directory):
+    from tempo_core.programs import pattern_sleuth
+
+    if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
+        pattern_sleuth.install_tool_patternsleuth()
+
+    aes_keys = []
+    for key in pattern_sleuth.run_patternsleuth_aes_key_scan_command():
+        print(f"AES Key: {key}")
+        if key not in aes_keys:
+            aes_keys.append(key)
+
+    os.makedirs(directory, exist_ok=True)
+
+    output_path = os.path.join(directory, "aes_keys.json")
+
+    data = {
+        "aes_keys": aes_keys
+    }
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+    print(output_path)
+
+    return output_path
+
+# EngineVersion
+# AESKeys
+# BuildConfiguration
+#
+#
+#
+#
+
+
+
 
 # tempo_cli add (allows adding a new mod entry, or installing one from a link, which contains it's own tempo json with specific info this one can read, also adds to tempo.lock file)
 # tempo_cli remove same as above but remove version
