@@ -102,5 +102,70 @@
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
     "justMyCode": false
+  },
+  {
+    "label": "Test BIY dump build configuration",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump_build_configuration",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
+    "justMyCode": false
+  },
+  {
+    "label": "Test BIY dump engine_version",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump_engine_version",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
+    "justMyCode": false
+  },
+  {
+    "label": "Test BIY dump build_configuration",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump_build_configuration",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
+    "justMyCode": false
+  },
+  {
+    "label": "Test clair jmap dump jmap command",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump_jmap",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  },
+  {
+    "label": "Test clair gen script objects",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "generate_script_objects",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
   }
 ]

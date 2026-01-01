@@ -1,10 +1,8 @@
 from __future__ import annotations
-from itertools import compress
-import json
 import os
+import time
+import json
 import pathlib
-from typing_extensions import Required
-import subprocess
 
 import rich_click as click
 import tomlkit
@@ -20,10 +18,15 @@ from tempo_core import (
     settings,
     unreal_collections,
     unreal_inis,
+    window_management,
+    utilities,
+    game_runner
 )
 
+from tempo_core.programs import pattern_sleuth, jmap, retoc, kismet_analyzer
 from tempo_cli.commands import init_command
 from tempo_cli import checks
+from tempo_core.threads import game_monitor
 
 default_logs_dir = os.path.normpath(f"{file_io.SCRIPT_DIR}/logs")
 default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, "dist"))
@@ -2737,8 +2740,6 @@ def init(directory):
     help="The directory you want your aes key outputted to.",
 )
 def dump_aes_keys(settings_json, directory):
-    from tempo_core.programs import pattern_sleuth
-
     if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
         pattern_sleuth.install_tool_patternsleuth()
 
@@ -2759,20 +2760,318 @@ def dump_aes_keys(settings_json, directory):
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
+    print(f'output path: {output_path}')
+
+    return output_path
+
+
+@cli.command(
+    name="dump_engine_version",
+    help="Dumps the engine version from the game in the provided settings json.",
+    short_help="Dumps the engine version from the game in the provided settings json.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--directory",
+    default=os.getcwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    help="The directory you want your engine version outputted to.",
+)
+def dump_engine_version(settings_json, directory):
+
+    if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
+        pattern_sleuth.install_tool_patternsleuth()
+
+    info = pattern_sleuth.run_patternsleuth_engine_version_scan_command()
+
+    if not info:
+        raise RuntimeError('dump engine version command failed due to info being None.')
+
+    os.makedirs(directory, exist_ok=True)
+
+    output_path = os.path.join(directory, "engine_version.json")
+
+    data = {
+        "engine_major_version": info["major"],
+        "engine_minor_version": info["minor"]
+    }
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+    print(f'output path: {output_path}')
+
+    return output_path
+
+
+@cli.command(
+    name="dump_build_configuration",
+    help="Dumps the build configuration from the game in the provided settings json.",
+    short_help="Dumps the build configuration from the game in the provided settings json.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--directory",
+    default=os.getcwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    help="The directory you want your build configuration outputted to.",
+)
+def dump_build_configuration(settings_json, directory):
+
+    if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
+        pattern_sleuth.install_tool_patternsleuth()
+
+    info = pattern_sleuth.run_patternsleuth_build_configuration_scan_command()
+
+    if not info:
+        raise RuntimeError('dump build configuration command failed due to info being None.')
+
+    os.makedirs(directory, exist_ok=True)
+
+    output_path = os.path.join(directory, "build_configuration.json")
+
+    data = {
+        "build_configuration": info
+    }
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
     print(output_path)
 
     return output_path
 
-# EngineVersion
-# AESKeys
-# BuildConfiguration
-#
-#
-#
-#
+
+@cli.command(
+    name="dump_jmap",
+    help="Dumps the jmap from the game in the provided settings json.",
+    short_help="Dumps the jmap from the game in the provided settings json.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--output",
+    default=os.path.normpath(f'{os.getcwd()}/Modding/output.jmap'),
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    help="The file location you want your jmap outputted to.",
+)
+def dump_jmap(settings_json, output):
+    os.makedirs(os.path.dirname(output), exist_ok=True)
+    if not jmap.is_current_preferred_jmap_version_installed():
+        jmap.install_tool_jmap()
+
+    game_runner.run_game()
+    game_monitor.start_game_monitor_thread()
+
+    window_title_override = utilities.get_game_window_title()
+    if not window_title_override:
+        game_monitor.stop_game_monitor_thread()
+        raise RuntimeError('There was no provided window title override')
+
+    timeout = 45.0
+    poll_interval = 0.1
+    elapsed = 0.0
+
+    while elapsed < timeout:
+        info = game_monitor.game_monitor_thread_information
+
+        if info.found_window and info.found_process:
+            break
+
+        time.sleep(poll_interval)
+        elapsed += poll_interval
+    else:
+        game_monitor.stop_game_monitor_thread()
+        raise RuntimeError('Timed out waiting for game window/process')
+
+    game_pid = window_management.get_pid_from_window_title(window_title_override)
+    if not game_pid:
+        game_monitor.stop_game_monitor_thread()
+        raise RuntimeError('There was no valid game pid passed to the command.')
+
+    # sometimes if you scan right when game opens errors occur, so a bit of a delay, make this configurable later somehow
+    time.sleep(3)
+
+    jmap.run_dump_jmap_jmap_command(
+        jmap_executable=str(jmap.get_jmap_package_path()),
+        game_pid=game_pid,
+        output_jmap_location=output
+    )
+
+    main_logic.close_game()
 
 
+@cli.command(
+    name="generate_script_objects",
+    help="Dumps the script objects from the game in the provided settings json.",
+    short_help="Dumps the script objects from the game in the provided settings json.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--jmap_path",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    default=os.path.normpath(f'{os.getcwd()}/Modding/output.jmap'),
+    help="Path to the a jmap file dumped from the game in the provided settings JSON file",
+)
+@click.option(
+    "--output",
+    default=os.path.normpath(f'{os.getcwd()}/Modding/output.utoc'),
+    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    help="The file location you want your utoc outputted to.",
+)
+def generate_script_objects(settings_json, jmap_path, output):
+    os.makedirs(os.path.dirname(output), exist_ok=True)
+    retoc.ensure_retoc_is_installed()
+    retoc.run_gen_script_objects_retoc_command(pathlib.Path(retoc.get_retoc_package_path()), jmap_path, output)
 
 
-# tempo_cli add (allows adding a new mod entry, or installing one from a link, which contains it's own tempo json with specific info this one can read, also adds to tempo.lock file)
-# tempo_cli remove same as above but remove version
+@cli.command(
+    name="kismet_analyze_directory",
+    help="Generates a kismet analyzer dump for the provided directory tree.",
+    short_help="Generates a kismet analyzer dump for the provided directory tree.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=True,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--kismet_analyzer_executable",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=False,
+    help="Path to your kismet analyzer executable, if not provided, one will be automatically downloaded.",
+)
+@click.option(
+    "--mappings",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=False,
+    help="Path to a jmap or usmap file.",
+)
+@click.option(
+    "--assets",
+    type=click.Path(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    default=os.path.normpath(f'{os.getcwd()}/Modding/game_dump'),
+    help="Path to an unpacked dir tree from an unreal game.",
+)
+@click.option(
+    "--output",
+    default=os.path.normpath(f'{os.getcwd()}/Modding/kismet_analyzer_dump'),
+    type=click.Path(
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    help="The file location you want your utoc outputted to.",
+)
+@click.option(
+    "--open",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Should the generated kismet analyzer be opened after being completed.",
+)
+def kismet_analyze_directory(settings_json, kismet_analyzer_executable, mappings, assets, output, open):
+    if kismet_analyzer_executable:
+        kismet_analyzer_directory = os.path.normpath(os.path.dirname(kismet_analyzer_executable))
+    else:
+        kismet_analyzer_directory = os.path.normpath(f'{os.getcwd()}/Modding/tools/kismet_analyzer')
+    os.makedirs(output, exist_ok=True)
+    if len(file_io.get_files_in_tree(assets)) < 1:
+        raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')
+    if kismet_analyzer.does_kismet_analyzer_exist(kismet_analyzer.get_kismet_analyzer_path(kismet_analyzer_directory)):
+        kismet_analyzer.install_kismet_analyzer(kismet_analyzer_directory)
+    kismet_analyzer.run_gen_cfg_tree_command(
+        kismet_analyzer_executable=pathlib.Path(kismet_analyzer.get_kismet_analyzer_path(kismet_analyzer_directory)),
+        mappings_file=mappings,
+        asset_tree=assets,
+        output_tree=output
+    )
+    if open:
+        import webbrowser
+        # check the below path is actually correct later on
+        webbrowser.open(os.path.normpath(f'{output}/index.html'))

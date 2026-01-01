@@ -397,7 +397,12 @@ def project_init(directory: pathlib.Path):
                 "Modding/scripts/run_game.bat",
                 "Modding/scripts/setup.bat",
                 "Modding/scripts/test_mods_all.bat",
-                "Modding/scripts/dump_aes_keys.bat"
+                "Modding/scripts/dump_aes_keys.bat",
+                "Modding/scripts/dump_jmap.bat",
+                "Modding/scripts/dump_engine_version.bat",
+                "Modding/scripts/dump_build_configuration.bat",
+                "Modding/scripts/kismet_analyze_game.bat",
+                "Modding/scripts/generate_script_objects.bat"
             ],
             output_directory=directory_
         )
