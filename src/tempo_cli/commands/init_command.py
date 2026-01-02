@@ -2,6 +2,7 @@ import os
 import json
 import subprocess
 import pathlib
+import zipfile
 
 import tomlkit
 import requests
@@ -10,6 +11,23 @@ from tempo_core.main_logic import generate_uproject
 from tempo_core import file_io
 
 from tempo_cli import validators
+
+
+def download_and_extract_zip(url: str, output_dir: str):
+    os.makedirs(output_dir, exist_ok=True)
+
+    zip_path = os.path.join(output_dir, "easy_scripts.zip")
+
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(zip_path, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
+
+    with zipfile.ZipFile(zip_path, "r") as zip_ref:
+        zip_ref.extractall(output_dir)
+
+    os.remove(zip_path)
 
 
 def replace_text_in_file(file_path, old_text, new_text):
@@ -364,47 +382,18 @@ def project_init(directory: pathlib.Path):
         message="Would you like have tempo download easy to use generic bat scripts for the project?",
         default=True,
     ).ask()
+    EASY_SCRIPTS_VERSION = "0.1.0"
     if should_download_easy_scripts:
-        download_files_from_github_repo(
-            repo_url="https://github.com/Tempo-Organization/tempo-template",
-            repo_branch="main",
-            file_paths=[
-                "Modding/scripts/add_mod.bat",
-                "Modding/scripts/build.bat",
-                "Modding/scripts/cleanup_build.bat",
-                "Modding/scripts/cleanup_cooked.bat",
-                "Modding/scripts/cleanup_full.bat",
-                "Modding/scripts/cleanup_game.bat",
-                "Modding/scripts/close_engine.bat",
-                "Modding/scripts/close_game.bat",
-                "Modding/scripts/commitizen_bump_version.bat",
-                "Modding/scripts/commitizen_commit.bat",
-                "Modding/scripts/cook.bat",
-                "Modding/scripts/disable_mod.bat",
-                "Modding/scripts/enable_mod.bat",
-                "Modding/scripts/full_run_all.bat",
-                "Modding/scripts/generate_game_file_list_json.bat",
-                "Modding/scripts/generate_mod_releases_all.bat",
-                "Modding/scripts/generate_mods_all.bat",
-                "Modding/scripts/mkdocs_build.bat",
-                "Modding/scripts/mkdocs_serve.bat",
-                "Modding/scripts/open_latest_log.bat",
-                "Modding/scripts/package.bat",
-                "Modding/scripts/refresh_deps.bat",
-                "Modding/scripts/remove_mod.bat",
-                "Modding/scripts/resync_dir_with_repo.bat",
-                "Modding/scripts/run_engine.bat",
-                "Modding/scripts/run_game.bat",
-                "Modding/scripts/setup.bat",
-                "Modding/scripts/test_mods_all.bat",
-                "Modding/scripts/dump_aes_keys.bat",
-                "Modding/scripts/dump_jmap.bat",
-                "Modding/scripts/dump_engine_version.bat",
-                "Modding/scripts/dump_build_configuration.bat",
-                "Modding/scripts/kismet_analyze_game.bat",
-                "Modding/scripts/generate_script_objects.bat"
-            ],
-            output_directory=directory_
+        output_directory_for_scripts = os.path.join(directory, "Modding", "scripts")
+
+        easy_scripts_download_link = (
+            f"https://github.com/Tempo-Organization/tempo-template/"
+            f"releases/download/{EASY_SCRIPTS_VERSION}/easy_scripts.zip"
+        )
+
+        download_and_extract_zip(
+            url=easy_scripts_download_link,
+            output_dir=output_directory_for_scripts
         )
 
     with open(tempo_config, "w") as config_file:
