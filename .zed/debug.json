@@ -1,5 +1,16 @@
 [
   {
+    "label": "TUI",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "tui"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "justMyCode": false
+  },
+  {
     "label": "Test Zedfest Project",
     "adapter": "Debugpy",
     "request": "launch",
@@ -26,142 +37,12 @@
     "justMyCode": false
   },
   {
-    "label": "Test Clair Obscure: Expedition 33",
+    "label": "Test Clair Obscure: Expedition 33 Project",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
       "test_mods_all",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
-    "justMyCode": false
-  },
-  {
-    "label": "Test Clair Obscure: Expedition 33 generate_game_file_list_json",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "generate_game_file_list_json",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
-    "justMyCode": false
-  },
-  {
-    "label": "Test Clair Obscure: Expedition 33 full_run_all",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "full_run_all",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
-    "justMyCode": false
-  },
-  {
-    "label": "Test Clair Obscure: Expedition 33 add_mod",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "add_mod",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
-    "justMyCode": false
-  },
-  {
-    "label": "Test Clair Obscure: Expedition 33 remove_mod",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "remove_mod",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
-    "justMyCode": false
-  },
-  {
-    "label": "Test BIY dump aes keys",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "dump_aes_keys",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
-    "justMyCode": false
-  },
-  {
-    "label": "Test BIY dump build configuration",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "dump_build_configuration",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
-    "justMyCode": false
-  },
-  {
-    "label": "Test BIY dump engine_version",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "dump_engine_version",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
-    "justMyCode": false
-  },
-  {
-    "label": "Test BIY dump build_configuration",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "dump_build_configuration",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../BIY_MainRepo",
-    "justMyCode": false
-  },
-  {
-    "label": "Test clair jmap dump jmap command",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "dump_jmap",
-      "--settings_json",
-      ".tempo.json"
-    ],
-    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
-    "justMyCode": false
-  },
-  {
-    "label": "Test clair gen script objects",
-    "adapter": "Debugpy",
-    "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "generate_script_objects",
       "--settings_json",
       ".tempo.json"
     ],

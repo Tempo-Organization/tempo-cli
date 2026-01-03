@@ -15,4 +15,19 @@ project config
 mod specific config
 game config
 
+check out dynaconf
+env files
+
+
 config versions
+
+
+
+individual mod config:
+  mod version:
+  mod author(s):
+  license:
+  description:
+  project urls:
+  keywords:
+  dependencies:
