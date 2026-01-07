@@ -37,7 +37,6 @@ default_releases_dir = os.path.normpath(
 )
 
 
-
 @tui()
 @click.version_option()
 @click.group(chain=True)
@@ -831,7 +830,7 @@ command_help = "Enable the given mod name in the provided settings JSON."
     type=str,
     required=True,
     help="Name of a mod to enable, can be specified multiple times",
-    prompt="What is the name of the mod you want to enable?"
+    prompt="What is the name of the mod you want to enable? "
 )
 def enable_mod(settings_json, mod_name):
     main_logic.enable_mods(settings_json=settings_json, mod_names=[mod_name])
