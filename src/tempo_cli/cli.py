@@ -25,7 +25,7 @@ from tempo_core import (
 
 from tempo_core.programs import pattern_sleuth, jmap, retoc, kismet_analyzer
 from tempo_cli.commands import init_command
-from tempo_cli import checks
+from tempo_cli import checks, data_structures
 from tempo_core.threads import game_monitor
 
 default_logs_dir = os.path.normpath(f"{file_io.SCRIPT_DIR}/logs")
@@ -36,6 +36,11 @@ default_releases_dir = os.path.normpath(
     )
 )
 
+rich_color_system_choices = click.Choice(
+    data_structures.get_enum_strings_from_enum(
+        data_structures.RichColorSystem
+    )
+)
 
 @tui()
 @click.version_option()
@@ -56,8 +61,8 @@ default_releases_dir = os.path.normpath(
 )
 @click.option(
     "--rich_console_color_system",
-    default='auto',
-    type=click.Choice(['auto', 'standard', '256', 'truecolor', 'windows', 'none']),
+    default=rich_color_system_choices[0],
+    type=click.Choice(rich_color_system_choices),
     help="The color system of the console, uses rich's color system.",
 )
 @click.option('--log_name_prefix', type=str, help='The log name prefix for your logs.')
