@@ -382,7 +382,7 @@ def project_init(directory: pathlib.Path):
         message="Would you like have tempo download easy to use generic bat scripts for the project?",
         default=True,
     ).ask()
-    EASY_SCRIPTS_VERSION = "0.1.0"
+    EASY_SCRIPTS_VERSION = "0.2.0"
     if should_download_easy_scripts:
         output_directory_for_scripts = os.path.join(directory, "Modding", "scripts")
 
