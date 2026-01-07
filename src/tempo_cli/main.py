@@ -6,7 +6,7 @@ from tempo_cli import cli
 
 
 def _style_prompt(prompt: str) -> str:
-    return click.style(prompt, fg="magenta", bg="bright_white", bold=True)
+    return click.style(prompt, fg="blue", bg="white", bold=False, dim=True)
 
 def styled_build_prompt(
     text, prompt_suffix, show_default, default, show_choices, type_
