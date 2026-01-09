@@ -1,7 +1,8 @@
+import os
 import pathlib
 
 import rich_click as click
-from tempo_core import main_logic
+from tempo_core import main_logic, file_io, settings, app_runner, data_structures
 
 
 @click.group()
@@ -143,3 +144,158 @@ command_help = "Deletes all files for the specified uplugin paths."
 )
 def remove(uplugin_paths):
     main_logic.remove_uplugins(uplugin_paths)
+
+
+
+
+
+
+
+
+
+
+# later allow specification of the output directory
+command_help = "Build and package one or more uplugins for distribution."
+
+@uplugin.command(name="build", help=command_help, short_help=command_help)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=False,
+    help="Path to the settings JSON file",
+)
+@click.option(
+    "--uplugin_paths",
+    multiple=True,
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=False,
+    help="A path to a uplugin to build. Can be specified multiple times.",
+)
+@click.option(
+    "--uplugin_names",
+    multiple=True,
+    type=str,
+    required=False,
+    help="A name of a plugin, to build, will be checked for in uproject, then engine install. Can be specified multiple times.",
+)
+@click.option(
+    "--target_platforms",
+    multiple=True,
+    type=str,
+    help="A target platform to target, can be specified multiple times (e.g. Win64).",
+    default=['Win64']
+)
+@click.option(
+    "--no_host_platform",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Prevent compiling for the editor platform on the host",
+)
+@click.option(
+    "--strict_includes",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Disables precompiled headers and unity build in order to check all source files have self-contained headers.",
+)
+@click.option(
+    "--unversioned",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Do not embed the current engine version into the descriptor",
+)
+@click.option(
+    "--zip",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Zips the compiled uplugin(s) into the output directory",
+)
+def build(
+    settings_json,
+    uplugin_names,
+    uplugin_paths,
+    target_platforms,
+    no_host_platform,
+    strict_includes,
+    unversioned,
+    zip
+):
+    final_uplugin_paths = []
+    for uplugin_path in uplugin_paths:
+        if os.path.isfile(uplugin_path):
+            final_uplugin_paths.append(uplugin_path)
+
+    for uplugin_name in uplugin_names:
+        potential_path = os.path.normpath(
+            f"{os.path.dirname(str(settings.get_uproject_file()))}/Plugins/{uplugin_name}/{uplugin_name}.uplugin"
+        )
+
+        if os.path.isfile(potential_path):
+            final_uplugin_paths.append(potential_path)
+            continue
+
+        engine_plugins_dir = os.path.normpath(
+            f"{settings.get_unreal_engine_dir()}/Engine/Plugins"
+        )
+
+        uplugin_files = file_io.filter_by_extension(
+            file_io.get_files_in_tree(engine_plugins_dir),
+            "uplugin"
+        )
+
+        matching_plugin = next(
+            (
+                path for path in uplugin_files
+                if os.path.basename(path) == f"{uplugin_name}.uplugin"
+            ),
+            None
+        )
+
+        if matching_plugin:
+            final_uplugin_paths.append(matching_plugin)
+
+    if len(final_uplugin_paths) == 0:
+        raise RuntimeError("No valid .uplugin files were specified or found.")
+
+    for uplugin_path in list(set(final_uplugin_paths)):
+        target_platform_string = '+'.join(set(target_platforms))
+        automation_tool = os.path.normpath(f'{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}')
+        package_path = os.path.normpath(f'{os.path.dirname(uplugin_path)}/Build') # output to the Build directory inside the directory where the uplugin file is located
+        args = [
+            'BuildPlugin',
+            f'-Plugin="{uplugin_path}"',
+            f'-Package="{package_path}"',
+            '-Rocket',
+            f'TargetPlatform={target_platform_string}'
+        ]
+        if no_host_platform:
+            args.append('-NoHostPlatform')
+        if strict_includes:
+            args.append('-StrictIncludes')
+        if unversioned:
+            args.append('-Unversioned')
+        exec_mode = data_structures.ExecutionMode.SYNC
+        app_runner.run_app(
+            exe_path=automation_tool,
+            exec_mode=exec_mode,
+            args=args
+        )
+        if zip:
+            file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
