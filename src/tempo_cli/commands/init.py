@@ -406,7 +406,7 @@ def project_init(directory: pathlib.Path):
 @click.command(
     name="init",
     help="Create a new tempo project.",
-    short_help="Create a new tempo project.",
+    short_help="Create a new tempo project",
 )
 @click.option(
     "--directory",
