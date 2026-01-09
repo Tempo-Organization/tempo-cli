@@ -146,15 +146,6 @@ def remove(uplugin_paths):
     main_logic.remove_uplugins(uplugin_paths)
 
 
-
-
-
-
-
-
-
-
-# later allow specification of the output directory
 command_help = "Build and package one or more uplugins for distribution."
 
 @uplugin.command(name="build", help=command_help, short_help=command_help)
@@ -314,4 +305,10 @@ def build(
             args=args
         )
         if zip:
-            file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
+                if output_directory:
+                    uplugin = file_io.filter_by_extension(file_io.get_files_in_tree(str(package_path)), 'uplugin')[0]
+                    plugin_name = os.path.splitext(os.path.basename(uplugin))[0]
+                    zip_name = os.path.normpath(f"{plugin_name}.zip")
+                    file_io.zip_directory_tree(package_path, package_path, zip_name)
+                else:
+                    file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
