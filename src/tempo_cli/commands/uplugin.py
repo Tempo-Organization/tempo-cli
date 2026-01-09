@@ -314,7 +314,4 @@ def build(
             args=args
         )
         if zip:
-            if output_directory:
-                file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{output_directory}/{os.path.dirname(package_path)}.zip'))
-            else:
-                file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
+            file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
