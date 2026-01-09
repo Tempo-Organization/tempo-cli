@@ -193,6 +193,18 @@ command_help = "Build and package one or more uplugins for distribution."
     help="A name of a plugin, to build, will be checked for in uproject, then engine install. Can be specified multiple times.",
 )
 @click.option(
+    "--output_directory",
+    help="Path to the output directory",
+    type=click.Path(
+        exists=True,
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+)
+@click.option(
     "--target_platforms",
     multiple=True,
     type=str,
@@ -231,6 +243,7 @@ def build(
     settings_json,
     uplugin_names,
     uplugin_paths,
+    output_directory,
     target_platforms,
     no_host_platform,
     strict_includes,
@@ -277,7 +290,10 @@ def build(
     for uplugin_path in list(set(final_uplugin_paths)):
         target_platform_string = '+'.join(set(target_platforms))
         automation_tool = os.path.normpath(f'{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}')
-        package_path = os.path.normpath(f'{os.path.dirname(uplugin_path)}/Build') # output to the Build directory inside the directory where the uplugin file is located
+        if output_directory:
+            package_path = output_directory
+        else:
+            package_path = os.path.normpath(f'{os.path.dirname(uplugin_path)}/Build') # output to the Build directory inside the directory where the uplugin file is located
         args = [
             'BuildPlugin',
             f'-Plugin="{uplugin_path}"',
@@ -298,4 +314,7 @@ def build(
             args=args
         )
         if zip:
-            file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
+            if output_directory:
+                file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{output_directory}/{os.path.dirname(package_path)}.zip'))
+            else:
+                file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
