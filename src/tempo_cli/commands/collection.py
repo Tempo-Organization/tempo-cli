@@ -16,7 +16,6 @@ default_parent_guid = unreal_collections.get_blank_unreal_guid().to_uid()
 @click.group()
 def collection():
     """Collection related commands"""
-    click.echo("Starting collection command usage...")
 
 @collection.command(name="create_collection", help=command_help, short_help=command_help)
 @click.option(

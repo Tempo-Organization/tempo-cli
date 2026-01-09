@@ -4,13 +4,14 @@ import subprocess
 import pathlib
 import zipfile
 
+import rich_click as click
 import tomlkit
 import requests
 import questionary
 from tempo_core.main_logic import generate_uproject
 from tempo_core import file_io
 
-from tempo_cli import validators
+from tempo_cli import validators, checks
 
 
 def download_and_extract_zip(url: str, output_dir: str):
@@ -400,3 +401,27 @@ def project_init(directory: pathlib.Path):
         json.dump(tempo_json_contents, config_file, indent=4)
 
     print(f'.tempo.json created at "{tempo_config}".')
+
+
+@click.command(
+    name="init",
+    help="Create a new tempo project.",
+    short_help="Create a new tempo project.",
+)
+@click.option(
+    "--directory",
+    default=os.getcwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    help="The directory you want your logs outputted to.",
+)
+# add game preset options later?
+def init(directory):
+    if not checks.check_git_is_installed():
+        no_git_error = 'You need git installed to use this functionality.'
+        raise RuntimeError(no_git_error)
+
+    if not checks.check_uv_is_installed():
+        no_uv_error = 'You need uv installed to use this functionality.'
+        raise RuntimeError(no_uv_error)
+
+    project_init(directory)
