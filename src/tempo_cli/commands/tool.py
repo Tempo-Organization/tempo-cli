@@ -10,7 +10,6 @@ from tempo_core import main_logic
 @click.group()
 def tool():
     """Tool related commands"""
-    click.echo("Starting tool command usage...")
 
   # attach tool group to main CLI
 
@@ -19,7 +18,6 @@ def tool():
 @click.group()
 def install():
     """Install programs"""
-    click.echo("Starting install command usage...")
 
 
   # attach install group under tool
@@ -29,7 +27,6 @@ def install():
 # @click.group()
 # def uninstall():
 #     """Uninstall programs"""
-#     click.echo("Starting uninstall command usage...")
 
 
 # tool.add_command(uninstall)  # attach uninstall group under tool

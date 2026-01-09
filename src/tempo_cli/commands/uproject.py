@@ -7,7 +7,6 @@ from tempo_core import main_logic
 @click.group()
 def uproject():
     """Uproject related commands"""
-    click.echo("Starting uproject command usage...")
 
 
 command_help = (

@@ -14,7 +14,6 @@ import rich_click as click
 @click.group()
 def dump():
     """Dump related commands"""
-    click.echo("Starting dump command usage...")
 
 @dump.command(
     name="aes_keys",

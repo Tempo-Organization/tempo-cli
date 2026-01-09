@@ -8,7 +8,6 @@ from tempo_core import main_logic
 @click.group()
 def clean():
     """Clean related commands"""
-    click.echo("Starting clean command usage...")
 
 
 command_help = "Cleans up the GitHub repository specified within the settings JSON."

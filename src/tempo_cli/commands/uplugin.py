@@ -7,7 +7,6 @@ from tempo_core import main_logic
 @click.group()
 def uplugin():
     """Uplugin related commands"""
-    click.echo("Starting uplugin command usage...")
 
 
 command_help = "Generates a uplugin in a directory, within the specified directory with the given settings."

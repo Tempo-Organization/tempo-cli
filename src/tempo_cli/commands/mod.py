@@ -16,7 +16,6 @@ default_releases_dir = os.path.normpath(
 @click.group()
 def mod():
     """Mod related commands"""
-    click.echo("Starting mod command usage...")
 
 
 command_help = "Enable the given mod name in the provided settings JSON."

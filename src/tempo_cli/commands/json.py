@@ -8,7 +8,6 @@ from tempo_core import logger
 @click.group()
 def json():
     """Json related commands"""
-    click.echo("Starting json command usage...")
 
 
 command_help_add_json = "Add an entry to a JSON file."

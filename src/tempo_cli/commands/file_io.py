@@ -10,7 +10,6 @@ from tempo_core import file_io as tempo_core_file_io
 @click.group()
 def file_io():
     """File IO related commands"""
-    click.echo("Starting file_io command usage...")
 
 
 command_help = "Zip Directory Tree"

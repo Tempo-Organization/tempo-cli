@@ -8,7 +8,6 @@ from tempo_core import logger
 @click.group()
 def toml():
     """Toml related commands"""
-    click.echo("Starting toml command usage...")
 
 
 command_help_add_toml = "Add an entry to a TOML file."

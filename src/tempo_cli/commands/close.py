@@ -10,7 +10,6 @@ command_help = "Close the game."
 @click.group()
 def close():
     """Close related commands"""
-    click.echo("Starting close command usage...")
 
 @close.command(name="game", help=command_help, short_help=command_help)
 @click.option(

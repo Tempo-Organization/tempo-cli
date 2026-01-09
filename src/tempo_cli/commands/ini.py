@@ -8,7 +8,6 @@ from tempo_core import unreal_inis
 @click.group()
 def ini():
     """Ini related commands"""
-    click.echo("Starting ini command usage...")
 
 
 command_help = (

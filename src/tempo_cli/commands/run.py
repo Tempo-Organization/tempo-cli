@@ -17,7 +17,6 @@ default_releases_dir = os.path.normpath(
 @click.group()
 def run():
     """Run related commands"""
-    click.echo("Starting run command usage...")
 
 
 command_help = "Run the engine."
