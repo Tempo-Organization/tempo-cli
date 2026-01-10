@@ -200,3 +200,5 @@ requirements.txt
 assets/base/tempo_cli.exe
 assets/base/tempo_cli_headless.exe
 engine_version.json
+engine_version.json
+uv
