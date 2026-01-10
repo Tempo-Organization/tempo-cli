@@ -9,7 +9,7 @@ import tomlkit
 import requests
 import questionary
 from tempo_core.main_logic import generate_uproject
-from tempo_core import file_io
+from tempo_core import file_io, logger
 
 from tempo_cli import validators, checks
 
@@ -44,7 +44,7 @@ def replace_text_in_file(file_path, old_text, new_text):
     with open(file_path, 'w') as file:
         file.write(file_data)
 
-    print(f"Text replacement completed successfully in {file_path}")
+    logger.log_message(f"Text replacement completed successfully in {file_path}")
 
 
 def get_unreal_engine_version(engine_path: str) -> str:
@@ -79,13 +79,13 @@ def download_files_from_github_repo(
             response = requests.get(raw_url)
             response.raise_for_status()
         except requests.RequestException as e:
-            print(f"Failed to download {file_path}: {e}")
+            logger.log_message(f"Failed to download {file_path}: {e}")
             continue
 
         os.makedirs(os.path.dirname(local_file_path), exist_ok=True)
         with open(local_file_path, "wb") as f:
             f.write(response.content)
-            print(f"Downloaded: {file_path} → {local_file_path}")
+            logger.log_message(f"Downloaded: {file_path} → {local_file_path}")
 
 
 def deep_update(original, updates):
@@ -130,7 +130,7 @@ def get_branch_from_git_repo(repo_directory: str) -> str:
 
 def project_init(directory: pathlib.Path):
     directory_ = str(directory)
-    print(f"project directory: {directory_}")
+    logger.log_message(f"project directory: {directory_}")
     git_repo_dir = os.path.normpath(f"{directory_}/.git")
 
     tempo_config = os.path.normpath(f"{directory_}/.tempo.json")
@@ -299,7 +299,7 @@ def project_init(directory: pathlib.Path):
         message='What is the path to your uproject, if you have one already? Example: "C:/Users/Mythi/Documents/GitHub/ZedfestModdingKit/KevinSpel.uproject" (press enter to skip)',
     ).ask()
     if not uproject_path == "" and not os.path.dirname(uproject_path) == directory_:
-        print(
+        logger.log_message(
             "Warning: It is recommended to place your uproject in the same directory as your tempo project files."
         )
     if uproject_path == "" or not uproject_path:
@@ -400,7 +400,7 @@ def project_init(directory: pathlib.Path):
     with open(tempo_config, "w") as config_file:
         json.dump(tempo_json_contents, config_file, indent=4)
 
-    print(f'.tempo.json created at "{tempo_config}".')
+    logger.log_message(f'.tempo.json created at "{tempo_config}".')
 
 
 @click.command(

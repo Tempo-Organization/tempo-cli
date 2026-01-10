@@ -3,7 +3,7 @@ import time
 import json
 import pathlib
 
-from tempo_core import main_logic, window_management, utilities, game_runner
+from tempo_core import main_logic, window_management, utilities, game_runner, logger
 from tempo_core.programs import retoc, pattern_sleuth
 from tempo_core.programs import jmap as jmap_tool
 from tempo_core.threads import game_monitor
@@ -39,13 +39,19 @@ def dump():
     type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
     help="The directory you want your aes key outputted to.",
 )
-def aes_keys(settings_json, directory):
+@click.option(
+    "--dump_to_tempo_config",
+    type=bool,
+    default=True,
+    help="Whether the dumped info should be stored in the tempo config file or not.",
+)
+def aes_keys(settings_json, directory, dump_to_tempo_config):
     if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
         pattern_sleuth.install_tool_patternsleuth()
 
     aes_keys = []
     for key in pattern_sleuth.run_patternsleuth_aes_key_scan_command():
-        print(f"AES Key: {key}")
+        logger.log_message(f"AES Key: {key}")
         if key not in aes_keys:
             aes_keys.append(key)
 
@@ -60,9 +66,22 @@ def aes_keys(settings_json, directory):
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-    print(f'output path: {output_path}')
+    logger.log_message(f'output path: {output_path}')
 
-    return output_path
+    if not dump_to_tempo_config:
+        return
+
+    with open(settings_json, "r", encoding="utf-8") as f:
+        settings = json.load(f)
+
+    engine_info = settings.setdefault("engine_info", {})
+
+    engine_info["aes_keys"] = aes_keys
+
+    with open(settings_json, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=4)
+
+    logger.log_message(f"updated settings json: {settings_json}")
 
 
 @dump.command(
@@ -89,7 +108,13 @@ def aes_keys(settings_json, directory):
     type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
     help="The directory you want your engine version outputted to.",
 )
-def engine_version(settings_json, directory):
+@click.option(
+    "--dump_to_tempo_config",
+    type=bool,
+    default=True,
+    help="Whether the dumped info should be stored in the tempo config file or not.",
+)
+def engine_version(settings_json, directory, dump_to_tempo_config):
 
     if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
         pattern_sleuth.install_tool_patternsleuth()
@@ -111,9 +136,23 @@ def engine_version(settings_json, directory):
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-    print(f'output path: {output_path}')
+    logger.log_message(f'output path: {output_path}')
 
-    return output_path
+    if not dump_to_tempo_config:
+        return
+
+    with open(settings_json, "r", encoding="utf-8") as f:
+        settings = json.load(f)
+
+    engine_info = settings.setdefault("engine_info", {})
+
+    engine_info["unreal_engine_major_version"] = info["major"]
+    engine_info["unreal_engine_minor_version"] = info["minor"]
+
+    with open(settings_json, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=4)
+
+    logger.log_message(f"updated settings json: {settings_json}")
 
 
 @dump.command(
@@ -140,7 +179,13 @@ def engine_version(settings_json, directory):
     type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
     help="The directory you want your build configuration outputted to.",
 )
-def build_configuration(settings_json, directory):
+@click.option(
+    "--dump_to_tempo_config",
+    type=bool,
+    default=True,
+    help="Whether the dumped info should be stored in the tempo config file or not.",
+)
+def build_configuration(settings_json, directory, dump_to_tempo_config):
 
     if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
         pattern_sleuth.install_tool_patternsleuth()
@@ -161,9 +206,22 @@ def build_configuration(settings_json, directory):
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-    print(output_path)
+    logger.log_message(output_path)
 
-    return output_path
+    if not dump_to_tempo_config:
+        return
+
+    with open(settings_json, "r", encoding="utf-8") as f:
+        settings = json.load(f)
+
+    engine_info = settings.setdefault("engine_info", {})
+
+    engine_info["build_configuration"] = info
+
+    with open(settings_json, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=4)
+
+    logger.log_message(f"updated settings json: {settings_json}")
 
 
 @dump.command(

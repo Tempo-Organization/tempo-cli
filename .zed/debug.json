@@ -75,5 +75,47 @@
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
     "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 Project, Dump engine version",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump",
+      "engine_version",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 Project, Dump aes keys",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump",
+      "aes_keys",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 Project, Dump build configuration",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "dump",
+      "build_configuration",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
   }
 ]
