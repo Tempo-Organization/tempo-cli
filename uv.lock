@@ -980,7 +980,7 @@ x86-64-unknown-linux-gnu = []
 [[package]]
 name = "tempo-core"
 version = "0.1.0"
-source = { git = "https://github.com/Tempo-Organization/tempo-core?branch=unit_testing#80980e4453b092e79ca6f87869aacc5ea345a5e1" }
+source = { git = "https://github.com/Tempo-Organization/tempo-core?branch=unit_testing#09a822d1a811a112a39c75548d29e706d9ab9fa9" }
 dependencies = [
     { name = "platformdirs" },
     { name = "psutil" },
@@ -1000,7 +1000,7 @@ wheels = [
 
 [[package]]
 name = "textual"
-version = "7.0.3"
+version = "7.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py", extra = ["linkify"] },
@@ -1010,9 +1010,9 @@ dependencies = [
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/14/3d5afaec9af0cfed28d629b4bce8209d680f7cd1d34aeeb2ddcf2d2aac7a/textual-7.0.3.tar.gz", hash = "sha256:e9206a33bcd9486650d3e954147cd94ef49170df09d9a6dfc349400a4b25772d", size = 1582423, upload-time = "2026-01-09T22:33:34.848Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/71/13/b5cb4995d1390dd6e43c89bfa879ae41fc1b97551ce1f6d29bd01d0f9395/textual-7.1.0.tar.gz", hash = "sha256:3c7148ef00a9277b45fd78a1a6adc7c419c451d3ed714a0b015b16eaa2a8a73b", size = 1582455, upload-time = "2026-01-10T10:32:36.791Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/63/ac/d72087c9d76e63ec191694d71ca6d456ab64b06da68d191cad1ef3e60516/textual-7.0.3-py3-none-any.whl", hash = "sha256:fac6f805d464d407f830102863944103c2ef8b10003d28851ed884626124560e", size = 715469, upload-time = "2026-01-09T22:33:33.021Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/f4/48e4a4c77ab7eea48d3b0a77f8dea0be101c83421abc64da0888c77c47cf/textual-7.1.0-py3-none-any.whl", hash = "sha256:9209dd0d1d958316832f7e59328f3911112f8e951abef7c3fbe54effd4e4caed", size = 715555, upload-time = "2026-01-10T10:32:35.117Z" },
 ]
 
 [[package]]
