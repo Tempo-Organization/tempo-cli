@@ -79,6 +79,10 @@ If you prefer prebuilt executables, downloads are available for **Windows** and 
 - **Windows**: `tempo_cli.exe`
 - **Linux**: `tempo_cli`
 
+## Getting Started
+
+For a step-by-step guide on setting up and using **tempo-cli**, check out the [Getting Started Guide](https://tempo-organization.github.io/tempo-cli/getting_started/).  
+
 ## Documentation
 
 tempo-cli's documentation is available at [tempo-organization.github.io/tempo-cli](https://tempo-organization.github.io/tempo-cli/).
@@ -124,6 +128,7 @@ tempo-cli relies on these tools from the community to provide it's full function
 - **[Kismet Analyzer](https://github.com/trumank/kismet-analyzer)** - Unreal Engine blueprint/kismet script reverse engineering and modding utilities
 - **[UAssetGUI](https://github.com/atenfyr/UAssetGUI)** - A tool designed for low-level examination and modification of Unreal Engine game assets by hand
 - **[Suzie](https://github.com/trumank/suzie)** - Unreal Engine Editor runtime class generation from dumped game reflection data
+- **[Commitizen](https://github.com/commitizen-tools/commitizen)** - Create committing rules for projects, auto bump versions, and auto changelog generation
 
 ## License
 
