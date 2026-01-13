@@ -72,6 +72,13 @@ pipx install git+https://www.github.com/tempo-cli@unit_testing
 uv add git+https://www.github.com/tempo-cli@unit_testing
 ```
 
+## Releases
+
+If you prefer prebuilt executables, downloads are available for **Windows** and **Linux** in the [Releases section](https://github.com/Tempo-Organization/tempo-cli/releases):
+
+- **Windows**: `tempo_cli.exe`
+- **Linux**: `tempo_cli`
+
 ## Documentation
 
 tempo-cli's documentation is available at [tempo-organization.github.io/tempo-cli](https://tempo-organization.github.io/tempo-cli/).
@@ -95,7 +102,7 @@ Contributions are always appreciated, but please keep in mind the following:
 
 #### What platforms does tempo-cli support?
 
-Currently we support Windows and Linux.
+Currently we support **Windows (x86-64 and i686)** and **Linux (x86-64 and aarch64)**.
 
 #### As a game developer, can I use this for my game's mod support?
 
