@@ -7,7 +7,7 @@ For an in desktop or web version check out [tempo-gui](https://github.com/Tempo-
 
 <h2>Project Example:</h2>
 
-[![Project Screenshot](https://github.com/Mythical-Github/UnrealAutoMod/assets/4b65e3a3-ae7f-4881-bea4-e73191594587.png)](https://github.com/user-attachments/assets/76da1afc-9c30-4ec8-b27c-8c072e73f696)
+[![Project Screenshot](https://github.com/Mythical-Github/UnrealAutoMod/assets/4b65e3a3-ae7f-4881-bea4-e73191594587.png)](https://github.com/user-attachments/assets/b491282c-59b8-47ae-a689-41d346d2a65c)
 
 
 <h2 id="features">💪 Features</h2>
