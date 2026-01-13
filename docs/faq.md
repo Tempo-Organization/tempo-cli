@@ -21,3 +21,9 @@ Currently we support Windows (x86-64 and i686) and Linux (x86-64 and aarch64).
 Yes, the license fully allows this, and we would love to see it.
 
 ---
+
+## Can I use relative paths, in my tempo config?
+
+Yes, this is fully supported.
+
+---
