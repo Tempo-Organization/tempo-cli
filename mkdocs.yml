@@ -1,5 +1,5 @@
 site_name: Tempo
-site_url: https://tempo-organization.github.io/tempo/
+site_url: https://tempo-organization.github.io/tempo-cli/
 
 theme:
   name: material
@@ -35,36 +35,23 @@ theme:
 
 nav:
   - Home: index.md
-  - Getting Started: getting_started.md
-  - Setup: setup.md
+  - Getting Started: "getting_started.md"
   - Tutorials: tutorials.md
-  - Projects: projects.md
   - Reference: reference.md
-  - API: api.md
-  - How to: how_to.md
   - FAQ: faq.md
-  - Roadmap:
-      - Main: to_do_lists/main.md
-      - Settings: to_do_lists/settings.md
-      - Iostore: to_do_lists/Iostore.md
-      - Documentation: to_do_lists/documentation.md
-      - Later Later: to_do_lists/later_later.md
-      - Later Later Later: to_do_lists/later_later_later.md
-      - Sooner Later: to_do_lists/sooner_later.md
+  - Roadmap: to_do_list.md
   - Community: community.md
-  - Blog: blog.md
-
 
 extra_css:
   - stylesheets/extra.css
 
-repo_url: https://github.com/Tempo-Organization/tempo
+repo_url: https://github.com/Tempo-Organization/tempo-cli
 repo_name: tempo
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Tempo-Organization/tempo
+      link: https://github.com/Tempo-Organization/tempo-cli
       name: Tempo on Github
     - icon: fontawesome/brands/discord
       link: https://discord.gg/EvUuAD4QvS

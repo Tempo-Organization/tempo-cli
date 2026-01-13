@@ -77,7 +77,7 @@ mkdocs_build:
   mkdocs build
 
 mkdocs_serve:
-  mkdocs serve
+  mkdocs serve --livereload
 
 git_add_all:
   git add .

@@ -11,6 +11,18 @@
     "justMyCode": false
   },
   {
+    "label": "Serve Docs",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "mkdocs",
+    "args": [
+      "serve",
+      "--livereload"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "justMyCode": false
+  },
+  {
     "label": "Test Zedfest Project",
     "adapter": "Debugpy",
     "request": "launch",
