@@ -41,6 +41,7 @@
     "request": "launch",
     "module": "tempo_cli",
     "args": [
+      "run",
       "test_mods_all",
       "--settings_json",
       ".tempo.json"

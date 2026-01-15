@@ -1,7 +1,4 @@
----
-hide:
-  - navigation
----
+# Getting Started
 
 All you need to get started making mods with Tempo.
 
@@ -18,39 +15,27 @@ Tempo runs on **Windows** and **Linux**.
 
 ## Installation
 
-Tempo consists of **two packages**: `tempo-core` and `tempo-cli`. You need to install **both**.
+Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli@unit_testing), which relies on [tempo-core](https://www.github.com/tempo-core@unit_testing).
 
-### Install `tempo-core`
+### Install `tempo-cli'
 
-You can install via **pip**, **pipx**, or **uv**:
+=== "pip"
 
-```bash
-pip install git+https://www.github.com/tempo-core@unit_testing
-```
+    ``` bash
+    pip install git+https://www.github.com/tempo-cli@unit_testing
+    ```
 
-```bash
-pipx install git+https://www.github.com/tempo-core@unit_testing
-```
+=== "pipx"
 
-```bash
-uv add git+https://www.github.com/tempo-core@unit_testing
-```
+    ``` bash
+    pipx install git+https://www.github.com/tempo-cli@unit_testing
+    ```
 
-### Install `tempo-cli`
+=== "uv"
 
-Similarly, install `tempo-cli` via your preferred method:
-
-```bash
-pip install git+https://www.github.com/tempo-cli@unit_testing
-```
-
-```bash
-pipx install git+https://www.github.com/tempo-cli@unit_testing
-```
-
-```bash
-uv add git+https://www.github.com/tempo-cli@unit_testing
-```
+    ``` bash
+    uv add git+https://www.github.com/tempo-cli@unit_testing
+    ```
 
 ### Prebuilt Releases
 
@@ -63,44 +48,46 @@ If you prefer **prebuilt executables**, downloads are available for **Windows** 
 
 To run the prebuilt executables from any terminal, you should add them to your system PATH:
 
-**Windows:**
+=== "Windows"
+    **Windows:**
+    
+    1. Move `tempo_cli.exe` to a folder of your choice (e.g. `C:\programs\tempo_cli`).
+    2. Open **Settings → System → About → Advanced system settings → Environment Variables**.
+    3. Under **System Variables**, select `Path` and click **Edit**.
+    4. Click **New** and add the folder path where `tempo_cli.exe` is located (e.g. `C:\programs\tempo_cli`).
+    5. Click **OK** to save changes. Open a new Command Prompt to use `tempo_cli` from any directory.
 
-1. Move `tempo_cli.exe` to a folder of your choice (e.g. `C:\programs\tempo_cli`).
-2. Open **Settings → System → About → Advanced system settings → Environment Variables**.
-3. Under **System Variables**, select `Path` and click **Edit**.
-4. Click **New** and add the folder path where `tempo_cli.exe` is located (e.g. `C:\programs\tempo_cli`).
-5. Click **OK** to save changes. Open a new Command Prompt to use `tempo_cli` from any directory.
-
-**Linux:**
-
-1. Move `tempo_cli` to a folder of your choice (e.g., `/usr/local/bin`).
-2. Make sure it’s executable:  
-
-```bash
-chmod +x /usr/local/bin/tempo_cli
-```
-
-3. If the folder isn’t already in your PATH, add it by editing your shell config file (`~/.bashrc`, `~/.zshrc`, etc.):
-
-```bash
-export PATH=$PATH:/usr/local/bin
-```
-
-4. Reload your shell:
-
-```bash
-source ~/.bashrc
-```
-
-You can now run `tempo_cli` from any directory.
-
-### Tempo CLI
-
-There are a number of commands available which will aid you in building Textual apps. Run the following for a list of the available commands:
-
-```bash
-tempo_cli --help
-```
+=== "Linux"
+    **Linux:**
+    
+    1. Move `tempo_cli` to a folder of your choice (e.g., `/usr/local/bin`).
+    2. Make sure it’s executable:  
+    
+    ```bash
+    chmod +x /usr/local/bin/tempo_cli
+    ```
+    
+    3. If the folder isn’t already in your PATH, add it by editing your shell config file (`~/.bashrc`, `~/.zshrc`, etc.):
+    
+    ```bash
+    export PATH=$PATH:/usr/local/bin
+    ```
+    
+    4. Reload your shell:
+    
+    ```bash
+    source ~/.bashrc
+    ```
+    
+    You can now run `tempo_cli` from any directory.
+    
+    ### Tempo CLI
+    
+    There are a number of commands available which will aid you in building mods. Run the following for a list of the available commands:
+    
+    ```bash
+    tempo_cli --help
+    ```
 
 ## Need help?
 
