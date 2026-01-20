@@ -8,7 +8,7 @@ hide:
 
 Welcome to the [Tempo](https://github.com/Tempo-Organization/tempo-cli) documentation.
 
-[Get started](./getting_started.md) or go straight to the [Tutorials](./tutorials.md)
+[Get started](./getting_started.md) or go straight to the [Tutorials](./tutorials/index.md)
 
 ## What is Tempo?
 
@@ -33,11 +33,11 @@ Tempo is Unreal Engine modding tool, that covers project management, automated b
     Tempo runs on Windows and Linux.
 
 
--   :fontawesome-solid-terminal:{ .lg .middle } __CLI Integration__
+-   :material-folder-cog:{ .lg .middle } __Project Management__
 
     ---
 
-    Tempo can be launched and ran from the command prompt.
+    Organizes mods, builds, and configurations in one place.
 
 
 
@@ -54,6 +54,14 @@ Tempo is Unreal Engine modding tool, that covers project management, automated b
     ---
 
     Tempo supports all unreal engine 4 and 5 versions.
+
+
+-   :material-robot:{ .lg .middle } __CI Friendly__
+
+    ---
+
+    Integrates easily into automated build and CI pipelines.
+
 
 
 </div>

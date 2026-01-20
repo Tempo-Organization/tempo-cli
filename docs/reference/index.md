@@ -10,7 +10,7 @@ Welcome to the Tempo Reference.
 
     The commands reference shows how to use Tempo commands.
 
-    :octicons-arrow-right-24: [Commands Reference](../commands/index.md)
+    :octicons-arrow-right-24: [Commands Reference](commands/index.md)
 
 
 -   :material-cog:{ .lg .middle } __Config__
@@ -19,6 +19,15 @@ Welcome to the Tempo Reference.
 
     The config reference shows how to customize Tempo config files.
 
-    :octicons-arrow-right-24: [Config Reference](../config/index.md)
+    :octicons-arrow-right-24: [Config Reference](config/index.md)
+
+
+-   :material-variable:{ .lg .middle } __Environment variables__
+
+    ---
+
+    The environment variables reference shows how to customize Tempo environment variables.
+
+    :octicons-arrow-right-24: [Environment Variables Reference](environment_variables/index.md)
 
 </div>
