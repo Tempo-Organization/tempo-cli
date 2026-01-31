@@ -36,27 +36,10 @@ For an in desktop or web version check out [tempo-gui](https://github.com/Tempo-
 
 # Installation
 
-Install **tempo-core** first, then **tempo-cli**.
+Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli@unit_testing), which relies on [tempo-core](https://www.github.com/tempo-core@unit_testing).
 
 ---
 
-## tempo-core
-```bash
-# With pip.
-pip install git+https://www.github.com/tempo-core@unit_testing
-```
-
-```bash
-# Or pipx.
-pipx install git+https://www.github.com/tempo-core@unit_testing
-```
-
-```bash
-# Or uv.
-uv add git+https://www.github.com/tempo-core@unit_testing
-```
-
-## tempo-cli
 ```bash
 # With pip.
 pip install git+https://www.github.com/tempo-cli@unit_testing
@@ -90,7 +73,7 @@ tempo-cli's documentation is available at [tempo-organization.github.io/tempo-cl
 Additionally, the command line reference documentation can be viewed with `tempo_cli --help`.
 
 ## Bug Reports
-If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Tempo-Organization/tempo-cli/issues). 
+If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Tempo-Organization/tempo-cli/issues).  
 When creating an issue, please provide as much information as possible, including:
 - Steps to reproduce the issue
 - What you expect to happen, versus what is happening
@@ -136,8 +119,8 @@ tempo-cli is licensed under
 
 - GNU General Public License version 3 ([LICENSE](LICENSE) or <https://opensource.org/license/gpl-3-0>)
 
-Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in tempo-cli
-by you, as defined in the GNU General Public License version 3, shall be licensed as above, without any
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in tempo-cli  
+by you, as defined in the GNU General Public License version 3, shall be licensed as above, without any  
 additional terms or conditions.
 
 [![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)

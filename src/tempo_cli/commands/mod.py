@@ -1,16 +1,7 @@
-import os
 import pathlib
 
 import rich_click as click
-from tempo_core import main_logic, data_structures, settings, file_io
-
-
-default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, "dist"))
-default_releases_dir = os.path.normpath(
-    os.path.join(
-        str(settings.settings_information.settings_json_dir), "mod_packaging", "releases"
-    )
-)
+from tempo_core import main_logic, data_structures, settings
 
 
 @click.group()
@@ -385,7 +376,6 @@ command_help = "Generate one or more mod releases."
 )
 @click.option(
     "--base_files_directory",
-    default=default_releases_dir,
     help="Path to dir tree whose content to pack alongside the mod for release",
     type=click.Path(
         exists=True,
@@ -398,7 +388,6 @@ command_help = "Generate one or more mod releases."
 )
 @click.option(
     "--output_directory",
-    default=default_output_releases_dir,
     help="Path to the output directory",
     type=click.Path(
         exists=True,
@@ -436,7 +425,6 @@ command_help = "Generate mod releases for all mods within the specified settings
 )
 @click.option(
     "--base_files_directory",
-    default=default_releases_dir,
     help="Path to dir tree whose content to pack alongside the mod for release",
     type=click.Path(
         exists=True,
@@ -449,7 +437,6 @@ command_help = "Generate mod releases for all mods within the specified settings
 )
 @click.option(
     "--output_directory",
-    default=default_output_releases_dir,
     help="Path to the output directory",
     type=click.Path(
         exists=True,
@@ -474,4 +461,8 @@ command_help = "Generate mod releases for all mods within the specified settings
     help="Path to the settings JSON file",
 )
 def generate_mod_releases_all(settings_json, base_files_directory, output_directory):
+    if not base_files_directory or base_files_directory == '':
+        base_files_directory = settings.get_default_release_base_files_dir()
+    if not output_directory or output_directory == '':
+        output_directory = settings.get_default_release_dir()
     main_logic.generate_mod_releases_all(base_files_directory, output_directory)

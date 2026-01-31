@@ -2,16 +2,14 @@ import os
 import pathlib
 
 import rich_click as click
-from tempo_core import main_logic, file_io, data_structures, settings
+import ue4ss_installer_gui.ue4ss
+import ue4ss_installer_gui.initialization
+
+from tempo_core import main_logic, file_io, data_structures, settings, cache
 from tempo_core.programs import kismet_analyzer as tempo_core_kismet_analyzer
 
 
-default_output_releases_dir = os.path.normpath(os.path.join(file_io.SCRIPT_DIR, "dist"))
-default_releases_dir = os.path.normpath(
-    os.path.join(
-        str(settings.settings_information.settings_json_dir), "mod_packaging", "releases"
-    )
-)
+ue4ss_installer_gui.initialization.init()
 
 
 @click.group()
@@ -264,13 +262,11 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 )
 @click.option(
     "--base_files_directory",
-    default=default_releases_dir,
     help="Path to dir tree whose content to pack alongside the mod for release",
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
 )
 @click.option(
     "--output_directory",
-    default=default_output_releases_dir,
     help="Path to the output directory",
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
 )
@@ -302,6 +298,10 @@ def full_run(
     output_directory,
     use_symlinks,
 ):
+    if not base_files_directory or base_files_directory == '':
+        base_files_directory = settings.get_default_release_base_files_dir()
+    if not output_directory or output_directory == '':
+        output_directory = settings.get_default_release_dir()
     main_logic.full_run(
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
@@ -324,13 +324,11 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 )
 @click.option(
     "--base_files_directory",
-    default=default_releases_dir,
     help="Path to dir tree whose content to pack alongside the mod for release",
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
 )
 @click.option(
     "--output_directory",
-    default=default_output_releases_dir,
     help="Path to the output directory",
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
 )
@@ -357,6 +355,10 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 def full_run_all(
     settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks
 ):
+    if not base_files_directory or base_files_directory == '':
+        base_files_directory = settings.get_default_release_base_files_dir()
+    if not output_directory or output_directory == '':
+        output_directory = settings.get_default_release_dir()
     main_logic.full_run_all(
         toggle_engine=toggle_engine,
         base_files_directory=base_files_directory,
@@ -525,3 +527,46 @@ def remove_plugins_from_descriptor(descriptor_file, plugin_names):
         descriptor_file (str): Path to the descriptor file to remove the plugins from.
     """
     main_logic.remove_plugins_from_descriptor(descriptor_file, plugin_names)
+
+
+@run.command(
+    name="install_ue4ss", help=command_help, short_help=command_help
+)
+@click.option(
+    "--release_tag",
+    type=str,
+    default=ue4ss_installer_gui.ue4ss.get_default_ue4ss_version_tag(),
+    help="The release tag of the ue4ss release you want to install. Defaults to the latest release.",
+)
+@click.option(
+    "--game_exe_directory",
+    type=click.Path(
+        file_okay=False,
+        dir_okay=True,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    help="The directory containing the main executable for your game. Defaults to the dir that contains the game exe specified within the tempo config.",
+)
+@click.option(
+    "--settings_json",
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        readable=True,
+        resolve_path=True,
+        path_type=pathlib.Path,
+    ),
+    required=False,
+    help="Path to the settings JSON file",
+)
+def install_ue4ss(release_tag, game_exe_directory, settings_json):
+    cache_dir = os.path.normpath(f'{cache.get_cache_dir()}/lazy_cache/ue4ss/{release_tag}')
+    os.makedirs(cache_dir, exist_ok=True)
+    ue4ss_installer_gui.ue4ss.install_ue4ss_to_dir(
+        cache_dir,
+        os.path.dirname(str(settings.get_game_exe_path())),
+        release_tag
+    )
