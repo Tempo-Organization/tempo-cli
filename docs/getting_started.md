@@ -15,26 +15,26 @@ Tempo runs on **Windows** and **Linux**.
 
 ## Installation
 
-Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli@unit_testing), which relies on [tempo-core](https://www.github.com/tempo-core@unit_testing).
+Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli), which relies on [tempo-core](https://www.github.com/tempo-core).
 
 ### Install `tempo-cli'
 
 === "pip"
 
     ``` bash
-    pip install git+https://www.github.com/tempo-cli@unit_testing
+    pip install git+https://www.github.com/tempo-cli
     ```
 
 === "pipx"
 
     ``` bash
-    pipx install git+https://www.github.com/tempo-cli@unit_testing
+    pipx install git+https://www.github.com/tempo-cli
     ```
 
 === "uv"
 
     ``` bash
-    uv add git+https://www.github.com/tempo-cli@unit_testing
+    uv add git+https://www.github.com/tempo-cli
     ```
 
 ### Prebuilt Releases
