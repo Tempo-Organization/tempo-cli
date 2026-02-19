@@ -2,14 +2,13 @@ import os
 import pathlib
 
 import rich_click as click
-import ue4ss_installer_gui.ue4ss
-import ue4ss_installer_gui.initialization
+from ue4ss_installer_core import ue4ss
 
 from tempo_core import main_logic, file_io, data_structures, settings, cache
 from tempo_core.programs import kismet_analyzer as tempo_core_kismet_analyzer
 
 
-ue4ss_installer_gui.initialization.init()
+ue4ss.cache_repo_releases_info("UE4SS-RE", "RE-UE4SS")
 
 
 @click.group()
@@ -535,7 +534,7 @@ def remove_plugins_from_descriptor(descriptor_file, plugin_names):
 @click.option(
     "--release_tag",
     type=str,
-    default=ue4ss_installer_gui.ue4ss.get_default_ue4ss_version_tag(),
+    default=ue4ss.get_default_ue4ss_version_tag(),
     help="The release tag of the ue4ss release you want to install. Defaults to the latest release.",
 )
 @click.option(
@@ -565,7 +564,7 @@ def remove_plugins_from_descriptor(descriptor_file, plugin_names):
 def install_ue4ss(release_tag, game_exe_directory, settings_json):
     cache_dir = os.path.normpath(f'{cache.get_cache_dir()}/lazy_cache/ue4ss/{release_tag}')
     os.makedirs(cache_dir, exist_ok=True)
-    ue4ss_installer_gui.ue4ss.install_ue4ss_to_dir(
+    ue4ss.install_ue4ss_to_dir(
         cache_dir,
         os.path.dirname(str(settings.get_game_exe_path())),
         release_tag
