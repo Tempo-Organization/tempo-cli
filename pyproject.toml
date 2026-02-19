@@ -23,7 +23,7 @@ dependencies = [
     "tempo-core",
     "tomlkit>=0.13.3",
     "trogon>=0.6.0",
-    "ue4ss-installer-gui",
+    "ue4ss-installer-core",
 ]
 
 [build-system]
@@ -31,8 +31,8 @@ requires = ["uv_build>=0.7.19,<0.8"]
 build-backend = "uv_build"
 
 [tool.uv.sources]
-ue4ss-installer-gui = { git = "https://www.github.com/Mythical-Github/ue4ss_installer_gui", rev = "dev" }
 tempo-core = { git = "https://www.github.com/Tempo-Organization/tempo-core" }
+ue4ss-installer-core = { git = "https://github.com/Tempo-Organization/ue4ss-installer-core" }
 
 [dependency-groups]
 dev = [
