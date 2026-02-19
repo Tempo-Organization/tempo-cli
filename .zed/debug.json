@@ -1,0 +1,81 @@
+[
+  {
+    "label": "TUI",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "tui"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "justMyCode": false
+  },
+  {
+    "label": "Serve Docs",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "mkdocs",
+    "args": [
+      "serve",
+      "--livereload"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Zedfest Project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "test_mods_all",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../ZedfestModdingKit",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Escape The Backrooms Project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "test_mods_all",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../etb_mod_loader_uproject",
+    "justMyCode": false
+  },
+  {
+    "label": "Test Clair Obscure: Expedition 33 Project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "test_mods_all",
+      "--settings_json",
+      "$ZED_WORKTREE_ROOT/../Sandfall/.tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  },
+  {
+    "label": "Run Engine Clair Obscure: Expedition 33 Project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "engine",
+      "--settings_json",
+      "$ZED_WORKTREE_ROOT/../Sandfall/.tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../Sandfall",
+    "justMyCode": false
+  }
+]

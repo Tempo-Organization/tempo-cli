@@ -3,15 +3,17 @@ import subprocess
 
 
 def check_git_is_installed() -> bool:
+    from tempo_core import logger
     if shutil.which("git") is not None:
-        print("Git is installed.")
+        logger.log_message("Git is installed.")
         return True
     else:
-        print("Git is NOT installed.")
+        logger.log_message("Git is NOT installed.")
         return False
 
 
 def check_uv_is_installed() -> bool:
+    from tempo_core import logger
     try:
         subprocess.run(
             ["uv", "--version"],
@@ -19,8 +21,8 @@ def check_uv_is_installed() -> bool:
             stderr=subprocess.DEVNULL,
             check=True,
         )
-        print("uv is installed.")
+        logger.log_message("uv is installed.")
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
-        print("uv is NOT installed.")
+        logger.log_message("uv is NOT installed.")
         return False

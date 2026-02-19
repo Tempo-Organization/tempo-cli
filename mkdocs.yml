@@ -1,10 +1,13 @@
 site_name: Tempo
-site_url: https://tempo-organization.github.io/tempo/
+site_url: https://tempo-organization.github.io/tempo-cli/
 
 theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.indexes
+    - content.code.copy
+    - content.tabs.link
   icon:
     logo: fontawesome/solid/t
     repo: fontawesome/brands/github
@@ -35,37 +38,157 @@ theme:
 
 nav:
   - Home: index.md
-  - Getting Started: getting_started.md
-  - Setup: setup.md
-  - Tutorials: tutorials.md
-  - Projects: projects.md
-  - Reference: reference.md
-  - API: api.md
-  - How to: how_to.md
+  - Introduction:
+      - getting_started.md
+      - help.md
+  - Tutorials:
+            - tutorials/index.md
+            - Workflows:
+                    - tutorials/workflows/index.md
+                    - tutorials/workflows/standard.md
+  - Reference:
+            - reference/index.md
+            - Commands:
+                    - reference/commands/index.md
+                    - clean:
+                        - reference/commands/clean/index.md
+                        - build: reference/commands/clean/build.md
+                        - cooked: reference/commands/clean/cooked.md
+                        - from_file_list: reference/commands/clean/from_file_list.md
+                        - full: reference/commands/clean/full.md
+                        - game: reference/commands/clean/game.md
+                        - resync_dir_with_repo: reference/commands/clean/resync_dir_with_repo.md
+                    - collection:
+                        - reference/commands/collection/index.md
+                        - add_collections_to_mod_entry: reference/commands/collection/add_collections_to_mod_entry.md
+                        - add_content_lines_to_collection: reference/commands/collection/add_content_lines_to_collection.md
+                        - create_collection: reference/commands/collection/create_collection.md
+                        - delete_collection: reference/commands/collection/delete_collection.md
+                        - disable_collection: reference/commands/collection/disable_collection.md
+                        - enable_collection: reference/commands/collection/enable_collection.md
+                        - remove_collections_from_mod_entry: reference/commands/collection/remove_collections_from_mod_entry.md
+                        - remove_content_lines_from_collection: reference/commands/collection/remove_content_lines_from_collection.md
+                        - rename_collection: reference/commands/collection/rename_collection.md
+                        - set_collection_type_from_collection_path: reference/commands/collection/set_collection_type_from_collection_path.md
+                        - set_color_from_collection_path: reference/commands/collection/set_color_from_collection_path.md
+                        - set_file_version_from_collection_path: reference/commands/collection/set_file_version_from_collection_path.md
+                        - set_guid_from_collection_path: reference/commands/collection/set_guid_from_collection_path.md
+                        - set_parent_guid_from_collection_path: reference/commands/collection/set_parent_guid_from_collection_path.md
+                    - dump:
+                        - reference/commands/dump/index.md
+                        - aes_keys: reference/commands/dump/aes_keys.md
+                        - build_configuration: reference/commands/dump/build_configuration.md
+                        - engine_version: reference/commands/dump/engine_version.md
+                        - jmap: reference/commands/dump/jmap.md
+                        - script_objects: reference/commands/dump/script_objects.md
+                    - file-io:
+                        - reference/commands/file_io/index.md
+                        - copy: reference/commands/file_io/copy.md
+                        - generate_file_list: reference/commands/file_io/generate_file_list.md
+                        - generate_game_file_list_json: reference/commands/file_io/generate_game_file_list_json.md
+                        - move: reference/commands/file_io/move.md
+                        - open_latest_log: reference/commands/file_io/open_latest_log.md
+                        - symlink: reference/commands/file_io/symlink.md
+                        - unzip: reference/commands/file_io/unzip.md
+                        - zip: reference/commands/file_io/zip.md
+                    - ini:
+                        - reference/commands/ini/index.md
+                        - add_meta_data_tags_for_asset_registry_to_unreal_ini: reference/commands/ini/add_meta_data_tags_for_asset_registry_to_unreal_ini.md
+                        - remove_meta_data_tags_for_asset_registry_from_unreal_ini: reference/commands/ini/remove_meta_data_tags_for_asset_registry_from_unreal_ini.md
+                    - init: reference/commands/init.md
+                    - json:
+                        - reference/commands/json/index.md
+                        - add: reference/commands/json/add.md
+                        - remove: reference/commands/json/remove.md
+                    - mod:
+                        - reference/commands/mod/index.md
+                        - add_mod: reference/commands/mod/add_mod.md
+                        - disable_mod: reference/commands/mod/disable_mod.md
+                        - disable_mods: reference/commands/mod/disable_mods.md
+                        - enable_mod: reference/commands/mod/enable_mod.md
+                        - enable_mod: reference/commands/mod/enable_mods.md
+                        - generate_mod_releases: reference/commands/mod/generate_mod_releases.md
+                        - generate_mod_releases_all: reference/commands/mod/generate_mod_releases_all.md
+                        - generate_mods: reference/commands/mod/generate_mods.md
+                        - generate_mods_all: reference/commands/mod/generate_mods_all.md
+                        - remove_mod: reference/commands/mod/remove_mod.md
+                    - run:
+                        - reference/commands/run/index.md
+                        - add_module_to_descriptor: reference/commands/run/add_module_to_descriptor.md
+                        - add_plugin_to_descriptor: reference/commands/run/add_plugin_to_descriptor.md
+                        - engine: reference/commands/run/engine.md
+                        - full_run: reference/commands/run/full_run.md
+                        - full_run_all: reference/commands/run/full_run_all.md
+                        - game: reference/commands/run/game.md
+                        - kismet_analyze_directory: reference/commands/run/kismet_analyze_directory.md
+                        - remove_modules_from_descriptor: reference/commands/run/remove_modules_from_descriptor.md
+                        - remove_plugins_from_descriptor: reference/commands/run/remove_plugins_from_descriptor.md
+                        - test_mods: reference/commands/run/test_mods.md
+                        - test_mods_all: reference/commands/run/test_mods_all.md
+                    - tui: reference/commands/tui.md
+                    - toml:
+                        - reference/commands/toml/index.md
+                        - add: reference/commands/toml/add.md
+                        - remove: reference/commands/toml/remove.md
+                    - tool:
+                        - reference/commands/tool/index.md
+                        - install:
+                            - reference/commands/tool/install/index.md
+                            - fmodel: reference/commands/tool/install/fmodel.md
+                            - kismet_analyzer: reference/commands/tool/install/kismet_analyzer.md
+                            - spaghetti: reference/commands/tool/install/spaghetti.md
+                            - stove: reference/commands/tool/install/stove.md
+                            - uasset_gui: reference/commands/tool/install/uasset_gui.md
+                            - umodel: reference/commands/tool/install/umodel.md
+                    - uplugin:
+                        - reference/commands/uplugin/index.md
+                        - build: reference/commands/uplugin/build.md
+                        - generate: reference/commands/uplugin/generate.md
+                        - remove: reference/commands/uplugin/remove.md
+                    - uproject:
+                        - reference/commands/uproject/index.md
+                        - build: reference/commands/uproject/build.md
+                        - cook: reference/commands/uproject/cook.md
+                        - generate: reference/commands/uproject/generate.md
+                        - package: reference/commands/uproject/package.md
+                        - resave_packages_and_fix_up_redirectors: reference/commands/uproject/resave_packages_and_fix_up_redirectors.md
+            - Config:
+                    - reference/config/index.md
+            - Environment Variables:
+                    - reference/environment_variables/index.md
   - FAQ: faq.md
-  - Roadmap:
-      - Main: to_do_lists/main.md
-      - Settings: to_do_lists/settings.md
-      - Iostore: to_do_lists/Iostore.md
-      - Documentation: to_do_lists/documentation.md
-      - Later Later: to_do_lists/later_later.md
-      - Later Later Later: to_do_lists/later_later_later.md
-      - Sooner Later: to_do_lists/sooner_later.md
+  - Roadmap: to_do_list.md
   - Community: community.md
-  - Blog: blog.md
-
 
 extra_css:
   - stylesheets/extra.css
 
-repo_url: https://github.com/Tempo-Organization/tempo
+repo_url: https://github.com/Tempo-Organization/tempo-cli
 repo_name: tempo
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Tempo-Organization/tempo
+      link: https://github.com/Tempo-Organization/tempo-cli
       name: Tempo on Github
     - icon: fontawesome/brands/discord
       link: https://discord.gg/EvUuAD4QvS
       name: Tempo Discord Server
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg

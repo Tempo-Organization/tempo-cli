@@ -1,14 +1,11 @@
-<h1 id="title" align="left">Tempo</h1>
+<h1 id="title" align="left">tempo-cli</h1>
 
-NOTICE: The below documentation is slightly out of date, but mostly valid. It will be updated soon.  <br>
-
-Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.7 <br>
-Automates creation, and placement, of mod archives, and other various actions. <br>
-For an in editor menu version check out [UnrealAutoModInEditor](https://github.com/Mythical-Github/UnrealAutoModInEditor)
+Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.7  
+Automates creation, and placement, of mod archives, and other various actions.  
 
 <h2>Project Example:</h2>
 
-[![Project Screenshot](https://github.com/Mythical-Github/UnrealAutoMod/assets/4b65e3a3-ae7f-4881-bea4-e73191594587.png)](https://github.com/user-attachments/assets/76da1afc-9c30-4ec8-b27c-8c072e73f696)
+[![Project Screenshot](https://github.com/Mythical-Github/UnrealAutoMod/assets/4b65e3a3-ae7f-4881-bea4-e73191594587.png)](https://github.com/user-attachments/assets/b491282c-59b8-47ae-a689-41d346d2a65c)
 
 
 <h2 id="features">💪 Features</h2>
@@ -33,153 +30,95 @@ For an in editor menu version check out [UnrealAutoModInEditor](https://github.c
 * Logging
 * Colorful printouts
 * Ability to run in the background, with no windows
+* And more...
 
+# Installation
 
-<h2 id="installation_steps">🛠️ Installation Steps:</h2>
+Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli@unit_testing), which relies on [tempo-core](https://www.github.com/tempo-core@unit_testing).
 
-1. Download and unzip the latest [release](https://github.com/Mythical-Github/UnrealAutoMod/releases/latest).\
-You can keep the program anywhere you'd like.
+---
 
-### 2. **Configure the Default JSON File**
-
-Most users will only need to edit a few settings, which can be done with a text editor. In the JSON file, you typically need to update the following:
-
-- **Unreal Engine `.uproject` File Path**
-  Specify the path to your Unreal Engine project file.
-
-- **Unreal Engine Directory**
-  Define the directory where Unreal Engine is installed.
-
-- **Game's Win64 Executable Path**
-  Set the path to the game's Win64 executable. Ensure that the path is valid:
-  - **Correct Example:**
-    `"D:\SteamLibrary\steamapps\common\Zedfest\KevinSpel\Binaries\Win64\Zedfest.exe"`
-  - **Incorrect Example:**
-    `"D:\SteamLibrary\steamapps\common\Zedfest\KevinSpel.exe"`
-
-- **Steam App ID**
-  If using the Steam launch method (as opposed to the executable method), enter the Steam App ID.
-
-- **Window Title Override String**
-  Specify the string for the launched game's window label.
-
-After configuring these settings, you can proceed to configure the mod list.
-
-###
-3. **Configure the mod list:**
-   You can include any number of mod entries in the list.
-
-
-  ```
-   {
-      {
-      "mod_name": "MapKit",
-      "pak_dir_structure": "~mods",
-      "mod_name_dir_type": "Mods",
-      "use_mod_name_dir_name_override": false,
-      "mod_name_dir_name_override": null,
-      "pak_chunk_num": null,
-      "packing_type": "repak",
-      "compression_type": "Zlib",
-      "is_enabled": true,
-      "manually_specified_assets": {
-        "asset_paths": [],
-        "tree_paths": []
-      }
-    },
-    {
-      "mod_name": "ExampleLevel",
-      "pak_dir_structure": "~mods",
-      "mod_name_dir_type": "Mods",
-      "use_mod_name_dir_name_override": false,
-      "mod_name_dir_name_override": null,
-      "pak_chunk_num": null,
-      "packing_type": "repak",
-      "compression_type": "Zlib",
-      "is_enabled": true,
-      "manually_specified_assets": {
-        "asset_paths": [],
-        "tree_paths": []
-      }
-    }
-  ```
-
-### Configuration Details
-
-- **`mod_name`**: This will be the final mod archive's file name, e.g., `mod_name.pak`.
-
-- **`pak_dir_structure`**: Specifies the folder structure within the game's `Content/Paks/` directory. Common values are `~mods` and `LogicMods`.
-
-- **`mod_name_dir_type`**: Determines the built-in auto-include directory.
-  - `Mods` will include files from `Game/Mods/ModName/`.
-  - `CustomContent` will include files from `Game/CustomContent/ModName/`.
-
-- **`use_mod_name_dir_name_override`**: Set to `true` if you want your final mod name to include a suffix (e.g., `_P`), but not the internal project name. Example: `Content/Paks/~mods/ExampleName_P` vs. `Game/Mods/ExampleName`.
-
-- **`mod_name_dir_name_override`**: Specifies the folder to use instead of the default. Usually the `mod_name` without any suffix.
-
-- **`pak_chunk_num`**: Used only if you are using the engine packing enum. Set this to match what you configured inside Unreal Engine.
-
-- **`packing_type`**: Specifies the packing method:
-  - `repak` for general use.
-  - `engine` for iostore games.
-  - `loose` for games using loose file modding.
-  - `unreal_pak` for when you want to pak using unreal_pak, from your game engine install, usually not ever needed.
-
-- **`compression_type`**: Determines the compression method for the mod archives. Not applicable for loose file modding.
-
-- **`is_enabled`**: Set to `false` to disable packaging of the mod and uninstall it if it exists in the specified mod directory.
-
-- **`manually_specified_assets`**: Lists additional assets to include:
-  - **`asset_paths`**: Direct paths to specific files (e.g., `test.uasset`, `test.uexp`).
-  - **`tree_paths`**: Include all files in subfolders within specified directories.
-
-### Additional Notes
-
-- For JSON paths, use forward slashes (`/`) instead of backslashes (`\`). Make sure your paths match this format when editing the JSON file.
-- [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
-- [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
-
-###
-
-4. **Run the application:**
-   Once everything is set up, you can proceed to the [Running Steps](#running-steps).
-
-<h2 id="running-steps">🏃 Running Steps:</h2>
-The release version, has some included bat files.<br>
-You can use these to run the default config, with the test_mods_all arg, or use it as a base and edit it.
-There is also a version to run it headless (windowless).
-
-The program itself, supports various command line parameters.
-Here are some examples of how you would use it.
-
-```
-tempo.exe -h
+```bash
+# With pip.
+pip install git+https://www.github.com/tempo-cli
 ```
 
-```
-tempo.exe command -h
-```
-
-```
-tempo.exe test_mods_all --settings_json_path <settings_json_path>
+```bash
+# Or pipx.
+pipx install git+https://www.github.com/tempo-cli
 ```
 
+```bash
+# Or uv.
+uv add git+https://www.github.com/tempo-cli
 ```
-tempo.exe settings.json test_mods --settings_json_path <settings_json_path> --mod_names [<mod_name> ...]
-```
 
-<h2>💻 References</h2>
+## Releases
 
-* [Faq](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/faq.md)
-* [Enums Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/enums.md)
-* [Settings Json Reference](https://github.com/Mythical-Github/UnrealAutoMod/blob/main/docs/settings_json.md)
-* [Youtube Example Setup Reference](https://www.youtube.com/watch?v=6MUkUFhumo8)
+If you prefer prebuilt executables, downloads are available for **Windows** and **Linux** in the [Releases section](https://github.com/Tempo-Organization/tempo-cli/releases):
 
-<h2>💻 Built with</h2>
+- **Windows**: `tempo_cli.exe`
+- **Linux**: `tempo_cli`
 
-* Python
+## Getting Started
 
-<h2>🛡️ License:</h2>
+For a step-by-step guide on setting up and using **tempo-cli**, check out the [Getting Started Guide](https://tempo-organization.github.io/tempo-cli/getting_started/).  
+
+## Documentation
+
+tempo-cli's documentation is available at [tempo-organization.github.io/tempo-cli](https://tempo-organization.github.io/tempo-cli/).
+
+Additionally, the command line reference documentation can be viewed with `tempo_cli --help`.
+
+## Bug Reports
+If you encounter a bug or issue, please submit a report on the [issues page](https://github.com/Tempo-Organization/tempo-cli/issues).  
+When creating an issue, please provide as much information as possible, including:
+- Steps to reproduce the issue
+- What you expect to happen, versus what is happening
+- Any error messages or logs
+- Your system operating system
+
+## Contributing
+Contributions are always appreciated, but please keep in mind the following:
+- Before coding new features, try to make an issue to see if the idea/implementation needs any tweaking, or is out of scope
+- Make sure your changes pass all pre-commit checks
+
+## FAQ
+
+#### What platforms does tempo-cli support?
+
+Currently we support **Windows (x86-64 and i686)** and **Linux (x86-64 and aarch64)**.
+
+#### As a game developer, can I use this for my game's mod support?
+
+Yes, the license fully allows this, and we would love to see it.
+
+## Acknowledgements
+
+tempo-cli relies on these tools from the community to provide it's full functionality.
+
+- **[Jmap](https://github.com/trumank/jmap)** - Unreal Engine reflection data format and extractor
+- **[Repak](https://github.com/trumank/repak)** - Unreal Engine .pak file library and CLI in rust
+- **[Retoc](https://github.com/trumank/retoc)** - Unreal Engine IoStore CLI packing/unpacking tool
+- **[UE4SS](https://github.com/UE4SS-RE/RE-UE4SS)** - Injectable LUA scripting system, SDK generator, live property editor and other dumping utilities for UE4/5 games
+- **[Patternsleuth](https://github.com/trumank/patternsleuth)** - Unreal Engine address scanner and test suite
+- **[Umodel](https://www.gildor.org/en/projects/umodel)** - Viewer and exporter for Unreal Engine 1-4 assets (UE Viewer)
+- **[Stove](https://github.com/bananaturtlesandwich/stove)** - an editor for cooked unreal engine 4/5 maps
+- **[Spaghetti](https://github.com/bananaturtlesandwich/spaghetti)** - a function hooker for cooked unreal engine blueprints
+- **[Fmodel](https://fmodel.app/)** - Unreal Engine Archives Explorer
+- **[Kismet Analyzer](https://github.com/trumank/kismet-analyzer)** - Unreal Engine blueprint/kismet script reverse engineering and modding utilities
+- **[UAssetGUI](https://github.com/atenfyr/UAssetGUI)** - A tool designed for low-level examination and modification of Unreal Engine game assets by hand
+- **[Suzie](https://github.com/trumank/suzie)** - Unreal Engine Editor runtime class generation from dumped game reflection data
+- **[Commitizen](https://github.com/commitizen-tools/commitizen)** - Create committing rules for projects, auto bump versions, and auto changelog generation
+
+## License
+
+tempo-cli is licensed under
+
+- GNU General Public License version 3 ([LICENSE](LICENSE) or <https://opensource.org/license/gpl-3-0>)
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in tempo-cli  
+by you, as defined in the GNU General Public License version 3, shall be licensed as above, without any  
+additional terms or conditions.
 
 [![license](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](LICENSE)

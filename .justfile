@@ -6,7 +6,7 @@ shebang := if os() == 'windows' {
 }
 
 # Set shell for non-Windows OSs:
-set shell := ["powershell", "-c"]
+set shell := ["pwsh", "-c"]
 
 # Set shell for Windows OSs:
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
@@ -77,7 +77,7 @@ mkdocs_build:
   mkdocs build
 
 mkdocs_serve:
-  mkdocs serve
+  mkdocs serve --livereload
 
 git_add_all:
   git add .
