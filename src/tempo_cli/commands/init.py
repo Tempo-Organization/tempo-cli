@@ -150,7 +150,7 @@ def project_init(directory: pathlib.Path):
     pyproject_toml = os.path.normpath(f"{directory_}/pyproject.toml")
     if not os.path.isfile(pyproject_toml):
         subprocess.run("uv init --package", cwd=directory_)
-    subprocess.run("uv add git+https://www.github.com/Tempo-Organization/tempo-cli@unit_testing", cwd=directory_)
+    subprocess.run("uv add git+https://www.github.com/Tempo-Organization/tempo-cli", cwd=directory_)
 
     # shutil.rmtree(os.path.normpath(f'{directory_}/src'))
 
