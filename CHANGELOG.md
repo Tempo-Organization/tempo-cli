@@ -4,6 +4,8 @@
 ### Fix
 
 - **init.py**: fixed adding wrong branch
+- 
+## 5.0.0 (2026-02-19)
 
 ## 5.0.0-dev.22165943275 (2026-02-19)
 
