@@ -1,4 +1,79 @@
 
+## 5.0.0-dev.22165943275 (2026-02-19)
+
+### Feat
+
+- **uv.lock**: added target platform and build configuration specification
+- **dump.py**: added dumping info into tempo config
+- **uplugin.py**: added output directory option for build uplugin
+- **uplugin.py**: added build command
+- **All**: added command groups
+- **cli.py,-main.py**: colorized prompts for cli
+- **uv.lock**: added assign chunk id usage check
+- **uv.lock,-cli.py**: added new commands
+- **cli.py**: added aes key dumping command
+- **init_command.py**: improved init command
+- **cli.py,-init_command.py**: improved add_mod and init functions
+- **cli.py**: added singular enable and disable mod commands
+- **cli.py**: added remove_mod command
+- **Modding/scripts/***: added commitizen scripts
+- **Modding/scripts/***: updated scripts and added new ones
+- **cli.py**: allowed output specification for generate_game_file_list_json cli command
+- **assets/scripts/***: added utility scripts for tempo-cli
+
+### Fix
+
+- **uv.lock**: updated main branch dep
+- **uv.lock**: fixed cache
+- **uplugin.py**: fixed output directory being used
+- **uplugin.py**: fixed build uplugin
+- **main.py**: fixed colorization of prompts
+- **init_command.py**: updated easy scripts version
+- **main.py**: changed default colors
+- **uv.lock**: changed default persistent files dir
+- **uv.lock**: fixed issue with retoc installing
+- **uv.lock**: fixed calling non existent input monitor
+- **uv.lock**: fixed logger and check assign id usage warning
+- **uv.lock**: fixed issue with assign chunk id warning
+- **init_command.py**: changed how downloading scripts worked
+- **init_command.py**: fixed some uv adds failing
+- **init_command.py**: fixed issue with uv adding
+- **enable_mod.bat**: fixed typo
+- **cli.py**: fixed cleanup_game command
+- **cli.py**: fixed zip directory command
+- **main.py**: fixed expansion
+- **cli.py**: fixed expansion of ~
+- **cli.py**: reverted pak dir structure changes
+- **cli.py**: fixed issues with add_mod command
+- **cli.py**: fixed passing old param
+- **cli.py**: fixed add_mod command pak_dir_structure issue
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: fixed various commands
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: fixed open_latest_log function
+- **uv.lock**: fixed some commands
+- **uv.lock**: fixed add_mod and remove_mods commands
+- **uv.lock**: updated tempo-core to fix issues with temp directory removal
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: fixed bug with getting packing type
+- **uv.lock**: fixed bug with uninstall mods
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: updated tempo-core dependency
+- **uv.lock**: updated tempo-core dependency
+- **cli.py**: fixed typo
+- **cli.py**: fixed options for add_mod command
+- **All**: fixed issue with paths
+- **cli.py**: fixed issue with paths
+
+### Refactor
+
+- **cli.py,-init.py**: organized
+- **cli.py,-data_structures.py**: changed rich color options population method
+
 ## 4.2.2 (2025-07-16)
 
 ### Fix
