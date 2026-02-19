@@ -2,8 +2,6 @@
 
 Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.7  
 Automates creation, and placement, of mod archives, and other various actions.  
-For an in editor menu version check out [TempoInEditor](https://github.com/Tempo-Organization/TempoInEditor)  
-For an in desktop or web version check out [tempo-gui](https://github.com/Tempo-Organization/tempo-gui)
 
 <h2>Project Example:</h2>
 
@@ -42,17 +40,17 @@ Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tem
 
 ```bash
 # With pip.
-pip install git+https://www.github.com/tempo-cli@unit_testing
+pip install git+https://www.github.com/tempo-cli
 ```
 
 ```bash
 # Or pipx.
-pipx install git+https://www.github.com/tempo-cli@unit_testing
+pipx install git+https://www.github.com/tempo-cli
 ```
 
 ```bash
 # Or uv.
-uv add git+https://www.github.com/tempo-cli@unit_testing
+uv add git+https://www.github.com/tempo-cli
 ```
 
 ## Releases
