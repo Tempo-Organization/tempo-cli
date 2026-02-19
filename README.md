@@ -34,7 +34,7 @@ Automates creation, and placement, of mod archives, and other various actions.
 
 # Installation
 
-Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli@unit_testing), which relies on [tempo-core](https://www.github.com/tempo-core@unit_testing).
+Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tempo-cli), which relies on [tempo-core](https://www.github.com/tempo-core).
 
 ---
 
