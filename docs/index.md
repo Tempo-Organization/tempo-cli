@@ -12,7 +12,7 @@ Welcome to the [Tempo](https://github.com/Tempo-Organization/tempo-cli) document
 
 ## What is Tempo?
 
-Tempo is Unreal Engine modding tool, that covers project management, automated builds, and more, built by [Tempo-Organization](https://github.com/Tempo-Organization).
+Tempo is an Unreal Engine modding tool, that covers project management, automated builds, and more, built by [Tempo-Organization](https://github.com/Tempo-Organization).
 
 
 
