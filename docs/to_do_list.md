@@ -103,3 +103,56 @@ hide:
 - Mod-specific config
 - Game config
 - Config versions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+auto detect mods and add to config (checks for common conventions and acts based on that) 
+auto run self hosted actions runner
+setup self hosted actions runner
+setup for action runners
+
+
+Commitizen supports explicitly specifying a configuration file using the --config option, which is useful when the configuration file is not located in the project root directory. When --config is provided, Commitizen will only load configuration from the specified file and will not search for configuration files using the default search order described above. If the specified configuration file does not exist, Commitizen raises the ConfigFileNotFound error. If the specified configuration file exists but is empty, Commitizen raises the ConfigFileIsEmpty error.
+commitzen also has scopes for monorepo support when committing
+
+
+
+project update
+project commit
+project push
+project bump
+project publish
+project dep add
+project dep remove
+project dep refresh
+
+mod update
+mod commit
+mod publish
+mod bump
+mod push
+mod dep add
+mod dep remove
+mod dep refresh
+
+
+
+
+dependency groups
+version ranges
+check uv/py_project.toml for inspo
