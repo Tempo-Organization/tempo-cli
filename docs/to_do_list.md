@@ -59,6 +59,7 @@ hide:
 - [ ] Layout support command
 - [ ] Engine pak making compression variants (defaults to compressed)
 - [ ] Switch to `pathlib` from strings
+- [ ] some sort of save hook thing or something
 
 ---
 

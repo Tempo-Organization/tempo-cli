@@ -1,158 +1,96 @@
 import os
 import json
-import subprocess
 import pathlib
-import zipfile
+import subprocess
+from dataclasses import dataclass, field
 
-import rich_click as click
 import tomlkit
-import requests
 import questionary
+import rich_click as click
+
+from tempo_core import logger
 from tempo_core.main_logic import generate_uproject
-from tempo_core import file_io, logger
 
-from tempo_cli import validators, checks
-
-
-def download_and_extract_zip(url: str, output_dir: str):
-    os.makedirs(output_dir, exist_ok=True)
-
-    zip_path = os.path.join(output_dir, "easy_scripts.zip")
-
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        with open(zip_path, "wb") as f:
-            for chunk in r.iter_content(chunk_size=8192):
-                f.write(chunk)
-
-    with zipfile.ZipFile(zip_path, "r") as zip_ref:
-        zip_ref.extractall(output_dir)
-
-    os.remove(zip_path)
+from tempo_cli import file_io as tc_file_io
+from tempo_cli import validators, checks, unreal, git
+from tempo_cli.commitizen import data_structures as cz_data_structures
 
 
-def replace_text_in_file(file_path, old_text, new_text):
-    """
-    Reads a file, replaces all occurrences of old_text with new_text,
-    and writes the changes back to the file.
-    """
-    with open(file_path, 'r') as file:
-        file_data = file.read()
-
-    file_data = file_data.replace(old_text, new_text)
-
-    with open(file_path, 'w') as file:
-        file.write(file_data)
-
-    logger.log_message(f"Text replacement completed successfully in {file_path}")
+# DISABLED = True
+# response = questionary.confirm("Are you amazed?").skip_if(DISABLED, default=True).ask()
 
 
-def get_unreal_engine_version(engine_path: str) -> str:
-    version_file_path = f"{engine_path}/Engine/Build/Build.version"
-    file_io.check_path_exists(version_file_path)
-    with open(version_file_path) as f:
-        version_info = json.load(f)
-        unreal_engine_major_version = version_info.get("MajorVersion", 0)
-        unreal_engine_minor_version = version_info.get("MinorVersion", 0)
-        return f"{unreal_engine_major_version}.{unreal_engine_minor_version}"
+# use Text to ask for free text input
+# use Password to ask for free text where the text is hidden
+# use File Path to ask for a file or directory path with autocompletion
+# use Confirmation to ask a yes or no question
+# use Select to ask the user to select one item from a beautiful list
+# use Raw Select to ask the user to select one item from a list
+# use Checkbox to ask the user to select any number of items from a list
+# use Autocomplete to ask for free text with autocomplete help
+# use Press Any Key To Continue to ask the user to press any key to continue
 
 
-def download_files_from_github_repo(
-    repo_url: str,
-    repo_branch: str = "master",
-    file_paths: list[str] = [],
-    output_directory: str = os.getcwd(),
-):
-    try:
-        parts = repo_url.strip("/").split("/")
-        user, repo = parts[-2], parts[-1]
-    except IndexError:
-        raise ValueError("Invalid GitHub repository URL")
-
-    for file_path in file_paths:
-        raw_url = (
-            f"https://raw.githubusercontent.com/{user}/{repo}/{repo_branch}/{file_path}"
-        )
-        local_file_path = os.path.join(output_directory, file_path)
-
-        try:
-            response = requests.get(raw_url)
-            response.raise_for_status()
-        except requests.RequestException as e:
-            logger.log_message(f"Failed to download {file_path}: {e}")
-            continue
-
-        os.makedirs(os.path.dirname(local_file_path), exist_ok=True)
-        with open(local_file_path, "wb") as f:
-            f.write(response.content)
-            logger.log_message(f"Downloaded: {file_path} → {local_file_path}")
-
-
-def deep_update(original, updates):
-    for key, value in updates.items():
-        if key == "processes":
-            # Ensure both original and value are lists of dicts
-            if not isinstance(original.get(key), list):
-                # If original is a dict or None, convert to list
-                if isinstance(original.get(key), dict):
-                    original[key] = [original[key]]
-                else:
-                    original[key] = []
-            if isinstance(value, dict):
-                value = [value]
-            if isinstance(value, list):
-                original[key].extend(value)
-            else:
-                # fallback: just replace
-                original[key] = value
-        elif isinstance(value, dict) and isinstance(original.get(key), dict):
-            deep_update(original[key], value)
-        else:
-            original[key] = value
-
-
-# will return HEAD for repos not on github yet, because detached, so assume we created with default
-def get_branch_from_git_repo(repo_directory: str) -> str:
-    try:
-        result = subprocess.run(
-            ["git", "-C", repo_directory, "rev-parse", "--abbrev-ref", "HEAD"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            check=True,
-        )
-        if result.stdout.strip() == "HEAD":
-            return "master"
-        return result.stdout.strip()
-    except subprocess.CalledProcessError:
-        return ""
+@dataclass
+class SetupInformation:
+    working_directory: pathlib.Path
+    tempo_config: pathlib.Path | None = None
+    tempo_config_contents: dict = field(default_factory=dict)
+    git_repo_dir: pathlib.Path | None = None
+    should_use_pre_commit: bool = False
+    should_make_docs: bool = False
+    should_download_easy_scripts: bool  = False
+    should_use_versioning: bool  = False
+    should_auto_close_game: bool  = False
+    should_close_fmodel_and_umodel: bool  = False
 
 
 def project_init(directory: pathlib.Path):
-    directory_ = str(directory)
-    logger.log_message(f"project directory: {directory_}")
-    git_repo_dir = os.path.normpath(f"{directory_}/.git")
-
-    tempo_config = os.path.normpath(f"{directory_}/.tempo.json")
-    if os.path.isfile(tempo_config):
+    # add initial select multi option thing ifg possible for features omn onitial step, using checkbox thing
+    setup_information = SetupInformation(working_directory=directory)
+    logger.log_message(f"project directory: {setup_information.working_directory}")
+    setup_information.git_repo_dir = pathlib.Path(f"{setup_information.working_directory}/.git")
+    setup_information.tempo_config = pathlib.Path(f"{setup_information.working_directory}/.tempo.json")
+    if setup_information.tempo_config.exists() and setup_information.tempo_config.is_file():
         config_already_exists_error = (
-            f'There is already a .tempo.json config in the following directory: "{directory_}"'
+            f'There is already a .tempo.json config in the following directory: "{setup_information.working_directory}"'
         )
         raise FileExistsError(config_already_exists_error)
 
-    tempo_json_contents = {}
+
+    feature_choices = {
+        "docs": "should_make_docs",
+        "easy scripts": "should_download_easy_scripts",
+        "version management": "should_use_versioning",
+        "should auto close game": "should_auto_close_game",
+        "should auto close fmodel and umodel": "should_close_fmodel_and_umodel",
+        "should setup pre-commit": "should_use_pre_commit"
+    }
+
+    chosen_options = questionary.checkbox(
+        message='Choose your features',
+        choices=list(feature_choices.keys())
+    ).ask()
+
+    for option in chosen_options:
+        setattr(setup_information, feature_choices[option], True)
+
 
     git_repo_dir_already_existed = False
-    if os.path.isdir(git_repo_dir):
+    if os.path.isdir(setup_information.git_repo_dir):
         git_repo_dir_already_existed = True
         subprocess.run("git init")
 
-    pyproject_toml = os.path.normpath(f"{directory_}/pyproject.toml")
+    pyproject_toml = os.path.normpath(f"{setup_information.working_directory}/pyproject.toml")
     if not os.path.isfile(pyproject_toml):
-        subprocess.run("uv init --package", cwd=directory_)
-    subprocess.run("uv add git+https://www.github.com/Tempo-Organization/tempo-cli", cwd=directory_)
+        # subprocess.run("uv init --package", cwd=setup_information.working_directory)
 
-    # shutil.rmtree(os.path.normpath(f'{directory_}/src'))
+        # Names must start and end with a letter or digit and may only contain -, _, ., and alphanumeric characters.
+        # below might need validation for valid project names
+        project_name = questionary.text(message='What would you like your project name to be?').ask()
+        description = questionary.text(message='What would you like your project description to be?').ask()
+        subprocess.run(f"uv init --bare --no-readme --no-pin-python --no-workspace --name {project_name} --description {description}", cwd=setup_information.working_directory)
+    subprocess.run("uv add git+https://www.github.com/Tempo-Organization/tempo-cli", cwd=setup_information.working_directory)
 
     unreal_engine_dir = questionary.path(
         message='What is the path to your unreal engine install directory (Most mods will need this but not all)? Example: "C:/Program Files/Epic Games/UE_4.22" (press enter to skip)',
@@ -169,10 +107,8 @@ def project_init(directory: pathlib.Path):
             validate=validators.is_int_validator,
         ).ask()
     else:
-        deep_update(
-            tempo_json_contents, {"engine_info": {"unreal_engine_dir": unreal_engine_dir}}
-        )
-        version = get_unreal_engine_version(unreal_engine_dir)
+        setup_information.tempo_config_contents.setdefault("engine_info", {})["unreal_engine_dir"] = unreal_engine_dir
+        version = unreal.get_unreal_engine_version(unreal_engine_dir)
         major, minor = version.split(".")
         unreal_engine_major_version = int(major)
         unreal_engine_minor_version = int(minor)
@@ -187,118 +123,56 @@ def project_init(directory: pathlib.Path):
         choices=game_launch_choice_options,
     ).ask()
 
+    if "game_info" not in setup_information.tempo_config_contents:
+        setup_information.tempo_config_contents["game_info"] = {}
+
     game_executable = ""
     if game_launch_choice == "exe":
         game_executable = questionary.path(
             message='What is the path to your main game executable? Example: "C:/Program Files (x86)/Steam/steamapps/common/Zedfest/KevinSpel/Binaries/Win64/Zedfest.exe" (press enter to skip)'
         ).ask()
-        deep_update(tempo_json_contents, {"game_info": {"game_exe_path": game_executable}})
-        deep_update(tempo_json_contents, {"game_info": {"launch_type": game_launch_choice}})
+        setup_information.tempo_config_contents["game_info"]["game_exe_path"] = game_executable
+        setup_information.tempo_config_contents["game_info"]["launch_type"] = game_launch_choice
     if game_launch_choice == "steam":
         game_id = questionary.text(
             message="What is the steam game id for your game?",
             validate=validators.is_int_validator,
         ).ask()
-        deep_update(tempo_json_contents, {"game_info": {"game_id": game_id}})
-        deep_update(tempo_json_contents, {"game_info": {"launch_type": game_launch_choice}})
+        setup_information.tempo_config_contents["game_info"]["game_id"] = game_id
+        setup_information.tempo_config_contents["game_info"]["launch_type"] = game_launch_choice
+
+
+    if "git_info" not in setup_information.tempo_config_contents:
+        setup_information.tempo_config_contents["git_info"] = {}
 
     if git_repo_dir_already_existed:
-        deep_update(
-            tempo_json_contents,
-            {"git_info": {"repo_branch": get_branch_from_git_repo(git_repo_dir)}},
-        )
+        setup_information.tempo_config_contents["git_info"]["repo_branch"] = git.get_branch_from_git_repo(str(setup_information.git_repo_dir))
     else:
-        gitignore = os.path.normpath(f"{directory_}/.gitignore")
-        os.remove(gitignore)
-        download_files_from_github_repo(
+        gitignore = os.path.normpath(f"{setup_information.working_directory}/.gitignore")
+        if os.path.isfile(gitignore):
+            os.remove(gitignore)
+        tc_file_io.download_files_from_github_repo(
             repo_url="https://github.com/Tempo-Organization/tempo-template",
             repo_branch="main",
             file_paths=[".gitignore"],
-            output_directory=directory_,
+            output_directory=str(setup_information.working_directory),
         )
-        deep_update(tempo_json_contents, {"git_info": {"repo_branch": "master"}})
-    deep_update(tempo_json_contents, {"git_info": {"repo_path": directory_}})
+        setup_information.tempo_config_contents["git_info"]["repo_branch"] = "master"
+    setup_information.tempo_config_contents["git_info"]["repo_path"] = setup_information.working_directory
 
-    should_make_docs = questionary.confirm(
-        message="Would you like have tempo setup documentation for your project?",
-        default=True,
-    ).ask()
-    if should_make_docs:
-        subprocess.run("uv add mkdocs-material")
-        files = [
-            "mkdocs.yml",
-            ".github/workflows/github_pages.yml",
-            "docs/index.md",
-            "docs/stylesheets/extra.css",
-        ]
-        download_files_from_github_repo(
-            repo_url="https://github.com/Tempo-Organization/tempo-template",
-            repo_branch="main",
-            file_paths=files,
-            output_directory=directory_,
-        )
-        mkdocs_yml_path = os.path.normpath(f'{directory}/mkdocs.yml')
-        index_md_path = os.path.normpath(f'{directory}/docs/index.md')
-        mod_name = questionary.text(message="What is the main name for your docs? Usually your main Mod Name.").ask()
-        github_account_name = questionary.text(message="What is your github account name?").ask()
-        discord_server_link = questionary.text(message="If you have one, what is your discord server link? If none leave blank and hit enter.").ask()
-        if discord_server_link == '':
-            discord_server_link = 'https://discord.gg/EvUuAD4QvS'
-        replace_text_in_file(index_md_path, "ModName", mod_name)
-        replace_text_in_file(mkdocs_yml_path, "ModName", mod_name)
-        replace_text_in_file(mkdocs_yml_path, "GithubAccount", github_account_name)
-        replace_text_in_file(mkdocs_yml_path, "logo: fontawesome/solid/?", f'logo: fontawesome/solid/{mod_name[0]}')
-        replace_text_in_file(mkdocs_yml_path, "Your Discord Here", discord_server_link)
+    if setup_information.should_make_docs:
+        documentation_setup(setup_information)
 
+    if setup_information.should_use_pre_commit:
+        pre_commit_setup(setup_information)
 
-    should_use_pre_commit = questionary.confirm(
-        message="Would you like have tempo setup pre-commit for various features?",
-        default=True,
-    ).ask()
-    if should_use_pre_commit:
-        download_files_from_github_repo(
-            repo_url="https://github.com/Tempo-Organization/tempo-template",
-            repo_branch="main",
-            file_paths=[".pre-commit-config.yaml"],
-            output_directory=directory_,
-        )
-        subprocess.run("uv add pre-commit")
-        subprocess.run("uv run pre-commit install")
-
-    should_use_versioning = questionary.confirm(
-        message="Would you like have tempo setup versioning management for your project?",
-        default=True,
-    ).ask()
-    if should_use_versioning:
-        subprocess.run("uv add commitizen")
-        toml_path = os.path.normpath(f"{directory_}/pyproject.toml")
-        with open(toml_path, "r", encoding="utf-8") as f:
-            content = f.read()
-            toml_doc = tomlkit.parse(content)
-
-        commitizen_table = tomlkit.table()
-        commitizen_table["name"] = "cz_conventional_commits"
-        commitizen_table["tag_format"] = "$version"
-        commitizen_table["version_scheme"] = "semver2"
-        commitizen_table["version_provider"] = "uv"
-        commitizen_table["update_changelog_on_bump"] = True
-
-        if "tool" not in toml_doc:
-            toml_doc["tool"] = tomlkit.table()
-
-        toml_doc["tool"]["commitizen"] = commitizen_table  # type: ignore
-
-        with open(toml_path, "w", encoding="utf-8") as f:
-            f.write(tomlkit.dumps(toml_doc))
-
-        if should_use_pre_commit:
-            subprocess.run("uv run pre-commit install --hook-type commit-msg")
-            subprocess.run("uv run pre-commit install --hook-type pre-push")
+    if setup_information.should_use_versioning:
+        versioning_setup(setup_information)
 
     uproject_path = questionary.path(
         message='What is the path to your uproject, if you have one already? Example: "C:/Users/Mythi/Documents/GitHub/ZedfestModdingKit/KevinSpel.uproject" (press enter to skip)',
     ).ask()
-    if not uproject_path == "" and not os.path.dirname(uproject_path) == directory_:
+    if not uproject_path == "" and not os.path.dirname(uproject_path) == setup_information.working_directory:
         logger.log_message(
             "Warning: It is recommended to place your uproject in the same directory as your tempo project files."
         )
@@ -312,95 +186,61 @@ def project_init(directory: pathlib.Path):
                 os.path.dirname(os.path.dirname(os.path.dirname(game_executable)))
             )
         generate_uproject(
-            project_file=os.path.normpath(f"{directory_}/{uproject_name}.uproject"),
+            project_file=os.path.normpath(f"{setup_information.working_directory}/{uproject_name}.uproject"),
             file_version=3,
             engine_major_association=unreal_engine_major_version,
             engine_minor_association=unreal_engine_minor_version,
             ignore_safety_checks=True,
         )
-        deep_update(
-            tempo_json_contents,
-            {
-                "engine_info": {
-                    "unreal_project_file": os.path.normpath(
-                        f"{directory_}/{uproject_name}.uproject"
-                    )
-                }
-            },
-        )
+        setup_information.tempo_config_contents['engine_info']['unreal_project_file'] = os.path.normpath(f"{setup_information.working_directory}/{uproject_name}.uproject")
     else:
         if not uproject_path == "" and uproject_path:
-            deep_update(
-                tempo_json_contents, {"engine_info": {"unreal_project_file": uproject_path}}
-            )
+            setup_information.tempo_config_contents['engine_info']['unreal_project_file'] = uproject_path
 
     window_override_title = questionary.text(
         message='What is title of the game window, when the game is launched? Example: "Zedfest" (press enter to skip)'
     ).ask()
     if not window_override_title == "" and window_override_title:
-        deep_update(
-            tempo_json_contents, {"game_info": {"window_title_override": window_override_title}}
-        )
-        deep_update(
-            tempo_json_contents, {"game_info": {"override_automatic_window_title_finding": True}}
-        )
+        setup_information.tempo_config_contents["game_info"]["window_title_override"] = window_override_title
 
-    should_close_fmodel_and_umodel = questionary.confirm(
-        message="Would you like to automatically close any open fmodel and umodel instances as need be?",
-        default=True,
-    ).ask()
-    if should_close_fmodel_and_umodel:
-        deep_update(
-            tempo_json_contents,
+    setup_information.tempo_config_contents.setdefault("process_kill_events", {})
+
+    if setup_information.should_close_fmodel_and_umodel:
+        setup_information.tempo_config_contents["process_kill_events"]["processes"] = [
             {
-                "process_kill_events": {
-                    "processes": [
-                        {
-                            "hook_state": "constant",
-                            "process_name": "Fmodel",
-                            "use_substring_check": True,
-                        },
-                        {
-                            "hook_state": "constant",
-                            "process_name": "Umodel",
-                            "use_substring_check": True,
-                        },
-                    ]
-                }
+                "hook_state": "constant",
+                "process_name": "Fmodel",
+                "use_substring_check": True,
             },
-        )
-    should_auto_close_game = questionary.confirm(
-        message="Would you like to automatically close the game as need be?",
-        default=True,
-    ).ask()
-    if should_auto_close_game:
-        deep_update(
-            tempo_json_contents,
-            {"process_kill_events": {"auto_close_game": should_auto_close_game}},
-        )
+            {
+                "hook_state": "constant",
+                "process_name": "Umodel",
+                "use_substring_check": True,
+            },
+        ]
 
-    should_download_easy_scripts = questionary.confirm(
-        message="Would you like have tempo download easy to use generic bat scripts for the project?",
-        default=True,
-    ).ask()
-    EASY_SCRIPTS_VERSION = "0.4.0"
-    if should_download_easy_scripts:
-        output_directory_for_scripts = os.path.join(directory, "Modding", "scripts")
+    if setup_information.should_auto_close_game:
+        setup_information.tempo_config_contents["process_kill_events"]["auto_close_game"] = True
 
-        easy_scripts_download_link = (
-            f"https://github.com/Tempo-Organization/tempo-template/"
-            f"releases/download/{EASY_SCRIPTS_VERSION}/easy_scripts.zip"
-        )
+    if setup_information.should_download_easy_scripts:
+        easy_scripts_setup(setup_information)
 
-        download_and_extract_zip(
-            url=easy_scripts_download_link,
-            output_dir=output_directory_for_scripts
-        )
+    def convert_paths(obj):
+        if isinstance(obj, pathlib.Path):
+            return str(obj)
+        elif isinstance(obj, dict):
+            return {k: convert_paths(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [convert_paths(v) for v in obj]
+        else:
+            return obj
 
-    with open(tempo_config, "w") as config_file:
-        json.dump(tempo_json_contents, config_file, indent=4)
+    cleaned_data = convert_paths(setup_information.tempo_config_contents)
 
-    logger.log_message(f'.tempo.json created at "{tempo_config}".')
+    with open(setup_information.tempo_config, "w") as config_file:
+        json.dump(cleaned_data, config_file, indent=4)
+
+    logger.log_message(f'.tempo.json created at "{setup_information.tempo_config}".')
 
 
 @click.command(
@@ -412,7 +252,7 @@ def project_init(directory: pathlib.Path):
     "--directory",
     default=os.getcwd(),
     type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
-    help="The directory you want your logs outputted to.",
+    help="The tempo project directory, defaults to current working directory.",
 )
 # add game preset options later?
 def init(directory):
@@ -425,3 +265,97 @@ def init(directory):
         raise RuntimeError(no_uv_error)
 
     project_init(directory)
+
+
+def pre_commit_setup(setup_information: SetupInformation):
+    tc_file_io.download_files_from_github_repo(
+        repo_url="https://github.com/Tempo-Organization/tempo-template",
+        repo_branch="main",
+        file_paths=[".pre-commit-config.yaml"],
+        output_directory=str(setup_information.working_directory),
+    )
+    subprocess.run("uv add pre-commit")
+    subprocess.run("uv run pre-commit install")
+
+
+def versioning_setup(setup_information: SetupInformation):
+    subprocess.run("uv add commitizen")
+    toml_path = os.path.normpath(f"{setup_information.working_directory}/pyproject.toml")
+    with open(toml_path, "r", encoding="utf-8") as f:
+        content = f.read()
+        toml_doc = tomlkit.parse(content)
+
+    version_scheme_options = cz_data_structures.get_enum_strings_from_enum(cz_data_structures.CommitizenVersionSchemeOption)
+    version_scheme_option = questionary.select(
+        message="Which versioning scheme would you like to use?",
+        choices=version_scheme_options,
+        default=cz_data_structures.CommitizenVersionSchemeOption.SEMVER2.value
+    ).ask()
+    commitizen_table = tomlkit.table()
+    commitizen_table["name"] = "cz_conventional_commits"
+    commitizen_table["tag_format"] = "$version"
+    commitizen_table["version_scheme"] = version_scheme_option
+    commitizen_table["version_provider"] = "commitizen"
+    commitizen_table["version"] = "0.1.0"
+    commitizen_table["update_changelog_on_bump"] = True
+
+    if "tool" not in toml_doc:
+        toml_doc["tool"] = tomlkit.table()
+
+    toml_doc["tool"]["commitizen"] = commitizen_table  # type: ignore
+
+    with open(toml_path, "w", encoding="utf-8") as f:
+        f.write(tomlkit.dumps(toml_doc))
+
+    if setup_information.should_use_pre_commit:
+        subprocess.run("uv run pre-commit install --hook-type commit-msg")
+        subprocess.run("uv run pre-commit install --hook-type pre-push")
+
+
+def process_management_setup():
+    return
+
+
+def easy_scripts_setup(setup_information: SetupInformation):
+    if not setup_information.tempo_config:
+        raise FileNotFoundError(setup_information.tempo_config)
+    EASY_SCRIPTS_VERSION = "0.4.0"
+    output_directory_for_scripts = os.path.join(setup_information.working_directory, "Modding", "scripts")
+
+    easy_scripts_download_link = (
+        f"https://github.com/Tempo-Organization/tempo-template/"
+        f"releases/download/{EASY_SCRIPTS_VERSION}/easy_scripts.zip"
+    )
+
+    tc_file_io.download_and_extract_zip(
+        url=easy_scripts_download_link,
+        output_dir=output_directory_for_scripts
+    )
+
+
+def documentation_setup(setup_information: SetupInformation):
+    subprocess.run("uv add mkdocs-material")
+    files = [
+        "mkdocs.yml",
+        ".github/workflows/github_pages.yml",
+        "docs/index.md",
+        "docs/stylesheets/extra.css",
+    ]
+    tc_file_io.download_files_from_github_repo(
+        repo_url="https://github.com/Tempo-Organization/tempo-template",
+        repo_branch="main",
+        file_paths=files,
+        output_directory=str(setup_information.working_directory),
+    )
+    mkdocs_yml_path = os.path.normpath(f'{setup_information.working_directory}/mkdocs.yml')
+    index_md_path = os.path.normpath(f'{setup_information.working_directory}/docs/index.md')
+    mod_name = questionary.text(message="What is the main name for your docs? Usually your main Mod Name.").ask()
+    github_account_name = questionary.text(message="What is your github account name?").ask()
+    discord_server_link = questionary.text(message="If you have one, what is your discord server link? If none leave blank and hit enter.").ask()
+    if discord_server_link == '':
+        discord_server_link = 'https://discord.gg/EvUuAD4QvS'
+    tc_file_io.replace_text_in_file(index_md_path, "ModName", mod_name)
+    tc_file_io.replace_text_in_file(mkdocs_yml_path, "ModName", mod_name)
+    tc_file_io.replace_text_in_file(mkdocs_yml_path, "GithubAccount", github_account_name)
+    tc_file_io.replace_text_in_file(mkdocs_yml_path, "logo: fontawesome/solid/?", f'logo: fontawesome/solid/{mod_name[0]}')
+    tc_file_io.replace_text_in_file(mkdocs_yml_path, "Your Discord Here", discord_server_link)
