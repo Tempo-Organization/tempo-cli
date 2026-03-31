@@ -1,5 +1,8 @@
 name: dev_releases
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '0 19 * * *'
