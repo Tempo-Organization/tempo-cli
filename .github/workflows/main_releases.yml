@@ -2,7 +2,7 @@ name: main_releases
 
 permissions:
   contents: write
-  
+
 on:
   push:
     branches:

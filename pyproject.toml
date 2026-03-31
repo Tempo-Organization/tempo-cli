@@ -18,6 +18,9 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
+    "commitizen>=4.12.0",
+    "mkdocs-material>=9.7.1",
+    "pre-commit>=4.5.1",
     "questionary>=2.1.0",
     "rich-click>=1.9.4",
     "tempo-core",
