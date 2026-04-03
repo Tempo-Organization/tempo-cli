@@ -50,6 +50,20 @@
     "justMyCode": false
   },
   {
+    "label": "Test Poppy Playtime Chapter 5 full_run_all",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "full_run_all",
+      "--settings_json",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",
+    "justMyCode": false
+  },
+  {
     "label": "Test Poppy Playtime Chapter 5 test_mods_all",
     "adapter": "Debugpy",
     "request": "launch",

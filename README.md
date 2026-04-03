@@ -40,17 +40,17 @@ Tempo is distributed as a single package, [tempo-cli](https://www.github.com/tem
 
 ```bash
 # With pip.
-pip install git+https://www.github.com/tempo-cli
+pip install git+https://www.github.com/Tempo-Organization/tempo-cli
 ```
 
 ```bash
 # Or pipx.
-pipx install git+https://www.github.com/tempo-cli
+pipx install git+https://www.github.com/Tempo-Organization/tempo-cli
 ```
 
 ```bash
 # Or uv.
-uv add git+https://www.github.com/tempo-cli
+uv add git+https://www.github.com/Tempo-Organization/tempo-cli
 ```
 
 ## Releases
