@@ -202,3 +202,6 @@ assets/base/tempo_cli_headless.exe
 engine_version.json
 engine_version.json
 uv
+spaghetti.exe
+stove.exe
+UAssetGUI.exe
