@@ -51,5 +51,10 @@ for name, help_text, func in tools:
         type=bool,
         help="Should the installed program be run after installation.",
     )
-    def _command(run_after_install, func=func):
-        func(run_after_install=run_after_install)
+    @click.argument(
+        "output_directory",
+        type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+        default=os.path.normpath(f'{os.getcwd()}/tools/{name}')
+    )
+    def _command(output_directory, run_after_install, func=func):
+        func(output_directory=output_directory, run_after_install=run_after_install)

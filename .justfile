@@ -22,9 +22,9 @@ default:
 
 setup: clean_up
   uv venv
-  uv run prek install
-  uv run prek install --hook-type commit-msg
-  uv run prek install --hook-type pre-push
+  uv run pre-commit install
+  uv run pre-commit install --hook-type commit-msg
+  uv run pre-commit install --hook-type pre-push
 
 build:
   uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli --collect-data trogon src/tempo_cli/__main__.py
@@ -86,10 +86,10 @@ git_reset:
   git reset
 
 pre_commit_auto_update:
-  uv run prek autoupdate
+  uv run pre-commit autoupdate
 
 pre_commit_check_all:
-  uv run prek run --all-files
+  uv run pre-commit run --all-files
 
 git_create_stash:
   while ($true) { if (($pathToAdd = Read-Host "Enter a path to add or drag a file over this window (press Enter to exit)") -eq "") { Write-Host "Exiting..."; break }; if (($stashComment = Read-Host "Enter a comment/message for this stash") -eq "") { Write-Host "Stash comment cannot be empty. Please try again." -ForegroundColor Red; continue }; git stash push "$pathToAdd" -m "$stashComment"; Write-Host "`nStash created for '$pathToAdd' with comment: $stashComment`n" }
@@ -106,7 +106,3 @@ refresh_deps: pre_commit_auto_update
 
 run:
   uv run tempo_cli --help
-
-lint:
-    uv run ruff check --fix
-    uv run ty check --fix

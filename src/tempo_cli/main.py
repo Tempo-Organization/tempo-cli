@@ -23,7 +23,7 @@ def styled_build_prompt(text, prompt_suffix, show_default, default, show_choices
     return ""
 
 
-click.termui._build_prompt = styled_build_prompt # ty: ignore
+click.termui._build_prompt = styled_build_prompt
 
 
 def main():

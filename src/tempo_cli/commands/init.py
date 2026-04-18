@@ -64,7 +64,7 @@ def project_init(directory: pathlib.Path):
         "version management": "should_use_versioning",
         "should auto close game": "should_auto_close_game",
         "should auto close fmodel and umodel": "should_close_fmodel_and_umodel",
-        "should setup prek": "should_use_prek"
+        "should setup pre-commit": "should_use_pre_commit"
     }
 
     chosen_options = questionary.checkbox(
@@ -274,8 +274,8 @@ def pre_commit_setup(setup_information: SetupInformation):
         file_paths=[".pre-commit-config.yaml"],
         output_directory=str(setup_information.working_directory),
     )
-    subprocess.run("uv add prek")
-    subprocess.run("uv run prek install")
+    subprocess.run("uv add pre-commit")
+    subprocess.run("uv run pre-commit install")
 
 
 def versioning_setup(setup_information: SetupInformation):
@@ -308,8 +308,8 @@ def versioning_setup(setup_information: SetupInformation):
         f.write(tomlkit.dumps(toml_doc))
 
     if setup_information.should_use_pre_commit:
-        subprocess.run("uv run prek install --hook-type commit-msg")
-        subprocess.run("uv run prek install --hook-type pre-push")
+        subprocess.run("uv run pre-commit install --hook-type commit-msg")
+        subprocess.run("uv run pre-commit install --hook-type pre-push")
 
 
 def process_management_setup():

@@ -5,11 +5,8 @@ import pathlib
 
 from tempo_core import main_logic, window_management, utilities, game_runner, logger
 from tempo_core.programs import retoc, pattern_sleuth
-from tempo_core.programs import jmap as jmap_program
+from tempo_core.programs import jmap as jmap_tool
 from tempo_core.threads import game_monitor
-
-from tempo_cache_tools import jmap as jmap_tool
-from tempo_cache_tools import retoc as retoc_tool
 
 import rich_click as click
 
@@ -49,6 +46,9 @@ def dump():
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
 def aes_keys(settings_json, directory, dump_to_tempo_config):
+    if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
+        pattern_sleuth.install_tool_patternsleuth()
+
     aes_keys = []
     for key in pattern_sleuth.run_patternsleuth_aes_key_scan_command():
         logger.log_message(f"AES Key: {key}")
@@ -115,6 +115,9 @@ def aes_keys(settings_json, directory, dump_to_tempo_config):
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
 def engine_version(settings_json, directory, dump_to_tempo_config):
+
+    if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
+        pattern_sleuth.install_tool_patternsleuth()
 
     info = pattern_sleuth.run_patternsleuth_engine_version_scan_command()
 
@@ -184,6 +187,9 @@ def engine_version(settings_json, directory, dump_to_tempo_config):
 )
 def build_configuration(settings_json, directory, dump_to_tempo_config):
 
+    if not pattern_sleuth.is_current_preferred_patternsleuth_version_installed():
+        pattern_sleuth.install_tool_patternsleuth()
+
     info = pattern_sleuth.run_patternsleuth_build_configuration_scan_command()
 
     if not info:
@@ -244,6 +250,9 @@ def build_configuration(settings_json, directory, dump_to_tempo_config):
 )
 def jmap(settings_json, output):
     os.makedirs(os.path.dirname(output), exist_ok=True)
+    if not jmap_tool.is_current_preferred_jmap_version_installed():
+        jmap_tool.install_tool_jmap()
+
     game_runner.run_game()
     game_monitor.start_game_monitor_thread()
 
@@ -276,8 +285,8 @@ def jmap(settings_json, output):
     # sometimes if you scan right when game opens errors occur, so a bit of a delay, make this configurable later somehow
     time.sleep(3)
 
-    jmap_program.run_dump_jmap_jmap_command(
-        jmap_executable=jmap_tool.JmapToolInfo().get_executable_path(),
+    jmap_tool.run_dump_jmap_jmap_command(
+        jmap_executable=str(jmap_tool.get_jmap_package_path()),
         game_pid=game_pid,
         output_jmap_location=output
     )
@@ -324,5 +333,5 @@ def jmap(settings_json, output):
 )
 def generate_script_objects(settings_json, jmap_path, output):
     os.makedirs(os.path.dirname(output), exist_ok=True)
-    retoc_exec_path = retoc_tool.RetocToolInfo().get_executable_path()
-    retoc.run_gen_script_objects_retoc_command(pathlib.Path(retoc_exec_path), jmap_path, output)
+    retoc.ensure_retoc_is_installed()
+    retoc.run_gen_script_objects_retoc_command(pathlib.Path(retoc.get_retoc_package_path()), jmap_path, output)

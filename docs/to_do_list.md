@@ -84,7 +84,7 @@ hide:
 ## Docs & Examples
 
 - [ ] GitHub Actions example with zipping files
-- [ ] prek example
+- [ ] Pre-commit example
 
 ---
 
@@ -141,7 +141,7 @@ project publish
 project dep add
 project dep remove
 project dep refresh
-`
+
 mod update
 mod commit
 mod publish
