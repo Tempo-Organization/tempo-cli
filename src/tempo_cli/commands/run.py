@@ -4,11 +4,15 @@ import pathlib
 import rich_click as click
 from ue4ss_installer_core import ue4ss
 
-from tempo_core import main_logic, file_io, data_structures, settings, cache
+from tempo_core import main_logic, file_io, data_structures, settings
 from tempo_core.programs import kismet_analyzer as tempo_core_kismet_analyzer
 
+from tempo_cache import cache
+from tempo_cache_tools import kismet_analyzer as kismet_analyzer_tool
 
-ue4ss.cache_repo_releases_info("UE4SS-RE", "RE-UE4SS")
+
+# make this only happen if online is working, if online not working, throw error when calling related commands
+# ue4ss.cache_repo_releases_info("UE4SS-RE", "RE-UE4SS")
 
 
 @click.group()
@@ -138,18 +142,12 @@ def game(settings_json, toggle_engine):
     type=bool,
     help="Should the generated kismet analyzer be opened after being completed.",
 )
-def kismet_analyze_directory(settings_json, kismet_analyzer_executable, mappings, assets, output, open):
-    if kismet_analyzer_executable:
-        kismet_analyzer_directory = os.path.normpath(os.path.dirname(kismet_analyzer_executable))
-    else:
-        kismet_analyzer_directory = os.path.normpath(f'{os.getcwd()}/Modding/tools/kismet_analyzer')
+def kismet_analyze_directory(mappings, assets, output, open):
     os.makedirs(output, exist_ok=True)
     if len(file_io.get_files_in_tree(assets)) < 1:
         raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')
-    if tempo_core_kismet_analyzer.does_kismet_analyzer_exist(tempo_core_kismet_analyzer.get_kismet_analyzer_path(kismet_analyzer_directory)):
-        tempo_core_kismet_analyzer.install_kismet_analyzer(kismet_analyzer_directory)
     tempo_core_kismet_analyzer.run_gen_cfg_tree_command(
-        kismet_analyzer_executable=pathlib.Path(tempo_core_kismet_analyzer.get_kismet_analyzer_path(kismet_analyzer_directory)),
+        kismet_analyzer_executable=pathlib.Path(kismet_analyzer_tool.KismetAnalyzerToolInfo().get_executable_path()),
         mappings_file=mappings,
         asset_tree=assets,
         output_tree=output

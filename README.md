@@ -81,7 +81,7 @@ When creating an issue, please provide as much information as possible, includin
 ## Contributing
 Contributions are always appreciated, but please keep in mind the following:
 - Before coding new features, try to make an issue to see if the idea/implementation needs any tweaking, or is out of scope
-- Make sure your changes pass all pre-commit checks
+- Make sure your changes pass all k checks
 
 ## FAQ
 
