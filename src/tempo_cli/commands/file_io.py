@@ -8,7 +8,7 @@ from tempo_core import file_io as tempo_core_file_io
 
 
 @click.group()
-def file_io():
+def file_io() -> None:
     """File IO related commands"""
 
 
@@ -34,9 +34,9 @@ command_help = "Zip Directory Tree"
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     required=True,
 )
-def zip_directory_tree(directory, zip):
+def zip_directory_tree(directory: pathlib.Path, zip: pathlib.Path) -> None:
     tempo_core_file_io.zip_directory_tree(
-        input_dir=directory,
+        input_dir=str(directory),
         output_dir=os.path.dirname(zip),
         zip_name=os.path.basename(zip),
     )
@@ -60,8 +60,8 @@ command_help = "Unzip"
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     required=True,
 )
-def unzip(output_directory, input_zip):
-    tempo_core_file_io.unzip_zip(zip_path=input_zip, output_location=output_directory)
+def unzip(output_directory: pathlib.Path, input_zip: pathlib.Path) -> None:
+    tempo_core_file_io.unzip_zip(zip_path=str(input_zip), output_location=str(output_directory))
 
 
 command_help = "Move a file or directory to a new location."
@@ -83,7 +83,7 @@ command_help = "Move a file or directory to a new location."
 @click.option(
     "--overwrite", is_flag=True, help="Overwrite existing files if they already exist."
 )
-def move(input_path, output_path, overwrite):
+def move(input_path: pathlib.Path, output_path: pathlib.Path, overwrite: bool) -> None:
     tempo_core_file_io.move(input_path, output_path, overwrite)
 
 
@@ -106,7 +106,7 @@ command_help = "Copy a file or directory to a new location."
 @click.option(
     "--overwrite", is_flag=True, help="Overwrite existing files if they already exist."
 )
-def copy(input_path, output_path, overwrite):
+def copy(input_path: pathlib.Path, output_path: pathlib.Path, overwrite: bool) -> None:
     tempo_core_file_io.copy(input_path, output_path, overwrite=overwrite)
 
 
@@ -131,7 +131,7 @@ command_help = "Symlink a file or directory to a new location."
     is_flag=True,
     help="Overwrite existing files if they already exist.",
 )
-def symlink(input_path, output_path, overwrite):
+def symlink(input_path: pathlib.Path, output_path: pathlib.Path, overwrite: bool) -> None:
     tempo_core_file_io.symlink(input_path, output_path, overwrite)
 
 
@@ -146,7 +146,7 @@ command_help = "Delete one or more files and/or directories."
     required=True,
     multiple=True,
 )
-def delete(input_paths):
+def delete(input_paths: list[pathlib.Path]) -> None:
     tempo_core_file_io.delete(input_paths)
 
 
@@ -168,7 +168,7 @@ command_help = "Opens the latest log file."
     required=True,
     help="Path to the settings JSON file",
 )
-def open_latest_log(settings_json):
+def open_latest_log(settings_json: pathlib.Path) -> None:
     main_logic.open_latest_log()
 
 command_help = "Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON."
@@ -198,7 +198,7 @@ command_help = "Generates a JSON file containing all of the files in the game di
     ),
     help="Path to the output game file list json."
 )
-def generate_game_file_list_json(settings_json, output_json):
+def generate_game_file_list_json(settings_json: pathlib.Path, output_json: pathlib.Path) -> None:
     if output_json:
         main_logic.generate_game_file_list_json(output_json)
     else:
@@ -233,10 +233,10 @@ command_help = (
         path_type=pathlib.Path,
     ),
 )
-def generate_file_list(directory, file_list):
+def generate_file_list(directory: pathlib.Path, file_list: list[pathlib.Path]) -> None:
     """
     Arguments:
         directory (str): Path to the directory tree you want to generate the file list from.
         file_list (str): Path to the output file, saved in JSON format.
     """
-    main_logic.generate_file_list(directory, file_list)
+    main_logic.generate_file_list(str(directory), str(file_list))

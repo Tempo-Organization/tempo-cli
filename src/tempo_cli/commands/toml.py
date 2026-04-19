@@ -6,7 +6,7 @@ from tempo_core import logger
 
 
 @click.group()
-def toml():
+def toml() -> None:
     """Toml related commands"""
 
 
@@ -25,7 +25,7 @@ command_help_add_toml = "Add an entry to a TOML file."
 @click.option(
     "--value", help="Value to associate with the key.", type=str, required=True
 )
-def add(toml_path, key, value):
+def add(toml_path: pathlib.Path, key: str, value: str) -> None:
     with toml_path.open("r+") as f:
         data = tomlkit.load(f)
         data[key] = value
@@ -52,7 +52,7 @@ command_help_remove_toml = "Remove an entry from a TOML file."
 @click.option(
     "--key", help="Key to remove from the TOML file.", type=str, required=True
 )
-def remove(toml_path, key):
+def remove(toml_path: pathlib.Path, key: str) -> None:
     with toml_path.open("r+") as f:
         data = tomlkit.load(f)
         if key in data:

@@ -1,7 +1,7 @@
 import os
 
 
-def file_exists_validator(path: str):
+def file_exists_validator(path: str) -> str | bool:
     if not path:
         return "Path cannot be empty."
 
@@ -15,7 +15,7 @@ def file_exists_validator(path: str):
     return True
 
 
-def dir_exists_validator(path: str):
+def dir_exists_validator(path: str) -> str | bool:
     if not path:
         return "Path cannot be empty."
 
@@ -29,7 +29,7 @@ def dir_exists_validator(path: str):
     return True
 
 
-def exe_exists_validator(path: str):
+def exe_exists_validator(path: str) -> str | bool:
     if not path:
         return "Path cannot be empty."
 

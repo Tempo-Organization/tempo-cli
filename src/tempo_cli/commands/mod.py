@@ -5,7 +5,7 @@ from tempo_core import main_logic, data_structures, settings
 
 
 @click.group()
-def mod():
+def mod() -> None:
     """Mod related commands"""
 
 
@@ -32,8 +32,8 @@ command_help = "Enable the given mod name in the provided settings JSON."
     help="Name of a mod to enable, can be specified multiple times",
     prompt="What is the name of the mod you want to enable? "
 )
-def enable_mod(settings_json, mod_name):
-    main_logic.enable_mods(settings_json=settings_json, mod_names=[mod_name])
+def enable_mod(settings_json: pathlib.Path, mod_name: str) -> None:
+    main_logic.enable_mods(settings_json=str(settings_json), mod_names=[mod_name])
 
 
 command_help = "Enable the given mod names in the provided settings JSON."
@@ -60,8 +60,8 @@ command_help = "Enable the given mod names in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def enable_mods(settings_json, mod_names):
-    main_logic.enable_mods(settings_json=settings_json, mod_names=mod_names)
+def enable_mods(settings_json: pathlib.Path, mod_names: list[str]) -> None:
+    main_logic.enable_mods(settings_json=str(settings_json), mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -88,8 +88,8 @@ command_help = "Disable the given mod names in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def disable_mods(settings_json, mod_names):
-    main_logic.disable_mods(settings_json=settings_json, mod_names=mod_names)
+def disable_mods(settings_json: pathlib.Path, mod_names: list[str]) -> None:
+    main_logic.disable_mods(settings_json=str(settings_json), mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -116,8 +116,8 @@ command_help = "Disable the given mod names in the provided settings JSON."
     help="Name of a mod to disable, can be specified multiple times",
     prompt="What is the name of the mod you want to disable?"
 )
-def disable_mod(settings_json, mod_name):
-    main_logic.disable_mods(settings_json=settings_json, mod_names=[mod_name])
+def disable_mod(settings_json: pathlib.Path, mod_name: str) -> None:
+    main_logic.disable_mods(settings_json=str(settings_json), mod_names=[mod_name])
 
 
 command_help = "Adds the given mod name in the provided settings JSON."
@@ -218,18 +218,18 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
 
 
 def add_mod(
-    settings_json,
-    mod_name,
-    packing_type,
-    pak_dir_structure,
-    mod_name_dir_type,
-    mod_name_dir_name_override,
-    pak_chunk_num,
-    compression_type,
-    is_enabled,
-    asset_paths,
-    tree_paths,
-):
+    settings_json: pathlib.Path,
+    mod_name: str,
+    packing_type: str,
+    pak_dir_structure: str,
+    mod_name_dir_type: str,
+    mod_name_dir_name_override: str | None,
+    pak_chunk_num: int | None,
+    compression_type: str | None,
+    is_enabled: bool,
+    asset_paths: list[pathlib.Path],
+    tree_paths: list[pathlib.Path],
+) -> None:
     if pak_chunk_num == 0:
         pak_chunk_num = None
     if mod_name_dir_name_override == "":
@@ -237,7 +237,7 @@ def add_mod(
     if compression_type == "":
         compression_type = None
     main_logic.add_mod(
-        settings_json=settings_json,
+        settings_json=str(settings_json),
         mod_name=mod_name,
         packing_type=packing_type,
         pak_dir_structure=pak_dir_structure,
@@ -275,8 +275,8 @@ command_help = "Remove the given mod name in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def remove_mod(settings_json, mod_name):
-    main_logic.remove_mods(settings_json=settings_json, mod_names=[mod_name])
+def remove_mod(settings_json: pathlib.Path, mod_name: str) -> None:
+    main_logic.remove_mods(settings_json=str(settings_json), mod_names=[mod_name])
 
 
 command_help = "Removes the given mod names in the provided settings JSON."
@@ -295,8 +295,8 @@ command_help = "Removes the given mod names in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def remove_mods(settings_json, mod_names):
-    main_logic.remove_mods(settings_json=settings_json, mod_names=mod_names)
+def remove_mods(settings_json: pathlib.Path, mod_names: list[str]) -> None:
+    main_logic.remove_mods(settings_json=str(settings_json), mod_names=mod_names)
 
 
 
@@ -331,7 +331,7 @@ command_help = "Generates mods for the specified mod names."
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mods(settings_json, mod_names, use_symlinks):
+def generate_mods(settings_json: pathlib.Path, mod_names: list[str], use_symlinks: bool) -> None:
     main_logic.generate_mods(input_mod_names=mod_names, use_symlinks=use_symlinks)
 
 
@@ -359,7 +359,7 @@ command_help = "Generates mods for all enabled mods within the specified setting
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mods_all(settings_json, use_symlinks):
+def generate_mods_all(settings_json: pathlib.Path, use_symlinks: bool) -> None:
     main_logic.generate_mods_all(use_symlinks=use_symlinks)
 
 
@@ -412,9 +412,9 @@ command_help = "Generate one or more mod releases."
     help="Path to the settings JSON file",
 )
 def generate_mod_releases(
-    settings_json, mod_names, base_files_directory, output_directory
-):
-    main_logic.generate_mod_releases(mod_names, base_files_directory, output_directory)
+    settings_json: pathlib.Path, mod_names: list[str], base_files_directory: pathlib.Path, output_directory: pathlib.Path
+) -> None:
+    main_logic.generate_mod_releases(mod_names, str(base_files_directory), str(output_directory))
 
 
 command_help = "Generate mod releases for all mods within the specified settings JSON."
@@ -460,9 +460,9 @@ command_help = "Generate mod releases for all mods within the specified settings
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mod_releases_all(settings_json, base_files_directory, output_directory):
+def generate_mod_releases_all(settings_json: pathlib.Path, base_files_directory: pathlib.Path, output_directory: pathlib.Path) -> None:
     if not base_files_directory or base_files_directory == '':
-        base_files_directory = settings.get_default_release_base_files_dir()
+        base_files_directory = pathlib.Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':
-        output_directory = settings.get_default_release_dir()
-    main_logic.generate_mod_releases_all(base_files_directory, output_directory)
+        output_directory = pathlib.Path(settings.get_default_release_dir())
+    main_logic.generate_mod_releases_all(str(base_files_directory), str(output_directory))

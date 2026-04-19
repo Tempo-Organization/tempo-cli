@@ -5,7 +5,7 @@ from tempo_core import main_logic
 
 
 @click.group()
-def uproject():
+def uproject() -> None:
     """Uproject related commands"""
 
 
@@ -53,14 +53,14 @@ command_help = (
     type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
 )
 def generate(
-    project_file,
-    file_version,
-    engine_major_association,
-    engine_minor_association,
-    category,
-    description,
-    ignore_safety_checks,
-):
+    project_file: str,
+    file_version: int,
+    engine_major_association: int,
+    engine_minor_association: int,
+    category: str,
+    description: str,
+    ignore_safety_checks: bool,
+) -> None:
     """
     Arguments:
         project_file (str): Path to generate the project file at.
@@ -99,7 +99,7 @@ command_help = "Resaves packages and fixes up redirectors for the project."
     required=True,
     help="Path to the settings JSON file",
 )
-def resave_packages_and_fix_up_redirectors(settings_json):
+def resave_packages_and_fix_up_redirectors(settings_json: str) -> None:
     main_logic.resave_packages_and_fix_up_redirectors()
 
 command_help = "Builds the uproject specified within the settings JSON"
@@ -124,7 +124,7 @@ command_help = "Builds the uproject specified within the settings JSON"
     required=True,
     help="Path to the settings JSON file",
 )
-def build(settings_json, toggle_engine):
+def build(settings_json: str, toggle_engine: bool) -> None:
     main_logic.build(toggle_engine=toggle_engine)
 
 
@@ -152,7 +152,7 @@ command_help = "Cooks content for the uproject specified within the settings JSO
     required=True,
     help="Path to the settings JSON file",
 )
-def cook(settings_json, toggle_engine):
+def cook(settings_json: str, toggle_engine: bool) -> None:
     main_logic.cook(toggle_engine=toggle_engine)
 
 
@@ -187,5 +187,5 @@ command_help = "Package content for the uproject specified within the settings J
     required=True,
     help="Path to the settings JSON file",
 )
-def package(settings_json, toggle_engine, use_symlinks):
+def package(settings_json: str, toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.package(toggle_engine=toggle_engine, use_symlinks=use_symlinks)

@@ -45,7 +45,7 @@ class SetupInformation:
     should_close_fmodel_and_umodel: bool  = False
 
 
-def project_init(directory: pathlib.Path):
+def project_init(directory: pathlib.Path) -> None:
     # add initial select multi option thing ifg possible for features omn onitial step, using checkbox thing
     setup_information = SetupInformation(working_directory=directory)
     logger.log_message(f"project directory: {setup_information.working_directory}")
@@ -225,7 +225,7 @@ def project_init(directory: pathlib.Path):
     if setup_information.should_download_easy_scripts:
         easy_scripts_setup(setup_information)
 
-    def convert_paths(obj):
+    def convert_paths(obj): # noqa
         if isinstance(obj, pathlib.Path):
             return str(obj)
         elif isinstance(obj, dict):
@@ -255,7 +255,7 @@ def project_init(directory: pathlib.Path):
     help="The tempo project directory, defaults to current working directory.",
 )
 # add game preset options later?
-def init(directory):
+def init(directory: pathlib.Path) -> None:
     if not checks.check_git_is_installed():
         no_git_error = 'You need git installed to use this functionality.'
         raise RuntimeError(no_git_error)
@@ -267,7 +267,7 @@ def init(directory):
     project_init(directory)
 
 
-def pre_commit_setup(setup_information: SetupInformation):
+def pre_commit_setup(setup_information: SetupInformation) -> None:
     tc_file_io.download_files_from_github_repo(
         repo_url="https://github.com/Tempo-Organization/tempo-template",
         repo_branch="main",
@@ -278,7 +278,7 @@ def pre_commit_setup(setup_information: SetupInformation):
     subprocess.run("uv run prek install")
 
 
-def versioning_setup(setup_information: SetupInformation):
+def versioning_setup(setup_information: SetupInformation) -> None:
     subprocess.run("uv add commitizen")
     toml_path = os.path.normpath(f"{setup_information.working_directory}/pyproject.toml")
     with open(toml_path, "r", encoding="utf-8") as f:
@@ -312,11 +312,11 @@ def versioning_setup(setup_information: SetupInformation):
         subprocess.run("uv run prek install --hook-type pre-push")
 
 
-def process_management_setup():
+def process_management_setup() -> None:
     return
 
 
-def easy_scripts_setup(setup_information: SetupInformation):
+def easy_scripts_setup(setup_information: SetupInformation) -> None:
     if not setup_information.tempo_config:
         raise FileNotFoundError(setup_information.tempo_config)
     EASY_SCRIPTS_VERSION = "0.4.0"
@@ -333,7 +333,7 @@ def easy_scripts_setup(setup_information: SetupInformation):
     )
 
 
-def documentation_setup(setup_information: SetupInformation):
+def documentation_setup(setup_information: SetupInformation) -> None:
     subprocess.run("uv add mkdocs-material")
     files = [
         "mkdocs.yml",

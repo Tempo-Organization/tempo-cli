@@ -6,7 +6,7 @@ from tempo_core import unreal_inis
 
 
 @click.group()
-def ini():
+def ini() -> None:
     """Ini related commands"""
 
 
@@ -41,7 +41,7 @@ command_help = (
 )
 def add_meta_data_tags_for_asset_registry_to_unreal_ini(
     ini_path: pathlib.Path, tags: list[str]
-):
+) -> None:
     unreal_inis.add_meta_data_tags_for_asset_registry_to_unreal_ini(
         ini=ini_path, tags=tags
     )
@@ -78,7 +78,7 @@ command_help = (
 )
 def remove_meta_data_tags_for_asset_registry_from_unreal_ini(
     ini_path: pathlib.Path, tags: list[str]
-):
+) -> None:
     unreal_inis.remove_meta_data_tags_for_asset_registry_from_unreal_ini(
         ini=ini_path, tags=tags
     )

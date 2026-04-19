@@ -16,7 +16,7 @@ from tempo_cache_tools import kismet_analyzer as kismet_analyzer_tool
 
 
 @click.group()
-def run():
+def run() -> None:
     """Run related commands"""
 
 
@@ -36,7 +36,7 @@ command_help = "Run the engine."
     required=True,
     help="Path to the settings JSON file",
 )
-def engine(settings_json):
+def engine(settings_json: pathlib.Path) -> None:
     main_logic.run_engine()
 
 
@@ -62,7 +62,7 @@ command_help = "Run the game."
     required=True,
     help="Path to the settings JSON file",
 )
-def game(settings_json, toggle_engine):
+def game(settings_json: pathlib.Path, toggle_engine: bool) -> None:
     main_logic.run_game(toggle_engine=toggle_engine)
 
 
@@ -142,9 +142,9 @@ def game(settings_json, toggle_engine):
     type=bool,
     help="Should the generated kismet analyzer be opened after being completed.",
 )
-def kismet_analyze_directory(mappings, assets, output, open):
+def kismet_analyze_directory(mappings: pathlib.Path, assets: pathlib.Path, output: pathlib.Path, open: bool) -> None:
     os.makedirs(output, exist_ok=True)
-    if len(file_io.get_files_in_tree(assets)) < 1:
+    if len(file_io.get_files_in_tree(str(assets))) < 1:
         raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')
     tempo_core_kismet_analyzer.run_gen_cfg_tree_command(
         kismet_analyzer_executable=pathlib.Path(kismet_analyzer_tool.KismetAnalyzerToolInfo().get_executable_path()),
@@ -196,7 +196,7 @@ command_help = "Run tests for specific mods"
     required=True,
     help="Path to the settings JSON file",
 )
-def test_mods(settings_json, mod_names, toggle_engine, use_symlinks):
+def test_mods(settings_json: pathlib.Path, mod_names: list[str], toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.test_mods(
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
@@ -235,7 +235,7 @@ command_help = "Run tests for all mods within the specified settings JSON"
     required=True,
     help="Path to the settings JSON file",
 )
-def test_mods_all(settings_json, toggle_engine, use_symlinks):
+def test_mods_all(settings_json: pathlib.Path, toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.test_mods_all(toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
@@ -288,22 +288,22 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
     help="Path to the settings JSON file",
 )
 def full_run(
-    settings_json,
-    mod_names,
-    toggle_engine,
-    base_files_directory,
-    output_directory,
-    use_symlinks,
-):
+    settings_json: pathlib.Path,
+    mod_names: list[str],
+    toggle_engine: bool,
+    base_files_directory: pathlib.Path,
+    output_directory: pathlib.Path,
+    use_symlinks: bool,
+) -> None:
     if not base_files_directory or base_files_directory == '':
-        base_files_directory = settings.get_default_release_base_files_dir()
+        base_files_directory = pathlib.Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':
-        output_directory = settings.get_default_release_dir()
+        output_directory = pathlib.Path(settings.get_default_release_dir())
     main_logic.full_run(
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
-        base_files_directory=base_files_directory,
-        output_directory=output_directory,
+        base_files_directory=str(base_files_directory),
+        output_directory=str(output_directory),
         use_symlinks=use_symlinks,
     )
 
@@ -350,16 +350,16 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
     help="Path to the settings JSON file",
 )
 def full_run_all(
-    settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks
-):
+    settings_json: pathlib.Path, toggle_engine: bool, base_files_directory: pathlib.Path, output_directory: pathlib.Path, use_symlinks: bool
+) -> None:
     if not base_files_directory or base_files_directory == '':
-        base_files_directory = settings.get_default_release_base_files_dir()
+        base_files_directory = pathlib.Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':
-        output_directory = settings.get_default_release_dir()
+        output_directory = pathlib.Path(settings.get_default_release_dir())
     main_logic.full_run_all(
         toggle_engine=toggle_engine,
-        base_files_directory=base_files_directory,
-        output_directory=output_directory,
+        base_files_directory=str(base_files_directory),
+        output_directory=str(output_directory),
         use_symlinks=use_symlinks,
     )
 
@@ -412,14 +412,14 @@ command_help = "Adds the specified module entry to the descriptor file, overwrit
     ),
 )
 @click.argument("module_name", type=str)
-def add_module_to_descriptor(descriptor_file, module_name, host_type, loading_phase):
+def add_module_to_descriptor(descriptor_file: pathlib.Path, module_name: str, host_type: str, loading_phase: str) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to add the module to.
         module_name (str): Name of the module to add.
     """
     main_logic.add_module_to_descriptor(
-        descriptor_file, module_name, host_type, loading_phase
+        str(descriptor_file), module_name, host_type, loading_phase
     )
 
 
@@ -447,14 +447,14 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
     ),
 )
 @click.argument("plugin_name", type=str)
-def add_plugin_to_descriptor(descriptor_file, plugin_name, is_enabled):
+def add_plugin_to_descriptor(descriptor_file: pathlib.Path, plugin_name: str, is_enabled: bool) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to add the plugin to.
         plugin_name (str): Name of the plugin to add.
     """
     main_logic.add_plugin_to_descriptor(
-        descriptor_file, plugin_name, is_enabled=is_enabled
+        str(descriptor_file), plugin_name, is_enabled=is_enabled
     )
 
 
@@ -484,12 +484,12 @@ command_help = (
         path_type=pathlib.Path,
     ),
 )
-def remove_modules_from_descriptor(descriptor_file, module_names):
+def remove_modules_from_descriptor(descriptor_file: pathlib.Path, module_names: list[str]) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to remove the modules from.
     """
-    main_logic.remove_modules_from_descriptor(descriptor_file, module_names)
+    main_logic.remove_modules_from_descriptor(str(descriptor_file), module_names)
 
 
 command_help = (
@@ -518,12 +518,12 @@ command_help = (
         path_type=pathlib.Path,
     ),
 )
-def remove_plugins_from_descriptor(descriptor_file, plugin_names):
+def remove_plugins_from_descriptor(descriptor_file: pathlib.Path, plugin_names: list[str]) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to remove the plugins from.
     """
-    main_logic.remove_plugins_from_descriptor(descriptor_file, plugin_names)
+    main_logic.remove_plugins_from_descriptor(str(descriptor_file), plugin_names)
 
 
 @run.command(
@@ -559,7 +559,7 @@ def remove_plugins_from_descriptor(descriptor_file, plugin_names):
     required=False,
     help="Path to the settings JSON file",
 )
-def install_ue4ss(release_tag, game_exe_directory, settings_json):
+def install_ue4ss(release_tag: str, game_exe_directory: pathlib.Path, settings_json: pathlib.Path) -> None:
     cache_dir = os.path.normpath(f'{cache.get_cache_dir()}/lazy_cache/ue4ss/{release_tag}')
     os.makedirs(cache_dir, exist_ok=True)
     ue4ss.install_ue4ss_to_dir(

@@ -1,5 +1,4 @@
-import os
-import pathlib
+from typing import Callable
 
 import rich_click as click
 
@@ -8,7 +7,7 @@ from tempo_core import main_logic
 
 # ---- TOOL GROUP ----
 @click.group()
-def tool():
+def tool() -> None:
     """Tool related commands"""
 
   # attach tool group to main CLI
@@ -16,7 +15,7 @@ def tool():
 
 # ---- INSTALL GROUP ----
 @click.group()
-def install():
+def install() -> None:
     """Install programs"""
 
 
@@ -51,5 +50,5 @@ for name, help_text, func in tools:
         type=bool,
         help="Should the installed program be run after installation.",
     )
-    def _command(run_after_install, func=func):
+    def _command(run_after_install: bool, func: Callable = func) -> None:
         func(run_after_install=run_after_install)

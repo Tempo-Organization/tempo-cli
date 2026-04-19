@@ -15,7 +15,7 @@ import rich_click as click
 
 
 @click.group()
-def dump():
+def dump() -> None:
     """Dump related commands"""
 
 @dump.command(
@@ -48,7 +48,7 @@ def dump():
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def aes_keys(settings_json, directory, dump_to_tempo_config):
+def aes_keys(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo_config: bool) -> None:
     aes_keys = []
     for key in pattern_sleuth.run_patternsleuth_aes_key_scan_command():
         logger.log_message(f"AES Key: {key}")
@@ -114,7 +114,7 @@ def aes_keys(settings_json, directory, dump_to_tempo_config):
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def engine_version(settings_json, directory, dump_to_tempo_config):
+def engine_version(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo_config: bool) -> None:
 
     info = pattern_sleuth.run_patternsleuth_engine_version_scan_command()
 
@@ -182,7 +182,7 @@ def engine_version(settings_json, directory, dump_to_tempo_config):
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def build_configuration(settings_json, directory, dump_to_tempo_config):
+def build_configuration(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo_config: bool) -> None:
 
     info = pattern_sleuth.run_patternsleuth_build_configuration_scan_command()
 
@@ -242,7 +242,7 @@ def build_configuration(settings_json, directory, dump_to_tempo_config):
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     help="The file location you want your jmap outputted to.",
 )
-def jmap(settings_json, output):
+def jmap(settings_json: pathlib.Path, output: pathlib.Path) -> None:
     os.makedirs(os.path.dirname(output), exist_ok=True)
     game_runner.run_game()
     game_monitor.start_game_monitor_thread()
@@ -322,7 +322,7 @@ def jmap(settings_json, output):
     type=click.Path(resolve_path=True, path_type=pathlib.Path),
     help="The file location you want your utoc outputted to.",
 )
-def generate_script_objects(settings_json, jmap_path, output):
+def generate_script_objects(settings_json: pathlib.Path, jmap_path: pathlib.Path, output: pathlib.Path) -> None:
     os.makedirs(os.path.dirname(output), exist_ok=True)
     retoc_exec_path = retoc_tool.RetocToolInfo().get_executable_path()
     retoc.run_gen_script_objects_retoc_command(pathlib.Path(retoc_exec_path), jmap_path, output)

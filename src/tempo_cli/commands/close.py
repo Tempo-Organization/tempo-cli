@@ -8,7 +8,7 @@ from tempo_core import main_logic, process_management
 command_help = "Close the game."
 
 @click.group()
-def close():
+def close() -> None:
     """Close related commands"""
 
 @close.command(name="game", help=command_help, short_help=command_help)
@@ -25,7 +25,7 @@ def close():
     required=True,
     help="Path to the settings JSON file",
 )
-def game(settings_json):
+def game(settings_json: pathlib.Path) -> None:
     main_logic.close_game()
 
 
@@ -45,7 +45,7 @@ command_help = "Close the engine."
     required=True,
     help="Path to the settings JSON file",
 )
-def engine(settings_json):
+def engine(settings_json: pathlib.Path) -> None:
     main_logic.close_engine()
 
 
@@ -59,5 +59,5 @@ command_help = "Closes all programs with the exe names provided."
     required=True,
     help="Name of an executable to be closed, can be specified multiple times.",
 )
-def programs(exe_names):
+def programs(exe_names: list[str]) -> None:
     process_management.close_programs(exe_names)

@@ -6,7 +6,7 @@ from tempo_core import main_logic, file_io, settings, app_runner, data_structure
 
 
 @click.group()
-def uplugin():
+def uplugin() -> None:
     """Uplugin related commands"""
 
 
@@ -79,32 +79,32 @@ command_help = "Generates a uplugin in a directory, within the specified directo
 )
 @click.argument("plugin_name", type=str)
 def generate(
-    plugins_directory,
-    plugin_name,
-    can_contain_content,
-    is_installed,
-    is_hidden,
-    no_code,
-    category,
-    created_by,
-    created_by_url,
-    description,
-    docs_url,
-    editor_custom_virtual_path,
-    enabled_by_default,
-    engine_major_version,
-    engine_minor_version,
-    support_url,
-    version,
-    version_name,
-):
+    plugins_directory: pathlib.Path,
+    plugin_name: str,
+    can_contain_content: bool,
+    is_installed: bool,
+    is_hidden: bool,
+    no_code: bool,
+    category: str,
+    created_by: str,
+    created_by_url: str,
+    description: str,
+    docs_url: str,
+    editor_custom_virtual_path: str,
+    enabled_by_default: bool,
+    engine_major_version: int,
+    engine_minor_version: int,
+    support_url: str,
+    version: float,
+    version_name: str,
+) -> None:
     """
     Arguments:
         plugins_directory (str): Path to the plugins directory, mainly for use with Uproject plugins folder, and engine plugins folder.
         plugin_name (str): Name of the plugin to be generated.
     """
     main_logic.generate_uplugin(
-        plugins_directory=plugins_directory,
+        plugins_directory=str(plugins_directory),
         plugin_name=plugin_name,
         category=category,
         created_by=created_by,
@@ -142,7 +142,7 @@ command_help = "Deletes all files for the specified uplugin paths."
     required=True,
     help="uplugin_paths: A path to a uplugin to delete, can be specified multiple times.",
 )
-def remove(uplugin_paths):
+def remove(uplugin_paths: list[pathlib.Path]) -> None:
     main_logic.remove_uplugins(uplugin_paths)
 
 
@@ -231,16 +231,16 @@ command_help = "Build and package one or more uplugins for distribution."
     help="Zips the compiled uplugin(s) into the output directory",
 )
 def build(
-    settings_json,
-    uplugin_names,
-    uplugin_paths,
-    output_directory,
-    target_platforms,
-    no_host_platform,
-    strict_includes,
-    unversioned,
-    zip
-):
+    settings_json: str,
+    uplugin_names: list[str],
+    uplugin_paths: list[pathlib.Path],
+    output_directory: pathlib.Path,
+    target_platforms: list[str],
+    no_host_platform: bool,
+    strict_includes: bool,
+    unversioned: bool,
+    zip: bool
+) -> None:
     final_uplugin_paths = []
     for uplugin_path in uplugin_paths:
         if os.path.isfile(uplugin_path):
@@ -309,6 +309,6 @@ def build(
                     uplugin = file_io.filter_by_extension(file_io.get_files_in_tree(str(package_path)), 'uplugin')[0]
                     plugin_name = os.path.splitext(os.path.basename(uplugin))[0]
                     zip_name = os.path.normpath(f"{plugin_name}.zip")
-                    file_io.zip_directory_tree(package_path, package_path, zip_name)
+                    file_io.zip_directory_tree(str(package_path), str(package_path), zip_name)
                 else:
                     file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))

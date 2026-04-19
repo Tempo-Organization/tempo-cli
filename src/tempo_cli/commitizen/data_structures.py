@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Type, Any
+from typing import Type, TypeVar
 
 
 class CommitizenVersionSchemeOption(Enum):
@@ -11,18 +11,13 @@ class CommitizenVersionSchemeOption(Enum):
     PEP440 = 'pep440'
 
 
-def get_enum_from_val(enum_cls: Type[Enum], value: Any) -> Enum:
+E = TypeVar("E", bound=Enum)
+
+def get_enum_from_val(enum_cls: Type[E], value: object) -> E:
     for entry in enum_cls:
         if entry.value == value:
             return entry
     raise ValueError(f"{value} is not a valid value for {enum_cls.__name__}")
-
-
-def get_enum_from_val_loose(enum_cls: Type[Enum], value: Any) -> Enum | None:
-    for entry in enum_cls:
-        if entry.value == value:
-            return entry
-    return None
 
 
 def get_enum_strings_from_enum(enum_cls: Type[Enum]) -> list[str]:

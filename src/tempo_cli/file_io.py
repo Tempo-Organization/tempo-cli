@@ -5,7 +5,7 @@ import requests
 from tempo_core import logger
 
 
-def download_and_extract_zip(url: str, output_dir: str):
+def download_and_extract_zip(url: str, output_dir: str) -> None:
     os.makedirs(output_dir, exist_ok=True)
 
     zip_path = os.path.join(output_dir, "easy_scripts.zip")
@@ -22,7 +22,7 @@ def download_and_extract_zip(url: str, output_dir: str):
     os.remove(zip_path)
 
 
-def replace_text_in_file(file_path, old_text, new_text):
+def replace_text_in_file(file_path: str, old_text: str, new_text: str) -> None:
     """
     Reads a file, replaces all occurrences of old_text with new_text,
     and writes the changes back to the file.
@@ -43,7 +43,7 @@ def download_files_from_github_repo(
     repo_branch: str = "master",
     file_paths: list[str] = [],
     output_directory: str = os.getcwd(),
-):
+) -> None:
     try:
         parts = repo_url.strip("/").split("/")
         user, repo = parts[-2], parts[-1]

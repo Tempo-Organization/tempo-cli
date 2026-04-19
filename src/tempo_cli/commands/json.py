@@ -6,7 +6,7 @@ from tempo_core import logger
 
 
 @click.group()
-def json():
+def json() -> None:
     """Json related commands"""
 
 
@@ -25,7 +25,7 @@ command_help_add_json = "Add an entry to a JSON file."
 @click.option(
     "--value", help="Value to associate with the key.", type=str, required=True
 )
-def add(json_path, key, value):
+def add(json_path: pathlib.Path, key: str, value: str) -> None:
     with json_path.open("r+") as f:
         data = json_module.load(f)
         data[key] = value
@@ -51,7 +51,7 @@ command_help_remove_json = "Remove an entry from a JSON file."
 @click.option(
     "--key", help="Key to remove from the JSON file.", type=str, required=True
 )
-def remove(json_path, key):
+def remove(json_path: pathlib.Path, key: str) -> None:
     with json_path.open("r+") as f:
         data = json_module.load(f)
         if key in data:

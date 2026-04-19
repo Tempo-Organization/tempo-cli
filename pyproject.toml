@@ -34,8 +34,8 @@ requires = ["uv_build>=0.7.19,<0.8"]
 build-backend = "uv_build"
 
 [tool.uv.sources]
-tempo-core = { git = "https://www.github.com/Tempo-Organization/tempo-core" }
 ue4ss-installer-core = { git = "https://www.github.com/Tempo-Organization/ue4ss-installer-core" }
+tempo-core = { git = "https://www.github.com/Tempo-Organization/tempo-core" }
 
 [dependency-groups]
 dev = [
@@ -64,6 +64,10 @@ tempo_cli = "tempo_cli.__main__:main"
 exclude = [
     "src/tempo_cli/cli.py"
 ]
+
+[tool.ruff.lint]
+select = ["ANN"]
+
 
 [tool.typos]
 [tool.typos.default]

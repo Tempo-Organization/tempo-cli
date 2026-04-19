@@ -14,7 +14,7 @@ default_create_collection_guid = unreal_collections.UnrealGuid.generate_unreal_g
 default_parent_guid = unreal_collections.get_blank_unreal_guid().to_uid()
 
 @click.group()
-def collection():
+def collection() -> None:
     """Collection related commands"""
 
 @collection.command(name="create_collection", help=command_help, short_help=command_help)
@@ -88,7 +88,7 @@ def create_collection(
     file_paths: list[str],
     unreal_asset_paths: list[str],
     filter_lines: list[str],
-):
+) -> None:
     type_of_content = data_structures.get_enum_from_val(
         unreal_collections.UnrealContentLineType, content_type
     )
@@ -153,7 +153,7 @@ command_help = "Set Collection Color"
 )
 def set_color_from_collection_path(
     collection_path: pathlib.Path, red: float, green: float, blue: float, alpha: float
-):
+) -> None:
     unreal_collections.set_color_from_collection_path(
         collection_path,
         unreal_collections.UnrealCollectionColor(r=red, g=green, b=blue, a=alpha),
@@ -180,7 +180,7 @@ command_help = "Rename Collection"
 @click.option(
     "--new_name", type=str, help="New name for the collection.", required=True
 )
-def rename_collection(collection_path: str, new_name: str):
+def rename_collection(collection_path: str, new_name: str) -> None:
     unreal_collections.rename_collection_from_collection_path(pathlib.Path(collection_path), new_name)
 
 
@@ -201,7 +201,7 @@ command_help = "Delete Collection"
     help="The path to the collection file to rename.",
     required=True,
 )
-def delete_collection(collection_path: str):
+def delete_collection(collection_path: str) -> None:
     unreal_collections.delete_collection(collection_path)
 
 
@@ -222,7 +222,7 @@ command_help = "Disable Collection"
     help="The path to the collection file to rename.",
     required=True,
 )
-def disable_collection(collection_path: str):
+def disable_collection(collection_path: str) -> None:
     unreal_collections.disable_collection(collection_path)
 
 
@@ -243,7 +243,7 @@ command_help = "Enable Collection"
     help="The path to the collection file to rename.",
     required=True,
 )
-def enable_collection(collection_path: str):
+def enable_collection(collection_path: str) -> None:
     unreal_collections.enable_collection(unreal_collections.get_unreal_collection_from_unreal_collection_path(pathlib.Path(collection_path)))
 
 
@@ -275,7 +275,7 @@ default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_ui
     type=str,
     help="The new guid in string form for the collection.",
 )
-def set_guid_from_collection_path(collection_path: str, guid: str):
+def set_guid_from_collection_path(collection_path: str, guid: str) -> None:
     unreal_collections.set_guid_from_collection_path(
         collection_path=pathlib.Path(collection_path),
         guid=unreal_collections.UnrealGuid.from_uid(guid),
@@ -309,7 +309,7 @@ command_help = "Set Parent Guid"
     type=str,
     help="The new parent guid in string form for the collection.",
 )
-def set_parent_guid_from_collection_path(collection_path: str, parent_guid: str):
+def set_parent_guid_from_collection_path(collection_path: str, parent_guid: str) -> None:
     unreal_collections.set_parent_guid_from_collection_path(
         collection_path=pathlib.Path(collection_path),
         parent_guid=unreal_collections.UnrealGuid(parent_guid),
@@ -343,7 +343,7 @@ command_help = "Set File Version"
     type=int,
     help="The new file version for the collection.",
 )
-def set_file_version_from_collection_path(collection_path: str, file_version: int):
+def set_file_version_from_collection_path(collection_path: str, file_version: int) -> None:
     unreal_collections.set_file_version_from_collection_path(collection_path=pathlib.Path(collection_path), file_version=file_version)
 
 
@@ -379,7 +379,7 @@ command_help = "Set Collection Type"
 )
 def set_collection_type_from_collection_path(
     collection_path: str, collection_type: str
-):
+) -> None:
     type_to_pass = data_structures.get_enum_from_val(
         unreal_collections.UnrealContentLineType, collection_type
     )
@@ -433,7 +433,7 @@ def add_content_lines_to_collection(
     content_path_lines: list[str],
     filter_lines: list[str],
     unreal_asset_paths: list[str],
-):
+) -> None:
     collection = unreal_collections.get_unreal_collection_from_unreal_collection_path(
         pathlib.Path(collection_path)
     )
@@ -504,7 +504,7 @@ def remove_content_lines_from_collection(
     content_path_lines: list[str],
     filter_lines: list[str],
     unreal_asset_paths: list[str],
-):
+) -> None:
     collection = unreal_collections.get_unreal_collection_from_unreal_collection_path(
         pathlib.Path(collection_path)
     )
@@ -572,7 +572,7 @@ command_help = "Add collections to the mod entry in the settings json"
 )
 def add_collections_to_mod_entry(
     settings_json: pathlib.Path, mod_name: str, collection_paths: list[pathlib.Path]
-):
+) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
         collections_to_pass.append(
@@ -626,7 +626,7 @@ command_help = "Remove collections to the mod entry in the settings json"
 )
 def remove_collections_from_mod_entry(
     settings_json: pathlib.Path, mod_name: str, collection_paths: list[pathlib.Path]
-):
+) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
         collections_to_pass.append(

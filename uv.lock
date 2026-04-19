@@ -914,7 +914,7 @@ dependencies = [
 
 [[package]]
 name = "tempo-cli"
-version = "5.1.1.dev23959330723"
+version = "5.2.0.dev24591472908"
 source = { editable = "." }
 dependencies = [
     { name = "commitizen" },
@@ -970,7 +970,7 @@ x86-64-unknown-linux-gnu = []
 [[package]]
 name = "tempo-core"
 version = "0.1.0"
-source = { git = "https://www.github.com/Tempo-Organization/tempo-core#fce6649349baa1567df126a971c8b4a3c2d61bdb" }
+source = { git = "https://www.github.com/Tempo-Organization/tempo-core#1b30f3e67f184efaae01332340eb5735ade8355e" }
 dependencies = [
     { name = "platformdirs" },
     { name = "psutil" },

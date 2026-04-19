@@ -6,7 +6,7 @@ from tempo_core import main_logic
 
 
 @click.group()
-def clean():
+def clean() -> None:
     """Clean related commands"""
 
 
@@ -27,7 +27,7 @@ command_help = "Cleans up the GitHub repository specified within the settings JS
     required=True,
     help="Path to the settings JSON file",
 )
-def full(settings_json):
+def full(settings_json: pathlib.Path) -> None:
     main_logic.cleanup_full()
 
 
@@ -48,7 +48,7 @@ command_help = "Cleans up the directories made from cooking of the GitHub reposi
     required=True,
     help="Path to the settings JSON file",
 )
-def cooked(settings_json):
+def cooked(settings_json: pathlib.Path) -> None:
     main_logic.cleanup_cooked()
 
 
@@ -69,7 +69,7 @@ command_help = "Cleans up the directories made from building of the GitHub repos
     required=True,
     help="Path to the settings JSON file",
 )
-def cleanup(settings_json):
+def cleanup(settings_json: pathlib.Path) -> None:
     main_logic.cleanup_build()
 
 
@@ -101,7 +101,7 @@ To generate a file list JSON, use the generate_file_list_json command.
     ),
     help="Path to the output game file list json."
 )
-def game(settings_json, output_json):
+def game(settings_json: pathlib.Path, output_json: pathlib.Path) -> None:
     if output_json:
         main_logic.cleanup_game(output_json)
     else:
@@ -137,13 +137,13 @@ To generate one, use the generate_file_list command.
         path_type=pathlib.Path,
     ),
 )
-def from_file_list(file_list, directory):
+def from_file_list(file_list: list[pathlib.Path], directory: pathlib.Path) -> None:
     """
     Arguments:
         file_list (str): Path to the file list you want to clean from.
         directory (str): Path to the directory tree to clean up. It will delete all files not in the specified file list.
     """
-    main_logic.cleanup_from_file_list(file_list, directory)
+    main_logic.cleanup_from_file_list(str(file_list), str(directory))
 
 
 
@@ -164,5 +164,5 @@ command_help = "Cleans up and resyncs a git project to the GitHub repository and
     required=True,
     help="Path to the settings JSON file",
 )
-def resync_dir_with_repo(settings_json):
+def resync_dir_with_repo(settings_json: pathlib.Path) -> None:
     main_logic.resync_dir_with_repo()
