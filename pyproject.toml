@@ -66,15 +66,13 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["ANN"]
+select = ["ANN", "PTH", "N", "BLE"]
 
 
 [tool.typos]
 [tool.typos.default]
 extend-words = { ue = "ue" }
 
-[tool.pyright]
-extraPaths = [".venv/Lib/site-packages"]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
