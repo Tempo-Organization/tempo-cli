@@ -1,4 +1,10 @@
 
+## 5.2.0-dev.24855988894 (2026-04-23)
+
+### Refactor
+
+- **All**: changed from str to pathlib, added ruff rules and ty
+
 ## 5.2.0-dev.24637340882 (2026-04-19)
 
 ## 5.2.0-dev.24591472908 (2026-04-17)
