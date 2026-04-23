@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 
@@ -27,7 +27,7 @@ command_help = (
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the ini file to edit.",
     required=True,
@@ -40,10 +40,10 @@ command_help = (
     default=[],
 )
 def add_meta_data_tags_for_asset_registry_to_unreal_ini(
-    ini_path: pathlib.Path, tags: list[str]
+    ini_path: Path, tags: list[str],
 ) -> None:
     unreal_inis.add_meta_data_tags_for_asset_registry_to_unreal_ini(
-        ini=ini_path, tags=tags
+        ini=ini_path, tags=tags,
     )
 
 
@@ -64,7 +64,7 @@ command_help = (
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the ini file to edit.",
     required=True,
@@ -77,8 +77,8 @@ command_help = (
     default=[],
 )
 def remove_meta_data_tags_for_asset_registry_from_unreal_ini(
-    ini_path: pathlib.Path, tags: list[str]
+    ini_path: Path, tags: list[str],
 ) -> None:
     unreal_inis.remove_meta_data_tags_for_asset_registry_from_unreal_ini(
-        ini=ini_path, tags=tags
+        ini=ini_path, tags=tags,
     )

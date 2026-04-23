@@ -17,7 +17,7 @@ def _rich_build_prompt(prompt_text: str, fg=log_info.LOG_INFO['default_color'], 
 
 def styled_build_prompt(text, prompt_suffix, show_default, default, show_choices, type_) -> str: # noqa
     prompt = _original_build_prompt(
-        text, prompt_suffix, show_default, default, show_choices, type_
+        text, prompt_suffix, show_default, default, show_choices, type_,
     )
     _rich_build_prompt(prompt)
     return ""

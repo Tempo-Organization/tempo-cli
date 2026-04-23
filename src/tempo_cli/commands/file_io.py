@@ -1,5 +1,5 @@
 import os
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 
@@ -24,21 +24,21 @@ command_help = "Zip Directory Tree"
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
 )
 @click.option(
     "--zip",
     help="Path to the output zip file.",
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(resolve_path=True, path_type=Path),
     required=True,
 )
-def zip_directory_tree(directory: pathlib.Path, zip: pathlib.Path) -> None:
+def zip_directory_tree(directory: Path, zip: Path) -> None: # noqa
     tempo_core_file_io.zip_directory_tree(
-        input_dir=str(directory),
-        output_dir=os.path.dirname(zip),
-        zip_name=os.path.basename(zip),
+        input_dir=directory,
+        output_dir=zip.parent,
+        zip_name=zip.name,
     )
 
 
@@ -50,18 +50,18 @@ command_help = "Unzip"
     "--output_directory",
     help="Path to the directory to unzip the zip to.",
     type=click.Path(
-        file_okay=False, dir_okay=True, resolve_path=True, path_type=pathlib.Path
+        file_okay=False, dir_okay=True, resolve_path=True, path_type=Path,
     ),
     required=True,
 )
 @click.option(
     "--zip",
     help="Path to the zip.",
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(resolve_path=True, path_type=Path),
     required=True,
 )
-def unzip(output_directory: pathlib.Path, input_zip: pathlib.Path) -> None:
-    tempo_core_file_io.unzip_zip(zip_path=str(input_zip), output_location=str(output_directory))
+def unzip(output_directory: Path, input_zip: Path) -> None:
+    tempo_core_file_io.unzip_zip(zip_path=input_zip, output_location=output_directory)
 
 
 command_help = "Move a file or directory to a new location."
@@ -71,19 +71,19 @@ command_help = "Move a file or directory to a new location."
 @click.option(
     "--input_path",
     help="The input path, to a directory tree or file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
     "--output_path",
     help="The output path, to a directory tree or file.",
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--overwrite", is_flag=True, help="Overwrite existing files if they already exist."
+    "--overwrite", is_flag=True, help="Overwrite existing files if they already exist.",
 )
-def move(input_path: pathlib.Path, output_path: pathlib.Path, overwrite: bool) -> None:
+def move(input_path: Path, output_path: Path, overwrite: bool) -> None:
     tempo_core_file_io.move(input_path, output_path, overwrite)
 
 
@@ -94,19 +94,19 @@ command_help = "Copy a file or directory to a new location."
 @click.option(
     "--input_path",
     help="The input path, to a directory tree or file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
     "--output_path",
     help="The output path, to a directory tree or file.",
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--overwrite", is_flag=True, help="Overwrite existing files if they already exist."
+    "--overwrite", is_flag=True, help="Overwrite existing files if they already exist.",
 )
-def copy(input_path: pathlib.Path, output_path: pathlib.Path, overwrite: bool) -> None:
+def copy(input_path: Path, output_path: Path, overwrite: bool) -> None:
     tempo_core_file_io.copy(input_path, output_path, overwrite=overwrite)
 
 
@@ -117,13 +117,13 @@ command_help = "Symlink a file or directory to a new location."
 @click.option(
     "--input_path",
     help="The input path, to a directory tree or file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
     "--output_path",
     help="The output path, to a directory tree or file.",
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
@@ -131,7 +131,7 @@ command_help = "Symlink a file or directory to a new location."
     is_flag=True,
     help="Overwrite existing files if they already exist.",
 )
-def symlink(input_path: pathlib.Path, output_path: pathlib.Path, overwrite: bool) -> None:
+def symlink(input_path: Path, output_path: Path, overwrite: bool) -> None:
     tempo_core_file_io.symlink(input_path, output_path, overwrite)
 
 
@@ -142,11 +142,11 @@ command_help = "Delete one or more files and/or directories."
 @click.option(
     "--input_paths",
     help="The input path, to a directory tree or file to delete, can be specified multiple times.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
     multiple=True,
 )
-def delete(input_paths: list[pathlib.Path]) -> None:
+def delete(input_paths: list[Path]) -> None:
     tempo_core_file_io.delete(input_paths)
 
 
@@ -163,19 +163,19 @@ command_help = "Opens the latest log file."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def open_latest_log(settings_json: pathlib.Path) -> None:
+def open_latest_log(settings_json: Path) -> None:
     main_logic.open_latest_log()
 
 command_help = "Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON."
 
 
 @file_io.command(
-    name="generate_game_file_list_json", help=command_help, short_help=command_help
+    name="generate_game_file_list_json", help=command_help, short_help=command_help,
 )
 @click.option(
     "--settings_json",
@@ -185,7 +185,7 @@ command_help = "Generates a JSON file containing all of the files in the game di
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
@@ -194,11 +194,11 @@ command_help = "Generates a JSON file containing all of the files in the game di
     "--output_json",
     type=click.Path(
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
-    help="Path to the output game file list json."
+    help="Path to the output game file list json.",
 )
-def generate_game_file_list_json(settings_json: pathlib.Path, output_json: pathlib.Path) -> None:
+def generate_game_file_list_json(settings_json: Path, output_json: Path) -> None:
     if output_json:
         main_logic.generate_game_file_list_json(output_json)
     else:
@@ -219,7 +219,7 @@ command_help = (
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.argument(
@@ -230,13 +230,13 @@ command_help = (
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
-def generate_file_list(directory: pathlib.Path, file_list: list[pathlib.Path]) -> None:
+def generate_file_list(directory: Path, file_list: Path) -> None:
     """
     Arguments:
         directory (str): Path to the directory tree you want to generate the file list from.
         file_list (str): Path to the output file, saved in JSON format.
     """
-    main_logic.generate_file_list(str(directory), str(file_list))
+    main_logic.generate_file_list(directory, file_list)

@@ -1,5 +1,5 @@
 import json as json_module
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 from tempo_core import logger
@@ -13,19 +13,19 @@ def json() -> None:
 command_help_add_json = "Add an entry to a JSON file."
 
 @json.command(
-    name="add", help=command_help_add_json, short_help=command_help_add_json
+    name="add", help=command_help_add_json, short_help=command_help_add_json,
 )
 @click.option(
     "--json_path",
     help="Path to the JSON file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option("--key", help="Key to add to the JSON file.", type=str, required=True)
 @click.option(
-    "--value", help="Value to associate with the key.", type=str, required=True
+    "--value", help="Value to associate with the key.", type=str, required=True,
 )
-def add(json_path: pathlib.Path, key: str, value: str) -> None:
+def add(json_path: Path, key: str, value: str) -> None:
     with json_path.open("r+") as f:
         data = json_module.load(f)
         data[key] = value
@@ -45,13 +45,13 @@ command_help_remove_json = "Remove an entry from a JSON file."
 @click.option(
     "--json_path",
     help="Path to the JSON file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--key", help="Key to remove from the JSON file.", type=str, required=True
+    "--key", help="Key to remove from the JSON file.", type=str, required=True,
 )
-def remove(json_path: pathlib.Path, key: str) -> None:
+def remove(json_path: Path, key: str) -> None:
     with json_path.open("r+") as f:
         data = json_module.load(f)
         if key in data:

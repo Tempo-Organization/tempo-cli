@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 from tempo_core import main_logic, data_structures, settings
@@ -20,7 +20,7 @@ command_help = "Enable the given mod name in the provided settings JSON."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
@@ -30,10 +30,10 @@ command_help = "Enable the given mod name in the provided settings JSON."
     type=str,
     required=True,
     help="Name of a mod to enable, can be specified multiple times",
-    prompt="What is the name of the mod you want to enable? "
+    prompt="What is the name of the mod you want to enable? ",
 )
-def enable_mod(settings_json: pathlib.Path, mod_name: str) -> None:
-    main_logic.enable_mods(settings_json=str(settings_json), mod_names=[mod_name])
+def enable_mod(settings_json: Path, mod_name: str) -> None:
+    main_logic.enable_mods(settings_json=settings_json, mod_names=[mod_name])
 
 
 command_help = "Enable the given mod names in the provided settings JSON."
@@ -55,13 +55,13 @@ command_help = "Enable the given mod names in the provided settings JSON."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def enable_mods(settings_json: pathlib.Path, mod_names: list[str]) -> None:
-    main_logic.enable_mods(settings_json=str(settings_json), mod_names=mod_names)
+def enable_mods(settings_json: Path, mod_names: list[str]) -> None:
+    main_logic.enable_mods(settings_json=settings_json, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -83,13 +83,13 @@ command_help = "Disable the given mod names in the provided settings JSON."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def disable_mods(settings_json: pathlib.Path, mod_names: list[str]) -> None:
-    main_logic.disable_mods(settings_json=str(settings_json), mod_names=mod_names)
+def disable_mods(settings_json: Path, mod_names: list[str]) -> None:
+    main_logic.disable_mods(settings_json=settings_json, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -104,7 +104,7 @@ command_help = "Disable the given mod names in the provided settings JSON."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
@@ -114,16 +114,16 @@ command_help = "Disable the given mod names in the provided settings JSON."
     type=str,
     required=True,
     help="Name of a mod to disable, can be specified multiple times",
-    prompt="What is the name of the mod you want to disable?"
+    prompt="What is the name of the mod you want to disable?",
 )
-def disable_mod(settings_json: pathlib.Path, mod_name: str) -> None:
-    main_logic.disable_mods(settings_json=str(settings_json), mod_names=[mod_name])
+def disable_mod(settings_json: Path, mod_name: str) -> None:
+    main_logic.disable_mods(settings_json=settings_json, mod_names=[mod_name])
 
 
 command_help = "Adds the given mod name in the provided settings JSON."
 
 packing_type_choices = data_structures.get_enum_strings_from_enum(
-    data_structures.PackingType
+    data_structures.PackingType,
 )
 
 @mod.command(name="add_mod", help=command_help, short_help=command_help)
@@ -135,7 +135,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     help="Packing type for the mod.",
     required=True,
     default=packing_type_choices[1],
-    prompt="What will be the packaging method for your mod? If left blank, defaults to "
+    prompt="What will be the packaging method for your mod? If left blank, defaults to ",
 )
 @click.option(
     "--mod_name_dir_type",
@@ -143,7 +143,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     default="Mods",
     help='Directory type for the mod name (default: "Mods").',
     required=True,
-    prompt="What is the directory name for your mod type? e.g. The Mods in Content/Mods/ModName or CustomContent in Content/CustomContent/ModName, or another pattern. If left blank, defaults to "
+    prompt="What is the directory name for your mod type? e.g. The Mods in Content/Mods/ModName or CustomContent in Content/CustomContent/ModName, or another pattern. If left blank, defaults to ",
 )
 @click.option(
     "--mod_name_dir_name_override",
@@ -151,7 +151,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     default="",
     help="Override the mod name directory with this value (optional).",
     required=True,
-    prompt="if you need one, what is your mod name dir name override? Useful for Content/Mods/ModName but having ModName_P.pak for example. If left blank, defaults to None and uses the mod_name"
+    prompt="if you need one, what is your mod name dir name override? Useful for Content/Mods/ModName but having ModName_P.pak for example. If left blank, defaults to None and uses the mod_name",
 )
 @click.option(
     "--pak_chunk_num",
@@ -159,7 +159,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     default=0,
     help="Pak chunk number (optional).",
     required=True,
-    prompt="If you are using the engine packing method, what is your mod's chunk id? If left blank, defaults to "
+    prompt="If you are using the engine packing method, what is your mod's chunk id? If left blank, defaults to ",
 )
 @click.option(
     "--compression_type",
@@ -167,7 +167,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     type=str,
     help="Compression type for the mod (optional).",
     required=True,
-    prompt="What if any is your compression method for packing? If left blank, defaults to None"
+    prompt="What if any is your compression method for packing? If left blank, defaults to None",
 )
 @click.option(
     "--is_enabled",
@@ -185,7 +185,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -198,7 +198,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -209,16 +209,16 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
-    prompt="What is the path to your tempo config file?"
+    prompt="What is the path to your tempo config file?",
 )
 
 
 def add_mod(
-    settings_json: pathlib.Path,
+    settings_json: Path,
     mod_name: str,
     packing_type: str,
     pak_dir_structure: str,
@@ -227,8 +227,8 @@ def add_mod(
     pak_chunk_num: int | None,
     compression_type: str | None,
     is_enabled: bool,
-    asset_paths: list[pathlib.Path],
-    tree_paths: list[pathlib.Path],
+    asset_paths: list[Path],
+    tree_paths: list[Path],
 ) -> None:
     if pak_chunk_num == 0:
         pak_chunk_num = None
@@ -237,7 +237,7 @@ def add_mod(
     if compression_type == "":
         compression_type = None
     main_logic.add_mod(
-        settings_json=str(settings_json),
+        settings_json=settings_json,
         mod_name=mod_name,
         packing_type=packing_type,
         pak_dir_structure=pak_dir_structure,
@@ -260,7 +260,7 @@ command_help = "Remove the given mod name in the provided settings JSON."
     type=str,
     required=True,
     help="Name of a mod to be removed.",
-    prompt="What is the name of the mod to remove?"
+    prompt="What is the name of the mod to remove?",
 )
 @click.option(
     "--settings_json",
@@ -270,13 +270,13 @@ command_help = "Remove the given mod name in the provided settings JSON."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def remove_mod(settings_json: pathlib.Path, mod_name: str) -> None:
-    main_logic.remove_mods(settings_json=str(settings_json), mod_names=[mod_name])
+def remove_mod(settings_json: Path, mod_name: str) -> None:
+    main_logic.remove_mods(settings_json=settings_json, mod_names=[mod_name])
 
 
 command_help = "Removes the given mod names in the provided settings JSON."
@@ -290,13 +290,13 @@ command_help = "Removes the given mod names in the provided settings JSON."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def remove_mods(settings_json: pathlib.Path, mod_names: list[str]) -> None:
-    main_logic.remove_mods(settings_json=str(settings_json), mod_names=mod_names)
+def remove_mods(settings_json: Path, mod_names: list[str]) -> None:
+    main_logic.remove_mods(settings_json=settings_json, mod_names=mod_names)
 
 
 
@@ -326,12 +326,12 @@ command_help = "Generates mods for the specified mod names."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mods(settings_json: pathlib.Path, mod_names: list[str], use_symlinks: bool) -> None:
+def generate_mods(settings_json: Path, mod_names: list[str], use_symlinks: bool) -> None:
     main_logic.generate_mods(input_mod_names=mod_names, use_symlinks=use_symlinks)
 
 
@@ -354,12 +354,12 @@ command_help = "Generates mods for all enabled mods within the specified setting
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mods_all(settings_json: pathlib.Path, use_symlinks: bool) -> None:
+def generate_mods_all(settings_json: Path, use_symlinks: bool) -> None:
     main_logic.generate_mods_all(use_symlinks=use_symlinks)
 
 
@@ -383,7 +383,7 @@ command_help = "Generate one or more mod releases."
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -395,7 +395,7 @@ command_help = "Generate one or more mod releases."
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -406,22 +406,22 @@ command_help = "Generate one or more mod releases."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
 def generate_mod_releases(
-    settings_json: pathlib.Path, mod_names: list[str], base_files_directory: pathlib.Path, output_directory: pathlib.Path
+    settings_json: Path, mod_names: list[str], base_files_directory: Path, output_directory: Path,
 ) -> None:
-    main_logic.generate_mod_releases(mod_names, str(base_files_directory), str(output_directory))
+    main_logic.generate_mod_releases(mod_names, base_files_directory, output_directory)
 
 
 command_help = "Generate mod releases for all mods within the specified settings JSON."
 
 
 @mod.command(
-    name="generate_mod_releases_all", help=command_help, short_help=command_help
+    name="generate_mod_releases_all", help=command_help, short_help=command_help,
 )
 @click.option(
     "--base_files_directory",
@@ -432,7 +432,7 @@ command_help = "Generate mod releases for all mods within the specified settings
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -444,7 +444,7 @@ command_help = "Generate mod releases for all mods within the specified settings
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -455,14 +455,14 @@ command_help = "Generate mod releases for all mods within the specified settings
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mod_releases_all(settings_json: pathlib.Path, base_files_directory: pathlib.Path, output_directory: pathlib.Path) -> None:
+def generate_mod_releases_all(settings_json: Path, base_files_directory: Path, output_directory: Path) -> None:
     if not base_files_directory or base_files_directory == '':
-        base_files_directory = pathlib.Path(settings.get_default_release_base_files_dir())
+        base_files_directory = Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':
-        output_directory = pathlib.Path(settings.get_default_release_dir())
-    main_logic.generate_mod_releases_all(str(base_files_directory), str(output_directory))
+        output_directory = Path(settings.get_default_release_dir())
+    main_logic.generate_mod_releases_all(base_files_directory, output_directory)

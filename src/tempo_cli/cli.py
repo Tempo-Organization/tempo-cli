@@ -1,6 +1,6 @@
 from __future__ import annotations
 import os
-import pathlib
+from pathlib import Path
 
 from trogon import tui
 import rich_click as click
@@ -28,7 +28,7 @@ from tempo_cli.commands.uplugin import uplugin
 from tempo_cli.commands.uproject import uproject
 
 
-default_logs_dir = os.path.normpath(f"{file_io.SCRIPT_DIR}/logs")
+default_logs_dir = Path(f"{file_io.SCRIPT_DIR}/logs")
 
 rich_color_system_choices = tempo_cli_data_structures.get_enum_strings_from_enum(
         tempo_cli_data_structures.RichColorSystem
@@ -62,7 +62,7 @@ rich_color_system_choices = tempo_cli_data_structures.get_enum_strings_from_enum
 @click.option(
     "--logs_directory",
     default=default_logs_dir,
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
     help="The directory you want your logs outputted to.",
 )
 def cli(

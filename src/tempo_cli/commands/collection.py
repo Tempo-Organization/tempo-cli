@@ -1,5 +1,5 @@
 import os
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 
@@ -7,7 +7,7 @@ from tempo_core import data_structures, unreal_collections
 
 
 file_content_options = data_structures.get_enum_strings_from_enum(
-    unreal_collections.UnrealContentLineType
+    unreal_collections.UnrealContentLineType,
 )
 command_help = "Create Collection"
 default_create_collection_guid = unreal_collections.UnrealGuid.generate_unreal_guid()
@@ -20,12 +20,12 @@ def collection() -> None:
 @collection.command(name="create_collection", help=command_help, short_help=command_help)
 @click.option(
     "--collection_path",
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
     help="The path to the collection file to edit.",
     required=True,
 )
 @click.option(
-    "--file_version", type=int, default=2, help="The collection file version."
+    "--file_version", type=int, default=2, help="The collection file version.",
 )
 @click.option(
     "--content_type",
@@ -46,16 +46,16 @@ def collection() -> None:
     help="The parent guid of the collection, if not provided no parent is assumed, and a blank one is given.",
 )
 @click.option(
-    "--red", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--red", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--green", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--green", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--blue", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--blue", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--alpha", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--alpha", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
     "--file_paths",
@@ -76,7 +76,7 @@ def collection() -> None:
     help="A list of asset filter for the collection, for use with dynamic collections.",
 )
 def create_collection(
-    collection_path: pathlib.Path,
+    collection_path: Path,
     file_version: int,
     content_type: str,
     guid: str,
@@ -90,10 +90,10 @@ def create_collection(
     filter_lines: list[str],
 ) -> None:
     type_of_content = data_structures.get_enum_from_val(
-        unreal_collections.UnrealContentLineType, content_type
+        unreal_collections.UnrealContentLineType, content_type,
     )
     content_lines = []
-    os.makedirs(os.path.dirname(collection_path), exist_ok=True)
+    collection_path.mkdir(parents=True, exist_ok=True)
     if type_of_content == unreal_collections.UnrealContentLineType.STATIC:
         for file_path in file_paths:
             content_lines.append(unreal_collections.UnrealAssetPath(path=file_path))
@@ -101,15 +101,15 @@ def create_collection(
             content_lines.append(
                 unreal_collections.UnrealAssetPath(
                     unreal_collections.UnrealAssetPath.static_from_asset_reference(
-                        unreal_asset_path
-                    )
-                )
+                        unreal_asset_path,
+                    ),
+                ),
             )
     if type_of_content == unreal_collections.UnrealContentLineType.DYNAMIC:
         content_lines = filter_lines
     unreal_collections.create_collection(
-        collection_name=os.path.basename(collection_path),
-        collections_directory=pathlib.Path(os.path.dirname(collection_path)),
+        collection_name=collection_path.name,
+        collections_directory=Path(collection_path.name),
         file_version=file_version,
         collection_type=unreal_collections.UnrealContentLineType(type_of_content),
         guid=unreal_collections.UnrealGuid.from_uid(guid),
@@ -124,7 +124,7 @@ command_help = "Set Collection Color"
 
 
 @collection.command(
-    name="set_color_from_collection_path", help=command_help, short_help=command_help
+    name="set_color_from_collection_path", help=command_help, short_help=command_help,
 )
 @click.option(
     "--collection_path",
@@ -134,25 +134,25 @@ command_help = "Set Collection Color"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to edit.",
     required=True,
 )
 @click.option(
-    "--red", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--red", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--green", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--green", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--blue", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--blue", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--alpha", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0."
+    "--alpha", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 def set_color_from_collection_path(
-    collection_path: pathlib.Path, red: float, green: float, blue: float, alpha: float
+    collection_path: Path, red: float, green: float, blue: float, alpha: float,
 ) -> None:
     unreal_collections.set_color_from_collection_path(
         collection_path,
@@ -172,16 +172,16 @@ command_help = "Rename Collection"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to rename.",
     required=True,
 )
 @click.option(
-    "--new_name", type=str, help="New name for the collection.", required=True
+    "--new_name", type=str, help="New name for the collection.", required=True,
 )
-def rename_collection(collection_path: str, new_name: str) -> None:
-    unreal_collections.rename_collection_from_collection_path(pathlib.Path(collection_path), new_name)
+def rename_collection(collection_path: Path, new_name: str) -> None:
+    unreal_collections.rename_collection_from_collection_path(Path(collection_path), new_name)
 
 
 command_help = "Delete Collection"
@@ -196,12 +196,12 @@ command_help = "Delete Collection"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to rename.",
     required=True,
 )
-def delete_collection(collection_path: str) -> None:
+def delete_collection(collection_path: Path) -> None:
     unreal_collections.delete_collection(collection_path)
 
 
@@ -217,12 +217,12 @@ command_help = "Disable Collection"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to rename.",
     required=True,
 )
-def disable_collection(collection_path: str) -> None:
+def disable_collection(collection_path: Path) -> None:
     unreal_collections.disable_collection(collection_path)
 
 
@@ -238,23 +238,23 @@ command_help = "Enable Collection"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to rename.",
     required=True,
 )
-def enable_collection(collection_path: str) -> None:
-    unreal_collections.enable_collection(unreal_collections.get_unreal_collection_from_unreal_collection_path(pathlib.Path(collection_path)))
+def enable_collection(collection_path: Path) -> None:
+    unreal_collections.enable_collection(unreal_collections.get_unreal_collection_from_unreal_collection_path(Path(collection_path)))
 
 
 command_help = "Set Guid"
 default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_uid(
-    unreal_collections.UnrealGuid(unreal_collections.UnrealGuid.generate_unreal_guid())
+    unreal_collections.UnrealGuid(unreal_collections.UnrealGuid.generate_unreal_guid()),
 )
 
 
 @collection.command(
-    name="set_guid_from_collection_path", help=command_help, short_help=command_help
+    name="set_guid_from_collection_path", help=command_help, short_help=command_help,
 )
 @click.option(
     "--collection_path",
@@ -264,7 +264,7 @@ default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_ui
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to rename.",
     required=True,
@@ -275,9 +275,9 @@ default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_ui
     type=str,
     help="The new guid in string form for the collection.",
 )
-def set_guid_from_collection_path(collection_path: str, guid: str) -> None:
+def set_guid_from_collection_path(collection_path: Path, guid: str) -> None:
     unreal_collections.set_guid_from_collection_path(
-        collection_path=pathlib.Path(collection_path),
+        collection_path=Path(collection_path),
         guid=unreal_collections.UnrealGuid.from_uid(guid),
     )
 
@@ -298,7 +298,7 @@ command_help = "Set Parent Guid"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to rename.",
     required=True,
@@ -309,9 +309,9 @@ command_help = "Set Parent Guid"
     type=str,
     help="The new parent guid in string form for the collection.",
 )
-def set_parent_guid_from_collection_path(collection_path: str, parent_guid: str) -> None:
+def set_parent_guid_from_collection_path(collection_path: Path, parent_guid: str) -> None:
     unreal_collections.set_parent_guid_from_collection_path(
-        collection_path=pathlib.Path(collection_path),
+        collection_path=Path(collection_path),
         parent_guid=unreal_collections.UnrealGuid(parent_guid),
     )
 
@@ -332,7 +332,7 @@ command_help = "Set File Version"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to change the file version of.",
     required=True,
@@ -343,12 +343,12 @@ command_help = "Set File Version"
     type=int,
     help="The new file version for the collection.",
 )
-def set_file_version_from_collection_path(collection_path: str, file_version: int) -> None:
-    unreal_collections.set_file_version_from_collection_path(collection_path=pathlib.Path(collection_path), file_version=file_version)
+def set_file_version_from_collection_path(collection_path: Path, file_version: int) -> None:
+    unreal_collections.set_file_version_from_collection_path(collection_path=Path(collection_path), file_version=file_version)
 
 
 set_content_type_options = data_structures.get_enum_strings_from_enum(
-    unreal_collections.UnrealContentLineType
+    unreal_collections.UnrealContentLineType,
 )
 command_help = "Set Collection Type"
 
@@ -366,7 +366,7 @@ command_help = "Set Collection Type"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to change the file version of.",
     required=True,
@@ -378,13 +378,13 @@ command_help = "Set Collection Type"
     help="The new content type for the collection, Static or Dynamic.",
 )
 def set_collection_type_from_collection_path(
-    collection_path: str, collection_type: str
+    collection_path: Path, collection_type: str,
 ) -> None:
     type_to_pass = data_structures.get_enum_from_val(
-        unreal_collections.UnrealContentLineType, collection_type
+        unreal_collections.UnrealContentLineType, collection_type,
     )
     unreal_collections.set_collection_type_from_collection_path(
-        collection_path=pathlib.Path(collection_path), collection_type=unreal_collections.UnrealContentLineType(type_to_pass)
+        collection_path=Path(collection_path), collection_type=unreal_collections.UnrealContentLineType(type_to_pass),
     )
 
 
@@ -392,7 +392,7 @@ command_help = "Add content lines to collection file, Dynamic accepts filter lin
 
 
 @collection.command(
-    name="add_content_lines_to_collection", help=command_help, short_help=command_help
+    name="add_content_lines_to_collection", help=command_help, short_help=command_help,
 )
 @click.option(
     "--collection_path",
@@ -402,7 +402,7 @@ command_help = "Add content lines to collection file, Dynamic accepts filter lin
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to edit.",
     required=True,
@@ -429,13 +429,13 @@ command_help = "Add content lines to collection file, Dynamic accepts filter lin
     default=[],
 )
 def add_content_lines_to_collection(
-    collection_path: str,
+    collection_path: Path,
     content_path_lines: list[str],
     filter_lines: list[str],
     unreal_asset_paths: list[str],
 ) -> None:
     collection = unreal_collections.get_unreal_collection_from_unreal_collection_path(
-        pathlib.Path(collection_path)
+        Path(collection_path),
     )
     collection_type = collection.content_type
     content_lines = []
@@ -448,12 +448,12 @@ def add_content_lines_to_collection(
 
         for unreal_asset_path in unreal_asset_paths:
             test_one = unreal_collections.UnrealAssetPath.static_from_asset_reference(
-                unreal_asset_path
+                unreal_asset_path,
             )
             test_two = unreal_collections.UnrealAssetPath(test_one)
             content_lines.append(test_two)
     unreal_collections.add_content_lines_to_collection(
-        collection=collection, content_lines=content_lines
+        collection=collection, content_lines=content_lines,
     )
 
 
@@ -473,7 +473,7 @@ command_help = "Remove content lines from collection file, Dynamic accepts filte
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the collection file to edit.",
     required=True,
@@ -500,13 +500,13 @@ command_help = "Remove content lines from collection file, Dynamic accepts filte
     default=[],
 )
 def remove_content_lines_from_collection(
-    collection_path: str,
+    collection_path: Path,
     content_path_lines: list[str],
     filter_lines: list[str],
     unreal_asset_paths: list[str],
 ) -> None:
     collection = unreal_collections.get_unreal_collection_from_unreal_collection_path(
-        pathlib.Path(collection_path)
+        Path(collection_path),
     )
     content_lines = []
 
@@ -521,13 +521,13 @@ def remove_content_lines_from_collection(
             content_lines.append(
                 unreal_collections.UnrealAssetPath(
                     unreal_collections.UnrealAssetPath.static_from_asset_reference(
-                        unreal_asset_path
-                    )
-                )
+                        unreal_asset_path,
+                    ),
+                ),
             )
 
     unreal_collections.remove_content_lines_from_collection(
-        collection=collection, content_lines=content_lines
+        collection=collection, content_lines=content_lines,
     )
 
 
@@ -535,7 +535,7 @@ command_help = "Add collections to the mod entry in the settings json"
 
 
 @collection.command(
-    name="add_collections_to_mod_entry", help=command_help, short_help=command_help
+    name="add_collections_to_mod_entry", help=command_help, short_help=command_help,
 )
 @click.option(
     "--settings_json",
@@ -545,7 +545,7 @@ command_help = "Add collections to the mod entry in the settings json"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the settings json, who's mod entry you want to add collections to.",
     required=True,
@@ -564,24 +564,24 @@ command_help = "Add collections to the mod entry in the settings json"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to a collection to add to the settings json, can be specified multiple times.",
     default=[],
     multiple=True,
 )
 def add_collections_to_mod_entry(
-    settings_json: pathlib.Path, mod_name: str, collection_paths: list[pathlib.Path]
+    settings_json: Path, mod_name: str, collection_paths: list[Path],
 ) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
         collections_to_pass.append(
             unreal_collections.get_unreal_collection_from_unreal_collection_path(
-                collection_path
-            )
+                collection_path,
+            ),
         )
     unreal_collections.add_collections_to_mod_entry(
-        collections_to_pass, mod_name, settings_json
+        collections_to_pass, mod_name, settings_json,
     )
 
 
@@ -589,7 +589,7 @@ command_help = "Remove collections to the mod entry in the settings json"
 
 
 @collection.command(
-    name="remove_collections_from_mod_entry", help=command_help, short_help=command_help
+    name="remove_collections_from_mod_entry", help=command_help, short_help=command_help,
 )
 @click.option(
     "--settings_json",
@@ -599,7 +599,7 @@ command_help = "Remove collections to the mod entry in the settings json"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to the settings json, who's mod entry you want to remove collections from.",
     required=True,
@@ -618,22 +618,22 @@ command_help = "Remove collections to the mod entry in the settings json"
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The path to a collection to remove from the settings json, can be specified multiple times.",
     default=[],
     multiple=True,
 )
 def remove_collections_from_mod_entry(
-    settings_json: pathlib.Path, mod_name: str, collection_paths: list[pathlib.Path]
+    settings_json: Path, mod_name: str, collection_paths: list[Path],
 ) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
         collections_to_pass.append(
             unreal_collections.get_unreal_collection_from_unreal_collection_path(
-                collection_path
-            )
+                collection_path,
+            ),
         )
     unreal_collections.remove_collections_from_mod_entry(
-        collections_to_pass, mod_name, settings_json
+        collections_to_pass, mod_name, settings_json,
     )

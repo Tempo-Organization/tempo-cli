@@ -1,5 +1,5 @@
 import os
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 from tempo_core import main_logic, file_io, settings, app_runner, data_structures
@@ -20,10 +20,10 @@ command_help = "Generates a uplugin in a directory, within the specified directo
     help="Whether the plugin can contain content.",
 )
 @click.option(
-    "--is_installed", default=True, type=bool, help="Whether the plugin is installed."
+    "--is_installed", default=True, type=bool, help="Whether the plugin is installed.",
 )
 @click.option(
-    "--is_hidden", default=False, type=bool, help="Whether the plugin is hidden."
+    "--is_hidden", default=False, type=bool, help="Whether the plugin is hidden.",
 )
 @click.option(
     "--no_code",
@@ -32,17 +32,17 @@ command_help = "Generates a uplugin in a directory, within the specified directo
     help="Whether the plugin should contain code.",
 )
 @click.option(
-    "--category", default="Modding", type=str, help="Category for the plugin."
+    "--category", default="Modding", type=str, help="Category for the plugin.",
 )
 @click.option(
-    "--created_by", default="", type=str, help="Name of the creator of the plugin."
+    "--created_by", default="", type=str, help="Name of the creator of the plugin.",
 )
 @click.option(
-    "--created_by_url", default="", type=str, help="URL of the creator of the plugin."
+    "--created_by_url", default="", type=str, help="URL of the creator of the plugin.",
 )
 @click.option("--description", default="", type=str, help="Description of the plugin.")
 @click.option(
-    "--docs_url", default="", type=str, help="Documentation URL for the plugin."
+    "--docs_url", default="", type=str, help="Documentation URL for the plugin.",
 )
 @click.option(
     "--editor_custom_virtual_path",
@@ -71,15 +71,15 @@ command_help = "Generates a uplugin in a directory, within the specified directo
 @click.option("--support_url", default="", type=str, help="Support URL for the plugin.")
 @click.option("--version", default=1.0, type=float, help="Version of the plugin.")
 @click.option(
-    "--version_name", default="", type=str, help="Version name of the plugin."
+    "--version_name", default="", type=str, help="Version name of the plugin.",
 )
 @click.argument(
     "plugins_directory",
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.argument("plugin_name", type=str)
 def generate(
-    plugins_directory: pathlib.Path,
+    plugins_directory: Path,
     plugin_name: str,
     can_contain_content: bool,
     is_installed: bool,
@@ -104,7 +104,7 @@ def generate(
         plugin_name (str): Name of the plugin to be generated.
     """
     main_logic.generate_uplugin(
-        plugins_directory=str(plugins_directory),
+        plugins_directory=plugins_directory,
         plugin_name=plugin_name,
         category=category,
         created_by=created_by,
@@ -137,12 +137,12 @@ command_help = "Deletes all files for the specified uplugin paths."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="uplugin_paths: A path to a uplugin to delete, can be specified multiple times.",
 )
-def remove(uplugin_paths: list[pathlib.Path]) -> None:
+def remove(uplugin_paths: list[Path]) -> None:
     main_logic.remove_uplugins(uplugin_paths)
 
 
@@ -157,7 +157,7 @@ command_help = "Build and package one or more uplugins for distribution."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=False,
     help="Path to the settings JSON file",
@@ -171,7 +171,7 @@ command_help = "Build and package one or more uplugins for distribution."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=False,
     help="A path to a uplugin to build. Can be specified multiple times.",
@@ -192,7 +192,7 @@ command_help = "Build and package one or more uplugins for distribution."
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.option(
@@ -200,7 +200,7 @@ command_help = "Build and package one or more uplugins for distribution."
     multiple=True,
     type=str,
     help="A target platform to target, can be specified multiple times (e.g. Win64).",
-    default=['Win64']
+    default=['Win64'],
 )
 @click.option(
     "--no_host_platform",
@@ -231,45 +231,49 @@ command_help = "Build and package one or more uplugins for distribution."
     help="Zips the compiled uplugin(s) into the output directory",
 )
 def build(
-    settings_json: str,
+    settings_json: Path,
     uplugin_names: list[str],
-    uplugin_paths: list[pathlib.Path],
-    output_directory: pathlib.Path,
+    uplugin_paths: list[Path],
+    output_directory: Path,
     target_platforms: list[str],
     no_host_platform: bool,
     strict_includes: bool,
     unversioned: bool,
-    zip: bool
+    zip: bool, # noqa
 ) -> None:
+    uproject_file = settings.get_uproject_file()
+    if not uproject_file:
+        raise FileNotFoundError('was unable to locate the uproject file')
+    unreal_engine_dir = settings.get_unreal_engine_dir()
     final_uplugin_paths = []
     for uplugin_path in uplugin_paths:
-        if os.path.isfile(uplugin_path):
+        if uplugin_path.is_file():
             final_uplugin_paths.append(uplugin_path)
 
     for uplugin_name in uplugin_names:
-        potential_path = os.path.normpath(
-            f"{os.path.dirname(str(settings.get_uproject_file()))}/Plugins/{uplugin_name}/{uplugin_name}.uplugin"
+        potential_path = Path(
+            f"{uproject_file.parent}/Plugins/{uplugin_name}/{uplugin_name}.uplugin",
         )
 
-        if os.path.isfile(potential_path):
+        if potential_path.is_file():
             final_uplugin_paths.append(potential_path)
             continue
 
-        engine_plugins_dir = os.path.normpath(
-            f"{settings.get_unreal_engine_dir()}/Engine/Plugins"
+        engine_plugins_dir = Path(
+            f"{unreal_engine_dir}/Engine/Plugins",
         )
 
         uplugin_files = file_io.filter_by_extension(
             file_io.get_files_in_tree(engine_plugins_dir),
-            "uplugin"
+            "uplugin",
         )
 
         matching_plugin = next(
             (
                 path for path in uplugin_files
-                if os.path.basename(path) == f"{uplugin_name}.uplugin"
+                if path.name == f"{uplugin_name}.uplugin"
             ),
-            None
+            None,
         )
 
         if matching_plugin:
@@ -280,17 +284,17 @@ def build(
 
     for uplugin_path in list(set(final_uplugin_paths)):
         target_platform_string = '+'.join(set(target_platforms))
-        automation_tool = os.path.normpath(f'{settings.get_unreal_engine_dir()}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}')
+        automation_tool = Path(f'{unreal_engine_dir}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}')
         if output_directory:
             package_path = output_directory
         else:
-            package_path = os.path.normpath(f'{os.path.dirname(uplugin_path)}/Build') # output to the Build directory inside the directory where the uplugin file is located
+            package_path = Path(uplugin_path.parent / 'Build') # output to the Build directory inside the directory where the uplugin file is located
         args = [
             'BuildPlugin',
             f'-Plugin="{uplugin_path}"',
             f'-Package="{package_path}"',
             '-Rocket',
-            f'TargetPlatform={target_platform_string}'
+            f'TargetPlatform={target_platform_string}',
         ]
         if no_host_platform:
             args.append('-NoHostPlatform')
@@ -302,13 +306,13 @@ def build(
         app_runner.run_app(
             exe_path=automation_tool,
             exec_mode=exec_mode,
-            args=args
+            args=args,
         )
         if zip:
                 if output_directory:
-                    uplugin = file_io.filter_by_extension(file_io.get_files_in_tree(str(package_path)), 'uplugin')[0]
-                    plugin_name = os.path.splitext(os.path.basename(uplugin))[0]
-                    zip_name = os.path.normpath(f"{plugin_name}.zip")
-                    file_io.zip_directory_tree(str(package_path), str(package_path), zip_name)
+                    uplugin = file_io.filter_by_extension(file_io.get_files_in_tree(package_path), 'uplugin')[0]
+                    plugin_name = Path(uplugin).stem
+                    zip_name = f"{plugin_name}.zip"
+                    file_io.zip_directory_tree(package_path, package_path, zip_name)
                 else:
-                    file_io.zip_directory_tree(package_path, package_path, os.path.normpath(f'{os.path.basename(os.path.dirname(package_path))}.zip'))
+                    file_io.zip_directory_tree(package_path, package_path, package_path.parent.name.with_suffix('.zip'))

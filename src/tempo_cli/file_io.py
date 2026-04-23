@@ -1,38 +1,42 @@
 import os
 import zipfile
 import requests
+from pathlib import Path
 
 from tempo_core import logger
 
 
-def download_and_extract_zip(url: str, output_dir: str) -> None:
-    os.makedirs(output_dir, exist_ok=True)
+default_output_directory = Path.cwd()
 
-    zip_path = os.path.join(output_dir, "easy_scripts.zip")
+
+def download_and_extract_zip(url: str, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    zip_path = Path(output_dir / "easy_scripts.zip")
 
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
-        with open(zip_path, "wb") as f:
+        with Path.open(zip_path, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
                 f.write(chunk)
 
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(output_dir)
 
-    os.remove(zip_path)
+    zip_path.unlink()
 
 
-def replace_text_in_file(file_path: str, old_text: str, new_text: str) -> None:
+def replace_text_in_file(file_path: Path, old_text: str, new_text: str) -> None:
     """
     Reads a file, replaces all occurrences of old_text with new_text,
     and writes the changes back to the file.
     """
-    with open(file_path, 'r') as file:
+    with Path.open(file_path, 'r') as file:
         file_data = file.read()
 
     file_data = file_data.replace(old_text, new_text)
 
-    with open(file_path, 'w') as file:
+    with Path.open(file_path, 'w') as file:
         file.write(file_data)
 
     logger.log_message(f"Text replacement completed successfully in {file_path}")
@@ -41,20 +45,23 @@ def replace_text_in_file(file_path: str, old_text: str, new_text: str) -> None:
 def download_files_from_github_repo(
     repo_url: str,
     repo_branch: str = "master",
-    file_paths: list[str] = [],
-    output_directory: str = os.getcwd(),
+    file_paths: list[Path] | None = None,
+    output_directory: Path = default_output_directory,
 ) -> None:
+    if file_paths is None:
+        file_paths = []
+
     try:
         parts = repo_url.strip("/").split("/")
         user, repo = parts[-2], parts[-1]
-    except IndexError:
-        raise ValueError("Invalid GitHub repository URL")
+    except IndexError as err:
+        raise ValueError("Invalid GitHub repository URL") from err
 
     for file_path in file_paths:
         raw_url = (
             f"https://raw.githubusercontent.com/{user}/{repo}/{repo_branch}/{file_path}"
         )
-        local_file_path = os.path.join(output_directory, file_path)
+        local_file_path = Path(output_directory / file_path)
 
         try:
             response = requests.get(raw_url)
@@ -63,8 +70,8 @@ def download_files_from_github_repo(
             logger.log_message(f"Failed to download {file_path}: {e}")
             continue
 
-        os.makedirs(os.path.dirname(local_file_path), exist_ok=True)
-        with open(local_file_path, "wb") as f:
+        local_file_path.parent.mkdir(parents=True, exist_ok=True)
+        with Path.open(local_file_path, "wb") as f:
             f.write(response.content)
             logger.log_message(f"Downloaded: {file_path} to {local_file_path}")
 

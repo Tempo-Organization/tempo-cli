@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 
@@ -22,12 +22,12 @@ command_help = "Cleans up the GitHub repository specified within the settings JS
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def full(settings_json: pathlib.Path) -> None:
+def full(settings_json: Path) -> None:
     main_logic.cleanup_full()
 
 
@@ -43,12 +43,12 @@ command_help = "Cleans up the directories made from cooking of the GitHub reposi
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def cooked(settings_json: pathlib.Path) -> None:
+def cooked(settings_json: Path) -> None:
     main_logic.cleanup_cooked()
 
 
@@ -64,12 +64,12 @@ command_help = "Cleans up the directories made from building of the GitHub repos
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def cleanup(settings_json: pathlib.Path) -> None:
+def cleanup(settings_json: Path) -> None:
     main_logic.cleanup_build()
 
 
@@ -88,7 +88,7 @@ To generate a file list JSON, use the generate_file_list_json command.
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
@@ -97,11 +97,11 @@ To generate a file list JSON, use the generate_file_list_json command.
     "--output_json",
     type=click.Path(
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
-    help="Path to the output game file list json."
+    help="Path to the output game file list json.",
 )
-def game(settings_json: pathlib.Path, output_json: pathlib.Path) -> None:
+def game(settings_json: Path, output_json: Path) -> None:
     if output_json:
         main_logic.cleanup_game(output_json)
     else:
@@ -123,7 +123,7 @@ To generate one, use the generate_file_list command.
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.argument(
@@ -134,16 +134,16 @@ To generate one, use the generate_file_list command.
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
-def from_file_list(file_list: list[pathlib.Path], directory: pathlib.Path) -> None:
+def from_file_list(file_list: Path, directory: Path) -> None:
     """
     Arguments:
         file_list (str): Path to the file list you want to clean from.
         directory (str): Path to the directory tree to clean up. It will delete all files not in the specified file list.
     """
-    main_logic.cleanup_from_file_list(str(file_list), str(directory))
+    main_logic.cleanup_from_file_list(file_list, directory)
 
 
 
@@ -159,10 +159,10 @@ command_help = "Cleans up and resyncs a git project to the GitHub repository and
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def resync_dir_with_repo(settings_json: pathlib.Path) -> None:
+def resync_dir_with_repo(settings_json: Path) -> None:
     main_logic.resync_dir_with_repo()

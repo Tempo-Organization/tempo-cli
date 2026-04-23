@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 
@@ -20,12 +20,12 @@ def close() -> None:
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def game(settings_json: pathlib.Path) -> None:
+def game(settings_json: Path) -> None:
     main_logic.close_game()
 
 
@@ -40,12 +40,12 @@ command_help = "Close the engine."
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
-def engine(settings_json: pathlib.Path) -> None:
+def engine(settings_json: Path) -> None:
     main_logic.close_engine()
 
 

@@ -16,7 +16,7 @@ class RichColorSystem(Enum):
 
 E = TypeVar("E", bound=Enum)
 
-def get_enum_from_val(enum_cls: Type[E], value: object) -> E:
+def get_enum_from_val[E: Enum](enum_cls: type[E], value: object) -> E:
     for entry in enum_cls:
         if entry.value == value:
             return entry

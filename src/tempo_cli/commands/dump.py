@@ -1,7 +1,7 @@
 import os
 import time
 import json
-import pathlib
+from pathlib import Path
 
 from tempo_core import main_logic, window_management, utilities, game_runner, logger
 from tempo_core.programs import retoc, pattern_sleuth
@@ -31,15 +31,15 @@ def dump() -> None:
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
 @click.option(
     "--directory",
-    default=os.getcwd(),
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    default=Path.cwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path, file_okay=False, dir_okay=True),
     help="The directory you want your aes key outputted to.",
 )
 @click.option(
@@ -48,22 +48,22 @@ def dump() -> None:
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def aes_keys(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo_config: bool) -> None:
+def aes_keys(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -> None:
     aes_keys = []
     for key in pattern_sleuth.run_patternsleuth_aes_key_scan_command():
         logger.log_message(f"AES Key: {key}")
         if key not in aes_keys:
             aes_keys.append(key)
 
-    os.makedirs(directory, exist_ok=True)
+    directory.mkdir(parents=True, exist_ok=True)
 
-    output_path = os.path.join(directory, "aes_keys.json")
+    output_path = Path(directory / "aes_keys.json")
 
     data = {
-        "aes_keys": aes_keys
+        "aes_keys": aes_keys,
     }
 
-    with open(output_path, "w", encoding="utf-8") as f:
+    with Path.open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
     logger.log_message(f'output path: {output_path}')
@@ -71,14 +71,14 @@ def aes_keys(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo
     if not dump_to_tempo_config:
         return
 
-    with open(settings_json, "r", encoding="utf-8") as f:
+    with Path.open(settings_json, "r", encoding="utf-8") as f:
         settings = json.load(f)
 
     engine_info = settings.setdefault("engine_info", {})
 
     engine_info["aes_keys"] = aes_keys
 
-    with open(settings_json, "w", encoding="utf-8") as f:
+    with Path.open(settings_json, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=4)
 
     logger.log_message(f"updated settings json: {settings_json}")
@@ -97,15 +97,15 @@ def aes_keys(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
 @click.option(
     "--directory",
-    default=os.getcwd(),
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    default=Path.cwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path, file_okay=False, dir_okay=True),
     help="The directory you want your engine version outputted to.",
 )
 @click.option(
@@ -114,23 +114,23 @@ def aes_keys(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def engine_version(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo_config: bool) -> None:
+def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -> None:
 
     info = pattern_sleuth.run_patternsleuth_engine_version_scan_command()
 
     if not info:
         raise RuntimeError('dump engine version command failed due to info being None.')
 
-    os.makedirs(directory, exist_ok=True)
+    directory.mkdir(parents=True, exist_ok=True)
 
-    output_path = os.path.join(directory, "engine_version.json")
+    output_path = Path(directory / "engine_version.json")
 
     data = {
         "engine_major_version": info["major"],
-        "engine_minor_version": info["minor"]
+        "engine_minor_version": info["minor"],
     }
 
-    with open(output_path, "w", encoding="utf-8") as f:
+    with Path.open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
     logger.log_message(f'output path: {output_path}')
@@ -138,7 +138,7 @@ def engine_version(settings_json: pathlib.Path, directory: pathlib.Path, dump_to
     if not dump_to_tempo_config:
         return
 
-    with open(settings_json, "r", encoding="utf-8") as f:
+    with Path.open(settings_json, "r", encoding="utf-8") as f:
         settings = json.load(f)
 
     engine_info = settings.setdefault("engine_info", {})
@@ -146,7 +146,7 @@ def engine_version(settings_json: pathlib.Path, directory: pathlib.Path, dump_to
     engine_info["unreal_engine_major_version"] = info["major"]
     engine_info["unreal_engine_minor_version"] = info["minor"]
 
-    with open(settings_json, "w", encoding="utf-8") as f:
+    with Path.open(settings_json, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=4)
 
     logger.log_message(f"updated settings json: {settings_json}")
@@ -165,15 +165,15 @@ def engine_version(settings_json: pathlib.Path, directory: pathlib.Path, dump_to
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
 @click.option(
     "--directory",
-    default=os.getcwd(),
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path, file_okay=False, dir_okay=True),
+    default=Path.cwd(),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path, file_okay=False, dir_okay=True),
     help="The directory you want your build configuration outputted to.",
 )
 @click.option(
@@ -182,22 +182,22 @@ def engine_version(settings_json: pathlib.Path, directory: pathlib.Path, dump_to
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def build_configuration(settings_json: pathlib.Path, directory: pathlib.Path, dump_to_tempo_config: bool) -> None:
+def build_configuration(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -> None:
 
     info = pattern_sleuth.run_patternsleuth_build_configuration_scan_command()
 
     if not info:
         raise RuntimeError('dump build configuration command failed due to info being None.')
 
-    os.makedirs(directory, exist_ok=True)
+    directory.mkdir(parents=True, exist_ok=True)
 
-    output_path = os.path.join(directory, "build_configuration.json")
+    output_path = Path(directory / "build_configuration.json")
 
     data = {
-        "build_configuration": info
+        "build_configuration": info,
     }
 
-    with open(output_path, "w", encoding="utf-8") as f:
+    with Path.open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
     logger.log_message(output_path)
@@ -205,14 +205,14 @@ def build_configuration(settings_json: pathlib.Path, directory: pathlib.Path, du
     if not dump_to_tempo_config:
         return
 
-    with open(settings_json, "r", encoding="utf-8") as f:
+    with Path.open(settings_json, "r", encoding="utf-8") as f:
         settings = json.load(f)
 
     engine_info = settings.setdefault("engine_info", {})
 
     engine_info["build_configuration"] = info
 
-    with open(settings_json, "w", encoding="utf-8") as f:
+    with Path.open(settings_json, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=4)
 
     logger.log_message(f"updated settings json: {settings_json}")
@@ -231,19 +231,19 @@ def build_configuration(settings_json: pathlib.Path, directory: pathlib.Path, du
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
 )
 @click.option(
     "--output",
-    default=os.path.normpath(f'{os.getcwd()}/Modding/output.jmap'),
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    default=Path(f'{Path.cwd()}/Modding/output.jmap'),
+    type=click.Path(resolve_path=True, path_type=Path),
     help="The file location you want your jmap outputted to.",
 )
-def jmap(settings_json: pathlib.Path, output: pathlib.Path) -> None:
-    os.makedirs(os.path.dirname(output), exist_ok=True)
+def jmap(settings_json: Path, output: Path) -> None:
+    output.parent.mkdir(parents=True, exist_ok=True)
     game_runner.run_game()
     game_monitor.start_game_monitor_thread()
 
@@ -279,7 +279,7 @@ def jmap(settings_json: pathlib.Path, output: pathlib.Path) -> None:
     jmap_program.run_dump_jmap_jmap_command(
         jmap_executable=jmap_tool.JmapToolInfo().get_executable_path(),
         game_pid=game_pid,
-        output_jmap_location=output
+        output_jmap_location=output,
     )
 
     main_logic.close_game()
@@ -298,7 +298,7 @@ def jmap(settings_json: pathlib.Path, output: pathlib.Path) -> None:
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
     help="Path to the settings JSON file",
@@ -311,18 +311,18 @@ def jmap(settings_json: pathlib.Path, output: pathlib.Path) -> None:
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
-    default=os.path.normpath(f'{os.getcwd()}/Modding/output.jmap'),
+    default=Path(f'{Path.cwd()}/Modding/output.jmap'),
     help="Path to the a jmap file dumped from the game in the provided settings JSON file",
 )
 @click.option(
     "--output",
-    default=os.path.normpath(f'{os.getcwd()}/Modding/output.utoc'),
-    type=click.Path(resolve_path=True, path_type=pathlib.Path),
+    default=Path(f'{Path.cwd()}/Modding/output.utoc'),
+    type=click.Path(resolve_path=True, path_type=Path),
     help="The file location you want your utoc outputted to.",
 )
-def generate_script_objects(settings_json: pathlib.Path, jmap_path: pathlib.Path, output: pathlib.Path) -> None:
-    os.makedirs(os.path.dirname(output), exist_ok=True)
+def generate_script_objects(settings_json: Path, jmap_path: Path, output: Path) -> None:
+    output.parent.mkdir(parents=True, exist_ok=True)
     retoc_exec_path = retoc_tool.RetocToolInfo().get_executable_path()
-    retoc.run_gen_script_objects_retoc_command(pathlib.Path(retoc_exec_path), jmap_path, output)
+    retoc.run_gen_script_objects_retoc_command(Path(retoc_exec_path), jmap_path, output)

@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import tomlkit
 import rich_click as click
@@ -13,19 +13,19 @@ def toml() -> None:
 command_help_add_toml = "Add an entry to a TOML file."
 
 @toml.command(
-    name="add", help=command_help_add_toml, short_help=command_help_add_toml
+    name="add", help=command_help_add_toml, short_help=command_help_add_toml,
 )
 @click.option(
     "--toml_path",
     help="Path to the TOML file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option("--key", help="Key to add to the TOML file.", type=str, required=True)
 @click.option(
-    "--value", help="Value to associate with the key.", type=str, required=True
+    "--value", help="Value to associate with the key.", type=str, required=True,
 )
-def add(toml_path: pathlib.Path, key: str, value: str) -> None:
+def add(toml_path: Path, key: str, value: str) -> None:
     with toml_path.open("r+") as f:
         data = tomlkit.load(f)
         data[key] = value
@@ -46,13 +46,13 @@ command_help_remove_toml = "Remove an entry from a TOML file."
 @click.option(
     "--toml_path",
     help="Path to the TOML file.",
-    type=click.Path(exists=True, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--key", help="Key to remove from the TOML file.", type=str, required=True
+    "--key", help="Key to remove from the TOML file.", type=str, required=True,
 )
-def remove(toml_path: pathlib.Path, key: str) -> None:
+def remove(toml_path: Path, key: str) -> None:
     with toml_path.open("r+") as f:
         data = tomlkit.load(f)
         if key in data:
