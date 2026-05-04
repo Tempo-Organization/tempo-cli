@@ -3,13 +3,13 @@ import time
 import json
 from pathlib import Path
 
-from tempo_core import main_logic, window_management, utilities, game_runner, logger
+from tempo_core import main_logic, window_management, utilities, game_runner, logger, manager
 from tempo_core.programs import retoc, pattern_sleuth
 from tempo_core.programs import jmap as jmap_program
 from tempo_core.threads import game_monitor
 
-from tempo_cache_tools import jmap as jmap_tool
-from tempo_cache_tools import retoc as retoc_tool
+from tempo_binary_tools import jmap as jmap_tool
+from tempo_binary_tools import retoc as retoc_tool
 
 import rich_click as click
 
@@ -277,7 +277,7 @@ def jmap(settings_json: Path, output: Path) -> None:
     time.sleep(3)
 
     jmap_program.run_dump_jmap_jmap_command(
-        jmap_executable=jmap_tool.JmapToolInfo().get_executable_path(),
+        jmap_executable=jmap_tool.JmapToolInfo(cache=manager.tools_cache).get_executable_path(),
         game_pid=game_pid,
         output_jmap_location=output,
     )
@@ -324,5 +324,5 @@ def jmap(settings_json: Path, output: Path) -> None:
 )
 def generate_script_objects(settings_json: Path, jmap_path: Path, output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
-    retoc_exec_path = retoc_tool.RetocToolInfo().get_executable_path()
+    retoc_exec_path = retoc_tool.RetocToolInfo(cache=manager.tools_cache).get_executable_path()
     retoc.run_gen_script_objects_retoc_command(Path(retoc_exec_path), jmap_path, output)

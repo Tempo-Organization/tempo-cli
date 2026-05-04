@@ -4,11 +4,10 @@ from pathlib import Path
 import rich_click as click
 from ue4ss_installer_core import ue4ss
 
-from tempo_core import main_logic, file_io, data_structures, settings
+from tempo_core import main_logic, file_io, data_structures, settings, manager
 from tempo_core.programs import kismet_analyzer as tempo_core_kismet_analyzer
 
-from tempo_cache import cache
-from tempo_cache_tools import kismet_analyzer as kismet_analyzer_tool
+from tempo_binary_tools import kismet_analyzer as kismet_analyzer_tool
 
 
 # make this only happen if online is working, if online not working, throw error when calling related commands
@@ -147,7 +146,7 @@ def kismet_analyze_directory(mappings: Path, assets: Path, output: Path, open: b
     if len(file_io.get_files_in_tree(assets)) < 1:
         raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')
     tempo_core_kismet_analyzer.run_gen_cfg_tree_command(
-        kismet_analyzer_executable=Path(kismet_analyzer_tool.KismetAnalyzerToolInfo().get_executable_path()),
+        kismet_analyzer_executable=Path(kismet_analyzer_tool.KismetAnalyzerToolInfo(cache=manager.tools_cache).get_executable_path()),
         mappings_file=mappings,
         asset_tree=assets,
         output_tree=output,
@@ -560,7 +559,7 @@ def remove_plugins_from_descriptor(descriptor_file: Path, plugin_names: list[str
     help="Path to the settings JSON file",
 )
 def install_ue4ss(release_tag: str, game_exe_directory: Path, settings_json: Path) -> None:
-    cache_dir = Path(f'{cache.get_cache_dir()}/lazy_cache/ue4ss/{release_tag}')
+    cache_dir = Path(f'{manager.tools_cache.get_download_dir()}/lazy_cache/ue4ss/{release_tag}')
     cache_dir.mkdir(parents=True, exist_ok=True)
     ue4ss.install_ue4ss_to_dir(
         str(cache_dir),
