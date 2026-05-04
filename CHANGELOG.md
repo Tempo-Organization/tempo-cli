@@ -1,4 +1,10 @@
 
+## 5.2.0-dev.25340886994 (2026-05-04)
+
+### Feat
+
+- **All**: Added entry points for tools
+
 ## 5.2.0-dev.24855988894 (2026-04-23)
 
 ### Refactor
