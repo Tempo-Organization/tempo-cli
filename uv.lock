@@ -233,6 +233,14 @@ wheels = [
 ]
 
 [[package]]
+name = "importtime"
+version = "1.0.3.2"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e3/64/b0758dcb2d6a7139e89ad7fa4026b4000ee5bf12d803d8cf3bbddb4543cb/importTime-1.0.3.2-py2.py3-none-any.whl", hash = "sha256:8c0518e8a09d735a88019839e181246309b99a88ca0d654c40ca7634adc9d0cd", size = 6640, upload-time = "2023-07-28T00:25:40.049Z" },
+]
+
+[[package]]
 name = "jinja2"
 version = "3.1.6"
 source = { registry = "https://pypi.org/simple" }
@@ -932,6 +940,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "commitizen" },
+    { name = "importtime" },
     { name = "mkdocs-material" },
     { name = "mkdocstrings-python" },
     { name = "prek" },
@@ -960,6 +969,7 @@ requires-dist = [
 aarch64-unknown-linux-gnu = []
 dev = [
     { name = "commitizen", specifier = ">=4.8.3" },
+    { name = "importtime", specifier = ">=1.0.3.2" },
     { name = "mkdocs-material", specifier = ">=9.6.15" },
     { name = "mkdocstrings-python", specifier = ">=1.16.12" },
     { name = "prek", specifier = ">=0.3.9" },
