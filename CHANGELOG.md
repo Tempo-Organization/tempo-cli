@@ -1,4 +1,10 @@
 
+## 5.2.0-dev.26602054573 (2026-05-28)
+
+### Refactor
+
+- **All**: replaced --settings_json with --config-file
+
 ## 5.2.0-dev.25458714664 (2026-05-06)
 
 ### Feat
