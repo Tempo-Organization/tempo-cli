@@ -1,8 +1,10 @@
 import os
+import re
 import json
 from pathlib import Path
 import subprocess
 from dataclasses import dataclass, field
+from prompt_toolkit.validation import Validator, ValidationError
 
 import tomlkit
 import questionary
@@ -43,6 +45,29 @@ class SetupInformation:
     should_use_versioning: bool  = False
     should_auto_close_game: bool  = False
     should_close_fmodel_and_umodel: bool  = False
+
+
+class PackageNameValidator(Validator):
+    pattern = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$")
+
+    def validate(self, document): #noqa
+        text = document.text.strip()
+
+        if not text:
+            raise ValidationError(
+                message="Project name cannot be empty.",
+                cursor_position=0,
+            )
+
+        if not self.pattern.fullmatch(text):
+            raise ValidationError(
+                message=(
+                    "Not a valid package or extra name. "
+                    "Names must start and end with a letter or digit "
+                    "and may only contain -, _, ., and alphanumeric characters."
+                ),
+                cursor_position=len(document.text),
+            )
 
 
 def project_init(directory: Path) -> None:
@@ -87,11 +112,13 @@ def project_init(directory: Path) -> None:
 
         # Names must start and end with a letter or digit and may only contain -, _, ., and alphanumeric characters.
         # below might need validation for valid project names
-        project_name = questionary.text(message='What would you like your project name to be?').ask()
+        project_name = questionary.text(message='What would you like your project name to be?', validate=PackageNameValidator()).ask()
         description = questionary.text(message='What would you like your project description to be?').ask()
-        subprocess.run(f"uv init --bare --no-readme --no-pin-python --no-workspace --name {project_name} --description {description}", cwd=setup_information.working_directory)
+        subprocess.run(f'uv init --bare --no-readme --no-pin-python --no-workspace --name "{project_name}" --description "{description}"', cwd=setup_information.working_directory)
     subprocess.run("uv add git+https://www.github.com/Tempo-Organization/tempo-cli", cwd=setup_information.working_directory)
 
+
+# have it list auto detected installs as option, overall auto detect option (will need game or something else to check), and an option to manually specify and an option to skip
     unreal_engine_dir = questionary.path(
         message='What is the path to your unreal engine install directory (Most mods will need this but not all)? Example: "C:/Program Files/Epic Games/UE_4.22" (press enter to skip)',
         only_directories=True,

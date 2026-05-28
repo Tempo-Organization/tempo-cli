@@ -58,7 +58,6 @@ hide:
 - [ ] Diff game and file list, backup diff (for cleanup/restore)
 - [ ] Layout support command
 - [ ] Engine pak making compression variants (defaults to compressed)
-- [ ] Switch to `pathlib` from strings
 - [ ] some sort of save hook thing or something
 
 ---
@@ -94,21 +93,11 @@ hide:
   References:  
   - [VS Code Variables Reference](https://code.visualstudio.com/docs/editor/variables-reference)  
   - [VS Code Launch JSON Attributes](https://code.visualstudio.com/docs/editor/debugging#_launchjson-attributes)
-- [ ] Fix it so all settings are loaded and saved from one place (currently several functions don’t follow this)
-- [ ] Add TOML support
-
-### Config Types
-
-- Workspace config
-- Project config
-- Mod-specific config
-- Game config
-- Config versions
 
 
-
-
-
+settings_config -> settings_config
+add support for toml alongside json
+congregate settings loading/access
 
 
 

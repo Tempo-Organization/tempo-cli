@@ -150,7 +150,7 @@ command_help = "Build and package one or more uplugins for distribution."
 
 @uplugin.command(name="build", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -231,7 +231,7 @@ command_help = "Build and package one or more uplugins for distribution."
     help="Zips the compiled uplugin(s) into the output directory",
 )
 def build(
-    settings_json: Path,
+    settings_config: Path,
     uplugin_names: list[str],
     uplugin_paths: list[Path],
     output_directory: Path,

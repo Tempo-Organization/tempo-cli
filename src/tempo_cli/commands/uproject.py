@@ -88,7 +88,7 @@ command_help = "Resaves packages and fixes up redirectors for the project."
     short_help=command_help,
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -100,7 +100,7 @@ command_help = "Resaves packages and fixes up redirectors for the project."
     required=True,
     help="Path to the settings JSON file",
 )
-def resave_packages_and_fix_up_redirectors(settings_json: Path) -> None:
+def resave_packages_and_fix_up_redirectors(settings_config: Path) -> None:
     main_logic.resave_packages_and_fix_up_redirectors()
 
 command_help = "Builds the uproject specified within the settings JSON"
@@ -113,7 +113,7 @@ command_help = "Builds the uproject specified within the settings JSON"
     help="Will close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -125,7 +125,7 @@ command_help = "Builds the uproject specified within the settings JSON"
     required=True,
     help="Path to the settings JSON file",
 )
-def build(settings_json: Path, toggle_engine: bool) -> None:
+def build(settings_config: Path, toggle_engine: bool) -> None:
     main_logic.build(toggle_engine=toggle_engine)
 
 
@@ -141,7 +141,7 @@ command_help = "Cooks content for the uproject specified within the settings JSO
     help="Will close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -153,7 +153,7 @@ command_help = "Cooks content for the uproject specified within the settings JSO
     required=True,
     help="Path to the settings JSON file",
 )
-def cook(settings_json: Path, toggle_engine: bool) -> None:
+def cook(settings_config: Path, toggle_engine: bool) -> None:
     main_logic.cook(toggle_engine=toggle_engine)
 
 
@@ -176,7 +176,7 @@ command_help = "Package content for the uproject specified within the settings J
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -188,5 +188,5 @@ command_help = "Package content for the uproject specified within the settings J
     required=True,
     help="Path to the settings JSON file",
 )
-def package(settings_json: Path, toggle_engine: bool, use_symlinks: bool) -> None:
+def package(settings_config: Path, toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.package(toggle_engine=toggle_engine, use_symlinks=use_symlinks)

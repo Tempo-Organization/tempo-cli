@@ -15,7 +15,7 @@ command_help = "Cleans up the GitHub repository specified within the settings JS
 
 @clean.command(name="full", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -25,9 +25,9 @@ command_help = "Cleans up the GitHub repository specified within the settings JS
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def full(settings_json: Path) -> None:
+def full(config_file: Path) -> None:
     main_logic.cleanup_full()
 
 
@@ -36,7 +36,7 @@ command_help = "Cleans up the directories made from cooking of the GitHub reposi
 
 @clean.command(name="cooked", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -46,9 +46,9 @@ command_help = "Cleans up the directories made from cooking of the GitHub reposi
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def cooked(settings_json: Path) -> None:
+def cooked(config_file: Path) -> None:
     main_logic.cleanup_cooked()
 
 
@@ -57,7 +57,7 @@ command_help = "Cleans up the directories made from building of the GitHub repos
 
 @clean.command(name="build", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -67,9 +67,9 @@ command_help = "Cleans up the directories made from building of the GitHub repos
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def cleanup(settings_json: Path) -> None:
+def cleanup(config_file: Path) -> None:
     main_logic.cleanup_build()
 
 
@@ -81,7 +81,7 @@ To generate a file list JSON, use the generate_file_list_json command.
 
 @clean.command(name="game", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -91,7 +91,7 @@ To generate a file list JSON, use the generate_file_list_json command.
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--output_json",
@@ -101,7 +101,7 @@ To generate a file list JSON, use the generate_file_list_json command.
     ),
     help="Path to the output game file list json.",
 )
-def game(settings_json: Path, output_json: Path) -> None:
+def game(config_file: Path, output_json: Path) -> None:
     if output_json:
         main_logic.cleanup_game(output_json)
     else:
@@ -152,7 +152,7 @@ command_help = "Cleans up and resyncs a git project to the GitHub repository and
 
 @clean.command(name="resync_dir_with_repo", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -162,7 +162,7 @@ command_help = "Cleans up and resyncs a git project to the GitHub repository and
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def resync_dir_with_repo(settings_json: Path) -> None:
+def resync_dir_with_repo(config_file: Path) -> None:
     main_logic.resync_dir_with_repo()

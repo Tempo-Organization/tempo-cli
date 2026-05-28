@@ -24,7 +24,7 @@ def dump() -> None:
     short_help="Dumps the key(s) from the game in the provided settings json.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -34,7 +34,7 @@ def dump() -> None:
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--directory",
@@ -48,7 +48,7 @@ def dump() -> None:
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def aes_keys(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -> None:
+def aes_keys(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> None:
     aes_keys = []
     for key in pattern_sleuth.run_patternsleuth_aes_key_scan_command():
         logger.log_message(f"AES Key: {key}")
@@ -71,17 +71,17 @@ def aes_keys(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -
     if not dump_to_tempo_config:
         return
 
-    with Path.open(settings_json, "r", encoding="utf-8") as f:
+    with Path.open(config_file, "r", encoding="utf-8") as f:
         settings = json.load(f)
 
     engine_info = settings.setdefault("engine_info", {})
 
     engine_info["aes_keys"] = aes_keys
 
-    with Path.open(settings_json, "w", encoding="utf-8") as f:
+    with Path.open(config_file, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=4)
 
-    logger.log_message(f"updated settings json: {settings_json}")
+    logger.log_message(f"updated settings json: {config_file}")
 
 
 @dump.command(
@@ -90,7 +90,7 @@ def aes_keys(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -
     short_help="Dumps the engine version from the game in the provided settings json.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -100,7 +100,7 @@ def aes_keys(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--directory",
@@ -114,7 +114,7 @@ def aes_keys(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -> None:
+def engine_version(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> None:
 
     info = pattern_sleuth.run_patternsleuth_engine_version_scan_command()
 
@@ -138,7 +138,7 @@ def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: b
     if not dump_to_tempo_config:
         return
 
-    with Path.open(settings_json, "r", encoding="utf-8") as f:
+    with Path.open(config_file, "r", encoding="utf-8") as f:
         settings = json.load(f)
 
     engine_info = settings.setdefault("engine_info", {})
@@ -146,10 +146,10 @@ def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: b
     engine_info["unreal_engine_major_version"] = info["major"]
     engine_info["unreal_engine_minor_version"] = info["minor"]
 
-    with Path.open(settings_json, "w", encoding="utf-8") as f:
+    with Path.open(config_file, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=4)
 
-    logger.log_message(f"updated settings json: {settings_json}")
+    logger.log_message(f"updated settings json: {config_file}")
 
 
 @dump.command(
@@ -158,7 +158,7 @@ def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: b
     short_help="Dumps the build configuration from the game in the provided settings json.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -168,7 +168,7 @@ def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: b
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--directory",
@@ -182,7 +182,7 @@ def engine_version(settings_json: Path, directory: Path, dump_to_tempo_config: b
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
-def build_configuration(settings_json: Path, directory: Path, dump_to_tempo_config: bool) -> None:
+def build_configuration(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> None:
 
     info = pattern_sleuth.run_patternsleuth_build_configuration_scan_command()
 
@@ -205,17 +205,17 @@ def build_configuration(settings_json: Path, directory: Path, dump_to_tempo_conf
     if not dump_to_tempo_config:
         return
 
-    with Path.open(settings_json, "r", encoding="utf-8") as f:
+    with Path.open(config_file, "r", encoding="utf-8") as f:
         settings = json.load(f)
 
     engine_info = settings.setdefault("engine_info", {})
 
     engine_info["build_configuration"] = info
 
-    with Path.open(settings_json, "w", encoding="utf-8") as f:
+    with Path.open(config_file, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=4)
 
-    logger.log_message(f"updated settings json: {settings_json}")
+    logger.log_message(f"updated settings json: {config_file}")
 
 
 @dump.command(
@@ -224,7 +224,7 @@ def build_configuration(settings_json: Path, directory: Path, dump_to_tempo_conf
     short_help="Dumps the jmap from the game in the provided settings json.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -234,7 +234,7 @@ def build_configuration(settings_json: Path, directory: Path, dump_to_tempo_conf
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--output",
@@ -242,7 +242,7 @@ def build_configuration(settings_json: Path, directory: Path, dump_to_tempo_conf
     type=click.Path(resolve_path=True, path_type=Path),
     help="The file location you want your jmap outputted to.",
 )
-def jmap(settings_json: Path, output: Path) -> None:
+def jmap(config_file: Path, output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     game_runner.run_game()
     game_monitor.start_game_monitor_thread()
@@ -291,7 +291,7 @@ def jmap(settings_json: Path, output: Path) -> None:
     short_help="Dumps the script objects from the game in the provided settings json.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -301,7 +301,7 @@ def jmap(settings_json: Path, output: Path) -> None:
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--jmap_path",
@@ -314,7 +314,7 @@ def jmap(settings_json: Path, output: Path) -> None:
         path_type=Path,
     ),
     default=Path(f'{Path.cwd()}/Modding/output.jmap'),
-    help="Path to the a jmap file dumped from the game in the provided settings JSON file",
+    help="Path to the a jmap file dumped from the game in the provided tempo config file",
 )
 @click.option(
     "--output",
@@ -322,7 +322,7 @@ def jmap(settings_json: Path, output: Path) -> None:
     type=click.Path(resolve_path=True, path_type=Path),
     help="The file location you want your utoc outputted to.",
 )
-def generate_script_objects(settings_json: Path, jmap_path: Path, output: Path) -> None:
+def generate_script_objects(config_file: Path, jmap_path: Path, output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     retoc_exec_path = retoc_tool.RetocToolInfo(cache=manager.tools_cache).get_executable_path()
     retoc.run_gen_script_objects_retoc_command(Path(retoc_exec_path), jmap_path, output)

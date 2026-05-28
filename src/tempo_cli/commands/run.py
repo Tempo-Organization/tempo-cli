@@ -23,7 +23,7 @@ command_help = "Run the engine."
 
 @run.command(name="engine", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -33,9 +33,9 @@ command_help = "Run the engine."
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def engine(settings_json: Path) -> None:
+def engine(config_file: Path) -> None:
     main_logic.run_engine()
 
 
@@ -49,7 +49,7 @@ command_help = "Run the game."
     help="Whether to close engine instances at the start and open at the end of the command process (default: False).",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -59,9 +59,9 @@ command_help = "Run the game."
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def game(settings_json: Path, toggle_engine: bool) -> None:
+def game(config_file: Path, toggle_engine: bool) -> None:
     main_logic.run_game(toggle_engine=toggle_engine)
 
 
@@ -71,7 +71,7 @@ def game(settings_json: Path, toggle_engine: bool) -> None:
     short_help="Generates a kismet analyzer dump for the provided directory tree.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -81,7 +81,7 @@ def game(settings_json: Path, toggle_engine: bool) -> None:
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--kismet_analyzer_executable",
@@ -183,7 +183,7 @@ command_help = "Run tests for specific mods"
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -193,9 +193,9 @@ command_help = "Run tests for specific mods"
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def test_mods(settings_json: Path, mod_names: list[str], toggle_engine: bool, use_symlinks: bool) -> None:
+def test_mods(config_file: Path, mod_names: list[str], toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.test_mods(
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
@@ -222,7 +222,7 @@ command_help = "Run tests for all mods within the specified settings JSON"
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -232,9 +232,9 @@ command_help = "Run tests for all mods within the specified settings JSON"
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def test_mods_all(settings_json: Path, toggle_engine: bool, use_symlinks: bool) -> None:
+def test_mods_all(config_file: Path, toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.test_mods_all(toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
@@ -274,7 +274,7 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -284,10 +284,10 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 def full_run(
-    settings_json: Path,
+    config_file: Path,
     mod_names: list[str],
     toggle_engine: bool,
     base_files_directory: Path,
@@ -336,7 +336,7 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -346,10 +346,10 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
         path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 def full_run_all(
-    settings_json: Path, toggle_engine: bool, base_files_directory: Path, output_directory: Path, use_symlinks: bool,
+    config_file: Path, toggle_engine: bool, base_files_directory: Path, output_directory: Path, use_symlinks: bool,
 ) -> None:
     if not base_files_directory or base_files_directory == '':
         base_files_directory = Path(settings.get_default_release_base_files_dir())
@@ -546,7 +546,7 @@ def remove_plugins_from_descriptor(descriptor_file: Path, plugin_names: list[str
     help="The directory containing the main executable for your game. Defaults to the dir that contains the game exe specified within the tempo config.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -556,9 +556,9 @@ def remove_plugins_from_descriptor(descriptor_file: Path, plugin_names: list[str
         path_type=Path,
     ),
     required=False,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def install_ue4ss(release_tag: str, game_exe_directory: Path, settings_json: Path) -> None:
+def install_ue4ss(release_tag: str, game_exe_directory: Path, config_file: Path) -> None:
     cache_dir = Path(f'{manager.tools_cache.get_download_dir()}/lazy_cache/ue4ss/{release_tag}')
     cache_dir.mkdir(parents=True, exist_ok=True)
     ue4ss.install_ue4ss_to_dir(

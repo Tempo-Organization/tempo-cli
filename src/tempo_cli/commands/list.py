@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-from tempo_cli.commands.tool import install
-
 import rich_click as click
 from tempo_core import logger, registry, settings, manager
 
@@ -43,7 +41,7 @@ command_help_list_mods = "List all detected mod entries for the project."
     name="mods", help=command_help_list_mods, short_help=command_help_list_mods,
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -55,7 +53,7 @@ command_help_list_mods = "List all detected mod entries for the project."
     required=True,
     help="Path to the settings JSON file",
 )
-def mods(settings_json: Path) -> None:
+def mods(settings_config: Path) -> None:
     mods_dict = settings.get_mods_info_dict_from_json()
     for key, value in mods_dict.items():
         logger.log_message(key)
@@ -77,7 +75,7 @@ command_help_list_uplugins = "List all detected uplugins used by the uproject."
     name="uplugins", help=command_help_list_uplugins, short_help=command_help_list_uplugins,
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -89,8 +87,8 @@ command_help_list_uplugins = "List all detected uplugins used by the uproject."
     required=True,
     help="Path to the settings JSON file",
 )
-def uplugins(settings_json: Path) -> None:
-    with settings_json.open("r", encoding="utf-8") as f:
+def uplugins(settings_config: Path) -> None:
+    with settings_config.open("r", encoding="utf-8") as f:
         settings = json.load(f)
 
     try:
@@ -99,7 +97,7 @@ def uplugins(settings_json: Path) -> None:
         logger.log_message("Missing 'engine_info.unreal_project_file' in settings.")
         return
 
-    uproject_path = (settings_json.parent / uproject_path).resolve()
+    uproject_path = (settings_config.parent / uproject_path).resolve()
 
     if not uproject_path.exists():
         logger.log_message(f"Uproject file not found: {uproject_path}")

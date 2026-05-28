@@ -13,7 +13,7 @@ command_help = "Enable the given mod name in the provided settings JSON."
 
 @mod.command(name="enable_mod", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -32,8 +32,8 @@ command_help = "Enable the given mod name in the provided settings JSON."
     help="Name of a mod to enable, can be specified multiple times",
     prompt="What is the name of the mod you want to enable? ",
 )
-def enable_mod(settings_json: Path, mod_name: str) -> None:
-    main_logic.enable_mods(settings_json=settings_json, mod_names=[mod_name])
+def enable_mod(settings_config: Path, mod_name: str) -> None:
+    main_logic.enable_mods(settings_config=settings_config, mod_names=[mod_name])
 
 
 command_help = "Enable the given mod names in the provided settings JSON."
@@ -48,7 +48,7 @@ command_help = "Enable the given mod names in the provided settings JSON."
     help="Name of a mod to enable, can be specified multiple times",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -60,8 +60,8 @@ command_help = "Enable the given mod names in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def enable_mods(settings_json: Path, mod_names: list[str]) -> None:
-    main_logic.enable_mods(settings_json=settings_json, mod_names=mod_names)
+def enable_mods(settings_config: Path, mod_names: list[str]) -> None:
+    main_logic.enable_mods(settings_config=settings_config, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -76,7 +76,7 @@ command_help = "Disable the given mod names in the provided settings JSON."
     help="Name of a mod to disable, can be specified multiple times",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -88,8 +88,8 @@ command_help = "Disable the given mod names in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def disable_mods(settings_json: Path, mod_names: list[str]) -> None:
-    main_logic.disable_mods(settings_json=settings_json, mod_names=mod_names)
+def disable_mods(settings_config: Path, mod_names: list[str]) -> None:
+    main_logic.disable_mods(settings_config=settings_config, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -97,7 +97,7 @@ command_help = "Disable the given mod names in the provided settings JSON."
 
 @mod.command(name="disable_mod", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -116,8 +116,8 @@ command_help = "Disable the given mod names in the provided settings JSON."
     help="Name of a mod to disable, can be specified multiple times",
     prompt="What is the name of the mod you want to disable?",
 )
-def disable_mod(settings_json: Path, mod_name: str) -> None:
-    main_logic.disable_mods(settings_json=settings_json, mod_names=[mod_name])
+def disable_mod(settings_config: Path, mod_name: str) -> None:
+    main_logic.disable_mods(settings_config=settings_config, mod_names=[mod_name])
 
 
 command_help = "Adds the given mod name in the provided settings JSON."
@@ -202,7 +202,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
     ),
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -218,7 +218,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
 
 
 def add_mod(
-    settings_json: Path,
+    settings_config: Path,
     mod_name: str,
     packing_type: str,
     pak_dir_structure: str,
@@ -237,7 +237,7 @@ def add_mod(
     if compression_type == "":
         compression_type = None
     main_logic.add_mod(
-        settings_json=settings_json,
+        settings_config=settings_config,
         mod_name=mod_name,
         packing_type=packing_type,
         pak_dir_structure=pak_dir_structure,
@@ -263,7 +263,7 @@ command_help = "Remove the given mod name in the provided settings JSON."
     prompt="What is the name of the mod to remove?",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -275,15 +275,15 @@ command_help = "Remove the given mod name in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def remove_mod(settings_json: Path, mod_name: str) -> None:
-    main_logic.remove_mods(settings_json=settings_json, mod_names=[mod_name])
+def remove_mod(settings_config: Path, mod_name: str) -> None:
+    main_logic.remove_mods(settings_config=settings_config, mod_names=[mod_name])
 
 
 command_help = "Removes the given mod names in the provided settings JSON."
 
 
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -295,8 +295,8 @@ command_help = "Removes the given mod names in the provided settings JSON."
     required=True,
     help="Path to the settings JSON file",
 )
-def remove_mods(settings_json: Path, mod_names: list[str]) -> None:
-    main_logic.remove_mods(settings_json=settings_json, mod_names=mod_names)
+def remove_mods(settings_config: Path, mod_names: list[str]) -> None:
+    main_logic.remove_mods(settings_config=settings_config, mod_names=mod_names)
 
 
 
@@ -319,7 +319,7 @@ command_help = "Generates mods for the specified mod names."
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -331,7 +331,7 @@ command_help = "Generates mods for the specified mod names."
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mods(settings_json: Path, mod_names: list[str], use_symlinks: bool) -> None:
+def generate_mods(settings_config: Path, mod_names: list[str], use_symlinks: bool) -> None:
     main_logic.generate_mods(input_mod_names=mod_names, use_symlinks=use_symlinks)
 
 
@@ -347,7 +347,7 @@ command_help = "Generates mods for all enabled mods within the specified setting
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -359,7 +359,7 @@ command_help = "Generates mods for all enabled mods within the specified setting
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mods_all(settings_json: Path, use_symlinks: bool) -> None:
+def generate_mods_all(settings_config: Path, use_symlinks: bool) -> None:
     main_logic.generate_mods_all(use_symlinks=use_symlinks)
 
 
@@ -399,7 +399,7 @@ command_help = "Generate one or more mod releases."
     ),
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -412,7 +412,7 @@ command_help = "Generate one or more mod releases."
     help="Path to the settings JSON file",
 )
 def generate_mod_releases(
-    settings_json: Path, mod_names: list[str], base_files_directory: Path, output_directory: Path,
+    settings_config: Path, mod_names: list[str], base_files_directory: Path, output_directory: Path,
 ) -> None:
     main_logic.generate_mod_releases(mod_names, base_files_directory, output_directory)
 
@@ -448,7 +448,7 @@ command_help = "Generate mod releases for all mods within the specified settings
     ),
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -460,7 +460,7 @@ command_help = "Generate mod releases for all mods within the specified settings
     required=True,
     help="Path to the settings JSON file",
 )
-def generate_mod_releases_all(settings_json: Path, base_files_directory: Path, output_directory: Path) -> None:
+def generate_mod_releases_all(settings_config: Path, base_files_directory: Path, output_directory: Path) -> None:
     if not base_files_directory or base_files_directory == '':
         base_files_directory = Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':

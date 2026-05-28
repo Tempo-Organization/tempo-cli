@@ -538,7 +538,7 @@ command_help = "Add collections to the mod entry in the settings json"
     name="add_collections_to_mod_entry", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -571,7 +571,7 @@ command_help = "Add collections to the mod entry in the settings json"
     multiple=True,
 )
 def add_collections_to_mod_entry(
-    settings_json: Path, mod_name: str, collection_paths: list[Path],
+    settings_config: Path, mod_name: str, collection_paths: list[Path],
 ) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
@@ -581,7 +581,7 @@ def add_collections_to_mod_entry(
             ),
         )
     unreal_collections.add_collections_to_mod_entry(
-        collections_to_pass, mod_name, settings_json,
+        collections_to_pass, mod_name, settings_config,
     )
 
 
@@ -592,7 +592,7 @@ command_help = "Remove collections to the mod entry in the settings json"
     name="remove_collections_from_mod_entry", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -625,7 +625,7 @@ command_help = "Remove collections to the mod entry in the settings json"
     multiple=True,
 )
 def remove_collections_from_mod_entry(
-    settings_json: Path, mod_name: str, collection_paths: list[Path],
+    settings_config: Path, mod_name: str, collection_paths: list[Path],
 ) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
@@ -635,5 +635,5 @@ def remove_collections_from_mod_entry(
             ),
         )
     unreal_collections.remove_collections_from_mod_entry(
-        collections_to_pass, mod_name, settings_json,
+        collections_to_pass, mod_name, settings_config,
     )

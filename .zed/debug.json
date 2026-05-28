@@ -30,7 +30,7 @@
     "args": [
       "run",
       "test_mods_all",
-      "--settings_json",
+      "--config-file",
       ".tempo.json"
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../ZedfestModdingKit",
@@ -57,7 +57,7 @@
     "args": [
       "run",
       "full_run_all",
-      "--settings_json",
+      "--config-file",
       ".tempo.json"
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",
@@ -71,7 +71,7 @@
     "args": [
       "run",
       "test_mods_all",
-      "--settings_json",
+      "--config-file",
       ".tempo.json"
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",
@@ -85,7 +85,7 @@
     "args": [
       "uproject",
       "build",
-      "--settings_json",
+      "--config-file",
       ".tempo.json"
     ],
     "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",

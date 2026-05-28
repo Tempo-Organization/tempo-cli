@@ -13,7 +13,7 @@ def close() -> None:
 
 @close.command(name="game", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -25,7 +25,7 @@ def close() -> None:
     required=True,
     help="Path to the settings JSON file",
 )
-def game(settings_json: Path) -> None:
+def game(settings_config: Path) -> None:
     main_logic.close_game()
 
 
@@ -33,7 +33,7 @@ command_help = "Close the engine."
 
 @close.command(name="engine", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -45,7 +45,7 @@ command_help = "Close the engine."
     required=True,
     help="Path to the settings JSON file",
 )
-def engine(settings_json: Path) -> None:
+def engine(settings_config: Path) -> None:
     main_logic.close_engine()
 
 

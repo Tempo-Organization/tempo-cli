@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import rich_click as click
@@ -156,7 +155,7 @@ command_help = "Opens the latest log file."
 
 @file_io.command(name="open_latest_log", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -168,7 +167,7 @@ command_help = "Opens the latest log file."
     required=True,
     help="Path to the settings JSON file",
 )
-def open_latest_log(settings_json: Path) -> None:
+def open_latest_log(settings_config: Path) -> None:
     main_logic.open_latest_log()
 
 command_help = "Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON."
@@ -178,7 +177,7 @@ command_help = "Generates a JSON file containing all of the files in the game di
     name="generate_game_file_list_json", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -198,7 +197,7 @@ command_help = "Generates a JSON file containing all of the files in the game di
     ),
     help="Path to the output game file list json.",
 )
-def generate_game_file_list_json(settings_json: Path, output_json: Path) -> None:
+def generate_game_file_list_json(settings_config: Path, output_json: Path) -> None:
     if output_json:
         main_logic.generate_game_file_list_json(output_json)
     else:
