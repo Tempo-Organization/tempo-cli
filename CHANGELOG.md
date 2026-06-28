@@ -1,4 +1,42 @@
 
+## 5.2.0-dev.28308125112 (2026-06-28)
+
+### Fix
+
+- **uv.lock**: updated deps
+
+## 5.2.0-dev.26602054573 (2026-05-28)
+
+### Refactor
+
+- **All**: replaced --settings_json with --config-file
+
+## 5.2.0-dev.25458714664 (2026-05-06)
+
+### Feat
+
+- **list.py**: added list commands
+
+## 5.2.0-dev.25399196670 (2026-05-05)
+
+### Fix
+
+- **uv.lock**: updated tempo-core dep
+
+## 5.2.0-dev.25340886994 (2026-05-04)
+
+### Feat
+
+- **All**: Added entry points for tools
+
+## 5.2.0-dev.24855988894 (2026-04-23)
+
+### Refactor
+
+- **All**: changed from str to pathlib, added ruff rules and ty
+
+## 5.2.0-dev.24637340882 (2026-04-19)
+
 ## 5.2.0 (2026-04-17)
 
 ## 5.2.0-dev.24591472908 (2026-04-17)

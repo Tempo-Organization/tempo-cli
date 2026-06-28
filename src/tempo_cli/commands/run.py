@@ -1,14 +1,13 @@
 import os
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 from ue4ss_installer_core import ue4ss
 
-from tempo_core import main_logic, file_io, data_structures, settings
+from tempo_core import main_logic, file_io, data_structures, settings, manager
 from tempo_core.programs import kismet_analyzer as tempo_core_kismet_analyzer
 
-from tempo_cache import cache
-from tempo_cache_tools import kismet_analyzer as kismet_analyzer_tool
+from tempo_binary_tools import kismet_analyzer as kismet_analyzer_tool
 
 
 # make this only happen if online is working, if online not working, throw error when calling related commands
@@ -16,7 +15,7 @@ from tempo_cache_tools import kismet_analyzer as kismet_analyzer_tool
 
 
 @click.group()
-def run():
+def run() -> None:
     """Run related commands"""
 
 
@@ -24,19 +23,19 @@ command_help = "Run the engine."
 
 @run.command(name="engine", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def engine(settings_json):
+def engine(config_file: Path) -> None:
     main_logic.run_engine()
 
 
@@ -50,19 +49,19 @@ command_help = "Run the game."
     help="Whether to close engine instances at the start and open at the end of the command process (default: False).",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def game(settings_json, toggle_engine):
+def game(config_file: Path, toggle_engine: bool) -> None:
     main_logic.run_game(toggle_engine=toggle_engine)
 
 
@@ -72,17 +71,17 @@ def game(settings_json, toggle_engine):
     short_help="Generates a kismet analyzer dump for the provided directory tree.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--kismet_analyzer_executable",
@@ -92,7 +91,7 @@ def game(settings_json, toggle_engine):
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=False,
     help="Path to your kismet analyzer executable, if not provided, one will be automatically downloaded.",
@@ -105,7 +104,7 @@ def game(settings_json, toggle_engine):
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=False,
     help="Path to a jmap or usmap file.",
@@ -118,20 +117,20 @@ def game(settings_json, toggle_engine):
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
-    default=os.path.normpath(f'{os.getcwd()}/Modding/game_dump'),
+    default=Path(f'{Path.cwd()}/Modding/game_dump'),
     help="Path to an unpacked dir tree from an unreal game.",
 )
 @click.option(
     "--output",
-    default=os.path.normpath(f'{os.getcwd()}/Modding/kismet_analyzer_dump'),
+    default=Path(f'{Path.cwd()}/Modding/kismet_analyzer_dump'),
     type=click.Path(
         file_okay=False,
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The file location you want your utoc outputted to.",
 )
@@ -142,20 +141,20 @@ def game(settings_json, toggle_engine):
     type=bool,
     help="Should the generated kismet analyzer be opened after being completed.",
 )
-def kismet_analyze_directory(mappings, assets, output, open):
-    os.makedirs(output, exist_ok=True)
+def kismet_analyze_directory(mappings: Path, assets: Path, output: Path, open: bool) -> None: # noqa
+    output.mkdir(parents=True, exist_ok=True)
     if len(file_io.get_files_in_tree(assets)) < 1:
         raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')
     tempo_core_kismet_analyzer.run_gen_cfg_tree_command(
-        kismet_analyzer_executable=pathlib.Path(kismet_analyzer_tool.KismetAnalyzerToolInfo().get_executable_path()),
+        kismet_analyzer_executable=Path(kismet_analyzer_tool.KismetAnalyzerToolInfo(cache=manager.tools_cache).get_executable_path()),
         mappings_file=mappings,
         asset_tree=assets,
-        output_tree=output
+        output_tree=output,
     )
     if open:
         import webbrowser
         # check the below path is actually correct later on
-        webbrowser.open(os.path.normpath(f'{output}/index.html'))
+        webbrowser.open(str(Path(output / 'index.html')))
 
 
 command_help = "Run tests for specific mods"
@@ -184,19 +183,19 @@ command_help = "Run tests for specific mods"
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def test_mods(settings_json, mod_names, toggle_engine, use_symlinks):
+def test_mods(config_file: Path, mod_names: list[str], toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.test_mods(
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
@@ -223,19 +222,19 @@ command_help = "Run tests for all mods within the specified settings JSON"
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def test_mods_all(settings_json, toggle_engine, use_symlinks):
+def test_mods_all(config_file: Path, toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.test_mods_all(toggle_engine=toggle_engine, use_symlinks=use_symlinks)
 
 
@@ -260,12 +259,12 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option(
     "--base_files_directory",
     help="Path to dir tree whose content to pack alongside the mod for release",
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
     "--output_directory",
     help="Path to the output directory",
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
     "--use_symlinks",
@@ -275,30 +274,30 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 def full_run(
-    settings_json,
-    mod_names,
-    toggle_engine,
-    base_files_directory,
-    output_directory,
-    use_symlinks,
-):
+    config_file: Path,
+    mod_names: list[str],
+    toggle_engine: bool,
+    base_files_directory: Path,
+    output_directory: Path,
+    use_symlinks: bool,
+) -> None:
     if not base_files_directory or base_files_directory == '':
-        base_files_directory = settings.get_default_release_base_files_dir()
+        base_files_directory = Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':
-        output_directory = settings.get_default_release_dir()
+        output_directory = Path(settings.get_default_release_dir())
     main_logic.full_run(
         input_mod_names=mod_names,
         toggle_engine=toggle_engine,
@@ -322,12 +321,12 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
 @click.option(
     "--base_files_directory",
     help="Path to dir tree whose content to pack alongside the mod for release",
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
     "--output_directory",
     help="Path to the output directory",
-    type=click.Path(exists=False, resolve_path=True, path_type=pathlib.Path),
+    type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
     "--use_symlinks",
@@ -337,25 +336,25 @@ command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Relea
     help="Whether or not to use symlinks to save time with file operations",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 def full_run_all(
-    settings_json, toggle_engine, base_files_directory, output_directory, use_symlinks
-):
+    config_file: Path, toggle_engine: bool, base_files_directory: Path, output_directory: Path, use_symlinks: bool,
+) -> None:
     if not base_files_directory or base_files_directory == '':
-        base_files_directory = settings.get_default_release_base_files_dir()
+        base_files_directory = Path(settings.get_default_release_base_files_dir())
     if not output_directory or output_directory == '':
-        output_directory = settings.get_default_release_dir()
+        output_directory = Path(settings.get_default_release_dir())
     main_logic.full_run_all(
         toggle_engine=toggle_engine,
         base_files_directory=base_files_directory,
@@ -374,17 +373,17 @@ def full_run_all(
 
 
 host_type_choices = data_structures.get_enum_strings_from_enum(
-    data_structures.UnrealHostTypes
+    data_structures.UnrealHostTypes,
 )
 loading_phase_choices = data_structures.get_enum_strings_from_enum(
-    data_structures.LoadingPhases
+    data_structures.LoadingPhases,
 )
 
 command_help = "Adds the specified module entry to the descriptor file, overwriting if it already exists."
 
 
 @run.command(
-    name="add_module_to_descriptor", help=command_help, short_help=command_help
+    name="add_module_to_descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
     "--host_type",
@@ -408,18 +407,18 @@ command_help = "Adds the specified module entry to the descriptor file, overwrit
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.argument("module_name", type=str)
-def add_module_to_descriptor(descriptor_file, module_name, host_type, loading_phase):
+def add_module_to_descriptor(descriptor_file: Path, module_name: str, host_type: str, loading_phase: str) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to add the module to.
         module_name (str): Name of the module to add.
     """
     main_logic.add_module_to_descriptor(
-        descriptor_file, module_name, host_type, loading_phase
+        descriptor_file, module_name, host_type, loading_phase,
     )
 
 
@@ -427,7 +426,7 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
 
 
 @run.command(
-    name="add_plugin_to_descriptor", help=command_help, short_help=command_help
+    name="add_plugin_to_descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
     "--is_enabled",
@@ -443,18 +442,18 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.argument("plugin_name", type=str)
-def add_plugin_to_descriptor(descriptor_file, plugin_name, is_enabled):
+def add_plugin_to_descriptor(descriptor_file: Path, plugin_name: str, is_enabled: bool) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to add the plugin to.
         plugin_name (str): Name of the plugin to add.
     """
     main_logic.add_plugin_to_descriptor(
-        descriptor_file, plugin_name, is_enabled=is_enabled
+        descriptor_file, plugin_name, is_enabled=is_enabled,
     )
 
 
@@ -464,7 +463,7 @@ command_help = (
 
 
 @run.command(
-    name="remove_modules_from_descriptor", help=command_help, short_help=command_help
+    name="remove_modules_from_descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
     "--module_names",
@@ -481,10 +480,10 @@ command_help = (
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
-def remove_modules_from_descriptor(descriptor_file, module_names):
+def remove_modules_from_descriptor(descriptor_file: Path, module_names: list[str]) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to remove the modules from.
@@ -498,7 +497,7 @@ command_help = (
 
 
 @run.command(
-    name="remove_plugins_from_descriptor", help=command_help, short_help=command_help
+    name="remove_plugins_from_descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
     "--plugin_names",
@@ -515,10 +514,10 @@ command_help = (
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
-def remove_plugins_from_descriptor(descriptor_file, plugin_names):
+def remove_plugins_from_descriptor(descriptor_file: Path, plugin_names: list[str]) -> None:
     """
     Arguments:
         descriptor_file (str): Path to the descriptor file to remove the plugins from.
@@ -527,7 +526,7 @@ def remove_plugins_from_descriptor(descriptor_file, plugin_names):
 
 
 @run.command(
-    name="install_ue4ss", help=command_help, short_help=command_help
+    name="install_ue4ss", help=command_help, short_help=command_help,
 )
 @click.option(
     "--release_tag",
@@ -542,28 +541,28 @@ def remove_plugins_from_descriptor(descriptor_file, plugin_names):
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     help="The directory containing the main executable for your game. Defaults to the dir that contains the game exe specified within the tempo config.",
 )
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=False,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def install_ue4ss(release_tag, game_exe_directory, settings_json):
-    cache_dir = os.path.normpath(f'{cache.get_cache_dir()}/lazy_cache/ue4ss/{release_tag}')
-    os.makedirs(cache_dir, exist_ok=True)
+def install_ue4ss(release_tag: str, game_exe_directory: Path, config_file: Path) -> None:
+    cache_dir = Path(f'{manager.tools_cache.get_download_dir()}/lazy_cache/ue4ss/{release_tag}')
+    cache_dir.mkdir(parents=True, exist_ok=True)
     ue4ss.install_ue4ss_to_dir(
-        cache_dir,
-        os.path.dirname(str(settings.get_game_exe_path())),
-        release_tag
+        str(cache_dir),
+        str(game_exe_directory),
+        release_tag,
     )

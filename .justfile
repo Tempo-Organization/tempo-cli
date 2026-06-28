@@ -26,6 +26,24 @@ setup: clean_up
   uv run prek install --hook-type commit-msg
   uv run prek install --hook-type pre-push
 
+dev_setup: clean_up
+  uv venv
+  uv run prek install
+  uv run prek install --hook-type commit-msg
+  uv run prek install --hook-type pre-push
+  if (Test-Path "../tempo-core") { Remove-Item "../tempo-core" -Recurse -Force }
+  if (Test-Path "../tempo-binary-tool-manager") { Remove-Item "../tempo-binary-tool-manager" -Recurse -Force }
+  if (Test-Path "../tempo-binary-tools") { Remove-Item "../tempo-binary-tools" -Recurse -Force }
+  if (Test-Path "../tempo-settings") { Remove-Item "../tempo-settings" -Recurse -Force }
+  git clone -b dev --single-branch https://github.com/Tempo-Organization/tempo-core.git ../tempo-core
+  git clone -b main --single-branch https://github.com/Tempo-Organization/tempo-binary-tool-manager.git ../tempo-binary-tool-manager
+  git clone -b master --single-branch https://github.com/Tempo-Organization/tempo-binary-tools.git ../tempo-binary-tools
+  git clone -b main --single-branch https://github.com/Tempo-Organization/tempo-settings.git ../tempo-settings
+  uv pip install -e ../tempo-core
+  uv pip install -e ../tempo-binary-tools
+  uv pip install -e ../tempo-settings
+  uv pip install -e ../tempo-binary-tool-manager
+
 build:
   uv run pyinstaller --noconfirm --onefile --hidden-import=textual.widgets._tab --console --name tempo_cli --collect-data trogon src/tempo_cli/__main__.py
 

@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 
 import rich_click as click
 
@@ -6,7 +6,7 @@ from tempo_core import main_logic
 
 
 @click.group()
-def clean():
+def clean() -> None:
     """Clean related commands"""
 
 
@@ -15,19 +15,19 @@ command_help = "Cleans up the GitHub repository specified within the settings JS
 
 @clean.command(name="full", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def full(settings_json):
+def full(config_file: Path) -> None:
     main_logic.cleanup_full()
 
 
@@ -36,19 +36,19 @@ command_help = "Cleans up the directories made from cooking of the GitHub reposi
 
 @clean.command(name="cooked", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def cooked(settings_json):
+def cooked(config_file: Path) -> None:
     main_logic.cleanup_cooked()
 
 
@@ -57,19 +57,19 @@ command_help = "Cleans up the directories made from building of the GitHub repos
 
 @clean.command(name="build", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def cleanup(settings_json):
+def cleanup(config_file: Path) -> None:
     main_logic.cleanup_build()
 
 
@@ -81,27 +81,27 @@ To generate a file list JSON, use the generate_file_list_json command.
 
 @clean.command(name="game", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
 @click.option(
     "--output_json",
     type=click.Path(
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
-    help="Path to the output game file list json."
+    help="Path to the output game file list json.",
 )
-def game(settings_json, output_json):
+def game(config_file: Path, output_json: Path) -> None:
     if output_json:
         main_logic.cleanup_game(output_json)
     else:
@@ -123,7 +123,7 @@ To generate one, use the generate_file_list command.
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
 @click.argument(
@@ -134,10 +134,10 @@ To generate one, use the generate_file_list command.
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
 )
-def from_file_list(file_list, directory):
+def from_file_list(file_list: Path, directory: Path) -> None:
     """
     Arguments:
         file_list (str): Path to the file list you want to clean from.
@@ -152,17 +152,17 @@ command_help = "Cleans up and resyncs a git project to the GitHub repository and
 
 @clean.command(name="resync_dir_with_repo", help=command_help, short_help=command_help)
 @click.option(
-    "--settings_json",
+    "--config-file",
     type=click.Path(
         exists=True,
         file_okay=True,
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=pathlib.Path,
+        path_type=Path,
     ),
     required=True,
-    help="Path to the settings JSON file",
+    help="Path to the tempo config file",
 )
-def resync_dir_with_repo(settings_json):
+def resync_dir_with_repo(config_file: Path) -> None:
     main_logic.resync_dir_with_repo()
