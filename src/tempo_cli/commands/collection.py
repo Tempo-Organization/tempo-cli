@@ -453,7 +453,7 @@ def add_content_lines_to_collection(
             test_two = unreal_collections.UnrealAssetPath(test_one)
             content_lines.append(test_two)
     unreal_collections.add_content_lines_to_collection(
-        collection=collection, content_lines=content_lines,
+        collection=collection, content_lines=content_lines,  # type: ignore
     )
 
 
@@ -527,7 +527,7 @@ def remove_content_lines_from_collection(
             )
 
     unreal_collections.remove_content_lines_from_collection(
-        collection=collection, content_lines=content_lines,
+        collection=collection, content_lines=content_lines,  # type: ignore
     )
 
 

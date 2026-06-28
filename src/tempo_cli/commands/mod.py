@@ -33,7 +33,7 @@ command_help = "Enable the given mod name in the provided settings JSON."
     prompt="What is the name of the mod you want to enable? ",
 )
 def enable_mod(settings_config: Path, mod_name: str) -> None:
-    main_logic.enable_mods(settings_config=settings_config, mod_names=[mod_name])
+    main_logic.enable_mods(config_file=settings_config, mod_names=[mod_name])
 
 
 command_help = "Enable the given mod names in the provided settings JSON."
@@ -61,7 +61,7 @@ command_help = "Enable the given mod names in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def enable_mods(settings_config: Path, mod_names: list[str]) -> None:
-    main_logic.enable_mods(settings_config=settings_config, mod_names=mod_names)
+    main_logic.enable_mods(config_file=settings_config, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -89,7 +89,7 @@ command_help = "Disable the given mod names in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def disable_mods(settings_config: Path, mod_names: list[str]) -> None:
-    main_logic.disable_mods(settings_config=settings_config, mod_names=mod_names)
+    main_logic.disable_mods(config_file=settings_config, mod_names=mod_names)
 
 
 command_help = "Disable the given mod names in the provided settings JSON."
@@ -117,7 +117,7 @@ command_help = "Disable the given mod names in the provided settings JSON."
     prompt="What is the name of the mod you want to disable?",
 )
 def disable_mod(settings_config: Path, mod_name: str) -> None:
-    main_logic.disable_mods(settings_config=settings_config, mod_names=[mod_name])
+    main_logic.disable_mods(config_file=settings_config, mod_names=[mod_name])
 
 
 command_help = "Adds the given mod name in the provided settings JSON."
@@ -218,7 +218,7 @@ packing_type_choices = data_structures.get_enum_strings_from_enum(
 
 
 def add_mod(
-    settings_config: Path,
+    config_file: Path,
     mod_name: str,
     packing_type: str,
     pak_dir_structure: str,
@@ -237,7 +237,7 @@ def add_mod(
     if compression_type == "":
         compression_type = None
     main_logic.add_mod(
-        settings_config=settings_config,
+        config_file=config_file,
         mod_name=mod_name,
         packing_type=packing_type,
         pak_dir_structure=pak_dir_structure,
@@ -276,7 +276,7 @@ command_help = "Remove the given mod name in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def remove_mod(settings_config: Path, mod_name: str) -> None:
-    main_logic.remove_mods(settings_config=settings_config, mod_names=[mod_name])
+    main_logic.remove_mods(config_file=settings_config, mod_names=[mod_name])
 
 
 command_help = "Removes the given mod names in the provided settings JSON."
@@ -296,7 +296,7 @@ command_help = "Removes the given mod names in the provided settings JSON."
     help="Path to the settings JSON file",
 )
 def remove_mods(settings_config: Path, mod_names: list[str]) -> None:
-    main_logic.remove_mods(settings_config=settings_config, mod_names=mod_names)
+    main_logic.remove_mods(config_file=settings_config, mod_names=mod_names)
 
 
 

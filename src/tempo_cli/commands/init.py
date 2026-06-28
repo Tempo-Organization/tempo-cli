@@ -5,13 +5,15 @@ from pathlib import Path
 import subprocess
 from dataclasses import dataclass, field
 from prompt_toolkit.validation import Validator, ValidationError
+import shutil
 
 import tomlkit
 import questionary
 import rich_click as click
 
-from tempo_core import logger
+from tempo_core import logger, manager
 from tempo_core.main_logic import generate_uproject
+from tempo_binary_tools import tempo_shell_scripts, tempo_gitignores, tempo_mod_docs_template
 
 from tempo_cli import file_io as tc_file_io
 from tempo_cli import validators, checks, unreal, git
@@ -108,10 +110,6 @@ def project_init(directory: Path) -> None:
 
     pyproject_toml = Path(f"{setup_information.working_directory}/pyproject.toml")
     if not pyproject_toml.is_file():
-        # subprocess.run("uv init --package", cwd=setup_information.working_directory)
-
-        # Names must start and end with a letter or digit and may only contain -, _, ., and alphanumeric characters.
-        # below might need validation for valid project names
         project_name = questionary.text(message='What would you like your project name to be?', validate=PackageNameValidator()).ask()
         description = questionary.text(message='What would you like your project description to be?').ask()
         subprocess.run(f'uv init --bare --no-readme --no-pin-python --no-workspace --name "{project_name}" --description "{description}"', cwd=setup_information.working_directory)
@@ -175,15 +173,15 @@ def project_init(directory: Path) -> None:
     if git_repo_dir_already_existed:
         setup_information.tempo_config_contents["git_info"]["repo_branch"] = git.get_branch_from_git_repo(str(setup_information.git_repo_dir))
     else:
-        gitignore = Path(f"{setup_information.working_directory}/.gitignore")
-        if gitignore.is_file():
-            gitignore.unlink()
-        tc_file_io.download_files_from_github_repo(
-            repo_url="https://github.com/Tempo-Organization/tempo-template",
-            repo_branch="main",
-            file_paths=[Path(".gitignore")],
-            output_directory=setup_information.working_directory,
-        )
+        tempo_gitignores_tool_info = tempo_gitignores.TempoGitignoresToolInfo(cache=manager.tools_cache)
+        tempo_gitignores_tool_info.ensure_tool_installed()
+        gitignores_dir = tempo_gitignores_tool_info.get_tool_directory()
+        src_gitignore = Path(f'{gitignores_dir}/tempo.gitignore')
+        dst_gitignore = Path(f"{setup_information.working_directory}/.gitignore")
+        if dst_gitignore.is_file():
+            dst_gitignore.unlink()
+        shutil.copy(src_gitignore, dst_gitignore)
+
         setup_information.tempo_config_contents["git_info"]["repo_branch"] = "master"
     setup_information.tempo_config_contents["git_info"]["repo_path"] = setup_information.working_directory
 
@@ -199,7 +197,7 @@ def project_init(directory: Path) -> None:
     uproject_path = questionary.path(
         message='What is the path to your uproject, if you have one already? Example: "C:/Users/Mythi/Documents/GitHub/ZedfestModdingKit/KevinSpel.uproject" (press enter to skip)',
     ).ask()
-    if not uproject_path == "" and not uproject_path.parent == setup_information.working_directory:
+    if not uproject_path == "" and not Path(uproject_path).parent == setup_information.working_directory:
         logger.log_message(
             "Warning: It is recommended to place your uproject in the same directory as your tempo project files.",
         )
@@ -209,7 +207,7 @@ def project_init(directory: Path) -> None:
                 message="What is the name of your uproject file? (it should be the same as the game project name usually.)",
             ).ask()
         else:
-            uproject_name = uproject_name = game_executable.parent.parent.parent.name
+            uproject_name = Path(game_executable).parent.parent.parent.name
         generate_uproject(
             project_file=Path(f"{setup_information.working_directory}/{uproject_name}.uproject"),
             file_version=3,
@@ -217,10 +215,10 @@ def project_init(directory: Path) -> None:
             engine_minor_association=unreal_engine_minor_version,
             ignore_safety_checks=True,
         )
-        setup_information.tempo_config_contents['engine_info']['unreal_project_file'] = Path(f"{setup_information.working_directory}/{uproject_name}.uproject")
+        setup_information.tempo_config_contents.get('engine_info', {})['unreal_project_file'] = Path(f"{setup_information.working_directory}/{uproject_name}.uproject")
     else:
         if not uproject_path == "" and uproject_path:
-            setup_information.tempo_config_contents['engine_info']['unreal_project_file'] = uproject_path
+            setup_information.tempo_config_contents.get('engine_info', {})['unreal_project_file'] = uproject_path
 
     window_override_title = questionary.text(
         message='What is title of the game window, when the game is launched? Example: "Zedfest" (press enter to skip)',
@@ -293,13 +291,26 @@ def init(directory: Path) -> None:
 
 
 def pre_commit_setup(setup_information: SetupInformation) -> None:
-    tc_file_io.download_files_from_github_repo(
-        repo_url="https://github.com/Tempo-Organization/tempo-template",
-        repo_branch="main",
-        file_paths=[Path(".pre-commit-config.yaml")],
-        output_directory=setup_information.working_directory,
-    )
-    subprocess.run("uv add prek")
+    options = [
+        'trailing-whitespace',
+        'end-of-file-fixer',
+        'check-added-large-files',
+        'check-docstring-first',
+        'check-illegal-windows-names',
+        'check-shebang-scripts-are-executable',
+        'check-symlinks',
+        'destroyed-symlinks',
+        'check-toml',
+        'check-xml',
+        'check-yaml',
+        'check-json',
+        'pretty-format-json',
+    ]
+    subprocess.run("uv add prek sample-config --format toml")
+    subprocess.run("uv run prek")
+    # add the multiselect here for the above options
+    # make hooks list empty
+    # then add each one the multiselected wanted in
     subprocess.run("uv run prek install")
 
 
@@ -327,7 +338,7 @@ def versioning_setup(setup_information: SetupInformation) -> None:
     if "tool" not in toml_doc:
         toml_doc["tool"] = tomlkit.table()
 
-    toml_doc["tool"]["commitizen"] = commitizen_table  # type: ignore
+    toml_doc["tool"]["commitizen"] = commitizen_table
 
     with Path.open(toml_path, "w", encoding="utf-8") as f:
         f.write(tomlkit.dumps(toml_doc))
@@ -344,34 +355,29 @@ def process_management_setup() -> None:
 def easy_scripts_setup(setup_information: SetupInformation) -> None:
     if not setup_information.tempo_config:
         raise FileNotFoundError(setup_information.tempo_config)
-    easy_scripts_version = "0.4.0"
+    tempo_shell_scripts_tool_info = tempo_shell_scripts.TempoShellScriptsToolInfo(cache=manager.tools_cache)
+    tempo_shell_scripts_tool_info.ensure_tool_installed()
+    script_files_dir = tempo_shell_scripts_tool_info.get_tool_directory()
     output_directory_for_scripts = Path(setup_information.working_directory / "Modding" / "scripts")
-
-    easy_scripts_download_link = (
-        f"https://github.com/Tempo-Organization/tempo-template/"
-        f"releases/download/{easy_scripts_version}/easy_scripts.zip"
-    )
-
-    tc_file_io.download_and_extract_zip(
-        url=easy_scripts_download_link,
-        output_dir=output_directory_for_scripts,
-    )
+    shutil.copytree(script_files_dir, output_directory_for_scripts,  dirs_exist_ok=True)
 
 
 def documentation_setup(setup_information: SetupInformation) -> None:
     subprocess.run("uv add mkdocs-material")
+    tempo_mods_docs_template_tool_info = tempo_mod_docs_template.TempoModDocsTemplateToolInfo(cache=manager.tools_cache)
+    tempo_mods_docs_template_tool_info.ensure_tool_installed()
     files = [
         Path("mkdocs.yml"),
         Path(".github/workflows/github_pages.yml"),
         Path("docs/index.md"),
         Path("docs/stylesheets/extra.css"),
     ]
-    tc_file_io.download_files_from_github_repo(
-        repo_url="https://github.com/Tempo-Organization/tempo-template",
-        repo_branch="main",
-        file_paths=files,
-        output_directory=setup_information.working_directory,
-    )
+    for file in files:
+        src_file_path = Path(f'{tempo_mods_docs_template_tool_info.get_tool_directory()}/{file}')
+        dst_file_path = Path(f'{setup_information.working_directory}/{file}')
+        dst_file_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(src_file_path, dst_file_path)
+
     mkdocs_yml_path = Path(f'{setup_information.working_directory}/mkdocs.yml')
     index_md_path = Path(f'{setup_information.working_directory}/docs/index.md')
     mod_name = questionary.text(message="What is the main name for your docs? Usually your main Mod Name.").ask()

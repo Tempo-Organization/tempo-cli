@@ -2,7 +2,6 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from trogon import tui
 import rich_click as click
 
 from tempo_core import (
@@ -35,7 +34,6 @@ rich_color_system_choices = tempo_cli_data_structures.get_enum_strings_from_enum
         tempo_cli_data_structures.RichColorSystem
     )
 
-@tui(help='Open Textual TUI')
 @click.version_option()
 # @click.group(chain=True) disabled to allow easy groups
 @click.group()

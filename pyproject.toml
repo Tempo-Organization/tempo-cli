@@ -28,7 +28,6 @@ dependencies = [
     "tempo-core",
     "tempo-settings",
     "tomlkit>=0.13.3",
-    "trogon>=0.6.0",
     "ue4ss-installer-core",
 ]
 

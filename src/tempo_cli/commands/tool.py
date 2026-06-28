@@ -57,7 +57,7 @@ inited_tools.extend(load_external_tools())
 tools = [
     (
         entry.tool_name,
-        f"Install {entry.tool_name[0].upper()}{entry.tool_name[1:].lower()}",
+        f"Install {str(entry.tool_name)[0].upper()}{str(entry.tool_name)[1:].lower()}",
         entry.ensure_tool_installed,
     )
     for entry in inited_tools
@@ -80,4 +80,6 @@ def make_command(name: str, help_text: str, func: Callable) -> Callable:
 
 
 for name, help_text, func in tools:
+    if not name:
+        raise RuntimeError('invalid name or no name')
     make_command(name, help_text, func)

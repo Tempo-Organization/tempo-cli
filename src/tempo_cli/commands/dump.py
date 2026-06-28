@@ -243,6 +243,9 @@ def build_configuration(config_file: Path, directory: Path, dump_to_tempo_config
     help="The file location you want your jmap outputted to.",
 )
 def jmap(config_file: Path, output: Path) -> None:
+    tool_info = jmap_tool.JmapToolInfo(cache=manager.tools_cache)
+    tool_info.ensure_tool_installed()
+    jmap_exe = Path(tool_info.get_executable_path())
     output.parent.mkdir(parents=True, exist_ok=True)
     game_runner.run_game()
     game_monitor.start_game_monitor_thread()
@@ -277,7 +280,7 @@ def jmap(config_file: Path, output: Path) -> None:
     time.sleep(3)
 
     jmap_program.run_dump_jmap_jmap_command(
-        jmap_executable=jmap_tool.JmapToolInfo(cache=manager.tools_cache).get_executable_path(),
+        jmap_executable=jmap_exe,
         game_pid=game_pid,
         output_jmap_location=output,
     )
