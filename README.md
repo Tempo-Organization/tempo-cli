@@ -1,6 +1,6 @@
 <h1 id="title" align="left">tempo-cli</h1>
 
-Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.7  
+Easy To Use Command Line Modding Utility For Unreal Engine Games 4.0-5.8  
 Automates creation, and placement, of mod archives, and other various actions.  
 
 <h2>Project Example:</h2>
@@ -10,7 +10,7 @@ Automates creation, and placement, of mod archives, and other various actions.
 
 <h2 id="features">💪 Features</h2>
 
-* Supports Unreal Engine versions: 4.0-5.7
+* Supports Unreal Engine versions: 4.0-5.8
 * Supports loose file modding (unreal assets, not in a mod archive, like a .pak)
 * Supports modding iostore games
 * Automatic mod creation and placement
