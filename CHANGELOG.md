@@ -1,4 +1,10 @@
 
+## 6.0.0-dev.28718069245 (2026-07-04)
+
+### Feat
+
+- **All**: Changed cli commands to follow - vs _ conventions
+
 ## 5.3.0-dev.28546583542 (2026-07-01)
 
 ### Feat
