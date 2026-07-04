@@ -17,19 +17,19 @@ command_help = (
 
 @uproject.command(name="generate", help=command_help, short_help=command_help)
 @click.option(
-    "--file_version",
+    "--file-version",
     default=3,
     type=int,
     help="Uproject file specification. Defaults to 3.",
 )
 @click.option(
-    "--engine_major_association",
+    "--engine-major-association",
     default=4,
     type=int,
     help="Major Unreal Engine version for the project. Example: the 4 in 4.27.",
 )
 @click.option(
-    "--engine_minor_association",
+    "--engine-minor-association",
     default=27,
     type=int,
     help="Minor Unreal Engine version for the project. Example: the 27 in 4.27.",
@@ -44,13 +44,13 @@ command_help = (
     help="Description for the uproject.",
 )
 @click.option(
-    "--ignore_safety_checks",
+    "--ignore-safety-checks",
     default=False,
     type=bool,
     help="Whether or not to override the input checks for this command.",
 )
 @click.argument(
-    "project_file",
+    "project-file",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 def generate(
@@ -83,7 +83,7 @@ command_help = "Resaves packages and fixes up redirectors for the project."
 
 
 @uproject.command(
-    name="resave_packages_and_fix_up_redirectors",
+    name="resave-packages-and-fix-up-redirectors",
     help=command_help,
     short_help=command_help,
 )
@@ -106,7 +106,7 @@ def resave_packages_and_fix_up_redirectors(settings_config: Path) -> None:
 command_help = "Builds the uproject specified within the settings JSON"
 @uproject.command(name="build", help=command_help, short_help=command_help)
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
@@ -134,7 +134,7 @@ command_help = "Cooks content for the uproject specified within the settings JSO
 
 @uproject.command(name="cook", help=command_help, short_help=command_help)
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
@@ -162,14 +162,14 @@ command_help = "Package content for the uproject specified within the settings J
 
 @uproject.command(name="package", help=command_help, short_help=command_help)
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
     help="Whether or not to close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--use_symlinks",
+    "--use-symlinks",
     is_flag=True,
     default=False,
     type=bool,

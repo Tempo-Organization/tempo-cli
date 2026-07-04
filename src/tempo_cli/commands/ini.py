@@ -15,12 +15,12 @@ command_help = (
 )
 
 @ini.command(
-    name="add_meta_data_tags_for_asset_registry_to_unreal_ini",
+    name="add-meta-data-tags-for-asset-registry-to-unreal-ini",
     help=command_help,
     short_help=command_help,
 )
 @click.option(
-    "--ini_path",
+    "--ini-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -52,12 +52,12 @@ command_help = (
 )
 
 @ini.command(
-    name="remove_meta_data_tags_for_asset_registry_from_unreal_ini",
+    name="remove-meta-data-tags-for-asset-registry-from-unreal-ini",
     help=command_help,
     short_help=command_help,
 )
 @click.option(
-    "--ini_path",
+    "--ini-path",
     type=click.Path(
         exists=True,
         file_okay=True,

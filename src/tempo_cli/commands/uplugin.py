@@ -14,19 +14,19 @@ command_help = "Generates a uplugin in a directory, within the specified directo
 
 @uplugin.command(name="generate", help=command_help, short_help=command_help)
 @click.option(
-    "--can_contain_content",
+    "--can-contain-content",
     default=True,
     type=bool,
     help="Whether the plugin can contain content.",
 )
 @click.option(
-    "--is_installed", default=True, type=bool, help="Whether the plugin is installed.",
+    "--is-installed", default=True, type=bool, help="Whether the plugin is installed.",
 )
 @click.option(
-    "--is_hidden", default=False, type=bool, help="Whether the plugin is hidden.",
+    "--is-hidden", default=False, type=bool, help="Whether the plugin is hidden.",
 )
 @click.option(
-    "--no_code",
+    "--no-code",
     default=False,
     type=bool,
     help="Whether the plugin should contain code.",
@@ -35,49 +35,49 @@ command_help = "Generates a uplugin in a directory, within the specified directo
     "--category", default="Modding", type=str, help="Category for the plugin.",
 )
 @click.option(
-    "--created_by", default="", type=str, help="Name of the creator of the plugin.",
+    "--created-by", default="", type=str, help="Name of the creator of the plugin.",
 )
 @click.option(
-    "--created_by_url", default="", type=str, help="URL of the creator of the plugin.",
+    "--created-by-url", default="", type=str, help="URL of the creator of the plugin.",
 )
 @click.option("--description", default="", type=str, help="Description of the plugin.")
 @click.option(
-    "--docs_url", default="", type=str, help="Documentation URL for the plugin.",
+    "--docs-url", default="", type=str, help="Documentation URL for the plugin.",
 )
 @click.option(
-    "--editor_custom_virtual_path",
+    "--editor-custom-virtual-path",
     default="",
     type=str,
     help="Custom virtual path for the editor.",
 )
 @click.option(
-    "--enabled_by_default",
+    "--enabled-by-default",
     default=True,
     type=str,
     help="Whether the plugin is enabled by default.",
 )
 @click.option(
-    "--engine_major_version",
+    "--engine-major-version",
     default=4,
     type=int,
     help="Major Unreal Engine version for the plugin.",
 )
 @click.option(
-    "--engine_minor_version",
+    "--engine-minor-version",
     default=27,
     type=int,
     help="Minor Unreal Engine version for the plugin.",
 )
-@click.option("--support_url", default="", type=str, help="Support URL for the plugin.")
+@click.option("--support-url", default="", type=str, help="Support URL for the plugin.")
 @click.option("--version", default=1.0, type=float, help="Version of the plugin.")
 @click.option(
-    "--version_name", default="", type=str, help="Version name of the plugin.",
+    "--version-name", default="", type=str, help="Version name of the plugin.",
 )
 @click.argument(
-    "plugins_directory",
+    "plugins-directory",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
-@click.argument("plugin_name", type=str)
+@click.argument("plugin-name", type=str)
 def generate(
     plugins_directory: Path,
     plugin_name: str,
@@ -129,7 +129,7 @@ command_help = "Deletes all files for the specified uplugin paths."
 
 @uplugin.command(name="remove", help=command_help, short_help=command_help)
 @click.option(
-    "--uplugin_paths",
+    "--uplugin-paths",
     multiple=True,
     type=click.Path(
         exists=True,
@@ -140,7 +140,7 @@ command_help = "Deletes all files for the specified uplugin paths."
         path_type=Path,
     ),
     required=True,
-    help="uplugin_paths: A path to a uplugin to delete, can be specified multiple times.",
+    help="uplugin-paths: A path to a uplugin to delete, can be specified multiple times.",
 )
 def remove(uplugin_paths: list[Path]) -> None:
     main_logic.remove_uplugins(uplugin_paths)
@@ -163,7 +163,7 @@ command_help = "Build and package one or more uplugins for distribution."
     help="Path to the settings JSON file",
 )
 @click.option(
-    "--uplugin_paths",
+    "--uplugin-paths",
     multiple=True,
     type=click.Path(
         exists=True,
@@ -177,14 +177,14 @@ command_help = "Build and package one or more uplugins for distribution."
     help="A path to a uplugin to build. Can be specified multiple times.",
 )
 @click.option(
-    "--uplugin_names",
+    "--uplugin-names",
     multiple=True,
     type=str,
     required=False,
     help="A name of a plugin, to build, will be checked for in uproject, then engine install. Can be specified multiple times.",
 )
 @click.option(
-    "--output_directory",
+    "--output-directory",
     help="Path to the output directory",
     type=click.Path(
         exists=True,
@@ -196,21 +196,21 @@ command_help = "Build and package one or more uplugins for distribution."
     ),
 )
 @click.option(
-    "--target_platforms",
+    "--target-platforms",
     multiple=True,
     type=str,
     help="A target platform to target, can be specified multiple times (e.g. Win64).",
     default=['Win64'],
 )
 @click.option(
-    "--no_host_platform",
+    "--no-host-platform",
     is_flag=True,
     default=False,
     type=bool,
     help="Prevent compiling for the editor platform on the host",
 )
 @click.option(
-    "--strict_includes",
+    "--strict-includes",
     is_flag=True,
     default=False,
     type=bool,

@@ -16,7 +16,7 @@ command_help_add_toml = "Add an entry to a TOML file."
     name="add", help=command_help_add_toml, short_help=command_help_add_toml,
 )
 @click.option(
-    "--toml_path",
+    "--toml-path",
     help="Path to the TOML file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
@@ -44,7 +44,7 @@ command_help_remove_toml = "Remove an entry from a TOML file."
     short_help=command_help_remove_toml,
 )
 @click.option(
-    "--toml_path",
+    "--toml-path",
     help="Path to the TOML file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,

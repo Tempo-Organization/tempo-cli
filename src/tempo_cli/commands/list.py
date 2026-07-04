@@ -14,7 +14,7 @@ command_help_list_unreal_installs = "List all detected unreal engine installs."
 
 
 @list.command(
-    name="unreal_installs",
+    name="unreal-installs",
     help=command_help_list_unreal_installs,
     short_help=command_help_list_unreal_installs,
 )

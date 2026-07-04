@@ -16,7 +16,7 @@ command_help_add_json = "Add an entry to a JSON file."
     name="add", help=command_help_add_json, short_help=command_help_add_json,
 )
 @click.option(
-    "--json_path",
+    "--json-path",
     help="Path to the JSON file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
@@ -43,7 +43,7 @@ command_help_remove_json = "Remove an entry from a JSON file."
     short_help=command_help_remove_json,
 )
 @click.option(
-    "--json_path",
+    "--json-path",
     help="Path to the JSON file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,

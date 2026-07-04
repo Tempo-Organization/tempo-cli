@@ -53,7 +53,7 @@ command_help = "Closes all programs with the exe names provided."
 
 @close.command(name="programs", help=command_help, short_help=command_help)
 @click.option(
-    "--exe_names",
+    "--exe-names",
     multiple=True,
     type=str,
     required=True,

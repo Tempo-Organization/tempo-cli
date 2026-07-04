@@ -66,7 +66,7 @@ tools = [
 def make_command(name: str, help_text: str, func: Callable) -> Callable:
     @install.command(name=name, help=help_text, short_help=help_text)
     @click.option(
-        "--run_after_install",
+        "--run-after-install",
         is_flag=True,
         default=False,
         type=bool,
