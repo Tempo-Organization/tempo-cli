@@ -1,4 +1,10 @@
 
+## 6.0.0-dev.29211115830 (2026-07-12)
+
+### Fix
+
+- **uv.lock**: updated tempo-core to fix mod name dir name override
+
 ## 6.0.0-dev.29206850045 (2026-07-12)
 
 ## 5.3.0 (2026-06-28)
