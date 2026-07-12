@@ -141,7 +141,7 @@ def game(config_file: Path, toggle_engine: bool) -> None:
     type=bool,
     help="Should the generated kismet analyzer be opened after being completed.",
 )
-def kismet_analyze_directory(mappings: Path, assets: Path, output: Path, open: bool) -> None: # noqa
+def kismet_analyze_directory(config_file: Path, kismet_analyzer_executable: Path, mappings: Path, assets: Path, output: Path, open: bool) -> None: # noqa
     output.mkdir(parents=True, exist_ok=True)
     if len(file_io.get_files_in_tree(assets)) < 1:
         raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')

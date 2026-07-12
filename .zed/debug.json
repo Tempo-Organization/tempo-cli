@@ -1,12 +1,9 @@
 [
   {
-    "label": "TUI",
+    "label": "Unit Tests",
     "adapter": "Debugpy",
     "request": "launch",
-    "module": "tempo_cli",
-    "args": [
-      "tui"
-    ],
+    "module": "unittest",
     "cwd": "$ZED_WORKTREE_ROOT",
     "justMyCode": false
   },

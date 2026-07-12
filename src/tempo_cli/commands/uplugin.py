@@ -231,7 +231,7 @@ command_help = "Build and package one or more uplugins for distribution."
     help="Zips the compiled uplugin(s) into the output directory",
 )
 def build(
-    settings_config: Path,
+    config_file: Path,
     uplugin_names: list[str],
     uplugin_paths: list[Path],
     output_directory: Path,

@@ -167,7 +167,7 @@ command_help = "Opens the latest log file."
     required=True,
     help="Path to the settings JSON file",
 )
-def open_latest_log(settings_config: Path) -> None:
+def open_latest_log(config_file: Path) -> None:
     main_logic.open_latest_log()
 
 command_help = "Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON."
@@ -197,7 +197,7 @@ command_help = "Generates a JSON file containing all of the files in the game di
     ),
     help="Path to the output game file list json.",
 )
-def generate_game_file_list_json(settings_config: Path, output_json: Path) -> None:
+def generate_game_file_list_json(config_file: Path, output_json: Path) -> None:
     if output_json:
         main_logic.generate_game_file_list_json(output_json)
     else:
@@ -224,7 +224,7 @@ command_help = (
 @click.argument(
     "file-list",
     type=click.Path(
-        exists=True,
+        exists=False,
         file_okay=True,
         dir_okay=False,
         readable=True,

@@ -100,7 +100,7 @@ command_help = "Resaves packages and fixes up redirectors for the project."
     required=True,
     help="Path to the settings JSON file",
 )
-def resave_packages_and_fix_up_redirectors(settings_config: Path) -> None:
+def resave_packages_and_fix_up_redirectors(config_file: Path) -> None:
     main_logic.resave_packages_and_fix_up_redirectors()
 
 command_help = "Builds the uproject specified within the settings JSON"
@@ -125,7 +125,7 @@ command_help = "Builds the uproject specified within the settings JSON"
     required=True,
     help="Path to the settings JSON file",
 )
-def build(settings_config: Path, toggle_engine: bool) -> None:
+def build(config_file: Path, toggle_engine: bool) -> None:
     main_logic.build(toggle_engine=toggle_engine)
 
 
@@ -153,7 +153,7 @@ command_help = "Cooks content for the uproject specified within the settings JSO
     required=True,
     help="Path to the settings JSON file",
 )
-def cook(settings_config: Path, toggle_engine: bool) -> None:
+def cook(config_file: Path, toggle_engine: bool) -> None:
     main_logic.cook(toggle_engine=toggle_engine)
 
 
@@ -188,5 +188,5 @@ command_help = "Package content for the uproject specified within the settings J
     required=True,
     help="Path to the settings JSON file",
 )
-def package(settings_config: Path, toggle_engine: bool, use_symlinks: bool) -> None:
+def package(config_file: Path, toggle_engine: bool, use_symlinks: bool) -> None:
     main_logic.package(toggle_engine=toggle_engine, use_symlinks=use_symlinks)

@@ -53,7 +53,7 @@ command_help_list_mods = "List all detected mod entries for the project."
     required=True,
     help="Path to the settings JSON file",
 )
-def mods(settings_config: Path) -> None:
+def mods(config_file: Path) -> None:
     mods_dict = settings.get_mods_info_dict_from_json()
     for key, value in mods_dict.items():
         logger.log_message(key)
@@ -87,8 +87,8 @@ command_help_list_uplugins = "List all detected uplugins used by the uproject."
     required=True,
     help="Path to the settings JSON file",
 )
-def uplugins(settings_config: Path) -> None:
-    with settings_config.open("r", encoding="utf-8") as f:
+def uplugins(config_file: Path) -> None:
+    with config_file.open("r", encoding="utf-8") as f:
         settings = json.load(f)
 
     try:
@@ -97,7 +97,7 @@ def uplugins(settings_config: Path) -> None:
         logger.log_message("Missing 'engine_info.unreal_project_file' in settings.")
         return
 
-    uproject_path = (settings_config.parent / uproject_path).resolve()
+    uproject_path = (config_file.parent / uproject_path).resolve()
 
     if not uproject_path.exists():
         logger.log_message(f"Uproject file not found: {uproject_path}")

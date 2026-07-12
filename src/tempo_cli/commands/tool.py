@@ -83,3 +83,10 @@ for name, help_text, func in tools:
     if not name:
         raise RuntimeError('invalid name or no name')
     make_command(name, help_text, func)
+
+
+def make_commands() -> None:
+    for name, help_text, func in tools:
+        if not name:
+            raise RuntimeError('invalid name or no name')
+        make_command(name, help_text, func)

@@ -44,6 +44,7 @@ tempo-core = { git = "https://www.github.com/Tempo-Organization/tempo-core" }
 
 [dependency-groups]
 dev = [
+    "click>=8.4.2",
     "commitizen>=4.8.3",
     "importtime>=1.0.3.2",
     "mkdocs-material>=9.6.15",
