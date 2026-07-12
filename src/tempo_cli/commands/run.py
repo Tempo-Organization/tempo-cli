@@ -43,7 +43,7 @@ command_help = "Run the game."
 
 @run.command(name="game", help=command_help, short_help=command_help)
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     default=False,
     type=bool,
     help="Whether to close engine instances at the start and open at the end of the command process (default: False).",
@@ -66,7 +66,7 @@ def game(config_file: Path, toggle_engine: bool) -> None:
 
 
 @run.command(
-    name="kismet_analyze_directory",
+    name="kismet-analyze-directory",
     help="Generates a kismet analyzer dump for the provided directory tree.",
     short_help="Generates a kismet analyzer dump for the provided directory tree.",
 )
@@ -84,7 +84,7 @@ def game(config_file: Path, toggle_engine: bool) -> None:
     help="Path to the tempo config file",
 )
 @click.option(
-    "--kismet_analyzer_executable",
+    "--kismet-analyzer-executable",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -141,7 +141,7 @@ def game(config_file: Path, toggle_engine: bool) -> None:
     type=bool,
     help="Should the generated kismet analyzer be opened after being completed.",
 )
-def kismet_analyze_directory(mappings: Path, assets: Path, output: Path, open: bool) -> None: # noqa
+def kismet_analyze_directory(config_file: Path, kismet_analyzer_executable: Path, mappings: Path, assets: Path, output: Path, open: bool) -> None: # noqa
     output.mkdir(parents=True, exist_ok=True)
     if len(file_io.get_files_in_tree(assets)) < 1:
         raise RuntimeError('When kismet analyzing a directory, the provided assets path must not be an empty directory tree.')
@@ -160,23 +160,23 @@ def kismet_analyze_directory(mappings: Path, assets: Path, output: Path, open: b
 command_help = "Run tests for specific mods"
 
 
-@run.command(name="test_mods", help=command_help, short_help=command_help)
+@run.command(name="test-mods", help=command_help, short_help=command_help)
 @click.option(
-    "--mod_names",
+    "--mod-names",
     multiple=True,
     type=str,
     required=True,
     help="A mod name, can be specified multiple times",
 )
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
     help="Whether or not to close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--use_symlinks",
+    "--use-symlinks",
     is_flag=True,
     default=False,
     type=bool,
@@ -206,16 +206,16 @@ def test_mods(config_file: Path, mod_names: list[str], toggle_engine: bool, use_
 command_help = "Run tests for all mods within the specified settings JSON"
 
 
-@run.command(name="test_mods_all", help=command_help, short_help=command_help)
+@run.command(name="test-mods-all", help=command_help, short_help=command_help)
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
     help="Whether or not to close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--use_symlinks",
+    "--use-symlinks",
     is_flag=True,
     default=False,
     type=bool,
@@ -241,33 +241,33 @@ def test_mods_all(config_file: Path, toggle_engine: bool, use_symlinks: bool) ->
 command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Releases for the specified mod names."
 
 
-@run.command(name="full_run", help=command_help, short_help=command_help)
+@run.command(name="full-run", help=command_help, short_help=command_help)
 @click.option(
-    "--mod_names",
+    "--mod-names",
     multiple=True,
     type=str,
     required=True,
     help="A mod name, can be specified multiple times",
 )
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
     help="Will close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--base_files_directory",
+    "--base-files-directory",
     help="Path to dir tree whose content to pack alongside the mod for release",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
-    "--output_directory",
+    "--output-directory",
     help="Path to the output directory",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
-    "--use_symlinks",
+    "--use-symlinks",
     is_flag=True,
     default=False,
     type=bool,
@@ -310,26 +310,26 @@ def full_run(
 command_help = "Builds, Cooks, Packages, Generates Mods, and Generates Mod Releases for all mod entries within the specified settings JSON."
 
 
-@run.command(name="full_run_all", help=command_help, short_help=command_help)
+@run.command(name="full-run-all", help=command_help, short_help=command_help)
 @click.option(
-    "--toggle_engine",
+    "--toggle-engine",
     is_flag=True,
     default=False,
     type=bool,
     help="Will close engine instances at the start and open at the end of the command process",
 )
 @click.option(
-    "--base_files_directory",
+    "--base-files-directory",
     help="Path to dir tree whose content to pack alongside the mod for release",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
-    "--output_directory",
+    "--output-directory",
     help="Path to the output directory",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
 )
 @click.option(
-    "--use_symlinks",
+    "--use-symlinks",
     is_flag=True,
     default=False,
     type=bool,
@@ -383,24 +383,24 @@ command_help = "Adds the specified module entry to the descriptor file, overwrit
 
 
 @run.command(
-    name="add_module_to_descriptor", help=command_help, short_help=command_help,
+    name="add-module-to-descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--host_type",
+    "--host-type",
     type=click.Choice(host_type_choices),
     default=data_structures.UnrealHostTypes.DEVELOPER.value,
     required=True,
     help="The host type to use.",
 )
 @click.option(
-    "--loading_phase",
+    "--loading-phase",
     type=click.Choice(loading_phase_choices),
     default=data_structures.LoadingPhases.DEFAULT.value,
     required=True,
     help="The loading phase to use.",
 )
 @click.argument(
-    "descriptor_file",
+    "descriptor-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -410,12 +410,12 @@ command_help = "Adds the specified module entry to the descriptor file, overwrit
         path_type=Path,
     ),
 )
-@click.argument("module_name", type=str)
+@click.argument("module-name", type=str)
 def add_module_to_descriptor(descriptor_file: Path, module_name: str, host_type: str, loading_phase: str) -> None:
     """
     Arguments:
-        descriptor_file (str): Path to the descriptor file to add the module to.
-        module_name (str): Name of the module to add.
+        descriptor-file (str): Path to the descriptor file to add the module to.
+        module-name (str): Name of the module to add.
     """
     main_logic.add_module_to_descriptor(
         descriptor_file, module_name, host_type, loading_phase,
@@ -426,16 +426,16 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
 
 
 @run.command(
-    name="add_plugin_to_descriptor", help=command_help, short_help=command_help,
+    name="add-plugin-to-descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--is_enabled",
+    "--is-enabled",
     default=True,
     type=bool,
     help="Whether or not Enabled is ticked for the plugin entry.",
 )
 @click.argument(
-    "descriptor_file",
+    "descriptor-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -445,12 +445,12 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
         path_type=Path,
     ),
 )
-@click.argument("plugin_name", type=str)
+@click.argument("plugin-name", type=str)
 def add_plugin_to_descriptor(descriptor_file: Path, plugin_name: str, is_enabled: bool) -> None:
     """
     Arguments:
-        descriptor_file (str): Path to the descriptor file to add the plugin to.
-        plugin_name (str): Name of the plugin to add.
+        descriptor-file (str): Path to the descriptor file to add the plugin to.
+        plugin-name (str): Name of the plugin to add.
     """
     main_logic.add_plugin_to_descriptor(
         descriptor_file, plugin_name, is_enabled=is_enabled,
@@ -463,17 +463,17 @@ command_help = (
 
 
 @run.command(
-    name="remove_modules_from_descriptor", help=command_help, short_help=command_help,
+    name="remove-modules-from-descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--module_names",
+    "--module-names",
     multiple=True,
     type=str,
     required=True,
     help="A module name to remove from the descriptor file, can be specified multiple times.",
 )
 @click.argument(
-    "descriptor_file",
+    "descriptor-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -486,7 +486,7 @@ command_help = (
 def remove_modules_from_descriptor(descriptor_file: Path, module_names: list[str]) -> None:
     """
     Arguments:
-        descriptor_file (str): Path to the descriptor file to remove the modules from.
+        descriptor-file (str): Path to the descriptor file to remove the modules from.
     """
     main_logic.remove_modules_from_descriptor(descriptor_file, module_names)
 
@@ -497,17 +497,17 @@ command_help = (
 
 
 @run.command(
-    name="remove_plugins_from_descriptor", help=command_help, short_help=command_help,
+    name="remove-plugins-from-descriptor", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--plugin_names",
+    "--plugin-names",
     multiple=True,
     type=str,
     required=True,
     help="A plugin name to remove from the descriptor file, can be specified multiple times.",
 )
 @click.argument(
-    "descriptor_file",
+    "descriptor-file",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -520,22 +520,22 @@ command_help = (
 def remove_plugins_from_descriptor(descriptor_file: Path, plugin_names: list[str]) -> None:
     """
     Arguments:
-        descriptor_file (str): Path to the descriptor file to remove the plugins from.
+        descriptor-file (str): Path to the descriptor file to remove the plugins from.
     """
     main_logic.remove_plugins_from_descriptor(descriptor_file, plugin_names)
 
 
 @run.command(
-    name="install_ue4ss", help=command_help, short_help=command_help,
+    name="install-ue4ss", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--release_tag",
+    "--release-tag",
     type=str,
     default=ue4ss.get_default_ue4ss_version_tag(),
     help="The release tag of the ue4ss release you want to install. Defaults to the latest release.",
 )
 @click.option(
-    "--game_exe_directory",
+    "--game-exe-directory",
     type=click.Path(
         file_okay=False,
         dir_okay=True,

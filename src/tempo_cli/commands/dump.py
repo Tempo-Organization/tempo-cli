@@ -19,7 +19,7 @@ def dump() -> None:
     """Dump related commands"""
 
 @dump.command(
-    name="aes_keys",
+    name="aes-keys",
     help="Dumps the aes key(s) from the game in the provided settings json.",
     short_help="Dumps the key(s) from the game in the provided settings json.",
 )
@@ -43,7 +43,7 @@ def dump() -> None:
     help="The directory you want your aes key outputted to.",
 )
 @click.option(
-    "--dump_to_tempo_config",
+    "--dump-to-tempo-config",
     type=bool,
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
@@ -85,7 +85,7 @@ def aes_keys(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> 
 
 
 @dump.command(
-    name="engine_version",
+    name="engine-version",
     help="Dumps the engine version from the game in the provided settings json.",
     short_help="Dumps the engine version from the game in the provided settings json.",
 )
@@ -109,7 +109,7 @@ def aes_keys(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> 
     help="The directory you want your engine version outputted to.",
 )
 @click.option(
-    "--dump_to_tempo_config",
+    "--dump-to-tempo-config",
     type=bool,
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
@@ -153,7 +153,7 @@ def engine_version(config_file: Path, directory: Path, dump_to_tempo_config: boo
 
 
 @dump.command(
-    name="build_configuration",
+    name="build-configuration",
     help="Dumps the build configuration from the game in the provided settings json.",
     short_help="Dumps the build configuration from the game in the provided settings json.",
 )
@@ -177,7 +177,7 @@ def engine_version(config_file: Path, directory: Path, dump_to_tempo_config: boo
     help="The directory you want your build configuration outputted to.",
 )
 @click.option(
-    "--dump_to_tempo_config",
+    "--dump-to-tempo-config",
     type=bool,
     default=True,
     help="Whether the dumped info should be stored in the tempo config file or not.",
@@ -289,7 +289,7 @@ def jmap(config_file: Path, output: Path) -> None:
 
 
 @dump.command(
-    name="script_objects",
+    name="script-objects",
     help="Dumps the script objects from the game in the provided settings json.",
     short_help="Dumps the script objects from the game in the provided settings json.",
 )
@@ -307,7 +307,7 @@ def jmap(config_file: Path, output: Path) -> None:
     help="Path to the tempo config file",
 )
 @click.option(
-    "--jmap_path",
+    "--jmap-path",
     type=click.Path(
         exists=True,
         file_okay=True,

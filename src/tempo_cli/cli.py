@@ -38,28 +38,28 @@ rich_color_system_choices = tempo_cli_data_structures.get_enum_strings_from_enum
 # @click.group(chain=True) disabled to allow easy groups
 @click.group()
 @click.option(
-    "--generate_wrapper",
+    "--generate-wrapper",
     is_flag=True,
     default=False,
     type=bool,
     help="Generate a wrapper that contains the current commandline.",
 )
 @click.option(
-    "--disable_log_file_output",
+    "--disable-log-file-output",
     is_flag=True,
     default=False,
     type=bool,
     help="Whether or not to disable creating log files, defaults to false.",
 )
 @click.option(
-    "--rich_console_color_system",
+    "--rich-console-color-system",
     default=rich_color_system_choices[0],
     type=click.Choice(rich_color_system_choices),
     help="The color system of the console, uses rich's color system.",
 )
 @click.option('--log_name_prefix', type=str, help='The log name prefix for your logs.')
 @click.option(
-    "--logs_directory",
+    "--logs-directory",
     default=default_logs_dir,
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
     help="The directory you want your logs outputted to.",

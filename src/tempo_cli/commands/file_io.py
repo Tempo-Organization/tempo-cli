@@ -46,7 +46,7 @@ command_help = "Unzip"
 
 @file_io.command(name="unzip", help=command_help, short_help=command_help)
 @click.option(
-    "--output_directory",
+    "--output-directory",
     help="Path to the directory to unzip the zip to.",
     type=click.Path(
         file_okay=False, dir_okay=True, resolve_path=True, path_type=Path,
@@ -68,13 +68,13 @@ command_help = "Move a file or directory to a new location."
 
 @file_io.command(name="move", help=command_help, short_help=command_help)
 @click.option(
-    "--input_path",
+    "--input-path",
     help="The input path, to a directory tree or file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--output_path",
+    "--output-path",
     help="The output path, to a directory tree or file.",
     type=click.Path(resolve_path=True, path_type=Path),
     required=True,
@@ -91,13 +91,13 @@ command_help = "Copy a file or directory to a new location."
 
 @file_io.command(name="copy", help=command_help, short_help=command_help)
 @click.option(
-    "--input_path",
+    "--input-path",
     help="The input path, to a directory tree or file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--output_path",
+    "--output-path",
     help="The output path, to a directory tree or file.",
     type=click.Path(resolve_path=True, path_type=Path),
     required=True,
@@ -114,13 +114,13 @@ command_help = "Symlink a file or directory to a new location."
 
 @file_io.command(name="symlink", help=command_help, short_help=command_help)
 @click.option(
-    "--input_path",
+    "--input-path",
     help="The input path, to a directory tree or file.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
 )
 @click.option(
-    "--output_path",
+    "--output-path",
     help="The output path, to a directory tree or file.",
     type=click.Path(resolve_path=True, path_type=Path),
     required=True,
@@ -139,7 +139,7 @@ command_help = "Delete one or more files and/or directories."
 
 @file_io.command(name="delete", help=command_help, short_help=command_help)
 @click.option(
-    "--input_paths",
+    "--input-paths",
     help="The input path, to a directory tree or file to delete, can be specified multiple times.",
     type=click.Path(exists=True, resolve_path=True, path_type=Path),
     required=True,
@@ -153,7 +153,7 @@ def delete(input_paths: list[Path]) -> None:
 command_help = "Opens the latest log file."
 
 
-@file_io.command(name="open_latest_log", help=command_help, short_help=command_help)
+@file_io.command(name="open-latest-log", help=command_help, short_help=command_help)
 @click.option(
     "--config-file",
     type=click.Path(
@@ -167,14 +167,14 @@ command_help = "Opens the latest log file."
     required=True,
     help="Path to the settings JSON file",
 )
-def open_latest_log(settings_config: Path) -> None:
+def open_latest_log(config_file: Path) -> None:
     main_logic.open_latest_log()
 
 command_help = "Generates a JSON file containing all of the files in the game directory, from the game exe specified within the settings JSON."
 
 
 @file_io.command(
-    name="generate_game_file_list_json", help=command_help, short_help=command_help,
+    name="generate-game-file-list-json", help=command_help, short_help=command_help,
 )
 @click.option(
     "--config-file",
@@ -190,14 +190,14 @@ command_help = "Generates a JSON file containing all of the files in the game di
     help="Path to the settings JSON file",
 )
 @click.option(
-    "--output_json",
+    "--output-json",
     type=click.Path(
         resolve_path=True,
         path_type=Path,
     ),
     help="Path to the output game file list json.",
 )
-def generate_game_file_list_json(settings_config: Path, output_json: Path) -> None:
+def generate_game_file_list_json(config_file: Path, output_json: Path) -> None:
     if output_json:
         main_logic.generate_game_file_list_json(output_json)
     else:
@@ -209,7 +209,7 @@ command_help = (
     "Generates a JSON file containing all of the files in the specified directory."
 )
 
-@file_io.command(name="generate_file_list", help=command_help, short_help=command_help)
+@file_io.command(name="generate-file-list", help=command_help, short_help=command_help)
 @click.argument(
     "directory",
     type=click.Path(
@@ -222,9 +222,9 @@ command_help = (
     ),
 )
 @click.argument(
-    "file_list",
+    "file-list",
     type=click.Path(
-        exists=True,
+        exists=False,
         file_okay=True,
         dir_okay=False,
         readable=True,

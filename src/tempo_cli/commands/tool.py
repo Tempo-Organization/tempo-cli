@@ -66,7 +66,7 @@ tools = [
 def make_command(name: str, help_text: str, func: Callable) -> Callable:
     @install.command(name=name, help=help_text, short_help=help_text)
     @click.option(
-        "--run_after_install",
+        "--run-after-install",
         is_flag=True,
         default=False,
         type=bool,
@@ -83,3 +83,10 @@ for name, help_text, func in tools:
     if not name:
         raise RuntimeError('invalid name or no name')
     make_command(name, help_text, func)
+
+
+def make_commands() -> None:
+    for name, help_text, func in tools:
+        if not name:
+            raise RuntimeError('invalid name or no name')
+        make_command(name, help_text, func)

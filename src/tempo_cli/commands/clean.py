@@ -94,7 +94,7 @@ To generate a file list JSON, use the generate_file_list_json command.
     help="Path to the tempo config file",
 )
 @click.option(
-    "--output_json",
+    "--output-json",
     type=click.Path(
         resolve_path=True,
         path_type=Path,
@@ -114,9 +114,9 @@ Cleans up the specified directory, deleting all files not specified within the f
 To generate one, use the generate_file_list command.
 """
 
-@clean.command(name="from_file_list", help=command_help, short_help=command_help)
+@clean.command(name="from-file-list", help=command_help, short_help=command_help)
 @click.argument(
-    "file_list",
+    "file-list",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -150,7 +150,7 @@ def from_file_list(file_list: Path, directory: Path) -> None:
 command_help = "Cleans up and resyncs a git project to the GitHub repository and branch specified within the settings JSON."
 
 
-@clean.command(name="resync_dir_with_repo", help=command_help, short_help=command_help)
+@clean.command(name="resync-dir-with-repo", help=command_help, short_help=command_help)
 @click.option(
     "--config-file",
     type=click.Path(

@@ -25,7 +25,7 @@ def close() -> None:
     required=True,
     help="Path to the settings JSON file",
 )
-def game(settings_config: Path) -> None:
+def game(config_file: Path) -> None:
     main_logic.close_game()
 
 
@@ -45,7 +45,7 @@ command_help = "Close the engine."
     required=True,
     help="Path to the settings JSON file",
 )
-def engine(settings_config: Path) -> None:
+def engine(config_file: Path) -> None:
     main_logic.close_engine()
 
 
@@ -53,7 +53,7 @@ command_help = "Closes all programs with the exe names provided."
 
 @close.command(name="programs", help=command_help, short_help=command_help)
 @click.option(
-    "--exe_names",
+    "--exe-names",
     multiple=True,
     type=str,
     required=True,

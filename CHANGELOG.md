@@ -1,4 +1,22 @@
 
+## 6.0.0-dev.29181775538 (2026-07-12)
+
+### Fix
+
+- **All**: fixed cli bugs and added unit tests
+
+## 6.0.0-dev.28718069245 (2026-07-04)
+
+### Feat
+
+- **All**: Changed cli commands to follow - vs _ conventions
+
+## 5.3.0-dev.28546583542 (2026-07-01)
+
+### Feat
+
+- **uv.lock,-README.md**: updated unreal support to 5.8
+
 ## 5.3.0 (2026-06-28)
 
 ## 5.3.0-dev.28308497414 (2026-06-28)

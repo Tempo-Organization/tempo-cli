@@ -17,18 +17,18 @@ default_parent_guid = unreal_collections.get_blank_unreal_guid().to_uid()
 def collection() -> None:
     """Collection related commands"""
 
-@collection.command(name="create_collection", help=command_help, short_help=command_help)
+@collection.command(name="create-collection", help=command_help, short_help=command_help)
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
     help="The path to the collection file to edit.",
     required=True,
 )
 @click.option(
-    "--file_version", type=int, default=2, help="The collection file version.",
+    "--file-version", type=int, default=2, help="The collection file version.",
 )
 @click.option(
-    "--content_type",
+    "--content-type",
     default=file_content_options[0],
     type=click.Choice(file_content_options),
     help="The type of content collection, dynamic uses file filters, static uses manual specification",
@@ -40,7 +40,7 @@ def collection() -> None:
     help="The guid of the collection, if not provided one will be automatically generated.",
 )
 @click.option(
-    "--parent_guid",
+    "--parent-guid",
     default=default_parent_guid,
     type=str,
     help="The parent guid of the collection, if not provided no parent is assumed, and a blank one is given.",
@@ -58,19 +58,19 @@ def collection() -> None:
     "--alpha", default=0.0, type=float, help="The value of the color, accepts 0.0-1.0.",
 )
 @click.option(
-    "--file_paths",
+    "--file-paths",
     type=str,
     multiple=True,
     help="A list of file paths to include in the collection, they will be automatically converted into unreal asset paths. For use with static collections.",
 )
 @click.option(
-    "--unreal_asset_paths",
+    "--unreal-asset-paths",
     type=str,
     multiple=True,
     help="A list of unreal asset paths for the collection, for static collections.",
 )
 @click.option(
-    "--filter_lines",
+    "--filter-lines",
     type=str,
     multiple=True,
     help="A list of asset filter for the collection, for use with dynamic collections.",
@@ -124,10 +124,10 @@ command_help = "Set Collection Color"
 
 
 @collection.command(
-    name="set_color_from_collection_path", help=command_help, short_help=command_help,
+    name="set-color-from-collection-path", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -163,9 +163,9 @@ def set_color_from_collection_path(
 command_help = "Rename Collection"
 
 
-@collection.command(name="rename_collection", help=command_help, short_help=command_help)
+@collection.command(name="rename-collection", help=command_help, short_help=command_help)
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -178,7 +178,7 @@ command_help = "Rename Collection"
     required=True,
 )
 @click.option(
-    "--new_name", type=str, help="New name for the collection.", required=True,
+    "--new-name", type=str, help="New name for the collection.", required=True,
 )
 def rename_collection(collection_path: Path, new_name: str) -> None:
     unreal_collections.rename_collection_from_collection_path(Path(collection_path), new_name)
@@ -187,9 +187,9 @@ def rename_collection(collection_path: Path, new_name: str) -> None:
 command_help = "Delete Collection"
 
 
-@collection.command(name="delete_collection", help=command_help, short_help=command_help)
+@collection.command(name="delete-collection", help=command_help, short_help=command_help)
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -208,9 +208,9 @@ def delete_collection(collection_path: Path) -> None:
 command_help = "Disable Collection"
 
 
-@collection.command(name="disable_collection", help=command_help, short_help=command_help)
+@collection.command(name="disable-collection", help=command_help, short_help=command_help)
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -229,9 +229,9 @@ def disable_collection(collection_path: Path) -> None:
 command_help = "Enable Collection"
 
 
-@collection.command(name="enable_collection", help=command_help, short_help=command_help)
+@collection.command(name="enable-collection", help=command_help, short_help=command_help)
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -254,10 +254,10 @@ default_set_guid_from_collection_path_guid = unreal_collections.UnrealGuid.to_ui
 
 
 @collection.command(
-    name="set_guid_from_collection_path", help=command_help, short_help=command_help,
+    name="set-guid-from-collection-path", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -286,12 +286,12 @@ command_help = "Set Parent Guid"
 
 
 @collection.command(
-    name="set_parent_guid_from_collection_path",
+    name="set-parent-guid-from-collection-path",
     help=command_help,
     short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -304,7 +304,7 @@ command_help = "Set Parent Guid"
     required=True,
 )
 @click.option(
-    "--parent_guid",
+    "--parent-guid",
     default=default_parent_guid,
     type=str,
     help="The new parent guid in string form for the collection.",
@@ -320,12 +320,12 @@ command_help = "Set File Version"
 
 
 @collection.command(
-    name="set_file_version_from_collection_path",
+    name="set-file-version-from-collection-path",
     help=command_help,
     short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -338,7 +338,7 @@ command_help = "Set File Version"
     required=True,
 )
 @click.option(
-    "--file_version",
+    "--file-version",
     default=2,
     type=int,
     help="The new file version for the collection.",
@@ -354,12 +354,12 @@ command_help = "Set Collection Type"
 
 
 @collection.command(
-    name="set_collection_type_from_collection_path",
+    name="set-collection-type-from-collection-path",
     help=command_help,
     short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -372,7 +372,7 @@ command_help = "Set Collection Type"
     required=True,
 )
 @click.option(
-    "--collection_type",
+    "--collection-type",
     default=unreal_collections.UnrealContentLineType.STATIC.value,
     type=click.Choice(set_content_type_options),
     help="The new content type for the collection, Static or Dynamic.",
@@ -392,10 +392,10 @@ command_help = "Add content lines to collection file, Dynamic accepts filter lin
 
 
 @collection.command(
-    name="add_content_lines_to_collection", help=command_help, short_help=command_help,
+    name="add-content-lines-to-collection", help=command_help, short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -408,21 +408,21 @@ command_help = "Add content lines to collection file, Dynamic accepts filter lin
     required=True,
 )
 @click.option(
-    "--content_path_lines",
+    "--content-path-lines",
     type=str,
     help="The new content lines to add to the collection, they will be converted to unreal asset paths.",
     multiple=True,
     default=[],
 )
 @click.option(
-    "--filter_lines",
+    "--filter-lines",
     type=str,
     help="The new content filter lines to add to the collection.",
     multiple=True,
     default=[],
 )
 @click.option(
-    "--unreal_asset_paths",
+    "--unreal-asset-paths",
     type=str,
     help="The new unreal asset path lines to add to the collection.",
     multiple=True,
@@ -461,12 +461,12 @@ command_help = "Remove content lines from collection file, Dynamic accepts filte
 
 
 @collection.command(
-    name="remove_content_lines_from_collection",
+    name="remove-content-lines-from-collection",
     help=command_help,
     short_help=command_help,
 )
 @click.option(
-    "--collection_path",
+    "--collection-path",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -479,21 +479,21 @@ command_help = "Remove content lines from collection file, Dynamic accepts filte
     required=True,
 )
 @click.option(
-    "--content_path_lines",
+    "--content-path-lines",
     type=str,
     help="The new content lines to remove from the collection, they will be converted to unreal asset paths.",
     multiple=True,
     default=[],
 )
 @click.option(
-    "--filter_lines",
+    "--filter-lines",
     type=str,
     help="The new content filter lines to remove from the collection.",
     multiple=True,
     default=[],
 )
 @click.option(
-    "--unreal_asset_paths",
+    "--unreal-asset-paths",
     type=str,
     help="The new unreal asset path lines to remove from the collection.",
     multiple=True,
@@ -535,7 +535,7 @@ command_help = "Add collections to the mod entry in the settings json"
 
 
 @collection.command(
-    name="add_collections_to_mod_entry", help=command_help, short_help=command_help,
+    name="add-collections-to-mod-entry", help=command_help, short_help=command_help,
 )
 @click.option(
     "--config-file",
@@ -551,13 +551,13 @@ command_help = "Add collections to the mod entry in the settings json"
     required=True,
 )
 @click.option(
-    "--mod_name",
+    "--mod-name",
     type=str,
     help="The mod name of the mod entry in the settings json to add the collection(s) to.",
     required=True,
 )
 @click.option(
-    "--collection_paths",
+    "--collection-paths",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -571,7 +571,7 @@ command_help = "Add collections to the mod entry in the settings json"
     multiple=True,
 )
 def add_collections_to_mod_entry(
-    settings_config: Path, mod_name: str, collection_paths: list[Path],
+    config_file: Path, mod_name: str, collection_paths: list[Path],
 ) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
@@ -581,7 +581,7 @@ def add_collections_to_mod_entry(
             ),
         )
     unreal_collections.add_collections_to_mod_entry(
-        collections_to_pass, mod_name, settings_config,
+        collections_to_pass, mod_name, config_file,
     )
 
 
@@ -589,7 +589,7 @@ command_help = "Remove collections to the mod entry in the settings json"
 
 
 @collection.command(
-    name="remove_collections_from_mod_entry", help=command_help, short_help=command_help,
+    name="remove-collections-from-mod-entry", help=command_help, short_help=command_help,
 )
 @click.option(
     "--config-file",
@@ -605,13 +605,13 @@ command_help = "Remove collections to the mod entry in the settings json"
     required=True,
 )
 @click.option(
-    "--mod_name",
+    "--mod-name",
     type=str,
     help="The mod name of the mod entry in the settings json to remove the collection(s) from.",
     required=True,
 )
 @click.option(
-    "--collection_paths",
+    "--collection-paths",
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -625,7 +625,7 @@ command_help = "Remove collections to the mod entry in the settings json"
     multiple=True,
 )
 def remove_collections_from_mod_entry(
-    settings_config: Path, mod_name: str, collection_paths: list[Path],
+    config_file: Path, mod_name: str, collection_paths: list[Path],
 ) -> None:
     collections_to_pass = []
     for collection_path in collection_paths:
@@ -635,5 +635,5 @@ def remove_collections_from_mod_entry(
             ),
         )
     unreal_collections.remove_collections_from_mod_entry(
-        collections_to_pass, mod_name, settings_config,
+        collections_to_pass, mod_name, config_file,
     )
