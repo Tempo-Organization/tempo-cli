@@ -1,4 +1,10 @@
 
+## 6.0.0-dev.29181775538 (2026-07-12)
+
+### Fix
+
+- **All**: fixed cli bugs and added unit tests
+
 ## 6.0.0-dev.28718069245 (2026-07-04)
 
 ### Feat
