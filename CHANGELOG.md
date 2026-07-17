@@ -1,4 +1,10 @@
 
+## 7.0.0-dev.29568463063 (2026-07-17)
+
+### Fix
+
+- **pyproject.toml**: manual version bump
+
 ## 6.0.0-dev.29566026507 (2026-07-17)
 
 ### Fix
