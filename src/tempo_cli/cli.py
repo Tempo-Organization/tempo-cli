@@ -57,7 +57,7 @@ rich_color_system_choices = tempo_cli_data_structures.get_enum_strings_from_enum
     type=click.Choice(rich_color_system_choices),
     help="The color system of the console, uses rich's color system.",
 )
-@click.option('--log_name_prefix', type=str, help='The log name prefix for your logs.')
+@click.option('--log-name-prefix', type=str, help='The log name prefix for your logs.')
 @click.option(
     "--logs-directory",
     default=default_logs_dir,
