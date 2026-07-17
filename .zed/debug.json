@@ -47,45 +47,73 @@
     "justMyCode": false
   },
   {
-    "label": "Test Poppy Playtime Chapter 5 full_run_all",
+    "label": "Test etb_mod_loader_uproject full_run_all",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
       "run",
-      "full_run_all",
+      "full-run-all",
       "--config-file",
       ".tempo.json"
     ],
-    "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",
+    "cwd": "$ZED_WORKTREE_ROOT/../etb_mod_loader_uproject",
     "justMyCode": false
   },
   {
-    "label": "Test Poppy Playtime Chapter 5 test_mods_all",
+    "label": "Test etb_mod_loader_uproject test_mods_all",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
       "run",
-      "test_mods_all",
+      "test-mods-all",
       "--config-file",
       ".tempo.json"
     ],
-    "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",
+    "cwd": "$ZED_WORKTREE_ROOT/../etb_mod_loader_uproject",
     "justMyCode": false
   },
   {
-    "label": "Test Poppy Playtime Chapter 5 build",
+    "label": "Test RoboQuest full_run_all",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
-      "uproject",
-      "build",
+      "run",
+      "full-run-all",
       "--config-file",
       ".tempo.json"
     ],
-    "cwd": "$ZED_WORKTREE_ROOT/../PoppyPlaytimeChapter5",
+    "cwd": "$ZED_WORKTREE_ROOT/../RoboQuest",
     "justMyCode": false
-  }
+  },
+  {
+    "label": "Test RoboQuest test_mods_all",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "test-mods-all",
+      "--config-file",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../RoboQuest",
+    "justMyCode": false
+  },
+  {
+    "label": "Test RoboQuest clean full",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "clean",
+      "full",
+      "--config-file",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../RoboQuest",
+    "justMyCode": false
+  },
 ]
