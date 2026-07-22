@@ -26,6 +26,7 @@ from tempo_cli.commands.toml import toml
 from tempo_cli.commands.uplugin import uplugin
 from tempo_cli.commands.uproject import uproject
 from tempo_cli.commands.list import list
+from tempo_cli.commands.dlc import dlc
 
 
 default_logs_dir = Path(f"{file_io.SCRIPT_DIR}/logs")
@@ -75,9 +76,6 @@ def cli(
     initialization.initialization()
 
 
-
-
-
 cli.add_command(init)
 
 cli.add_command(tool)
@@ -108,3 +106,5 @@ cli.add_command(uplugin)
 cli.add_command(uproject)
 
 cli.add_command(list)
+
+cli.add_command(dlc)

@@ -751,9 +751,11 @@ class TestTempo(unittest.TestCase):
         from tempo_core import file_io
 
         json_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.json"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.json",
         )
-        json_path.unlink()
+        json_path.parent.mkdir(exist_ok=True, parents=True)
+        if json_path.is_file():
+            json_path.unlink()
         json_path.touch()
         file_io.add_line_to_config(json_path, "{}")
         with (
@@ -780,7 +782,9 @@ class TestTempo(unittest.TestCase):
         json_path = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.json"
         )
-        json_path.unlink()
+        json_path.parent.mkdir(exist_ok=True, parents=True)
+        if json_path.is_file():
+            json_path.unlink()
         json_path.touch()
         file_io.add_line_to_config(json_path, "{}")
         with (
@@ -878,7 +882,7 @@ class TestTempo(unittest.TestCase):
         "tempo_cli.commands.ini.add_meta_data_tags_for_asset_registry_to_unreal_ini.callback"
     )
     def test_add_meta_data_tags_for_asset_registry_to_unreal_ini_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         ini_path = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Config/DefaultGame.ini"
@@ -900,7 +904,7 @@ class TestTempo(unittest.TestCase):
         "tempo_cli.commands.ini.remove_meta_data_tags_for_asset_registry_from_unreal_ini.callback"
     )
     def test_remove_meta_data_tags_for_asset_registry_from_unreal_ini_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         ini_path = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Config/DefaultGame.ini"
@@ -985,7 +989,7 @@ class TestTempo(unittest.TestCase):
 
     @patch("tempo_cli.commands.run.add_module_to_descriptor.callback")
     def test_run_add_module_to_descriptor_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         uproject_file_path = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
@@ -1011,7 +1015,7 @@ class TestTempo(unittest.TestCase):
 
     @patch("tempo_cli.commands.run.remove_modules_from_descriptor.callback")
     def test_run_remove_modules_from_descriptor_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         uproject_file_path = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
@@ -1082,7 +1086,7 @@ class TestTempo(unittest.TestCase):
 
     @patch("tempo_cli.commands.run.kismet_analyze_directory.callback")
     def test_run_kismet_analyze_directory_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         with (
             temporary_argv(
@@ -1102,7 +1106,7 @@ class TestTempo(unittest.TestCase):
 
     @patch("tempo_cli.commands.run.add_plugin_to_descriptor.callback")
     def test_run_add_plugin_to_descriptor_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         descriptor_file = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
@@ -1126,7 +1130,7 @@ class TestTempo(unittest.TestCase):
 
     @patch("tempo_cli.commands.run.remove_plugins_from_descriptor.callback")
     def test_run_remove_plugins_from_descriptor_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         descriptor_file = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
@@ -1546,6 +1550,90 @@ class TestTempo(unittest.TestCase):
                 "generate-mod-releases-all",
                 "--config-file",
                 SETTINGS_FILE,
+            ),
+            self.assertRaises(SystemExit) as context,
+        ):
+            main.main()
+        self.assertEqual(context.exception.code, 0)
+
+
+    @patch("tempo_cli.commands.dlc.generate.callback")
+    def test_dlc_generate_command(self, mock_command: MagicMock) -> None:
+        plugins_dir = Path("C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins")
+        plugin_name = 'testing_dlc_uplugin_name'
+        with (
+            temporary_argv(
+                "tempo_cli",
+                "dlc",
+                "generate",
+                "--is-installed",
+                "True",
+                "--is-hidden",
+                "True",
+                "--category",
+                "example_category",
+                "--created-by",
+                "example_author",
+                "--created-by-url",
+                "www.example_url.com",
+                "--description",
+                "example description",
+                "--docs-url",
+                "www.example_docs_url.com",
+                "--editor-custom-virtual-path",
+                "example/custom/virtual/path",
+                "--engine-major-version",
+                "4",
+                "--engine-minor-version",
+                "27",
+                "--support-url",
+                "www.example_support_url.com",
+                "--version",
+                "1.0",
+                "--version-name",
+                "example_version_name",
+                str(plugins_dir),
+                plugin_name,
+                "--config-file",
+                SETTINGS_FILE,
+            ),
+            self.assertRaises(SystemExit) as context,
+        ):
+            main.main()
+        self.assertEqual(context.exception.code, 0)
+
+
+    @patch("tempo_cli.commands.dlc.build.callback")
+    def test_dlc_build_command(self, mock_command: MagicMock) -> None:
+        plugin_name = 'testing_dlc_uplugin_name'
+        release_version = 'example_release_version_1.0'
+        with (
+            temporary_argv(
+                "tempo_cli",
+                "dlc",
+                "build",
+                "--config-file",
+                SETTINGS_FILE,
+                plugin_name,
+                release_version,
+            ),
+            self.assertRaises(SystemExit) as context,
+        ):
+            main.main()
+        self.assertEqual(context.exception.code, 0)
+
+
+    @patch("tempo_cli.commands.dlc.make_base_release.callback")
+    def test_dlc_make_base_release_command(self, mock_command: MagicMock) -> None:
+        release_version = 'example_release_version_1.0'
+        with (
+            temporary_argv(
+                "tempo_cli",
+                "dlc",
+                "make-base-release",
+                "--config-file",
+                SETTINGS_FILE,
+                release_version,
             ),
             self.assertRaises(SystemExit) as context,
         ):
