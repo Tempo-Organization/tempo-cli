@@ -5,6 +5,8 @@
 
 - **All**: added downloadable content commands
 
+## 7.0.0 (2026-07-17)
+
 ## 7.0.0-dev.29568463063 (2026-07-17)
 
 ### Fix
