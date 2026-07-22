@@ -882,7 +882,7 @@ dependencies = [
 
 [[package]]
 name = "tempo-cli"
-version = "7.0.0.dev29568463063"
+version = "7.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "commitizen" },
