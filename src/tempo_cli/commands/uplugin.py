@@ -3,6 +3,7 @@ from pathlib import Path
 
 import rich_click as click
 from tempo_core import main_logic, file_io, settings, app_runner, data_structures
+from tempo_core.programs import unreal_engine
 
 
 @click.group()
@@ -284,7 +285,6 @@ def build(
 
     for uplugin_path in list(set(final_uplugin_paths)):
         target_platform_string = '+'.join(set(target_platforms))
-        automation_tool = Path(f'{unreal_engine_dir}/Engine/Build/BatchFiles/RunUAT.{file_io.get_platform_wrapper_extension()}')
         if output_directory:
             package_path = output_directory
         else:
@@ -304,7 +304,7 @@ def build(
             args.append('-Unversioned')
         exec_mode = data_structures.ExecutionMode.SYNC
         app_runner.run_app(
-            exe_path=automation_tool,
+            exe_path=unreal_engine.get_run_uat_script_path(),
             exec_mode=exec_mode,
             args=args,
         )
