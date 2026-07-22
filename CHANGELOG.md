@@ -1,11 +1,17 @@
 
+## 7.1.0-dev.29953609720 (2026-07-22)
+
 ## 7.0.0-dev.29893511163 (2026-07-22)
 
 ### Feat
 
 - **All**: added downloadable content commands
 
-## 7.0.0 (2026-07-17)
+## 7.0.0 (2026-07-22)
+
+### Feat
+
+- **All**: added downloadable content commands
 
 ## 7.0.0-dev.29568463063 (2026-07-17)
 
