@@ -223,10 +223,17 @@ jobs:
           fetch-depth: 0
 
       - name: Create bump and changelog
+        id: bump
+        continue-on-error: true
         uses: commitizen-tools/commitizen-action@master
         with:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           changelog_increment_filename: body.md
+          devrelease: ${{ github.run_id }}
+
+      - name: Stop if bump failed
+        if: steps.bump.outcome == 'failure'
+        run: exit 0
 
       - name: Create version.txt
         run: |
