@@ -882,7 +882,7 @@ dependencies = [
 
 [[package]]
 name = "tempo-cli"
-version = "7.1.0.dev30411167686"
+version = "7.2.0.dev30424025749"
 source = { editable = "." }
 dependencies = [
     { name = "mkdocs-material" },

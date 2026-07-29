@@ -541,10 +541,10 @@ class TestTempo(unittest.TestCase):
         self.assertEqual(context.exception.code, 0)
 
     @patch(
-        "tempo_cli.commands.uproject.resave_packages_and_fix_up_redirectors.callback"
+        "tempo_cli.commands.uproject.resave_packages_and_fix_up_redirectors.callback",
     )
     def test_uproject_resave_packages_and_fix_up_redirectors_command(
-        self, mock_command: MagicMock
+        self, mock_command: MagicMock,
     ) -> None:
         with (
             temporary_argv(
@@ -562,7 +562,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.uproject.generate.callback")
     def test_uproject_generate_command(self, mock_command: MagicMock) -> None:
         uproject_file_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/testing.uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/testing.uproject",
         )
         if uproject_file_path.is_file():
             uproject_file_path.unlink()
@@ -590,7 +590,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.uplugin.generate.callback")
     def test_uplugin_generate_command(self, mock_command: MagicMock) -> None:
         uplugin_directory = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins",
         )
         uplugin_name = "testing_uplugin_name"
         with (
@@ -611,7 +611,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.uplugin.build.callback")
     def test_uplugin_build_command(self, mock_command: MagicMock) -> None:
         uplugin_directory = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins",
         )
         uplugin_name = "testing_uplugin_name"
         with (
@@ -630,7 +630,7 @@ class TestTempo(unittest.TestCase):
         self.assertEqual(context.exception.code, 0)
 
         uplugin_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins/testing_uplugin_name/testing_uplugin_name.uplugin"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins/testing_uplugin_name/testing_uplugin_name.uplugin",
         )
         with (
             temporary_argv(
@@ -650,7 +650,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.uplugin.remove.callback")
     def test_uplugin_remove_command(self, mock_command: MagicMock) -> None:
         uplugin_directory = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins",
         )
         uplugin_name = "testing_uplugin_name"
         with (
@@ -669,7 +669,7 @@ class TestTempo(unittest.TestCase):
         self.assertEqual(context.exception.code, 0)
 
         uplugin_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins/testing_uplugin_name/testing_uplugin_name.uplugin"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Plugins/testing_uplugin_name/testing_uplugin_name.uplugin",
         )
 
         with (
@@ -688,7 +688,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.toml.add.callback")
     def test_toml_add_command(self, mock_command: MagicMock) -> None:
         toml_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.toml"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.toml",
         )
         toml_path.touch()
         with (
@@ -711,7 +711,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.toml.remove.callback")
     def test_toml_remove_command(self, mock_command: MagicMock) -> None:
         toml_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.toml"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.toml",
         )
         toml_path.touch()
         with (
@@ -780,7 +780,7 @@ class TestTempo(unittest.TestCase):
         from tempo_core import file_io
 
         json_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.json"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.json",
         )
         json_path.parent.mkdir(exist_ok=True, parents=True)
         if json_path.is_file():
@@ -879,13 +879,13 @@ class TestTempo(unittest.TestCase):
         self.assertEqual(context.exception.code, 0)
 
     @patch(
-        "tempo_cli.commands.ini.add_meta_data_tags_for_asset_registry_to_unreal_ini.callback"
+        "tempo_cli.commands.ini.add_meta_data_tags_for_asset_registry_to_unreal_ini.callback",
     )
     def test_add_meta_data_tags_for_asset_registry_to_unreal_ini_command(
         self, mock_command: MagicMock,
     ) -> None:
         ini_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Config/DefaultGame.ini"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Config/DefaultGame.ini",
         )
         with (
             temporary_argv(
@@ -901,13 +901,13 @@ class TestTempo(unittest.TestCase):
         self.assertEqual(context.exception.code, 0)
 
     @patch(
-        "tempo_cli.commands.ini.remove_meta_data_tags_for_asset_registry_from_unreal_ini.callback"
+        "tempo_cli.commands.ini.remove_meta_data_tags_for_asset_registry_from_unreal_ini.callback",
     )
     def test_remove_meta_data_tags_for_asset_registry_from_unreal_ini_command(
         self, mock_command: MagicMock,
     ) -> None:
         ini_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Config/DefaultGame.ini"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Config/DefaultGame.ini",
         )
         with (
             temporary_argv(
@@ -992,7 +992,7 @@ class TestTempo(unittest.TestCase):
         self, mock_command: MagicMock,
     ) -> None:
         uproject_file_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject",
         )
         module_name = "test_module_name"
         with (
@@ -1018,7 +1018,7 @@ class TestTempo(unittest.TestCase):
         self, mock_command: MagicMock,
     ) -> None:
         uproject_file_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject",
         )
         module_name = "test_module_name"
         with (
@@ -1109,7 +1109,7 @@ class TestTempo(unittest.TestCase):
         self, mock_command: MagicMock,
     ) -> None:
         descriptor_file = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject",
         )
         plugin_name = "testing_uplugin_name"
         with (
@@ -1133,7 +1133,7 @@ class TestTempo(unittest.TestCase):
         self, mock_command: MagicMock,
     ) -> None:
         descriptor_file = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject",
         )
         plugin_name = "testing_uplugin_name"
         with (
@@ -1154,10 +1154,10 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.copy.callback")
     def test_file_io_copy_command(self, mock_command: MagicMock) -> None:
         descriptor_file = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject",
         )
         descriptor_file_2 = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject.bak"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/EscapeTheBackrooms.uproject.bak",
         )
         with (
             temporary_argv(
@@ -1179,7 +1179,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.delete.callback")
     def test_file_io_delete_command(self, mock_command: MagicMock) -> None:
         test_file = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt",
         )
         test_file.touch()
         with (
@@ -1199,10 +1199,10 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.zip_directory_tree.callback")
     def test_file_io_zip_command(self, mock_command: MagicMock) -> None:
         test_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding",
         )
         test_output = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.zip"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.zip",
         )
         with (
             temporary_argv(
@@ -1223,10 +1223,10 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.unzip.callback")
     def test_file_io_unzip_command(self, mock_command: MagicMock) -> None:
         output_path_for_zip = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/zip_output"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/zip_output",
         )
         test_zip = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.zip"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.zip",
         )
         with (
             temporary_argv(
@@ -1247,11 +1247,11 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.symlink.callback")
     def test_file_io_symlink_command(self, mock_command: MagicMock) -> None:
         test_file = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt",
         )
         test_file.touch()
         test_file_2 = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test_2.txt"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test_2.txt",
         )
         if test_file_2.is_file():
             test_file_2.unlink()
@@ -1291,11 +1291,11 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.move.callback")
     def test_file_io_move_command(self, mock_command: MagicMock) -> None:
         test_file = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt",
         )
         test_file.touch()
         test_file_2 = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test_2.txt"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test_2.txt",
         )
         if test_file_2.is_file():
             test_file_2.unlink()
@@ -1319,10 +1319,10 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.generate_file_list.callback")
     def test_file_io_generate_file_list_command(self, mock_command: MagicMock) -> None:
         file_list_path = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/file_list.json"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/file_list.json",
         )
         dir_tree_to_make_file_list_of = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject",
         )
         with (
             temporary_argv(
@@ -1341,7 +1341,7 @@ class TestTempo(unittest.TestCase):
     @patch("tempo_cli.commands.file_io.generate_game_file_list_json.callback")
     def test_file_io_generate_game_file_list_json_command(self, mock_command: MagicMock) -> None:
         output_json = Path(
-            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/game_file_list.json"
+            "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/game_file_list.json",
         )
         with (
             temporary_argv(
