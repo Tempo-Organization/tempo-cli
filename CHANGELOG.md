@@ -1,4 +1,10 @@
 
+## 7.1.0-dev.30412054884 (2026-07-29)
+
+### Fix
+
+- **uv.lock**: reverted updated commitizen version
+
 ## 7.1.0-dev.30411167686 (2026-07-29)
 
 ### Fix
