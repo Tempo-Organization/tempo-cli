@@ -1,4 +1,21 @@
+## 7.1.0-dev.30413228232 (2026-07-29)
 
+### Fix
+
+- **uv.lock**: removed commitizen as non dev dependency
+
+## 7.1.0-dev.30412054884 (2026-07-29)
+
+### Fix
+
+- **uv.lock**: reverted updated commitizen version
+
+## 7.1.0-dev.30411167686 (2026-07-29)
+
+### Fix
+
+- **uv.lock**: fixed mod_name_dir_name_override not being respected
+=======
 ## 7.1.0 (2026-07-22)
 
 ## 7.1.0-dev.29953609720 (2026-07-22)
