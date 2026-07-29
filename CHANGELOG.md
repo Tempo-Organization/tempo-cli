@@ -1,3 +1,10 @@
+## 8.0.0-dev.30424910494 (2026-07-29)
+
+### Fix
+
+- **all**: linter fixes
+- **pyproject.toml**: manual version bump
+
 ## 7.1.0-dev.30424025749 (2026-07-29)
 
 ## 7.1.0 (2026-07-22)
