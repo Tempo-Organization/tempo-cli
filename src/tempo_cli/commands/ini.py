@@ -11,7 +11,7 @@ def ini() -> None:
 
 
 command_help = (
-    "Adds the specified tags to the ini's MetaDataTagsForAssetRegistry= section."
+    "Adds the specified tags to the DefaultGame.ini's MetaDataTagsForAssetRegistry= section."
 )
 
 @ini.command(
@@ -29,13 +29,13 @@ command_help = (
         resolve_path=True,
         path_type=Path,
     ),
-    help="The path to the ini file to edit.",
+    help="The path to the DefaultGame.ini file to edit.",
     required=True,
 )
 @click.option(
     "--tags",
     type=str,
-    help="The new tags to add to the ini under the MetaDataTagsForAssetRegistry= section.",
+    help="The new tags to add to the DefaultGame.ini under the MetaDataTagsForAssetRegistry= section.",
     multiple=True,
     default=[],
 )
@@ -48,7 +48,7 @@ def add_meta_data_tags_for_asset_registry_to_unreal_ini(
 
 
 command_help = (
-    "Removes the specified tags to the ini's MetaDataTagsForAssetRegistry= section."
+    "Removes the specified tags from the DefaultGame.ini's MetaDataTagsForAssetRegistry= section."
 )
 
 @ini.command(
@@ -66,13 +66,13 @@ command_help = (
         resolve_path=True,
         path_type=Path,
     ),
-    help="The path to the ini file to edit.",
+    help="The path to the DefaultGame.ini file to edit.",
     required=True,
 )
 @click.option(
     "--tags",
     type=str,
-    help="The new tags to remove from the ini under the MetaDataTagsForAssetRegistry= section.",
+    help="The new tags to remove from the DefaultGame.ini under the MetaDataTagsForAssetRegistry= section.",
     multiple=True,
     default=[],
 )
