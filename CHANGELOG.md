@@ -1,3 +1,14 @@
+## 8.0.0-dev.30947069441 (2026-08-04)
+
+### Feat
+
+- **uv.lock**: updated dependencies
+
+### Refactor
+
+- **init.py**: removed prek options
+- **list.py,-dump.py**: changed to use logic in core module
+
 ## 8.0.0-dev.30487164501 (2026-07-29)
 
 ## 8.0.0-dev.30424910494 (2026-07-29)
