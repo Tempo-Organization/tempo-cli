@@ -1,3 +1,4 @@
+from ast import pattern
 import os
 import time
 import json
@@ -115,41 +116,7 @@ def aes_keys(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> 
     help="Whether the dumped info should be stored in the tempo config file or not.",
 )
 def engine_version(config_file: Path, directory: Path, dump_to_tempo_config: bool) -> None:
-
-    info = pattern_sleuth.run_patternsleuth_engine_version_scan_command()
-
-    if not info:
-        raise RuntimeError('dump engine version command failed due to info being None.')
-
-    directory.mkdir(parents=True, exist_ok=True)
-
-    output_path = Path(directory / "engine_version.json")
-
-    data = {
-        "engine_major_version": info["major"],
-        "engine_minor_version": info["minor"],
-    }
-
-    with Path.open(output_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
-
-    logger.log_message(f'output path: {output_path}')
-
-    if not dump_to_tempo_config:
-        return
-
-    with Path.open(config_file, "r", encoding="utf-8") as f:
-        settings = json.load(f)
-
-    engine_info = settings.setdefault("engine_info", {})
-
-    engine_info["unreal_engine_major_version"] = info["major"]
-    engine_info["unreal_engine_minor_version"] = info["minor"]
-
-    with Path.open(config_file, "w", encoding="utf-8") as f:
-        json.dump(settings, f, indent=4)
-
-    logger.log_message(f"updated settings json: {config_file}")
+    pattern_sleuth.dump_engine_version(config_file, directory, dump_to_tempo_config)
 
 
 @dump.command(
@@ -238,7 +205,7 @@ def build_configuration(config_file: Path, directory: Path, dump_to_tempo_config
 )
 @click.option(
     "--output",
-    default=Path(f'{Path.cwd()}/Modding/output.jmap'),
+    default=Path(f'{Path.cwd()}/Content/DynamicClasses/output.jmap'),
     type=click.Path(resolve_path=True, path_type=Path),
     help="The file location you want your jmap outputted to.",
 )
