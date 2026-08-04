@@ -91,7 +91,7 @@ def project_init(directory: Path) -> None:
         "version management": "should_use_versioning",
         "should auto close game": "should_auto_close_game",
         "should auto close fmodel and umodel": "should_close_fmodel_and_umodel",
-        "should setup prek": "should_use_prek",
+        # "should setup prek": "should_use_prek",
     }
 
     chosen_options = questionary.checkbox(
