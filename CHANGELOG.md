@@ -1,3 +1,9 @@
+## 8.0.0-dev.32059651172 (2026-08-17)
+
+### Fix
+
+- **cli.py,-uv.lock**: Updated deps, added missing option to cli help
+
 ## 8.0.0-dev.30947069441 (2026-08-04)
 
 ### Feat
