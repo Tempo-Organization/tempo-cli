@@ -1,3 +1,33 @@
+## 8.0.0-dev.32077517827 (2026-08-17)
+
+## 8.0.0-dev.32076673885 (2026-08-17)
+
+## 8.0.0-dev.32059651172 (2026-08-17)
+
+### Fix
+
+- **cli.py,-uv.lock**: Updated deps, added missing option to cli help
+
+## 8.0.0-dev.30947069441 (2026-08-04)
+
+### Feat
+
+- **uv.lock**: updated dependencies
+
+### Refactor
+
+- **init.py**: removed prek options
+- **list.py,-dump.py**: changed to use logic in core module
+
+## 8.0.0-dev.30487164501 (2026-07-29)
+
+## 8.0.0-dev.30424910494 (2026-07-29)
+
+### Fix
+
+- **all**: linter fixes
+- **pyproject.toml**: manual version bump
+
 ## 7.1.0-dev.30424025749 (2026-07-29)
 
 ## 7.1.0 (2026-07-22)

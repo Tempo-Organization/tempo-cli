@@ -15,7 +15,7 @@ jobs:
       bump: ${{ steps.bump_check.outputs.bump }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Check for 'bump' in commit message
         id: bump_check
@@ -33,12 +33,12 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: 'refs/heads/dev'
 
       - name: Setup Python (x64)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: 3.x
           architecture: "x64"
@@ -69,7 +69,7 @@ jobs:
           dest: dist/tempo_cli_x86_64-unknown-linux-gnu.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tempo_cli_x86_64-unknown-linux-gnu
           path: dist/tempo_cli_x86_64-unknown-linux-gnu.zip
@@ -79,12 +79,12 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: 'refs/heads/dev'
 
       - name: Setup Python (arm64)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: 3.x
           architecture: "arm64"
@@ -115,7 +115,7 @@ jobs:
           dest: dist/tempo_cli_aarch64-unknown-linux-gnu.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tempo_cli_aarch64-unknown-linux-gnu
           path: dist/tempo_cli_aarch64-unknown-linux-gnu.zip
@@ -125,12 +125,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: 'refs/heads/dev'
 
       - name: Setup Python (x64)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: 3.x
           architecture: "x64"
@@ -161,7 +161,7 @@ jobs:
           dest: dist/tempo_cli_x86_64-pc-windows-msvc.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tempo_cli_x86_64-pc-windows-msvc
           path: dist/tempo_cli_x86_64-pc-windows-msvc.zip
@@ -171,12 +171,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: 'refs/heads/dev'
 
       - name: Setup Python (x86)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: 3.x
           architecture: "x86"
@@ -207,7 +207,7 @@ jobs:
           dest: dist/tempo_cli_i686-pc-windows-msvc.zip
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tempo_cli_i686-pc-windows-msvc
           path: dist/tempo_cli_i686-pc-windows-msvc.zip
@@ -217,7 +217,7 @@ jobs:
     needs: [setup_ubuntu_x86_64, setup_ubuntu_aarch64, setup_windows_x86_64, setup_windows_i686]
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
           fetch-depth: 0
@@ -240,13 +240,13 @@ jobs:
           echo "Revision: ${{ env.REVISION }}" > version.txt
 
       - name: Upload version.txt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: version.txt
           path: version.txt
 
       - name: Upload changelog body.md
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: body.md
           path: body.md
@@ -259,10 +259,10 @@ jobs:
       needs: [bump_version]
       steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Python (x64)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: 3.x
           architecture: "x64"
@@ -286,7 +286,7 @@ jobs:
           echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Upload python wheel artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.find_wheel.outputs.artifact_name }}
           path: ${{ steps.find_wheel.outputs.wheel_path }}
@@ -301,7 +301,7 @@ jobs:
           echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Upload python sdist artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.find_sdist.outputs.artifact_name }}
           path: ${{ steps.find_sdist.outputs.sdist_path }}

@@ -315,4 +315,4 @@ def build(
                     zip_name = f"{plugin_name}.zip"
                     file_io.zip_directory_tree(package_path, package_path, zip_name)
                 else:
-                    file_io.zip_directory_tree(package_path, package_path, package_path.parent.name.with_suffix('.zip'))
+                    file_io.zip_directory_tree(package_path, package_path, f'{package_path.parent.name}.zip')

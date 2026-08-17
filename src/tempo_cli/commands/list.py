@@ -25,14 +25,7 @@ command_help_list_unreal_installs = "List all detected unreal engine installs."
     help="Will remove registry entries that don't actually contain unreal engine installs. May have to run with administrator permissions.",
 )
 def unreal_installs(clean: bool) -> None:
-    unreal_installs = registry.get_unreal_installs_from_registry()
-    if unreal_installs:
-        for version, path in unreal_installs.items():
-            logger.log_message(f"{version}: {path}")
-    else:
-        logger.log_message('There were no detected unreal engine installs.')
-    if clean:
-        registry.remove_invalid_unreal_engine_registry_entries()
+    registry.list_unreal_installs(clean)
 
 
 command_help_list_mods = "List all detected mod entries for the project."

@@ -65,12 +65,20 @@ rich_color_system_choices = tempo_cli_data_structures.get_enum_strings_from_enum
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
     help="The directory you want your logs outputted to.",
 )
+@click.option(
+    "--disable-progress-bars",
+    is_flag=True,
+    default=False,
+    type=bool,
+    help="Whether or not to disable progress bars, defaults to false.",
+)
 def cli(
     generate_wrapper,
     disable_log_file_output,
     rich_console_color_system,
     log_name_prefix,
     logs_directory,
+    disable_progress_bars,
     max_content_width=200
 ):
     initialization.initialization()
