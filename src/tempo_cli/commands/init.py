@@ -41,7 +41,7 @@ class SetupInformation:
     tempo_config: Path | None = None
     tempo_config_contents: dict = field(default_factory=dict)
     git_repo_dir: Path | None = None
-    should_use_pre_commit: bool = False
+    should_use_prek: bool = False
     should_make_docs: bool = False
     should_download_easy_scripts: bool  = False
     should_use_versioning: bool  = False
@@ -188,8 +188,8 @@ def project_init(directory: Path) -> None:
     if setup_information.should_make_docs:
         documentation_setup(setup_information)
 
-    if setup_information.should_use_pre_commit:
-        pre_commit_setup(setup_information)
+    if setup_information.should_use_prek:
+        prek_setup(setup_information)
 
     if setup_information.should_use_versioning:
         versioning_setup(setup_information)
@@ -290,7 +290,7 @@ def init(directory: Path) -> None:
     project_init(directory)
 
 
-def pre_commit_setup(setup_information: SetupInformation) -> None:
+def prek_setup(setup_information: SetupInformation) -> None:
     options = [
         'trailing-whitespace',
         'end-of-file-fixer',
@@ -343,7 +343,7 @@ def versioning_setup(setup_information: SetupInformation) -> None:
     with Path.open(toml_path, "w", encoding="utf-8") as f:
         f.write(tomlkit.dumps(toml_doc))
 
-    if setup_information.should_use_pre_commit:
+    if setup_information.should_use_prek:
         subprocess.run("uv run prek install --hook-type commit-msg")
         subprocess.run("uv run prek install --hook-type pre-push")
 
