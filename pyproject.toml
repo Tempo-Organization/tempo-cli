@@ -1,6 +1,6 @@
 [project]
 name = "tempo-cli"
-version = "9.0.0-dev.32079167359"
+version = "9.0.0-dev.32175953666"
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
 requires-python = ">=3.12"
