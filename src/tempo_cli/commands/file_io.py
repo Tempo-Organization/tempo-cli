@@ -239,3 +239,4 @@ def generate_file_list(directory: Path, file_list: Path) -> None:
         file_list (str): Path to the output file, saved in JSON format.
     """
     main_logic.generate_file_list(directory, file_list)
+

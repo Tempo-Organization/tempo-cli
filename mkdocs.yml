@@ -36,6 +36,20 @@ theme:
       primary: deep purple
       accent: cyan
 
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_root_heading: true
+            show_object_full_path: false
+            members: true
+            docstring_style: google
+            separate_signature: true
+            show_labels: false
 nav:
   - Home: index.md
   - Introduction:
@@ -156,6 +170,8 @@ nav:
                     - reference/config/index.md
             - Environment Variables:
                     - reference/environment_variables/index.md
+            - API:
+                    - reference/api/index.md
   - FAQ: faq.md
   - Roadmap: to_do_list.md
   - Community: community.md
