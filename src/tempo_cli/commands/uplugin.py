@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
 
-import rich_click as click
+# import rich_click as click
+import click
 from tempo_core import main_logic, file_io, settings, app_runner, data_structures
 from tempo_core.programs import unreal_engine
 

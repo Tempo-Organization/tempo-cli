@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
 
-import rich_click as click
+# import rich_click as click
+import click
 from ue4ss_installer_core import ue4ss
 
 from tempo_core import main_logic, file_io, data_structures, settings, manager

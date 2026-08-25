@@ -1,7 +1,8 @@
 from typing import Callable
 from importlib.metadata import entry_points
 
-import rich_click as click
+# import rich_click as click
+import click
 
 from tempo_core import main_logic
 from tempo_core.manager import tools_cache

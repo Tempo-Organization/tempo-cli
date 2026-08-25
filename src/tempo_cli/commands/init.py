@@ -9,7 +9,8 @@ import shutil
 
 import tomlkit
 import questionary
-import rich_click as click
+# import rich_click as click
+import click
 
 from tempo_core import logger, manager
 from tempo_core.main_logic import generate_uproject
