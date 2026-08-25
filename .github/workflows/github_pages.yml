@@ -38,4 +38,6 @@ jobs:
 
       - name: Build cli release
       - run: uv add git+https://github.com/Tempo-Organization/tempo-core.git mkdocs-material mkdocs-click mkdocstrings-python
+
+      - name: deploy docs
       - run: mkdocs gh-deploy --force
