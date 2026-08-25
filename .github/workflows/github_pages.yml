@@ -24,5 +24,18 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install git+https://github.com/Tempo-Organization/tempo-core.git mkdocs-material mkdocs-click mkdocstrings-python
+      - name: Setup Python (x64)
+        uses: actions/setup-python@v7
+        with:
+          python-version: 3.x
+          architecture: "x64"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Create uv virtual environment
+        run: uv venv
+
+      - name: Build cli release
+      - run: uv add git+https://github.com/Tempo-Organization/tempo-core.git mkdocs-material mkdocs-click mkdocstrings-python
       - run: mkdocs gh-deploy --force
