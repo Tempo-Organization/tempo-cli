@@ -34,11 +34,7 @@ jobs:
 
       - name: Install documentation dependencies
         run: |
-          uv pip install \
-            git+https://github.com/Tempo-Organization/tempo-core.git \
-            mkdocs-material \
-            mkdocs-click \
-            mkdocstrings-python
+          uv pip install git+https://github.com/Tempo-Organization/tempo-core.git mkdocs-material mkdocs-click mkdocstrings-python
 
       - name: Deploy docs
         run: uv run mkdocs gh-deploy --force
