@@ -1,6 +1,7 @@
 from pathlib import Path
 
-import rich_click as click
+# import rich_click as click
+import click
 
 from tempo_core import main_logic
 from tempo_core import file_io as tempo_core_file_io
@@ -239,3 +240,4 @@ def generate_file_list(directory: Path, file_list: Path) -> None:
         file_list (str): Path to the output file, saved in JSON format.
     """
     main_logic.generate_file_list(directory, file_list)
+

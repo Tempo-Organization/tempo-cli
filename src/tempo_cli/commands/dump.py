@@ -12,7 +12,8 @@ from tempo_core.threads import game_monitor
 from tempo_binary_tools import jmap as jmap_tool
 from tempo_binary_tools import retoc as retoc_tool
 
-import rich_click as click
+# import rich_click as click
+import click
 
 
 @click.group()

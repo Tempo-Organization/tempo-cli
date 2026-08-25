@@ -9,7 +9,8 @@ import shutil
 
 import tomlkit
 import questionary
-import rich_click as click
+# import rich_click as click
+import click
 
 from tempo_core import logger, manager
 from tempo_core.main_logic import generate_uproject
@@ -74,6 +75,22 @@ class PackageNameValidator(Validator):
 
 def project_init(directory: Path) -> None:
     # add initial select multi option thing ifg possible for features omn onitial step, using checkbox thing
+
+    project_init_message = """Starting project setup. You will be asked a variety of questions to setup the project.
+
+    Not every question requires an answer for a working configuration. Project configurations can vary significantly, so provide whatever information you have.
+
+    For example:
+    - Some projects may not require an Unreal Engine installation or a game installation, such as an ini mod that is packaged into a pak file.
+    - If you provide the Unreal Engine directory or game executable, the engine version often does not need to be specified separately, as it can be determined automatically.
+    - If an engine version is specified or can be determined automatically, the registry for a matching Unreal Engine installation when an engine directory was not provided manually.
+
+    It is highly recommended to download the easy scripts. These are bat/sh files that make running common tempo commands very easy.
+    It is also recommended to auto close the game, fmodel, and umodel, as having these open can interrupt file operations, and lead to confusing situations.
+"""
+
+    logger.log_message(project_init_message)
+
     setup_information = SetupInformation(working_directory=directory)
     logger.log_message(f"project directory: {setup_information.working_directory}")
     setup_information.git_repo_dir = Path(f"{setup_information.working_directory}/.git")
@@ -264,6 +281,19 @@ def project_init(directory: Path) -> None:
         json.dump(cleaned_data, config_file, indent=4)
 
     logger.log_message(f'.tempo.json created at "{setup_information.tempo_config}".')
+
+    project_init_finished_message = """Finished project setup.
+
+    It is recommended to use the tempo_cli mod add-mod command one or more times after this to add mod entries to your project.
+    After that people normally use the tempo_cli run test-mods-all to do everything to make your mod, place it in your game directory, then run the game.
+    Alternatively, you can run the tempo_cli run full-run-all command, to make your mod, and zip it up into a release for uploading.
+    The tempo_cli clean full command is also useful. This will clean build artifacts and other files from your project to save space, or help clear up issues.
+    You can also use the tempo_cli file-io generate-game-file-list-json command to generate a list of files you want to keep in your game install, then
+    you can run the tempo_cli clean game command to clear out all files in the game directory tree that are not inside of the aforementioned file json list.
+    There are also some useful dump commands, you can check out with tempo_cli dump --help.
+"""
+
+    logger.log_message(project_init_finished_message)
 
 
 @click.command(

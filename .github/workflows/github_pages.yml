@@ -1,28 +1,40 @@
 name: github_pages
+
 on:
   push:
     branches:
       - dev
+
 permissions:
   contents: write
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - uses: actions/setup-python@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v7
         with:
-          python-version: 3.x
-      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
-      - uses: actions/cache@v4
-        with:
-          key: mkdocs-material-${{ env.cache_id }}
-          path: .cache
-          restore-keys: |
-            mkdocs-material-
-      - run: pip install mkdocs-material
-      - run: mkdocs gh-deploy --force
+          python-version: "3.x"
+          architecture: x64
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Create uv virtual environment
+        run: uv venv
+
+      - name: Install documentation dependencies
+        run: |
+          uv pip install git+https://github.com/Tempo-Organization/tempo-core.git mkdocs-material mkdocs-click mkdocstrings-python
+
+      - name: Deploy docs
+        run: uv run mkdocs gh-deploy --force

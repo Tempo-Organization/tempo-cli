@@ -30,4 +30,13 @@ Welcome to the Tempo Reference.
 
     :octicons-arrow-right-24: [Environment Variables Reference](environment_variables/index.md)
 
+
+-   :material-transit-connection-variant:{ .lg .middle } __API__
+
+    ---
+
+    The api reference shows various data structures and functions that are useful for configuration.
+
+    :octicons-arrow-right-24: [API Reference](api/index.md)
+
 </div>

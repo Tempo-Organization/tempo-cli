@@ -1,6 +1,7 @@
 from pathlib import Path
 
-import rich_click as click
+# import rich_click as click
+import click
 
 from tempo_core import unreal_inis
 
