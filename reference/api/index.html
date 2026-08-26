@@ -1,0 +1,6092 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://tempo-organization.github.io/tempo-cli/reference/api/">
+      
+      
+        <link rel="prev" href="../environment_variables/">
+      
+      
+        <link rel="next" href="../../faq/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>API - Tempo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Tempo" class="md-header__button md-logo" aria-label="Tempo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M32 32C14.3 32 0 46.3 0 64s14.3 32 32 32h128v352c0 17.7 14.3 32 32 32s32-14.3 32-32V96h128c17.7 0 32-14.3 32-32s-14.3-32-32-32z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tempo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="cyan"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="cyan"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tempo-Organization/tempo-cli" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tempo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting_started/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Introduction
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tutorials/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../to_do_list/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Roadmap
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../community/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Community
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Tempo" class="md-nav__button md-logo" aria-label="Tempo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M32 32C14.3 32 0 46.3 0 64s14.3 32 32 32h128v352c0 17.7 14.3 32 32 32s32-14.3 32-32V96h128c17.7 0 32-14.3 32-32s-14.3-32-32-32z"/></svg>
+
+    </a>
+    Tempo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tempo-Organization/tempo-cli" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    tempo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../help/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Help
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tutorials/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tutorials/workflows/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflows
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/workflows/standard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../commands/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commands
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Commands
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/clean/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    clean
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    collection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/dlc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dlc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/dump/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dump
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/file_io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    file-io
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/ini/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ini
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/init/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    init
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/json/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    json
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/mod/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mod
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/run/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    run
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/toml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    toml
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_13" id="__nav_4_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tool
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tool
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/tool/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/uplugin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    uplugin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/uproject/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    uproject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../config/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Config
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../environment_variables/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Environment Variables
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Environment Variables
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../to_do_list/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hook-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hook States
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HookStateType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HookStateType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.CONSTANT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CONSTANT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.INIT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        INIT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_ALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_ALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_BUILD_UPROJECT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_BUILD_UPROJECT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_CHANGES_UPLOAD" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_CHANGES_UPLOAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_CLEANUP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_CLEANUP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_COOKING" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_COOKING
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_ENGINE_CLOSE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_ENGINE_CLOSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_ENGINE_OPEN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_ENGINE_OPEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_GAME_CLOSE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_GAME_CLOSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_GAME_LAUNCH" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_GAME_LAUNCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_GENERATE_MOD" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_GENERATE_MOD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_GENERATE_MODS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_GENERATE_MODS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_GENERATE_MOD_RELEASE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_GENERATE_MOD_RELEASE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_GENERATE_MOD_RELEASES" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_GENERATE_MOD_RELEASES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_INIT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_INIT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_MODS_INSTALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_MODS_INSTALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_MODS_UNINSTALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_MODS_UNINSTALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.POST_PAK_DIR_SETUP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_PAK_DIR_SETUP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_ALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_ALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_BUILD_UPROJECT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_BUILD_UPROJECT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_CHANGES_UPLOAD" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_CHANGES_UPLOAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_CLEANUP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_CLEANUP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_COOKING" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_COOKING
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_ENGINE_CLOSE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_ENGINE_CLOSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_ENGINE_OPEN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_ENGINE_OPEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_GAME_CLOSE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_GAME_CLOSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_GAME_LAUNCH" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_GAME_LAUNCH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_GENERATE_MOD" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_GENERATE_MOD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_GENERATE_MODS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_GENERATE_MODS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_GENERATE_MOD_RELEASE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_GENERATE_MOD_RELEASE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_GENERATE_MOD_RELEASES" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_GENERATE_MOD_RELEASES
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_INIT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_INIT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_MODS_INSTALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_MODS_INSTALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_MODS_UNINSTALL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_MODS_UNINSTALL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.HookStateType.PRE_PAK_DIR_SETUP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_PAK_DIR_SETUP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#game-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Game &amp; Execution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.PackingType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PackingType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PackingType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.PackingType.ENGINE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ENGINE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.PackingType.LOOSE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LOOSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.PackingType.REPAK" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REPAK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.PackingType.RETOC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RETOC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.PackingType.UNREAL_PAK" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNREAL_PAK
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameLaunchType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GameLaunchType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.BATTLE_NET" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BATTLE_NET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.EPIC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EPIC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.EXE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EXE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.ITCH_IO" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ITCH_IO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.ORIGIN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ORIGIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.OTHER" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OTHER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.STEAM" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        STEAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.GameLaunchType.UBISOFT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UBISOFT
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.ExecutionMode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ExecutionMode
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ExecutionMode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.ExecutionMode.ASYNC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ASYNC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.ExecutionMode.SYNC" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SYNC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CompressionType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CompressionType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType.GZIP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GZIP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType.LZ4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LZ4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType.LZMA" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LZMA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType.OODLE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OODLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType.ZLIB" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ZLIB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.CompressionType.ZSTD" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ZSTD
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OodleCompressionType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OodleCompressionType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionType.KRAKEN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KRAKEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionType.LEVIATHAN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LEVIATHAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionType.MERMAID" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MERMAID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionType.SELKIE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SELKIE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OodleCompressionLevel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OodleCompressionLevel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.FAST" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HYPER_FAST_1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HYPER_FAST_2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HYPER_FAST_3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HYPER_FAST_4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.NONE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.NORMAL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NORMAL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPTIMAL_1
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPTIMAL_2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPTIMAL_3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPTIMAL_4
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPTIMAL_5
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.SUPER_FAST" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SUPER_FAST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.OodleCompressionLevel.VERY_FAST" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VERY_FAST
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.programs.repak.RepakCompressionType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RepakCompressionType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RepakCompressionType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.programs.repak.RepakCompressionType.GZIP" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GZIP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.programs.repak.RepakCompressionType.NONE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.programs.repak.RepakCompressionType.OODLE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OODLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.programs.repak.RepakCompressionType.ZLIB" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ZLIB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.programs.repak.RepakCompressionType.ZSTD" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ZSTD
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#window-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Window Management
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.WindowAction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WindowAction
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WindowAction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.WindowAction.CLOSE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLOSE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.WindowAction.MAX" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.WindowAction.MIN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.WindowAction.MOVE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MOVE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.WindowAction.NONE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unreal-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreal Engine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnrealHostTypes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UnrealHostTypes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.CLIENT_ONLY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLIENT_ONLY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.CLIENT_ONLY_NO_COMMANDLET" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLIENT_ONLY_NO_COMMANDLET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.COOKED_ONLY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COOKED_ONLY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.DEVELOPER" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEVELOPER
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.DEVELOPER_TOOL" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEVELOPER_TOOL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.EDITOR" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EDITOR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.EDITOR_AND_PROGRAM" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EDITOR_AND_PROGRAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.EDITOR_NO_COMMANDLET" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EDITOR_NO_COMMANDLET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.MAX" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.PROGRAM" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PROGRAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.RUNTIME" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RUNTIME
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.RUNTIME_AND_PROGRAM" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RUNTIME_AND_PROGRAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.RUNTIME_NO_COMMANDLET" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RUNTIME_NO_COMMANDLET
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.SERVER_ONLY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SERVER_ONLY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.UnrealHostTypes.UNCOOKED_ONLY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNCOOKED_ONLY
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoadingPhases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoadingPhases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.DEFAULT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEFAULT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.EARLIEST_POSSIBLE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EARLIEST_POSSIBLE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.MAX" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MAX
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.NONE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.POST_CONFIG_INIT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_CONFIG_INIT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.POST_DEFAULT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_DEFAULT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.POST_ENGINE_INIT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_ENGINE_INIT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.POST_SPLASH_SCREEN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        POST_SPLASH_SCREEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.PRE_DEFAULT" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_DEFAULT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.PRE_EARLY_LOADING_SCREEN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_EARLY_LOADING_SCREEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.LoadingPhases.PRE_LOADING_SCREEN" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PRE_LOADING_SCREEN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.unreal_engine_build_targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unreal_engine_build_targets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.unreal_engine_target_platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unreal_engine_target_platforms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.unreal_iostore_file_extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        unreal_iostore_file_extensions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Signatures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.SigMethodType" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SigMethodType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SigMethodType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.SigMethodType.COPY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COPY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.SigMethodType.EMPTY" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EMPTY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tempo_core.data_structures.SigMethodType.NONE" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NONE
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api">API</h1>
+<p>This page documents the enumeration and type definitions used throughout Tempo.</p>
+<h2 id="hook-states">Hook States</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.HookStateType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.HookStateType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for the various hook states, used to fire off other functions
+at specific times, constant and init are not for use with the hook_state_decorator</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.CONSTANT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">CONSTANT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">CONSTANT</span> <span class="o">=</span> <span class="s1">'constant'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.INIT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">INIT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">INIT</span> <span class="o">=</span> <span class="s1">'init'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_ALL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_ALL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_ALL</span> <span class="o">=</span> <span class="s1">'post_all'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_BUILD_UPROJECT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_BUILD_UPROJECT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_BUILD_UPROJECT</span> <span class="o">=</span> <span class="s1">'post_uproject_build'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_CHANGES_UPLOAD" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_CHANGES_UPLOAD</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_CHANGES_UPLOAD</span> <span class="o">=</span> <span class="s1">'post_changes_upload'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_CLEANUP" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_CLEANUP</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_CLEANUP</span> <span class="o">=</span> <span class="s1">'post_cleanup'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_COOKING" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_COOKING</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_COOKING</span> <span class="o">=</span> <span class="s1">'post_cooking'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_ENGINE_CLOSE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_ENGINE_CLOSE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_ENGINE_CLOSE</span> <span class="o">=</span> <span class="s1">'post_engine_close'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_ENGINE_OPEN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_ENGINE_OPEN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_ENGINE_OPEN</span> <span class="o">=</span> <span class="s1">'post_engine_open'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_GAME_CLOSE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_GAME_CLOSE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_GAME_CLOSE</span> <span class="o">=</span> <span class="s1">'post_game_close'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_GAME_LAUNCH" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_GAME_LAUNCH</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_GAME_LAUNCH</span> <span class="o">=</span> <span class="s1">'post_game_launch'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_GENERATE_MOD" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_GENERATE_MOD</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_GENERATE_MOD</span> <span class="o">=</span> <span class="s1">'post_generate_mod'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_GENERATE_MODS" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_GENERATE_MODS</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_GENERATE_MODS</span> <span class="o">=</span> <span class="s1">'post_generate_mods'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_GENERATE_MOD_RELEASE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_GENERATE_MOD_RELEASE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_GENERATE_MOD_RELEASE</span> <span class="o">=</span> <span class="s1">'post_generate_mod_release'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_GENERATE_MOD_RELEASES" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_GENERATE_MOD_RELEASES</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_GENERATE_MOD_RELEASES</span> <span class="o">=</span> <span class="s1">'post_generate_mod_releases'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_INIT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_INIT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_INIT</span> <span class="o">=</span> <span class="s1">'post_init'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_MODS_INSTALL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_MODS_INSTALL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_MODS_INSTALL</span> <span class="o">=</span> <span class="s1">'post_mods_install'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_MODS_UNINSTALL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_MODS_UNINSTALL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_MODS_UNINSTALL</span> <span class="o">=</span> <span class="s1">'post_mods_uninstall'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.POST_PAK_DIR_SETUP" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_PAK_DIR_SETUP</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_PAK_DIR_SETUP</span> <span class="o">=</span> <span class="s1">'post_pak_dir_setup'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_ALL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_ALL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_ALL</span> <span class="o">=</span> <span class="s1">'pre_all'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_BUILD_UPROJECT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_BUILD_UPROJECT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_BUILD_UPROJECT</span> <span class="o">=</span> <span class="s1">'pre_uproject_build'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_CHANGES_UPLOAD" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_CHANGES_UPLOAD</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_CHANGES_UPLOAD</span> <span class="o">=</span> <span class="s1">'pre_changes_upload'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_CLEANUP" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_CLEANUP</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_CLEANUP</span> <span class="o">=</span> <span class="s1">'pre_cleanup'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_COOKING" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_COOKING</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_COOKING</span> <span class="o">=</span> <span class="s1">'pre_cooking'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_ENGINE_CLOSE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_ENGINE_CLOSE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_ENGINE_CLOSE</span> <span class="o">=</span> <span class="s1">'pre_engine_close'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_ENGINE_OPEN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_ENGINE_OPEN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_ENGINE_OPEN</span> <span class="o">=</span> <span class="s1">'pre_engine_open'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_GAME_CLOSE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_GAME_CLOSE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_GAME_CLOSE</span> <span class="o">=</span> <span class="s1">'pre_game_close'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_GAME_LAUNCH" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_GAME_LAUNCH</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_GAME_LAUNCH</span> <span class="o">=</span> <span class="s1">'pre_game_launch'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_GENERATE_MOD" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_GENERATE_MOD</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_GENERATE_MOD</span> <span class="o">=</span> <span class="s1">'pre_generate_mod'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_GENERATE_MODS" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_GENERATE_MODS</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_GENERATE_MODS</span> <span class="o">=</span> <span class="s1">'pre_generate_mods'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_GENERATE_MOD_RELEASE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_GENERATE_MOD_RELEASE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_GENERATE_MOD_RELEASE</span> <span class="o">=</span> <span class="s1">'pre_generate_mod_release'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_GENERATE_MOD_RELEASES" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_GENERATE_MOD_RELEASES</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_GENERATE_MOD_RELEASES</span> <span class="o">=</span> <span class="s1">'pre_generate_mod_releases'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_INIT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_INIT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_INIT</span> <span class="o">=</span> <span class="s1">'pre_init'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_MODS_INSTALL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_MODS_INSTALL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_MODS_INSTALL</span> <span class="o">=</span> <span class="s1">'pre_mods_install'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_MODS_UNINSTALL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_MODS_UNINSTALL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_MODS_UNINSTALL</span> <span class="o">=</span> <span class="s1">'pre_mods_uninstall'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.HookStateType.PRE_PAK_DIR_SETUP" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_PAK_DIR_SETUP</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_PAK_DIR_SETUP</span> <span class="o">=</span> <span class="s1">'pre_pak_dir_setup'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="game-execution">Game &amp; Execution</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.PackingType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.PackingType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for how to treat packing mods</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.PackingType.ENGINE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ENGINE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ENGINE</span> <span class="o">=</span> <span class="s1">'engine'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.PackingType.LOOSE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">LOOSE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">LOOSE</span> <span class="o">=</span> <span class="s1">'loose'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.PackingType.REPAK" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">REPAK</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">REPAK</span> <span class="o">=</span> <span class="s1">'repak'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.PackingType.RETOC" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">RETOC</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">RETOC</span> <span class="o">=</span> <span class="s1">'retoc'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.PackingType.UNREAL_PAK" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">UNREAL_PAK</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">UNREAL_PAK</span> <span class="o">=</span> <span class="s1">'unreal_pak'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.GameLaunchType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.GameLaunchType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for how to launch the game</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.BATTLE_NET" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">BATTLE_NET</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">BATTLE_NET</span> <span class="o">=</span> <span class="s1">'battle_net'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.EPIC" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EPIC</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EPIC</span> <span class="o">=</span> <span class="s1">'epic'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.EXE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EXE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EXE</span> <span class="o">=</span> <span class="s1">'exe'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.ITCH_IO" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ITCH_IO</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ITCH_IO</span> <span class="o">=</span> <span class="s1">'itch_io'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.ORIGIN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ORIGIN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ORIGIN</span> <span class="o">=</span> <span class="s1">'origin'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.OTHER" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OTHER</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OTHER</span> <span class="o">=</span> <span class="s1">'other'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.STEAM" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">STEAM</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">STEAM</span> <span class="o">=</span> <span class="s1">'steam'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.GameLaunchType.UBISOFT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">UBISOFT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">UBISOFT</span> <span class="o">=</span> <span class="s1">'ubisoft'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.ExecutionMode" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.ExecutionMode</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for how to execute various processes</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.ExecutionMode.ASYNC" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ASYNC</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ASYNC</span> <span class="o">=</span> <span class="s1">'async'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.ExecutionMode.SYNC" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">SYNC</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">SYNC</span> <span class="o">=</span> <span class="s1">'sync'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="compression">Compression</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.CompressionType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.CompressionType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for the types of mod pak compression</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.CompressionType.GZIP" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">GZIP</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">GZIP</span> <span class="o">=</span> <span class="s1">'Gzip'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.CompressionType.LZ4" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">LZ4</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">LZ4</span> <span class="o">=</span> <span class="s1">'Lz4'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.CompressionType.LZMA" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">LZMA</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">LZMA</span> <span class="o">=</span> <span class="s1">'Lzma'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.CompressionType.OODLE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OODLE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OODLE</span> <span class="o">=</span> <span class="s1">'Oodle'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.CompressionType.ZLIB" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ZLIB</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ZLIB</span> <span class="o">=</span> <span class="s1">'Zlib'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.CompressionType.ZSTD" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ZSTD</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ZSTD</span> <span class="o">=</span> <span class="s1">'Zstd'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.OodleCompressionType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.OodleCompressionType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for the types of Oodle compression</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionType.KRAKEN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">KRAKEN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">KRAKEN</span> <span class="o">=</span> <span class="s1">'Kraken'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionType.LEVIATHAN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">LEVIATHAN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">LEVIATHAN</span> <span class="o">=</span> <span class="s1">'Leviathan'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionType.MERMAID" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MERMAID</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">MERMAID</span> <span class="o">=</span> <span class="s1">'Mermaid'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionType.SELKIE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">SELKIE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">SELKIE</span> <span class="o">=</span> <span class="s1">'Selkie'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.OodleCompressionLevel" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.OodleCompressionLevel</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.IntEnum">IntEnum</span></code></p>
+
+
+
+        <p>enum for the types of Oodle compression levels</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.FAST" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">FAST</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">FAST</span> <span class="o">=</span> <span class="mi">3</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_1" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">HYPER_FAST_1</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">HYPER_FAST_1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">HYPER_FAST_2</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">HYPER_FAST_2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">HYPER_FAST_3</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">HYPER_FAST_3</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.HYPER_FAST_4" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">HYPER_FAST_4</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">HYPER_FAST_4</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.NONE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">NONE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.NORMAL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">NORMAL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">NORMAL</span> <span class="o">=</span> <span class="mi">4</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_1" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OPTIMAL_1</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OPTIMAL_1</span> <span class="o">=</span> <span class="mi">5</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_2" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OPTIMAL_2</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OPTIMAL_2</span> <span class="o">=</span> <span class="mi">6</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_3" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OPTIMAL_3</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OPTIMAL_3</span> <span class="o">=</span> <span class="mi">7</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_4" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OPTIMAL_4</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OPTIMAL_4</span> <span class="o">=</span> <span class="mi">8</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.OPTIMAL_5" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OPTIMAL_5</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OPTIMAL_5</span> <span class="o">=</span> <span class="mi">9</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.SUPER_FAST" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">SUPER_FAST</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">SUPER_FAST</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.OodleCompressionLevel.VERY_FAST" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">VERY_FAST</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">VERY_FAST</span> <span class="o">=</span> <span class="mi">2</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.programs.repak.RepakCompressionType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.programs.repak.RepakCompressionType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for the types of repak pack command compression</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.programs.repak.RepakCompressionType.GZIP" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">GZIP</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">GZIP</span> <span class="o">=</span> <span class="s1">'Gzip'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.programs.repak.RepakCompressionType.NONE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">NONE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">NONE</span> <span class="o">=</span> <span class="s1">'None'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.programs.repak.RepakCompressionType.OODLE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">OODLE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">OODLE</span> <span class="o">=</span> <span class="s1">'Oodle'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.programs.repak.RepakCompressionType.ZLIB" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ZLIB</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ZLIB</span> <span class="o">=</span> <span class="s1">'Zlib'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.programs.repak.RepakCompressionType.ZSTD" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">ZSTD</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">ZSTD</span> <span class="o">=</span> <span class="s1">'Zstd'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="window-management">Window Management</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.WindowAction" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.WindowAction</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for how to treat handling windows</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.WindowAction.CLOSE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">CLOSE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">CLOSE</span> <span class="o">=</span> <span class="s1">'close'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.WindowAction.MAX" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MAX</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">MAX</span> <span class="o">=</span> <span class="s1">'max'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.WindowAction.MIN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MIN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">MIN</span> <span class="o">=</span> <span class="s1">'min'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.WindowAction.MOVE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MOVE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">MOVE</span> <span class="o">=</span> <span class="s1">'move'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.WindowAction.NONE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">NONE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">NONE</span> <span class="o">=</span> <span class="s1">'none'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="unreal-engine">Unreal Engine</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.UnrealHostTypes" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.UnrealHostTypes</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>enum for the unreal host types, for descriptor files</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.CLIENT_ONLY" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">CLIENT_ONLY</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">CLIENT_ONLY</span> <span class="o">=</span> <span class="s1">'client_only'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.CLIENT_ONLY_NO_COMMANDLET" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">CLIENT_ONLY_NO_COMMANDLET</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">CLIENT_ONLY_NO_COMMANDLET</span> <span class="o">=</span> <span class="s1">'client_only_no_commandlet'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.COOKED_ONLY" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">COOKED_ONLY</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">COOKED_ONLY</span> <span class="o">=</span> <span class="s1">'cooked_only'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.DEVELOPER" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">DEVELOPER</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">DEVELOPER</span> <span class="o">=</span> <span class="s1">'developer'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.DEVELOPER_TOOL" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">DEVELOPER_TOOL</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">DEVELOPER_TOOL</span> <span class="o">=</span> <span class="s1">'developer_tool'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.EDITOR" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EDITOR</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EDITOR</span> <span class="o">=</span> <span class="s1">'editor'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.EDITOR_AND_PROGRAM" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EDITOR_AND_PROGRAM</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EDITOR_AND_PROGRAM</span> <span class="o">=</span> <span class="s1">'editor_and_program'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.EDITOR_NO_COMMANDLET" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EDITOR_NO_COMMANDLET</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EDITOR_NO_COMMANDLET</span> <span class="o">=</span> <span class="s1">'editor_no_commandlet'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.MAX" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MAX</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">MAX</span> <span class="o">=</span> <span class="s1">'max'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.PROGRAM" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PROGRAM</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PROGRAM</span> <span class="o">=</span> <span class="s1">'program'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.RUNTIME" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">RUNTIME</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">RUNTIME</span> <span class="o">=</span> <span class="s1">'runtime'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.RUNTIME_AND_PROGRAM" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">RUNTIME_AND_PROGRAM</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">RUNTIME_AND_PROGRAM</span> <span class="o">=</span> <span class="s1">'runtime_and_program'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.RUNTIME_NO_COMMANDLET" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">RUNTIME_NO_COMMANDLET</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">RUNTIME_NO_COMMANDLET</span> <span class="o">=</span> <span class="s1">'runtime_no_commandlet'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.SERVER_ONLY" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">SERVER_ONLY</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">SERVER_ONLY</span> <span class="o">=</span> <span class="s1">'server_only'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.UnrealHostTypes.UNCOOKED_ONLY" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">UNCOOKED_ONLY</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">UNCOOKED_ONLY</span> <span class="o">=</span> <span class="s1">'uncooked_only'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.LoadingPhases" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.LoadingPhases</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>Enum for the loading phases, for descriptor files</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.DEFAULT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">DEFAULT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">DEFAULT</span> <span class="o">=</span> <span class="s1">'default'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.EARLIEST_POSSIBLE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EARLIEST_POSSIBLE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EARLIEST_POSSIBLE</span> <span class="o">=</span> <span class="s1">'earliest_possible'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.MAX" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">MAX</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">MAX</span> <span class="o">=</span> <span class="s1">'max'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.NONE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">NONE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">NONE</span> <span class="o">=</span> <span class="s1">'none'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.POST_CONFIG_INIT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_CONFIG_INIT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_CONFIG_INIT</span> <span class="o">=</span> <span class="s1">'post_config_init'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.POST_DEFAULT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_DEFAULT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_DEFAULT</span> <span class="o">=</span> <span class="s1">'post_default'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.POST_ENGINE_INIT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_ENGINE_INIT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_ENGINE_INIT</span> <span class="o">=</span> <span class="s1">'post_engine_init'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.POST_SPLASH_SCREEN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">POST_SPLASH_SCREEN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POST_SPLASH_SCREEN</span> <span class="o">=</span> <span class="s1">'post_splash_screen'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.PRE_DEFAULT" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_DEFAULT</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_DEFAULT</span> <span class="o">=</span> <span class="s1">'pre_default'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.PRE_EARLY_LOADING_SCREEN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_EARLY_LOADING_SCREEN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_EARLY_LOADING_SCREEN</span> <span class="o">=</span> <span class="s1">'pre_early_loading_screen'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.LoadingPhases.PRE_LOADING_SCREEN" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">PRE_LOADING_SCREEN</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">PRE_LOADING_SCREEN</span> <span class="o">=</span> <span class="s1">'pre_loading_screen'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="tempo_core.data_structures.unreal_engine_build_targets" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">tempo_core.data_structures.unreal_engine_build_targets</span>
+
+
+</h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">unreal_engine_build_targets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Debug"</span><span class="p">,</span>
+    <span class="s2">"DebugGame"</span><span class="p">,</span>
+    <span class="s2">"Development"</span><span class="p">,</span>
+    <span class="s2">"Shipping"</span><span class="p">,</span>
+    <span class="s2">"Test"</span><span class="p">,</span>
+    <span class="s2">"Unknown"</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents first">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="tempo_core.data_structures.unreal_engine_target_platforms" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">tempo_core.data_structures.unreal_engine_target_platforms</span>
+
+
+</h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">unreal_engine_target_platforms</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"AllDesktop"</span><span class="p">,</span>
+    <span class="s2">"Android"</span><span class="p">,</span>
+    <span class="s2">"Android_ASTC"</span><span class="p">,</span>
+    <span class="s2">"Android_DXT"</span><span class="p">,</span>
+    <span class="s2">"Android_ETC2"</span><span class="p">,</span>
+    <span class="s2">"AndroidClient"</span><span class="p">,</span>
+    <span class="s2">"Android_ASTCClient"</span><span class="p">,</span>
+    <span class="s2">"Android_DXTClient"</span><span class="p">,</span>
+    <span class="s2">"Android_ETC2Client"</span><span class="p">,</span>
+    <span class="s2">"Android_Multi"</span><span class="p">,</span>
+    <span class="s2">"Android_MultiClient"</span><span class="p">,</span>
+    <span class="s2">"IOSClient"</span><span class="p">,</span>
+    <span class="s2">"IOS"</span><span class="p">,</span>
+    <span class="s2">"Linux"</span><span class="p">,</span>
+    <span class="s2">"LinuxNoEditor"</span><span class="p">,</span>
+    <span class="s2">"LinuxClient"</span><span class="p">,</span>
+    <span class="s2">"LinuxServer"</span><span class="p">,</span>
+    <span class="s2">"LinuxAArch64NoEditor"</span><span class="p">,</span>
+    <span class="s2">"LinuxAArch64Client"</span><span class="p">,</span>
+    <span class="s2">"LinuxAArch64Server"</span><span class="p">,</span>
+    <span class="s2">"Lumin"</span><span class="p">,</span>
+    <span class="s2">"LuminClient"</span><span class="p">,</span>
+    <span class="s2">"MacNoEditor"</span><span class="p">,</span>
+    <span class="s2">"Mac"</span><span class="p">,</span>
+    <span class="s2">"MacClient"</span><span class="p">,</span>
+    <span class="s2">"MacServer"</span><span class="p">,</span>
+    <span class="s2">"TVOSClient"</span><span class="p">,</span>
+    <span class="s2">"TVOS"</span><span class="p">,</span>
+    <span class="s2">"WindowsNoEditor"</span><span class="p">,</span>
+    <span class="s2">"Windows"</span><span class="p">,</span>
+    <span class="s2">"WindowsClient"</span><span class="p">,</span>
+    <span class="s2">"WindowsServer"</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents first">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="tempo_core.data_structures.unreal_iostore_file_extensions" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">tempo_core.data_structures.unreal_iostore_file_extensions</span>
+
+
+</h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">unreal_iostore_file_extensions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"umap"</span><span class="p">,</span>
+    <span class="s2">"uexp"</span><span class="p">,</span>
+    <span class="s2">"uptnl"</span><span class="p">,</span>
+    <span class="s2">"ubulk"</span><span class="p">,</span>
+    <span class="s2">"uasset"</span><span class="p">,</span>
+    <span class="s2">"ushaderbytecode"</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents first">
+
+    </div>
+
+</div><h2 id="signatures">Signatures</h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="tempo_core.data_structures.SigMethodType" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">tempo_core.data_structures.SigMethodType</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+
+
+
+        <p>Enum for the way to provide a sig when creating a mod release</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.SigMethodType.COPY" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">COPY</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">COPY</span> <span class="o">=</span> <span class="s1">'copy'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.SigMethodType.EMPTY" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">EMPTY</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">EMPTY</span> <span class="o">=</span> <span class="s1">'empty'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tempo_core.data_structures.SigMethodType.NONE" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">NONE</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">NONE</span> <span class="o">=</span> <span class="s1">'none'</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Tempo-Organization/tempo-cli" target="_blank" rel="noopener" title="Tempo on Github" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://discord.gg/EvUuAD4QvS" target="_blank" rel="noopener" title="Tempo Discord Server" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1.1s-.6.4-.8.8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2C162.5 39 122.2 51.5 84.1 69c-.3.1-.6.4-.8.7C7.1 183.5-13.8 294.6-3.6 404.2c0 .3.1.5.2.8s.3.4.5.6c44.4 32.9 94 58 146.8 74.2.4.1.8.1 1.1 0s.7-.4.9-.7c11.3-15.4 21.4-31.8 30-48.8.1-.2.2-.5.2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6.2-.9.3-.5.6-.7c3.1-2.3 6.2-4.7 9.1-7.1.3-.2.6-.4.9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1.7-.2 1-.2s.7.2.9.4c2.9 2.4 6 4.9 9.1 7.2.2.2.4.4.6.7s.2.6.2.9-.1.6-.3.9-.4.5-.6.6c-14.7 8.6-30 15.9-45.9 21.8-.2.1-.5.2-.7.4s-.3.4-.4.7-.1.5-.1.8.1.5.2.8c8.8 17 18.8 33.3 30 48.8.2.3.6.6.9.7s.8.1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2.2-.2.4-.4.5-.6s.2-.5.2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2m195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.indexes", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
