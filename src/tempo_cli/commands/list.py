@@ -1,8 +1,12 @@
 import json
 from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 from tempo_core import logger, registry, settings, manager
 
 

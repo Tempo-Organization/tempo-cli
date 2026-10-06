@@ -1,8 +1,12 @@
 import os
 from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 from tempo_core import main_logic, file_io, settings, app_runner, data_structures
 from tempo_core.programs import unreal_engine
 
@@ -78,8 +82,9 @@ command_help = "Generates a uplugin in a directory, within the specified directo
 @click.argument(
     "plugins-directory",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
+    help='Path to the plugins directory, mainly for use with Uproject plugins folder, and engine plugins folder.'
 )
-@click.argument("plugin-name", type=str)
+@click.argument("plugin-name", type=str, help='Name of the plugin to be generated.')
 def generate(
     plugins_directory: Path,
     plugin_name: str,
@@ -100,11 +105,6 @@ def generate(
     version: float,
     version_name: str,
 ) -> None:
-    """
-    Arguments:
-        plugins_directory (str): Path to the plugins directory, mainly for use with Uproject plugins folder, and engine plugins folder.
-        plugin_name (str): Name of the plugin to be generated.
-    """
     main_logic.generate_uplugin(
         plugins_directory=plugins_directory,
         plugin_name=plugin_name,

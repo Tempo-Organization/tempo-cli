@@ -92,10 +92,10 @@ git_pull:
   git pull
 
 mkdocs_build:
-  mkdocs build
+  $env:TEMPO_DOCS_BUILD=1; uv run mkdocs build
 
 mkdocs_serve:
-  mkdocs serve --livereload
+  $env:TEMPO_DOCS_BUILD=1; uv run mkdocs serve --livereload
 
 git_add_all:
   git add .

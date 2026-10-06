@@ -57,6 +57,20 @@ nav:
       - help.md
   - Tutorials:
             - tutorials/index.md
+            - tutorials/making_a_new_tempo_project.md
+            - tutorials/print_out_on_keypress_ue4ss_mod.md
+            - tutorials/texture_replacement_mod.md
+            - Dumping:
+                    - tutorials/dumping/aes_keys.md
+                    - tutorials/dumping/build_configuration.md
+                    - tutorials/dumping/unreal_engine_version.md
+                    - tutorials/dumping/jmap.md
+                    - tutorials/dumping/usmap.md
+            - Installing:
+                    - tutorials/installing/unreal_engine.md
+                    - tutorials/installing/ue4ss.md
+                    - tutorials/installing/jmap.md
+                    - tutorials/installing/fmodel.md
             - Workflows:
                     - tutorials/workflows/index.md
                     - tutorials/workflows/standard.md
@@ -72,11 +86,14 @@ nav:
                     - ini: reference/commands/ini.md
                     - init: reference/commands/init.md
                     - json: reference/commands/json.md
+                    - list: reference/commands/list.md
                     - mod: reference/commands/mod.md
                     - run: reference/commands/run.md
                     - toml: reference/commands/toml.md
                     - tool:
                         - install: reference/commands/tool/install.md
+                        - uninstall: reference/commands/tool/uninstall.md
+                        - run: reference/commands/tool/run.md
                     - uplugin: reference/commands/uplugin.md
                     - uproject: reference/commands/uproject.md
             - Config:

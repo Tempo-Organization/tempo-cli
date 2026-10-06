@@ -36,5 +36,8 @@ jobs:
         run: |
           uv pip install git+https://github.com/Tempo-Organization/tempo-core.git mkdocs-material mkdocs-click mkdocstrings-python
 
+      - name: Set docs env var
+        run: echo "TEMPO_DOCS_BUILD=1" >> $env:GITHUB_ENV
+
       - name: Deploy docs
         run: uv run mkdocs gh-deploy --force

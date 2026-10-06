@@ -1,7 +1,11 @@
 from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 
 from tempo_core import main_logic
 
@@ -124,26 +128,22 @@ To generate one, use the generate_file_list command.
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=Path,
-    ),
+        path_type=Path
+    )
 )
 @click.argument(
     "directory",
+    help='Path to the directory tree to clean up. It will delete all files not in the specified file list.',
     type=click.Path(
         exists=True,
         file_okay=False,
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=Path,
+        path_type=Path
     ),
 )
 def from_file_list(file_list: Path, directory: Path) -> None:
-    """
-    Arguments:
-        file_list (str): Path to the file list you want to clean from.
-        directory (str): Path to the directory tree to clean up. It will delete all files not in the specified file list.
-    """
     main_logic.cleanup_from_file_list(file_list, directory)
 
 

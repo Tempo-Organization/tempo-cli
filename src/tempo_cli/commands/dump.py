@@ -4,7 +4,7 @@ import time
 import json
 from pathlib import Path
 
-from tempo_core import main_logic, window_management, utilities, game_runner, logger, manager
+from tempo_core import main_logic, window_management, utilities, game_runner, logger, manager, env
 from tempo_core.programs import retoc, pattern_sleuth
 from tempo_core.programs import jmap as jmap_program
 from tempo_core.threads import game_monitor
@@ -12,8 +12,10 @@ from tempo_core.threads import game_monitor
 from tempo_binary_tools import jmap as jmap_tool
 from tempo_binary_tools import retoc as retoc_tool
 
-# import rich_click as click
-import click
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 
 
 @click.group()

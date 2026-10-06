@@ -1,8 +1,11 @@
 from pathlib import Path
-from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 from tempo_core import main_logic
 
 
@@ -53,6 +56,7 @@ command_help = (
 @click.argument(
     "project-file",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
+    help='Path to generate the project file at.'
 )
 def generate(
     project_file: Path,
@@ -63,10 +67,6 @@ def generate(
     description: str,
     ignore_safety_checks: bool,
 ) -> None:
-    """
-    Arguments:
-        project_file (str): Path to generate the project file at.
-    """
     main_logic.generate_uproject(
         project_file=project_file,
         file_version=file_version,
