@@ -82,7 +82,7 @@ command_help = "Generates a uplugin in a directory, within the specified directo
 @click.argument(
     "plugins-directory",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
-    help='Path to the plugins directory, mainly for use with Uproject plugins folder, and engine plugins folder.'
+    help='Path to the plugins directory, mainly for use with Uproject plugins folder, and engine plugins folder.',
 )
 @click.argument("plugin-name", type=str, help='Name of the plugin to be generated.')
 def generate(

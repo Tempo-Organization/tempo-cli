@@ -56,7 +56,7 @@ command_help = (
 @click.argument(
     "project-file",
     type=click.Path(exists=False, resolve_path=True, path_type=Path),
-    help='Path to generate the project file at.'
+    help='Path to generate the project file at.',
 )
 def generate(
     project_file: Path,

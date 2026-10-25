@@ -128,8 +128,8 @@ To generate one, use the generate_file_list command.
         dir_okay=False,
         readable=True,
         resolve_path=True,
-        path_type=Path
-    )
+        path_type=Path,
+    ),
 )
 @click.argument(
     "directory",
@@ -140,7 +140,7 @@ To generate one, use the generate_file_list command.
         dir_okay=True,
         readable=True,
         resolve_path=True,
-        path_type=Path
+        path_type=Path,
     ),
 )
 def from_file_list(file_list: Path, directory: Path) -> None:
