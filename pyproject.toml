@@ -28,6 +28,7 @@ dependencies = [
     "rich>=15.0.0",
     "rich-click>=1.9.4",
     "screeninfo>=0.8.1",
+    "tempo-core",
     "tomlkit>=0.13.3",
 ]
 
@@ -118,3 +119,6 @@ tag_format = "$version"
 version_scheme = "semver2"
 version_provider = "pep621"
 update_changelog_on_bump = true
+
+[tool.uv.sources]
+tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core" }
