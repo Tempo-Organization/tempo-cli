@@ -7,6 +7,10 @@
 - **pyproject.toml**: version fix attempt
 - **uv.lock**: added missing dependency
 
+## 8.0.0-dev.40156515271 (2026-10-25)
+
+## 8.0.0-dev.32798656535 (2026-08-25)
+
 ## 8.0.0-dev.40156217665 (2026-10-25)
 
 ### Fix
