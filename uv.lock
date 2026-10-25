@@ -1008,7 +1008,7 @@ dependencies = [
 
 [[package]]
 name = "tempo-cli"
-version = "8.0.0.dev37394035740"
+version = "9.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
