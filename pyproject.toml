@@ -1,6 +1,6 @@
 [project]
 name = "tempo-cli"
-version = "8.0.0-dev.40156515271"
+version = "10.0.0-dev.40157389350"
 description = "Unreal Engine modding tool, that covers project management, automated builds, and more"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -28,6 +28,7 @@ dependencies = [
     "rich>=15.0.0",
     "rich-click>=1.9.4",
     "screeninfo>=0.8.1",
+    "tempo-core",
     "tomlkit>=0.13.3",
 ]
 
@@ -118,3 +119,6 @@ tag_format = "$version"
 version_scheme = "semver2"
 version_provider = "pep621"
 update_changelog_on_bump = true
+
+[tool.uv.sources]
+tempo-core = { git = "https://github.com/Tempo-Organization/tempo-core" }

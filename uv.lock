@@ -988,8 +988,27 @@ wheels = [
 ]
 
 [[package]]
+name = "tempo-binary-tool-manager"
+version = "0.1.0"
+source = { git = "https://www.github.com/Tempo-Organization/tempo-binary-tool-manager#4f239f5b9bdbf8e1b2b19e52b0c2c12fbf65924f" }
+dependencies = [
+    { name = "platformdirs" },
+    { name = "requests" },
+    { name = "tomlkit" },
+]
+
+[[package]]
+name = "tempo-binary-tools"
+version = "0.1.0"
+source = { git = "https://www.github.com/Tempo-Organization/tempo-binary-tools#091dea8853b547a8954c775cecddc3ca427c5a17" }
+dependencies = [
+    { name = "packaging" },
+    { name = "tempo-binary-tool-manager" },
+]
+
+[[package]]
 name = "tempo-cli"
-version = "8.0.0.dev37394035740"
+version = "9.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -1002,6 +1021,7 @@ dependencies = [
     { name = "rich" },
     { name = "rich-click" },
     { name = "screeninfo" },
+    { name = "tempo-core" },
     { name = "tomlkit" },
 ]
 
@@ -1031,6 +1051,7 @@ requires-dist = [
     { name = "rich", specifier = ">=15.0.0" },
     { name = "rich-click", specifier = ">=1.9.4" },
     { name = "screeninfo", specifier = ">=0.8.1" },
+    { name = "tempo-core", git = "https://github.com/Tempo-Organization/tempo-core" },
     { name = "tomlkit", specifier = ">=0.13.3" },
 ]
 
@@ -1051,6 +1072,27 @@ dev = [
 i686-pc-windows-msvc = []
 x86-64-pc-windows-msvc = []
 x86-64-unknown-linux-gnu = []
+
+[[package]]
+name = "tempo-core"
+version = "0.1.0"
+source = { git = "https://github.com/Tempo-Organization/tempo-core#7ae4c17e7635cfff42024d63ee3769626648d9ff" }
+dependencies = [
+    { name = "platformdirs" },
+    { name = "psutil" },
+    { name = "requests" },
+    { name = "rich" },
+    { name = "screeninfo" },
+    { name = "tempo-binary-tool-manager" },
+    { name = "tempo-binary-tools" },
+    { name = "tempo-settings" },
+    { name = "ue4ss-installer-core" },
+]
+
+[[package]]
+name = "tempo-settings"
+version = "0.1.0"
+source = { git = "https://www.github.com/Tempo-Organization/tempo-settings#dbc87de0862ef8bdbb30126456c9ea361216e063" }
 
 [[package]]
 name = "termcolor"
@@ -1102,6 +1144,14 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d9/68/f1b440335057bfce71b6e50a9d09445aa2ecbd08359a337976627b8409e7/tzdata-2026.5.tar.gz", hash = "sha256:8cc73c0a0bfca7dbfa59235d60b2eff82231dee33f53d206db1acd9173cfc0a7", size = 200404, upload-time = "2026-10-03T09:23:14.143Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/94/21/1e5995a1c920cce14e4bffae20c665ec10e7ed03ab25e006cd741092b718/tzdata-2026.5-py2.py3-none-any.whl", hash = "sha256:b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac", size = 347996, upload-time = "2026-10-03T09:23:12.535Z" },
+]
+
+[[package]]
+name = "ue4ss-installer-core"
+version = "0.1.0"
+source = { git = "https://www.github.com/Tempo-Organization/ue4ss-installer-core#3b5ab4b974ba98a3de4190276471d82a22c4eb58" }
+dependencies = [
+    { name = "requests" },
 ]
 
 [[package]]
