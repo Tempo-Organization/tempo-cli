@@ -1,9 +1,14 @@
 from __future__ import annotations
-import os
 from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
+
+
 
 from tempo_core import (
     file_io,
@@ -12,7 +17,8 @@ from tempo_core import (
 
 from tempo_cli import data_structures as tempo_cli_data_structures
 from tempo_cli.commands.tool import tool
-from tempo_cli.commands.tool import install
+from tempo_cli.commands.tool import install, uninstall, run
+from tempo_cli.commands.tool import run as tool_run
 from tempo_cli.commands.dump import dump
 from tempo_cli.commands.collection import collection
 from tempo_cli.commands.clean import clean
@@ -89,6 +95,8 @@ cli.add_command(init)
 
 cli.add_command(tool)
 tool.add_command(install)
+tool.add_command(uninstall)
+tool.add_command(tool_run)
 
 cli.add_command(dump)
 

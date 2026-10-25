@@ -207,3 +207,5 @@ stove.exe
 UAssetGUI.exe
 /Modding/release_base_files
 /Modding/releases
+Content/DynamicClasses/output.jmap
+/src/tempo_core/temp

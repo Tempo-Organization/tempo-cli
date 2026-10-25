@@ -9,8 +9,12 @@ import shutil
 
 import tomlkit
 import questionary
-# import rich_click as click
-import click
+
+from tempo_core import env
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 
 from tempo_core import logger, manager
 from tempo_core.main_logic import generate_uproject

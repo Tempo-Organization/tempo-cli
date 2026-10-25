@@ -1,18 +1,18 @@
 import os
 from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 from ue4ss_installer_core import ue4ss
 
 from tempo_core import main_logic, file_io, data_structures, settings, manager
 from tempo_core.programs import kismet_analyzer as tempo_core_kismet_analyzer
 
 from tempo_binary_tools import kismet_analyzer as kismet_analyzer_tool
-
-
-# make this only happen if online is working, if online not working, throw error when calling related commands
-# ue4ss.cache_repo_releases_info("UE4SS-RE", "RE-UE4SS")
 
 
 @click.group()
@@ -393,6 +393,7 @@ command_help = "Adds the specified module entry to the descriptor file, overwrit
 )
 @click.argument(
     "descriptor-file",
+    help='Path to the descriptor file to remove the modules from.',
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -402,13 +403,8 @@ command_help = "Adds the specified module entry to the descriptor file, overwrit
         path_type=Path,
     ),
 )
-@click.argument("module-name", type=str)
+@click.argument("module-name", type=str, help='Name of the module to add.')
 def add_module_to_descriptor(descriptor_file: Path, module_name: str, host_type: str, loading_phase: str) -> None:
-    """
-    Arguments:
-        descriptor-file (str): Path to the descriptor file to add the module to.
-        module-name (str): Name of the module to add.
-    """
     main_logic.add_module_to_descriptor(
         descriptor_file, module_name, host_type, loading_phase,
     )
@@ -428,6 +424,7 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
 )
 @click.argument(
     "descriptor-file",
+    help='Path to the descriptor file to add the plugin to.',
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -437,13 +434,8 @@ command_help = "Adds the specified plugin entry to the descriptor file, overwrit
         path_type=Path,
     ),
 )
-@click.argument("plugin-name", type=str)
+@click.argument("plugin-name", type=str, help='Name of the plugin to add.')
 def add_plugin_to_descriptor(descriptor_file: Path, plugin_name: str, is_enabled: bool) -> None:
-    """
-    Arguments:
-        descriptor-file (str): Path to the descriptor file to add the plugin to.
-        plugin-name (str): Name of the plugin to add.
-    """
     main_logic.add_plugin_to_descriptor(
         descriptor_file, plugin_name, is_enabled=is_enabled,
     )
@@ -466,6 +458,7 @@ command_help = (
 )
 @click.argument(
     "descriptor-file",
+    help='Path to the descriptor file to remove the modules from.',
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -476,10 +469,6 @@ command_help = (
     ),
 )
 def remove_modules_from_descriptor(descriptor_file: Path, module_names: list[str]) -> None:
-    """
-    Arguments:
-        descriptor-file (str): Path to the descriptor file to remove the modules from.
-    """
     main_logic.remove_modules_from_descriptor(descriptor_file, module_names)
 
 
@@ -500,6 +489,7 @@ command_help = (
 )
 @click.argument(
     "descriptor-file",
+    help='Path to the descriptor file to remove the plugins from.',
     type=click.Path(
         exists=True,
         file_okay=True,
@@ -510,10 +500,6 @@ command_help = (
     ),
 )
 def remove_plugins_from_descriptor(descriptor_file: Path, plugin_names: list[str]) -> None:
-    """
-    Arguments:
-        descriptor-file (str): Path to the descriptor file to remove the plugins from.
-    """
     main_logic.remove_plugins_from_descriptor(descriptor_file, plugin_names)
 
 

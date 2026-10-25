@@ -7,8 +7,8 @@ All you need to get started making mods with Tempo.
 Tempo runs on **Windows** and **Linux**.
 
 - **[Git](https://git-scm.com/downloads)**
-- **[uv](https://uv.io/)** (later on, uv will not be needed for prebuilt executables)
-- **[Python 3.9.1 or later](https://www.python.org/downloads/)** is needed only if you install from **source** via pip or pipx.  
+- **[uv](https://docs.astral.sh/uv/getting-started/installation/)** (later on, uv will not be needed for prebuilt executables)
+- **[Python 3.12 or later](https://www.python.org/downloads/)** is needed only if you install from **source** via pip or pipx.  
 - For **prebuilt executables**, Python is **not required**, but Git and uv are still needed.
 
 

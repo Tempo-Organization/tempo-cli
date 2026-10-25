@@ -6,8 +6,12 @@ from pathlib import Path
 import tempo_core.dlc as tc_dlc
 from tempo_core import settings
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 
 
 @click.group()

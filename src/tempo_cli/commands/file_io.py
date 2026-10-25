@@ -1,7 +1,11 @@
 from pathlib import Path
 
-# import rich_click as click
-import click
+from tempo_core import env
+
+if env.getenv("TEMPO_DOCS_BUILD"):
+    import click
+else:
+    import rich_click as click
 
 from tempo_core import main_logic
 from tempo_core import file_io as tempo_core_file_io
@@ -213,6 +217,7 @@ command_help = (
 @file_io.command(name="generate-file-list", help=command_help, short_help=command_help)
 @click.argument(
     "directory",
+    help='Path to the directory tree you want to generate the file list from.',
     type=click.Path(
         exists=True,
         file_okay=False,
@@ -224,6 +229,7 @@ command_help = (
 )
 @click.argument(
     "file-list",
+    help='Path to the output file, saved in JSON format.',
     type=click.Path(
         exists=False,
         file_okay=True,
@@ -231,13 +237,9 @@ command_help = (
         readable=True,
         resolve_path=True,
         path_type=Path,
+        
     ),
 )
 def generate_file_list(directory: Path, file_list: Path) -> None:
-    """
-    Arguments:
-        directory (str): Path to the directory tree you want to generate the file list from.
-        file_list (str): Path to the output file, saved in JSON format.
-    """
     main_logic.generate_file_list(directory, file_list)
 

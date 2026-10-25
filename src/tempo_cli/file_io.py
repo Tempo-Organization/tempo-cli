@@ -74,26 +74,3 @@ def download_files_from_github_repo(
         with Path.open(local_file_path, "wb") as f:
             f.write(response.content)
             logger.log_message(f"Downloaded: {file_path} to {local_file_path}")
-
-
-# def deep_update(original, updates):
-#     for key, value in updates.items():
-#         if key == "processes":
-#             # Ensure both original and value are lists of dicts
-#             if not isinstance(original.get(key), list):
-#                 # If original is a dict or None, convert to list
-#                 if isinstance(original.get(key), dict):
-#                     original[key] = [original[key]]
-#                 else:
-#                     original[key] = []
-#             if isinstance(value, dict):
-#                 value = [value]
-#             if isinstance(value, list):
-#                 original[key].extend(value)
-#             else:
-#                 # fallback: just replace
-#                 original[key] = value
-#         elif isinstance(value, dict) and isinstance(original.get(key), dict):
-#             deep_update(original[key], value)
-#         else:
-#             original[key] = value

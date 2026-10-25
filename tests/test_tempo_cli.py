@@ -10,8 +10,12 @@ import click
 from tempo_core import initialization, logger
 
 from tempo_cli import main
+from tempo_cli.commands import tool
 
 # still need to add tests for the collection related commands
+# still need to add tests for the tool uninstall commands
+# still need to add tests for the tool run commands
+# still need to add missing tests for newer tools
 
 
 SETTINGS_FILE = (
@@ -35,9 +39,8 @@ def init_tests() -> None:
     sys.argv.append(str(SETTINGS_FILE))
 
     initialization.initialization()
-    from tempo_cli.commands.tool import make_commands
 
-    make_commands()
+    tool.make_all_tool_commands()
 
 
 class TestTempo(unittest.TestCase):
@@ -1181,6 +1184,7 @@ class TestTempo(unittest.TestCase):
         test_file = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt",
         )
+        test_file.parent.mkdir(parents=True, exist_ok=True)
         test_file.touch()
         with (
             temporary_argv(
@@ -1249,6 +1253,7 @@ class TestTempo(unittest.TestCase):
         test_file = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt",
         )
+        test_file.parent.mkdir(parents=True, exist_ok=True)
         test_file.touch()
         test_file_2 = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test_2.txt",
@@ -1293,6 +1298,7 @@ class TestTempo(unittest.TestCase):
         test_file = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test.txt",
         )
+        test_file.parent.mkdir(parents=True, exist_ok=True)
         test_file.touch()
         test_file_2 = Path(
             "C:/Users/mythi/OneDrive/Documents/GitHub/etb_mod_loader_uproject/Modding/output/test_2.txt",

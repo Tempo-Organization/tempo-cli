@@ -36,15 +36,15 @@ stateDiagram-v2
 
     %% States with readable labels
     state "file-io generate_game_file_list_json" as GenerateGameFileList
-    state "dump aes_keys" as DumpAESKeys
-    state "dump engine_version" as DumpEngineVersion
-    state "dump script_objects" as DumpScriptObjects
-    state "dump build_configuration" as DumpBuildConfiguration
+    state "dump aes-keys" as DumpAESKeys
+    state "dump engine-version" as DumpEngineVersion
+    state "dump script-objects" as DumpScriptObjects
+    state "dump build-configuration" as DumpBuildConfiguration
     state "dump jmap" as DumpJMap
-    state "mod add_mod" as AddMod
+    state "mod add-mod" as AddMod
     state "Modding Work" as UnrealEngineWork
-    state "run test_mods_all" as TestModsAll
+    state "run test-mods-all" as TestModsAll
     state "clean game" as CleanupPartial
-    state "run full_run_all" as FullRunAll
+    state "run full-run-all" as FullRunAll
     state "dump commands" as DumpEntry
 ```
