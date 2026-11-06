@@ -1,0 +1,1070 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.2/tempo.schema.json",
+  "$defs": {
+    "Cache": {
+      "additionalProperties": false,
+      "properties": {
+        "cache_dir": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Directory where Tempo stores cached files and data.",
+          "title": "Cache Dir"
+        }
+      },
+      "title": "Cache",
+      "type": "object"
+    },
+    "CompressionType": {
+      "description": "enum for the types of mod pak compression",
+      "enum": [
+        "Zlib",
+        "Gzip",
+        "Oodle",
+        "Zstd",
+        "Lz4",
+        "Lzma"
+      ],
+      "title": "CompressionType",
+      "type": "string"
+    },
+    "EngineInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "unreal_engine_dir": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the Unreal Engine installation.",
+          "title": "Unreal Engine Dir"
+        },
+        "unreal_project_file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the Unreal Engine .uproject file.",
+          "title": "Unreal Project File"
+        },
+        "engine_building_args": {
+          "description": "Override the default arguments used when building the Unreal project.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Engine Building Args",
+          "type": "array"
+        },
+        "engine_packaging_args": {
+          "description": "Override the default arguments used when packaging the project.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Engine Packaging Args",
+          "type": "array"
+        },
+        "engine_cooking_args": {
+          "description": "Override the default arguments used when cooking the project.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Engine Cooking Args",
+          "type": "array"
+        },
+        "engine_launch_args": {
+          "description": "Override the default arguments used when launching the project or game.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Engine Launch Args",
+          "type": "array"
+        },
+        "build_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "Debug",
+                "DebugGame",
+                "Development",
+                "Shipping",
+                "Test",
+                "Unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Determines the type of Unreal Engine build to perform.",
+          "title": "Build Type"
+        },
+        "unreal_engine_major_version": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Unreal Engine major version, such as 4 or 5.",
+          "title": "Unreal Engine Major Version"
+        },
+        "unreal_engine_minor_version": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Unreal Engine minor version, such as 27 or 7.",
+          "title": "Unreal Engine Minor Version"
+        },
+        "build_target_platform": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Platform targeted when building the project, for example Win64.",
+          "title": "Build Target Platform"
+        },
+        "unreal_engine_target_platform": {
+          "anyOf": [
+            {
+              "enum": [
+                "AllDesktop",
+                "Android",
+                "Android_ASTC",
+                "Android_DXT",
+                "Android_ETC2",
+                "AndroidClient",
+                "Android_ASTCClient",
+                "Android_DXTClient",
+                "Android_ETC2Client",
+                "Android_Multi",
+                "Android_MultiClient",
+                "IOSClient",
+                "IOS",
+                "Linux",
+                "LinuxNoEditor",
+                "LinuxClient",
+                "LinuxServer",
+                "LinuxAArch64NoEditor",
+                "LinuxAArch64Client",
+                "LinuxAArch64Server",
+                "Lumin",
+                "LuminClient",
+                "MacNoEditor",
+                "Mac",
+                "MacClient",
+                "MacServer",
+                "TVOSClient",
+                "TVOS",
+                "WindowsNoEditor",
+                "Windows",
+                "WindowsClient",
+                "WindowsServer"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Platform targeted by Unreal Engine operations.",
+          "title": "Unreal Engine Target Platform"
+        }
+      },
+      "title": "EngineInfo",
+      "type": "object"
+    },
+    "ExecEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "hook_state": {
+          "description": "Controls when this execution event will fire.",
+          "enum": [
+            "constant",
+            "init",
+            "pre_all",
+            "post_all",
+            "pre_init",
+            "post_init",
+            "pre_cooking",
+            "post_cooking",
+            "pre_mods_uninstall",
+            "post_mods_uninstall",
+            "pre_pak_dir_setup",
+            "post_pak_dir_setup",
+            "pre_mods_install",
+            "post_mods_install",
+            "pre_game_launch",
+            "post_game_launch",
+            "pre_game_close",
+            "post_game_close",
+            "pre_engine_open",
+            "post_engine_open",
+            "pre_engine_close",
+            "post_engine_close",
+            "pre_cleanup",
+            "post_cleanup",
+            "pre_changes_upload",
+            "post_changes_upload",
+            "pre_uproject_build",
+            "post_uproject_build",
+            "pre_generate_mod_release",
+            "post_generate_mod_release",
+            "pre_generate_mod_releases",
+            "post_generate_mod_releases",
+            "pre_generate_mod",
+            "post_generate_mod",
+            "pre_generate_mods",
+            "post_generate_mods"
+          ],
+          "type": "string"
+        },
+        "alt_exe_path": {
+          "description": "Executable path.",
+          "title": "Alt Exe Path",
+          "type": "string"
+        },
+        "variable_args": {
+          "description": "Arguments supplied when executing the program.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Variable Args",
+          "type": "array"
+        },
+        "execution_mode": {
+          "$ref": "#/$defs/ExecutionMode",
+          "description": "Determines how the executable is launched."
+        }
+      },
+      "required": [
+        "hook_state",
+        "alt_exe_path",
+        "execution_mode"
+      ],
+      "title": "ExecEvent",
+      "type": "object"
+    },
+    "ExecutionMode": {
+      "description": "enum for how to execute various processes",
+      "enum": [
+        "sync",
+        "async"
+      ],
+      "title": "ExecutionMode",
+      "type": "string"
+    },
+    "FileIncludes": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_paths": {
+          "description": "Individual Unreal asset paths to include.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Paths",
+          "type": "array"
+        },
+        "tree_paths": {
+          "description": "Paths to directory trees where all files will be included.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Tree Paths",
+          "type": "array"
+        }
+      },
+      "title": "FileIncludes",
+      "type": "object"
+    },
+    "GameInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "game_exe_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the game's executable.",
+          "title": "Game Exe Path"
+        },
+        "game_launcher_exe": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional launcher executable used to start the game.",
+          "title": "Game Launcher Exe"
+        },
+        "window_title_override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Overrides the window title used when identifying the game window.",
+          "title": "Window Title Override"
+        },
+        "launch_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GameLaunchType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "How the game is launched, usually through Steam or directly through the executable."
+        },
+        "game_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Game id for the game, often the Steam app id.",
+          "title": "Game Id"
+        },
+        "launch_params": {
+          "description": "Additional parameters passed when launching the game.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Launch Params",
+          "type": "array"
+        },
+        "is_iostore": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Whether the game uses Unreal Engine's IoStore packaging system. Usually determined automatically.",
+          "title": "Is Iostore"
+        }
+      },
+      "title": "GameInfo",
+      "type": "object"
+    },
+    "GameLaunchType": {
+      "description": "enum for how to launch the game",
+      "enum": [
+        "exe",
+        "steam",
+        "epic",
+        "itch_io",
+        "battle_net",
+        "origin",
+        "ubisoft",
+        "other"
+      ],
+      "title": "GameLaunchType",
+      "type": "string"
+    },
+    "GitInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "repo_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the Git repository associated with the project.",
+          "title": "Repo Path"
+        }
+      },
+      "title": "GitInfo",
+      "type": "object"
+    },
+    "ModInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "persistent_files_directory": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Directory containing files that should persist between operations, useful for edited cooked assets and inis.",
+          "title": "Persistent Files Directory"
+        },
+        "auto_include_mod_name_dir_name": {
+          "default": true,
+          "description": "Automatically include the files in the Content/<mod_name_dir_type>/<mod name> tree in various operations.",
+          "title": "Auto Include Mod Name Dir Name",
+          "type": "boolean"
+        },
+        "packing_type": {
+          "$ref": "#/$defs/PackingType",
+          "description": "Determines the type of package produced for the mod."
+        },
+        "pak_chunk_num": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Chunk number used when creating the pak.",
+          "title": "Pak Chunk Num"
+        },
+        "sig_method_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SigMethodType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Signature method used for the generated package."
+        },
+        "is_enabled": {
+          "default": true,
+          "description": "Whether the mod is enabled.",
+          "title": "Is Enabled",
+          "type": "boolean"
+        },
+        "pak_dir_structure": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Directory structure used to place the mod files in the game's Paks directory, and for releases, for example ~mods.",
+          "title": "Pak Dir Structure"
+        },
+        "compression_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CompressionType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Compression method used when packaging the mod."
+        },
+        "mod_name_dir_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Folder name to automatically include files for, often Mods or CustomContent.",
+          "title": "Mod Name Dir Type"
+        },
+        "mod_name_dir_name_override": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Overrides the automatically generated mod-name directory.",
+          "title": "Mod Name Dir Name Override"
+        },
+        "file_includes": {
+          "$ref": "#/$defs/FileIncludes"
+        }
+      },
+      "required": [
+        "packing_type"
+      ],
+      "title": "ModInfo",
+      "type": "object"
+    },
+    "Optionals": {
+      "additionalProperties": false,
+      "properties": {
+        "ide_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the IDE used for development.",
+          "title": "Ide Path"
+        },
+        "blender_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path to the Blender executable.",
+          "title": "Blender Path"
+        }
+      },
+      "title": "Optionals",
+      "type": "object"
+    },
+    "PackagingUprojectName": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Uproject name used during packaging.",
+          "title": "Name"
+        }
+      },
+      "title": "PackagingUprojectName",
+      "type": "object"
+    },
+    "PackingType": {
+      "description": "enum for how to treat packing mods",
+      "enum": [
+        "engine",
+        "unreal_pak",
+        "repak",
+        "retoc",
+        "loose"
+      ],
+      "title": "PackingType",
+      "type": "string"
+    },
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "description": "Horizontal position of the window.",
+          "title": "X",
+          "type": "integer"
+        },
+        "y": {
+          "description": "Vertical position of the window.",
+          "title": "Y",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Position",
+      "type": "object"
+    },
+    "ProcessKillEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "hook_state": {
+          "description": "Controls when this process management event will fire.",
+          "enum": [
+            "constant",
+            "init",
+            "pre_all",
+            "post_all",
+            "pre_init",
+            "post_init",
+            "pre_cooking",
+            "post_cooking",
+            "pre_mods_uninstall",
+            "post_mods_uninstall",
+            "pre_pak_dir_setup",
+            "post_pak_dir_setup",
+            "pre_mods_install",
+            "post_mods_install",
+            "pre_game_launch",
+            "post_game_launch",
+            "pre_game_close",
+            "post_game_close",
+            "pre_engine_open",
+            "post_engine_open",
+            "pre_engine_close",
+            "post_engine_close",
+            "pre_cleanup",
+            "post_cleanup",
+            "pre_changes_upload",
+            "post_changes_upload",
+            "pre_uproject_build",
+            "post_uproject_build",
+            "pre_generate_mod_release",
+            "post_generate_mod_release",
+            "pre_generate_mod_releases",
+            "post_generate_mod_releases",
+            "pre_generate_mod",
+            "post_generate_mod",
+            "pre_generate_mods",
+            "post_generate_mods"
+          ],
+          "type": "string"
+        },
+        "use_substring_check": {
+          "default": false,
+          "description": "Match the process name as a substring rather than exactly.",
+          "title": "Use Substring Check",
+          "type": "boolean"
+        },
+        "process_name": {
+          "description": "Name of the process to monitor.",
+          "title": "Process Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hook_state",
+        "process_name"
+      ],
+      "title": "ProcessKillEntry",
+      "type": "object"
+    },
+    "ProcessKillEvents": {
+      "additionalProperties": false,
+      "properties": {
+        "processes": {
+          "items": {
+            "$ref": "#/$defs/ProcessKillEntry"
+          },
+          "title": "Processes",
+          "type": "array"
+        },
+        "auto_close_game": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Whether Tempo automatically closes the game as needed for file operations and testing.",
+          "title": "Auto Close Game"
+        }
+      },
+      "title": "ProcessKillEvents",
+      "type": "object"
+    },
+    "RepakCompressionType": {
+      "description": "enum for the types of repak pack command compression",
+      "enum": [
+        "None",
+        "Zlib",
+        "Gzip",
+        "Oodle",
+        "Zstd"
+      ],
+      "title": "RepakCompressionType",
+      "type": "string"
+    },
+    "RepakInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "repak_compression_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RepakCompressionType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Compression method passed to Repak."
+        },
+        "repak_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Version of Repak to use, for example V4.",
+          "title": "Repak Version"
+        },
+        "repak_pack_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Pak format version to generate, for example v0.2.3.",
+          "title": "Repak Pack Version"
+        }
+      },
+      "title": "RepakInfo",
+      "type": "object"
+    },
+    "Resolution": {
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "description": "Width of the window.",
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "description": "Height of the window.",
+          "title": "Height",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "Resolution",
+      "type": "object"
+    },
+    "SigMethodType": {
+      "description": "Enum for the way to provide a sig when creating a mod release",
+      "enum": [
+        "none",
+        "copy",
+        "empty"
+      ],
+      "title": "SigMethodType",
+      "type": "string"
+    },
+    "WindowAction": {
+      "description": "enum for how to treat handling windows",
+      "enum": [
+        "none",
+        "min",
+        "max",
+        "move",
+        "close"
+      ],
+      "title": "WindowAction",
+      "type": "string"
+    },
+    "WindowBehaviour": {
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Position"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "resolution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Resolution"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "WindowBehaviour",
+      "type": "object"
+    },
+    "WindowManagementEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "hook_state": {
+          "description": "Controls when this window management event will fire.",
+          "enum": [
+            "constant",
+            "init",
+            "pre_all",
+            "post_all",
+            "pre_init",
+            "post_init",
+            "pre_cooking",
+            "post_cooking",
+            "pre_mods_uninstall",
+            "post_mods_uninstall",
+            "pre_pak_dir_setup",
+            "post_pak_dir_setup",
+            "pre_mods_install",
+            "post_mods_install",
+            "pre_game_launch",
+            "post_game_launch",
+            "pre_game_close",
+            "post_game_close",
+            "pre_engine_open",
+            "post_engine_open",
+            "pre_engine_close",
+            "post_engine_close",
+            "pre_cleanup",
+            "post_cleanup",
+            "pre_changes_upload",
+            "post_changes_upload",
+            "pre_uproject_build",
+            "post_uproject_build",
+            "pre_generate_mod_release",
+            "post_generate_mod_release",
+            "pre_generate_mod_releases",
+            "post_generate_mod_releases",
+            "pre_generate_mod",
+            "post_generate_mod",
+            "pre_generate_mods",
+            "post_generate_mods"
+          ],
+          "type": "string"
+        },
+        "use_substring_check": {
+          "default": false,
+          "description": "Match window_name as a substring rather than exactly.",
+          "title": "Use Substring Check",
+          "type": "boolean"
+        },
+        "window_name": {
+          "description": "Name of the window to manage.",
+          "title": "Window Name",
+          "type": "string"
+        },
+        "window_behaviour": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WindowAction"
+            },
+            {
+              "$ref": "#/$defs/WindowBehaviour"
+            }
+          ],
+          "description": "Determines how the window should be managed.",
+          "title": "Window Behaviour"
+        }
+      },
+      "required": [
+        "hook_state",
+        "window_name",
+        "window_behaviour"
+      ],
+      "title": "WindowManagementEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "URL of the Tempo JSON schema, used by editors for autocomplete and validation.",
+      "title": "$Schema"
+    },
+    "mods_info": {
+      "additionalProperties": {
+        "$ref": "#/$defs/ModInfo"
+      },
+      "description": "Configuration for each mod, keyed by mod name.",
+      "title": "Mods Info",
+      "type": "object"
+    },
+    "game_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GameInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "engine_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EngineInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "process_kill_events": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProcessKillEvents"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "window_management_events": {
+      "items": {
+        "$ref": "#/$defs/WindowManagementEvent"
+      },
+      "title": "Window Management Events",
+      "type": "array"
+    },
+    "exec_events": {
+      "items": {
+        "$ref": "#/$defs/ExecEvent"
+      },
+      "title": "Exec Events",
+      "type": "array"
+    },
+    "git_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GitInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "repak_info": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RepakInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "cache": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Cache"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "packaging_uproject_name": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PackagingUprojectName"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "optionals": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Optionals"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "Tempo configuration",
+  "type": "object"
+}
