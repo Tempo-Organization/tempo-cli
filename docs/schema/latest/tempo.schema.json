@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.0/tempo.schema.json",
+  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.1/tempo.schema.json",
   "$defs": {
     "Cache": {
       "additionalProperties": true,
@@ -213,6 +213,8 @@
         "hook_state": {
           "description": "Controls when this execution event will fire.",
           "enum": [
+            "constant",
+            "init",
             "pre_all",
             "post_all",
             "pre_init",
@@ -365,7 +367,7 @@
         "game_id": {
           "anyOf": [
             {
-              "type": "string"
+              "type": "integer"
             },
             {
               "type": "null"
@@ -645,6 +647,8 @@
         "hook_state": {
           "description": "Controls when this process management event will fire.",
           "enum": [
+            "constant",
+            "init",
             "pre_all",
             "post_all",
             "pre_init",
@@ -863,6 +867,8 @@
         "hook_state": {
           "description": "Controls when this window management event will fire.",
           "enum": [
+            "constant",
+            "init",
             "pre_all",
             "post_all",
             "pre_init",
