@@ -20,13 +20,27 @@
     "justMyCode": false
   },
   {
-    "label": "Test Zedfest Modding Kit Project",
+    "label": "Test Mods All Zedfest Modding Kit Project",
     "adapter": "Debugpy",
     "request": "launch",
     "module": "tempo_cli",
     "args": [
       "run",
-      "test_mods_all",
+      "test-mods-all",
+      "--config-file",
+      ".tempo.json"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT/../ZedfestModdingKit",
+    "justMyCode": false
+  },
+  {
+    "label": "Full Run All Zedfest Modding Kit Project",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "tempo_cli",
+    "args": [
+      "run",
+      "full-run-all",
       "--config-file",
       ".tempo.json"
     ],
