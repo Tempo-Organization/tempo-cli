@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.3/tempo.schema.json",
+  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.4/tempo.schema.json",
   "$defs": {
     "Cache": {
       "additionalProperties": false,
@@ -96,7 +96,7 @@
           "title": "Engine Launch Args",
           "type": "array"
         },
-        "build_type": {
+        "build_configuration": {
           "anyOf": [
             {
               "enum": [
@@ -115,7 +115,7 @@
           ],
           "default": null,
           "description": "Determines the type of Unreal Engine build to perform.",
-          "title": "Build Type"
+          "title": "Build Configuration"
         },
         "unreal_engine_major_version": {
           "anyOf": [
@@ -142,6 +142,21 @@
           "default": null,
           "description": "Unreal Engine minor version, such as 27 or 7.",
           "title": "Unreal Engine Minor Version"
+        },
+        "aes_keys": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A list of one or more game aes keys.",
+          "title": "Aes Keys"
         },
         "build_target_platform": {
           "anyOf": [
