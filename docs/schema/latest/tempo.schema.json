@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.1/tempo.schema.json",
+  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.2/tempo.schema.json",
   "$defs": {
     "Cache": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "cache_dir": {
           "anyOf": [
@@ -36,7 +36,7 @@
       "type": "string"
     },
     "EngineInfo": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "unreal_engine_dir": {
           "anyOf": [
@@ -208,7 +208,7 @@
       "type": "object"
     },
     "ExecEvent": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "hook_state": {
           "description": "Controls when this execution event will fire.",
@@ -288,7 +288,7 @@
       "type": "string"
     },
     "FileIncludes": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "asset_paths": {
           "description": "Individual Unreal asset paths to include.",
@@ -311,7 +311,7 @@
       "type": "object"
     },
     "GameInfo": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "game_exe_path": {
           "anyOf": [
@@ -367,7 +367,7 @@
         "game_id": {
           "anyOf": [
             {
-              "type": "integer"
+              "type": "string"
             },
             {
               "type": "null"
@@ -418,7 +418,7 @@
       "type": "string"
     },
     "GitInfo": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "repo_path": {
           "anyOf": [
@@ -438,7 +438,7 @@
       "type": "object"
     },
     "ModInfo": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "persistent_files_directory": {
           "anyOf": [
@@ -556,7 +556,7 @@
       "type": "object"
     },
     "Optionals": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "ide_path": {
           "anyOf": [
@@ -589,7 +589,7 @@
       "type": "object"
     },
     "PackagingUprojectName": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "name": {
           "anyOf": [
@@ -621,7 +621,7 @@
       "type": "string"
     },
     "Position": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "x": {
           "description": "Horizontal position of the window.",
@@ -642,7 +642,7 @@
       "type": "object"
     },
     "ProcessKillEntry": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "hook_state": {
           "description": "Controls when this process management event will fire.",
@@ -706,7 +706,7 @@
       "type": "object"
     },
     "ProcessKillEvents": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "processes": {
           "items": {
@@ -745,7 +745,7 @@
       "type": "string"
     },
     "RepakInfo": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "repak_compression_type": {
           "anyOf": [
@@ -790,7 +790,7 @@
       "type": "object"
     },
     "Resolution": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "width": {
           "description": "Width of the window.",
@@ -833,7 +833,7 @@
       "type": "string"
     },
     "WindowBehaviour": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "position": {
           "anyOf": [
@@ -862,7 +862,7 @@
       "type": "object"
     },
     "WindowManagementEvent": {
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "hook_state": {
           "description": "Controls when this window management event will fire.",
@@ -939,7 +939,7 @@
       "type": "object"
     }
   },
-  "additionalProperties": true,
+  "additionalProperties": false,
   "properties": {
     "$schema": {
       "anyOf": [
