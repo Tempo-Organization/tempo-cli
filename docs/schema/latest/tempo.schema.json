@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.2/tempo.schema.json",
+  "$id": "https://tempo-organization.github.io/tempo-cli/schema/1.0.3/tempo.schema.json",
   "$defs": {
     "Cache": {
       "additionalProperties": false,
@@ -368,6 +368,9 @@
           "anyOf": [
             {
               "type": "string"
+            },
+            {
+              "type": "integer"
             },
             {
               "type": "null"
@@ -835,21 +838,10 @@
     "WindowBehaviour": {
       "additionalProperties": false,
       "properties": {
-        "position": {
+        "window_action": {
           "anyOf": [
             {
-              "$ref": "#/$defs/Position"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null
-        },
-        "resolution": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Resolution"
+              "$ref": "#/$defs/WindowAction"
             },
             {
               "type": "null"
@@ -918,16 +910,30 @@
           "type": "string"
         },
         "window_behaviour": {
+          "$ref": "#/$defs/WindowBehaviour",
+          "description": "Determines how the window should be managed."
+        },
+        "position": {
           "anyOf": [
             {
-              "$ref": "#/$defs/WindowAction"
+              "$ref": "#/$defs/Position"
             },
             {
-              "$ref": "#/$defs/WindowBehaviour"
+              "type": "null"
             }
           ],
-          "description": "Determines how the window should be managed.",
-          "title": "Window Behaviour"
+          "default": null
+        },
+        "resolution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Resolution"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
